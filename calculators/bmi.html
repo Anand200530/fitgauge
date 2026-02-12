@@ -3,196 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BMI Instrument - FitGauge</title>
-    <link rel="stylesheet" href="../assets/instrument-styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>BMI Calculator — FitGauge</title>
+    <link rel="stylesheet" href="assets/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <meta name="description" content="Calculate your BMI with precision">
     <style>
         :root {
-            --bg-primary: #0d0d0d;
-            --bg-secondary: #1a1a1a;
-            --bg-tertiary: #252525;
-            --border: #333;
-            --text-primary: #e0e0e0;
-            --text-secondary: #888;
-            --text-muted: #555;
-            --accent: #00ff88;
-            --accent-dim: #00aa55;
-            --warning: #ffaa00;
-            --danger: #ff4444;
-            --info: #00aaff;
-            --font-mono: 'JetBrains Mono', monospace;
+            --bg: #0a0a0a;
+            --surface: #141414;
+            --surface-hover: #1a1a1a;
+            --border: #262626;
+            --border-light: #333333;
+            --text: #f5f5f5;
+            --text-secondary: #737373;
+            --text-muted: #525252;
+            --accent: #22c55e;
+            --accent-hover: #4ade80;
+            --blue: #3b82f6;
+            --yellow: #eab308;
+            --red: #ef4444;
+            --font: 'Inter', -apple-system, sans-serif;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: var(--font-mono);
-            background: var(--bg-primary);
-            color: var(--text-primary);
+        
+        .page {
             min-height: 100vh;
-            padding: 80px 24px 40px;
+            display: flex;
+            flex-direction: column;
         }
-
-        .instrument-wrapper {
-            max-width: 900px;
-            margin: 0 auto;
+        
+        .header {
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg);
         }
-
-        .back-link {
-            display: inline-flex;
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 8px;
+        }
+        
+        .logo-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .logo-link svg {
+            width: 26px;
+            height: 26px;
+            color: var(--accent);
+        }
+        
+        .nav {
+            display: flex;
+            gap: 28px;
+        }
+        
+        .nav a {
             color: var(--text-secondary);
+            font-size: 0.85rem;
             text-decoration: none;
-            font-size: 0.875rem;
-            margin-bottom: 32px;
             transition: color 0.2s;
         }
-
-        .back-link:hover {
-            color: var(--text-primary);
+        
+        .nav a:hover {
+            color: var(--text);
         }
-
-        .instrument-panel {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 40px;
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
         }
-
-        .instrument-header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding-bottom: 24px;
-            border-bottom: 1px solid var(--border);
+        
+        main {
+            flex: 1;
+            padding: 48px 0;
         }
-
-        .instrument-title {
-            font-size: 1.5rem;
-            font-weight: 700;
+        
+        .page-header {
+            margin-bottom: 48px;
+        }
+        
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 600;
             margin-bottom: 8px;
         }
-
-        .instrument-subtitle {
+        
+        .page-desc {
             color: var(--text-secondary);
-            font-size: 0.875rem;
+            font-size: 0.9rem;
         }
-
-        .instrument-body {
+        
+        .calculator {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 48px;
         }
-
-        .controls-section {
+        
+        .form-section {
             display: flex;
             flex-direction: column;
-            gap: 32px;
+            gap: 24px;
         }
-
-        .control-group {
+        
+        .form-group {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 8px;
         }
-
-        .control-label {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--text-muted);
+        
+        .form-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
         }
-
-        .control-inputs {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-
-        .input-slot {
-            flex: 1;
-            background: var(--bg-tertiary);
+        
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 8px;
-            padding: 16px;
-            text-align: center;
+            color: var(--text);
+            font-family: var(--font);
+            font-size: 1rem;
+            transition: border-color 0.2s;
         }
-
-        .input-slot:focus-within {
+        
+        .form-input:focus {
+            outline: none;
             border-color: var(--accent);
         }
-
-        .input-slot input {
-            width: 100%;
-            background: transparent;
-            border: none;
-            color: var(--text-primary);
-            font-family: var(--font-mono);
-            font-size: 1.5rem;
-            font-weight: 600;
-            text-align: center;
-            outline: none;
-        }
-
-        .input-slot input::placeholder {
+        
+        .form-input::placeholder {
             color: var(--text-muted);
         }
-
-        .input-slot .input-unit {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-top: 4px;
+        
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
         }
-
+        
         .toggle-group {
             display: flex;
-            background: var(--bg-tertiary);
+            background: var(--surface);
+            border: 1px solid var(--border);
             border-radius: 8px;
             overflow: hidden;
         }
-
+        
         .toggle-btn {
             flex: 1;
             padding: 12px;
             background: transparent;
             border: none;
             color: var(--text-muted);
-            font-family: var(--font-mono);
-            font-size: 0.875rem;
+            font-family: var(--font);
+            font-size: 0.9rem;
             cursor: pointer;
             transition: all 0.2s;
         }
-
+        
         .toggle-btn.active {
             background: var(--accent);
-            color: var(--bg-primary);
-            font-weight: 600;
+            color: var(--bg);
         }
-
-        /* Gauge Display */
-        .display-section {
+        
+        .result-section {
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px;
         }
-
+        
         .gauge-container {
             position: relative;
             width: 280px;
-            height: 180px;
+            height: 160px;
             margin-bottom: 32px;
         }
-
-        .gauge-arc {
+        
+        .gauge-bg {
             position: absolute;
             width: 100%;
             height: 100%;
         }
-
+        
         .gauge-value {
             position: absolute;
             bottom: 0;
@@ -200,252 +208,239 @@
             transform: translateX(-50%);
             text-align: center;
         }
-
-        .value-display {
-            font-size: 4rem;
-            font-weight: 700;
+        
+        .gauge-number {
+            font-size: 3.5rem;
+            font-weight: 600;
+            color: var(--text);
             line-height: 1;
-            color: var(--text-primary);
             transition: color 0.3s;
         }
-
-        .value-unit {
-            font-size: 1rem;
-            color: var(--text-muted);
+        
+        .gauge-unit {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
         }
-
-        .gauge-legend {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            padding: 16px;
-            background: var(--bg-tertiary);
-            border-radius: 8px;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.75rem;
-        }
-
-        .legend-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-
-        .legend-dot.underweight { background: var(--info); }
-        .legend-dot.normal { background: var(--accent); }
-        .legend-dot.overweight { background: var(--warning); }
-        .legend-dot.obese { background: var(--danger); }
-
-        /* Result Panel */
-        .result-panel {
-            margin-top: 32px;
-            padding: 24px;
-            background: var(--bg-tertiary);
-            border-radius: 12px;
-            border-left: 4px solid var(--border);
-            transition: border-color 0.3s;
-        }
-
-        .result-classification {
-            font-size: 1.25rem;
-            font-weight: 600;
+        
+        .result-class {
+            font-size: 1.1rem;
+            font-weight: 500;
             margin-bottom: 8px;
             transition: color 0.3s;
         }
-
-        .result-description {
-            font-size: 0.875rem;
+        
+        .result-desc {
+            font-size: 0.85rem;
             color: var(--text-secondary);
-            line-height: 1.6;
+            text-align: center;
+            max-width: 280px;
         }
-
-        /* Slider */
-        .slider-container {
-            margin-top: 8px;
-        }
-
-        .slider {
-            width: 100%;
+        
+        .range-bar {
+            display: flex;
             height: 6px;
-            -webkit-appearance: none;
-            background: linear-gradient(to right, 
-                var(--info) 0%, var(--info) 18.5%, 
-                var(--accent) 18.5%, var(--accent) 25%, 
-                var(--warning) 25%, var(--warning) 30%, 
-                var(--danger) 30%, var(--danger) 100%);
             border-radius: 3px;
-            outline: none;
+            overflow: hidden;
+            margin-bottom: 16px;
+            width: 100%;
         }
-
-        .slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 20px;
-            height: 20px;
-            background: var(--bg-primary);
-            border: 2px solid var(--text-primary);
-            border-radius: 50%;
-            cursor: pointer;
-            transition: transform 0.1s;
+        
+        .range-under { background: var(--blue); flex: 1.5; }
+        .range-normal { background: var(--accent); flex: 2; }
+        .range-over { background: var(--yellow); flex: 1.5; }
+        .range-obese { background: var(--red); flex: 1; }
+        
+        .range-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            color: var(--text-muted);
         }
-
-        .slider::-webkit-slider-thumb:hover {
-            transform: scale(1.1);
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-decoration: none;
+            margin-bottom: 32px;
+            transition: color 0.2s;
         }
-
+        
+        .back-link:hover {
+            color: var(--text);
+        }
+        
+        footer {
+            padding: 24px 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+        
         @media (max-width: 768px) {
-            .instrument-body {
+            .calculator {
                 grid-template-columns: 1fr;
+            }
+            
+            .nav {
+                display: none;
+            }
+            
+            .gauge-container {
+                width: 240px;
+                height: 140px;
+            }
+            
+            .gauge-number {
+                font-size: 2.5rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="instrument-wrapper">
-        <a href="../index.html" class="back-link">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M19 12H5M12 19l-7-7 7-7"/>
-            </svg>
-            Back to Instruments
-        </a>
+    <div class="page">
+        <header class="header">
+            <div class="container header-content">
+                <a href="../index.html" class="logo-link">
+                    <svg viewBox="0 0 40 40" fill="none">
+                        <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/>
+                        <circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/>
+                        <circle cx="20" cy="20" r="6" fill="currentColor"/>
+                        <line x1="20" y1="2" x2="20" y2="6" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="20" y1="34" x2="20" y2="38" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="2" y1="20" x2="6" y2="20" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="34" y1="20" x2="38" y2="20" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                    FitGauge
+                </a>
+                <nav class="nav">
+                    <a href="../index.html#body">Body</a>
+                    <a href="../index.html#energy">Energy</a>
+                    <a href="../index.html#nutrition">Nutrition</a>
+                    <a href="../index.html#fitness">Fitness</a>
+                    <a href="../index.html#goals">Goals</a>
+                </nav>
+            </div>
+        </header>
 
-        <div class="instrument-panel">
-            <div class="instrument-header">
-                <h1 class="instrument-title">BMI Measurement</h1>
-                <p class="instrument-subtitle">Body Mass Index Calculation</p>
+        <main class="container">
+            <a href="../index.html" class="back-link">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Back to calculators
+            </a>
+
+            <div class="page-header">
+                <h1 class="page-title">Body Mass Index</h1>
+                <p class="page-desc">Calculate your BMI using standard WHO classification</p>
             </div>
 
-            <div class="instrument-body">
-                <!-- Controls -->
-                <div class="controls-section">
-                    <!-- Height -->
-                    <div class="control-group">
-                        <label class="control-label">Height</label>
-                        <div class="control-inputs">
-                            <div class="input-slot">
-                                <input type="number" id="feet" placeholder="ft" min="1" max="9">
-                                <div class="input-unit">ft</div>
-                            </div>
-                            <span style="color: var(--text-muted);">'</span>
-                            <div class="input-slot">
-                                <input type="number" id="inches" placeholder="in" min="0" max="11">
-                                <div class="input-unit">in</div>
-                            </div>
-                        </div>
-                        <div class="slider-container">
-                            <input type="range" id="height-slider" class="slider" min="100" max="220" value="170">
-                        </div>
-                    </div>
-
-                    <!-- Weight -->
-                    <div class="control-group">
-                        <label class="control-label">Weight</label>
-                        <div class="control-inputs">
-                            <div class="input-slot" style="flex: 2;">
-                                <input type="number" id="weight" placeholder="0" min="20" max="300">
-                                <div class="input-unit">kg</div>
-                            </div>
-                            <div class="toggle-group">
-                                <button class="toggle-btn active" data-unit="kg">kg</button>
-                                <button class="toggle-btn" data-unit="lbs">lbs</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Age -->
-                    <div class="control-group">
-                        <label class="control-label">Age</label>
-                        <div class="input-slot">
-                            <input type="number" id="age" placeholder="years" min="2" max="120">
-                        </div>
-                    </div>
-
-                    <!-- Gender -->
-                    <div class="control-group">
-                        <label class="control-label">Gender</label>
+            <div class="calculator">
+                <div class="form-section">
+                    <div class="form-group">
+                        <label class="form-label">Gender</label>
                         <div class="toggle-group">
-                            <button class="toggle-btn" data-gender="male">Male</button>
-                            <button class="toggle-btn active" data-gender="female">Female</button>
+                            <button class="toggle-btn" data-value="male">Male</button>
+                            <button class="toggle-btn active" data-value="female">Female</button>
                         </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Age</label>
+                        <input type="number" class="form-input" id="age" placeholder="Years" min="2" max="120">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Height</label>
+                        <div class="input-row">
+                            <input type="number" class="form-input" id="feet" placeholder="ft" min="1" max="9">
+                            <input type="number" class="form-input" id="inches" placeholder="in" min="0" max="11">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Weight (kg)</label>
+                        <input type="number" class="form-input" id="weight" placeholder="kg" min="20" max="300">
                     </div>
                 </div>
 
-                <!-- Display -->
-                <div class="display-section">
+                <div class="result-section">
                     <div class="gauge-container">
-                        <svg class="gauge-arc" viewBox="0 0 280 140">
+                        <svg class="gauge-bg" viewBox="0 0 280 140">
                             <defs>
-                                <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                    <stop offset="0%" style="stop-color:#00aaff"/>
-                                    <stop offset="35%" style="stop-color:#00ff88"/>
-                                    <stop offset="55%" style="stop-color:#ffaa00"/>
-                                    <stop offset="70%" style="stop-color:#ff4444"/>
+                                <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#3b82f6"/>
+                                    <stop offset="35%" stop-color="#22c55e"/>
+                                    <stop offset="55%" stop-color="#eab308"/>
+                                    <stop offset="70%" stop-color="#ef4444"/>
                                 </linearGradient>
                             </defs>
                             <path d="M 20 140 A 120 120 0 0 1 260 140" 
                                   fill="none" 
-                                  stroke="url(#gaugeGradient)" 
-                                  stroke-width="20" 
+                                  stroke="url(#gaugeGrad)" 
+                                  stroke-width="16" 
                                   stroke-linecap="round"/>
-                            <!-- Tick marks -->
-                            <g stroke="#444" stroke-width="1">
-                                <line x1="20" y1="140" x2="30" y2="140"/>
-                                <line x1="70" y1="100" x2="78" y2="108"/>
-                                <line x1="140" y1="60" x2="140" y2="70"/>
-                                <line x1="210" y1="100" x2="202" y2="108"/>
-                                <line x1="260" y1="140" x2="250" y2="140"/>
-                            </g>
-                            <!-- Labels -->
-                            <text x="20" y="125" fill="#555" font-size="10" text-anchor="middle">15</text>
-                            <text x="140" y="45" fill="#555" font-size="10" text-anchor="middle">22.5</text>
-                            <text x="260" y="125" fill="#555" font-size="10" text-anchor="middle">35</text>
+                            <circle cx="20" cy="140" r="6" fill="#3b82f6"/>
+                            <circle cx="140" cy="60" r="5" fill="#22c55e"/>
+                            <circle cx="260" cy="140" r="6" fill="#ef4444"/>
                         </svg>
                         <div class="gauge-value">
-                            <div class="value-display" id="bmi-display">--</div>
-                            <div class="value-unit">kg/m²</div>
+                            <div class="gauge-number" id="bmi-value">--</div>
+                            <div class="gauge-unit">kg/m²</div>
                         </div>
                     </div>
 
-                    <div class="gauge-legend">
-                        <div class="legend-item">
-                            <span class="legend-dot underweight"></span>
-                            <span>&lt;18.5</span>
-                        </div>
-                        <div class="legend-item">
-                            <span class="legend-dot normal"></span>
-                            <span>18.5-24.9</span>
-                        </div>
-                        <div class="legend-item">
-                            <span class="legend-dot overweight"></span>
-                            <span>25-29.9</span>
-                        </div>
-                        <div class="legend-item">
-                            <span class="legend-dot obese"></span>
-                            <span>&ge;30</span>
-                        </div>
+                    <div class="range-bar">
+                        <div class="range-under"></div>
+                        <div class="range-normal"></div>
+                        <div class="range-over"></div>
+                        <div class="range-obese"></div>
+                    </div>
+                    <div class="range-labels" style="margin-bottom: 24px;">
+                        <span>15</span>
+                        <span>18.5</span>
+                        <span>25</span>
+                        <span>30</span>
+                        <span>35</span>
                     </div>
 
-                    <div class="result-panel" id="result-panel">
-                        <div class="result-classification" id="classification">Enter your measurements</div>
-                        <div class="result-description" id="description">
-                            Adjust the sliders and inputs above to see your BMI classification.
-                        </div>
-                    </div>
+                    <div class="result-class" id="result-class">Enter your details</div>
+                    <p class="result-desc" id="result-desc">Add your measurements to calculate BMI</p>
                 </div>
             </div>
-        </div>
+        </main>
+
+        <footer>
+            <div class="container">
+                <p>FitGauge — Precision Fitness Calculators</p>
+            </div>
+        </footer>
     </div>
 
     <script>
-        let weightUnit = 'kg';
         let gender = 'female';
-
+        
+        document.querySelectorAll('.toggle-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const parent = this.parentElement;
+                parent.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                gender = this.dataset.value;
+                calculateBMI();
+            });
+        });
+        
+        ['feet', 'inches', 'weight', 'age'].forEach(id => {
+            document.getElementById(id).addEventListener('input', calculateBMI);
+        });
+        
         function calculateBMI() {
-            let heightCm = parseFloat(document.getElementById('height-slider').value) || 170;
+            let heightCm = 0;
             
             const feet = parseFloat(document.getElementById('feet').value) || 0;
             const inches = parseFloat(document.getElementById('inches').value) || 0;
@@ -456,88 +451,48 @@
             
             let weight = parseFloat(document.getElementById('weight').value) || 0;
             
-            if (weightUnit === 'lbs') {
-                weight = weight * 0.453592;
-            }
-            
-            if (!heightCm || !weight) {
-                updateDisplay(null);
-                return;
-            }
+            if (!heightCm || !weight) return;
             
             const heightM = heightCm / 100;
             const bmi = weight / (heightM * heightM);
             
-            updateDisplay(bmi);
-        }
-
-        function updateDisplay(bmi) {
-            const display = document.getElementById('bmi-display');
-            const classification = document.getElementById('classification');
-            const description = document.getElementById('description');
-            const panel = document.getElementById('result-panel');
-            const displayEl = document.querySelector('.value-display');
-            
-            if (!bmi || bmi < 10 || bmi > 50) {
-                display.textContent = '--';
-                displayEl.style.color = 'var(--text-primary)';
-                panel.style.borderColor = 'var(--border)';
-                return;
+            if (bmi > 10 && bmi < 60) {
+                updateDisplay(bmi);
             }
+        }
+        
+        function updateDisplay(bmi) {
+            const valueEl = document.getElementById('bmi-value');
+            const classEl = document.getElementById('result-class');
+            const descEl = document.getElementById('result-desc');
             
-            display.textContent = bmi.toFixed(1);
+            valueEl.textContent = bmi.toFixed(1);
             
-            let color = '';
-            let classText = '';
-            let descText = '';
+            let color, classText, desc;
             
             if (bmi < 18.5) {
-                color = 'var(--info)';
+                color = '#3b82f6';
                 classText = 'Underweight';
-                descText = 'Your BMI suggests you may be underweight. Consider consulting a healthcare provider about healthy nutrition strategies.';
+                desc = 'Your BMI suggests you may be underweight. Consider consulting a healthcare provider.';
             } else if (bmi < 25) {
-                color = 'var(--accent)';
-                classText = 'Normal Weight';
-                descText = 'Your BMI is within the healthy range. Maintain your current lifestyle for continued health.';
+                color = '#22c55e';
+                classText = 'Normal';
+                desc = 'Your BMI is within the healthy range. Maintain your current lifestyle.';
             } else if (bmi < 30) {
-                color = 'var(--warning)';
+                color = '#eab308';
                 classText = 'Overweight';
-                descText = 'Your BMI suggests overweight. Consider lifestyle modifications like balanced nutrition and regular activity.';
+                desc = 'Your BMI suggests overweight. Consider lifestyle modifications.';
             } else {
-                color = 'var(--danger)';
+                color = '#ef4444';
                 classText = 'Obesity';
-                descText = 'Your BMI indicates obesity. Consult a healthcare provider for personalized guidance.';
+                desc = 'Your BMI indicates obesity. Consult a healthcare provider for personalized advice.';
             }
             
-            displayEl.style.color = color;
-            classification.textContent = classText;
-            classification.style.color = color;
-            description.textContent = descText;
-            panel.style.borderColor = color;
+            valueEl.style.color = color;
+            classEl.style.color = color;
+            classEl.textContent = classText;
+            descEl.textContent = desc;
         }
-
-        // Event listeners
-        ['feet', 'inches', 'weight', 'age', 'height-slider'].forEach(id => {
-            document.getElementById(id).addEventListener('input', calculateBMI);
-        });
-
-        document.querySelectorAll('.toggle-btn[data-unit]').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.toggle-btn[data-unit]').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                weightUnit = this.dataset.unit;
-                calculateBMI();
-            });
-        });
-
-        document.querySelectorAll('.toggle-btn[data-gender]').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.toggle-btn[data-gender]').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                gender = this.dataset.gender;
-                calculateBMI();
-            });
-        });
     </script>
 </body>
 </html>
