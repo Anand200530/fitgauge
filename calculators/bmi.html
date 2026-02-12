@@ -3,305 +3,197 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BMI Calculator - FitGauge</title>
-    <link rel="stylesheet" href="../assets/styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <meta name="description" content="Precision BMI Calculator - Interactive health metric">
-</head>
-<body>
-    <header class="header">
-        <div class="header-content">
-            <a href="../index.html" class="logo">
-                <div class="logo-icon">
-                    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/>
-                        <circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/>
-                        <circle cx="20" cy="20" r="6" fill="currentColor"/>
-                        <line x1="20" y1="2" x2="20" y2="6" stroke="currentColor" stroke-width="1.5"/>
-                        <line x1="20" y1="34" x2="20" y2="38" stroke="currentColor" stroke-width="1.5"/>
-                        <line x1="2" y1="20" x2="6" y2="20" stroke="currentColor" stroke-width="1.5"/>
-                        <line x1="34" y1="20" x2="38" y2="20" stroke="currentColor" stroke-width="1.5"/>
-                    </svg>
-                </div>
-                <span class="logo-text">FitGauge</span>
-            </a>
-            <nav class="nav">
-                <a href="../index.html#calculators" class="nav-link">All Calculators</a>
-            </nav>
-        </div>
-    </header>
-
-    <main class="calculator-page">
-        <div class="instrument-container">
-            <!-- Left Panel - Inputs -->
-            <div class="instrument-panel input-panel">
-                <div class="panel-header">
-                    <h2 class="panel-title">Input</h2>
-                    <span class="panel-subtitle">Enter your measurements</span>
-                </div>
-
-                <div class="input-section">
-                    <div class="input-row">
-                        <div class="input-field-large">
-                            <label>Height</label>
-                            <div class="height-inputs">
-                                <input type="number" id="feet" placeholder="ft" min="1" max="9">
-                                <span class="unit-separator">'</span>
-                                <input type="number" id="inches" placeholder="in" min="0" max="11">
-                                <span class="unit-label">or</span>
-                                <input type="number" id="height-cm" placeholder="cm" min="50" max="300">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="input-row">
-                        <div class="input-field-large">
-                            <label>Weight</label>
-                            <div class="weight-input">
-                                <input type="number" id="weight" placeholder="0" min="20" max="500" step="0.1">
-                                <div class="unit-toggle">
-                                    <button class="unit-btn active" data-unit="kg">kg</button>
-                                    <button class="unit-btn" data-unit="lbs">lbs</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="input-row">
-                        <div class="input-field-large">
-                            <label>Age</label>
-                            <input type="number" id="age" placeholder="Years" min="2" max="120">
-                        </div>
-                    </div>
-
-                    <div class="input-row">
-                        <div class="input-field-large">
-                            <label>Gender</label>
-                            <div class="gender-toggle">
-                                <button class="gender-btn" data-gender="male">Male</button>
-                                <button class="gender-btn active" data-gender="female">Female</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Right Panel - Display -->
-            <div class="instrument-panel display-panel">
-                <div class="panel-header">
-                    <h2 class="panel-title">Measurement</h2>
-                    <span class="panel-subtitle">Your BMI reading</span>
-                </div>
-
-                <div class="gauge-container">
-                    <canvas id="bmi-gauge"></canvas>
-                    <div class="gauge-reading">
-                        <span id="bmi-value" class="reading-value">--</span>
-                        <span class="reading-unit">kg/m²</span>
-                    </div>
-                </div>
-
-                <div class="scale-indicators">
-                    <div class="scale-item">
-                        <span class="scale-color underweight"></span>
-                        <span class="scale-label">&lt; 18.5</span>
-                    </div>
-                    <div class="scale-item">
-                        <span class="scale-color normal"></span>
-                        <span class="scale-label">18.5 - 24.9</span>
-                    </div>
-                    <div class="scale-item">
-                        <span class="scale-color overweight"></span>
-                        <span class="scale-label">25 - 29.9</span>
-                    </div>
-                    <div class="scale-item">
-                        <span class="scale-color obese"></span>
-                        <span class="scale-label">&ge; 30</span>
-                    </div>
-                </div>
-
-                <div id="result-card" class="result-display">
-                    <div class="result-header">
-                        <span class="result-label">Classification</span>
-                        <span id="classification" class="result-value">--</span>
-                    </div>
-                    <div class="result-detail">
-                        <p id="result-text">Enter your details to see your BMI classification</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-
+    <title>BMI Instrument - FitGauge</title>
+    <link rel="stylesheet" href="../assets/instrument-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        .instrument-container {
-            display: grid;
-            grid-template-columns: 400px 1fr;
-            gap: 24px;
+        :root {
+            --bg-primary: #0d0d0d;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #252525;
+            --border: #333;
+            --text-primary: #e0e0e0;
+            --text-secondary: #888;
+            --text-muted: #555;
+            --accent: #00ff88;
+            --accent-dim: #00aa55;
+            --warning: #ffaa00;
+            --danger: #ff4444;
+            --info: #00aaff;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-mono);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 80px 24px 40px;
+        }
+
+        .instrument-wrapper {
             max-width: 900px;
             margin: 0 auto;
-            padding: 100px 24px 60px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            margin-bottom: 32px;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--text-primary);
         }
 
         .instrument-panel {
-            background: var(--color-bg-secondary);
-            border: 1px solid var(--color-border);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
             border-radius: 16px;
-            overflow: hidden;
+            padding: 40px;
         }
 
-        .input-panel {
-            padding: 24px;
+        .instrument-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
         }
 
-        .display-panel {
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .panel-header {
-            margin-bottom: 24px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--color-border);
-        }
-
-        .panel-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .panel-subtitle {
-            font-size: 0.875rem;
-            color: var(--color-text-muted);
-        }
-
-        .input-section {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        .input-field-large label {
-            display: block;
-            font-size: 0.75rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--color-text-secondary);
+        .instrument-title {
+            font-size: 1.5rem;
+            font-weight: 700;
             margin-bottom: 8px;
         }
 
-        .height-inputs {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .height-inputs input {
-            width: 70px;
-            padding: 12px;
-            background: var(--color-bg-tertiary);
-            border: 1px solid var(--color-border);
-            border-radius: 8px;
-            color: var(--color-text);
-            font-size: 1.25rem;
-            text-align: center;
-        }
-
-        .height-inputs input:focus {
-            outline: none;
-            border-color: var(--color-accent);
-        }
-
-        .unit-separator, .unit-label {
-            color: var(--color-text-muted);
+        .instrument-subtitle {
+            color: var(--text-secondary);
             font-size: 0.875rem;
         }
 
-        #height-cm {
-            width: 100px !important;
+        .instrument-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
         }
 
-        .weight-input {
+        .controls-section {
             display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
             gap: 12px;
         }
 
-        .weight-input input {
-            flex: 1;
-            padding: 12px 16px;
-            background: var(--color-bg-tertiary);
-            border: 1px solid var(--color-border);
-            border-radius: 8px;
-            color: var(--color-text);
-            font-size: 1.5rem;
-            font-weight: 600;
+        .control-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
         }
 
-        .weight-input input:focus {
-            outline: none;
-            border-color: var(--color-accent);
-        }
-
-        .unit-toggle {
+        .control-inputs {
             display: flex;
-            background: var(--color-bg-tertiary);
-            border-radius: 8px;
-            overflow: hidden;
+            gap: 12px;
+            align-items: center;
         }
 
-        .unit-btn {
-            padding: 12px 16px;
+        .input-slot {
+            flex: 1;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .input-slot:focus-within {
+            border-color: var(--accent);
+        }
+
+        .input-slot input {
+            width: 100%;
             background: transparent;
             border: none;
-            color: var(--color-text-muted);
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-align: center;
+            outline: none;
         }
 
-        .unit-btn.active {
-            background: var(--color-accent);
-            color: white;
+        .input-slot input::placeholder {
+            color: var(--text-muted);
         }
 
-        .gender-toggle {
+        .input-slot .input-unit {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .toggle-group {
             display: flex;
-            background: var(--color-bg-tertiary);
+            background: var(--bg-tertiary);
             border-radius: 8px;
             overflow: hidden;
         }
 
-        .gender-btn {
+        .toggle-btn {
             flex: 1;
             padding: 12px;
             background: transparent;
             border: none;
-            color: var(--color-text-muted);
-            font-weight: 500;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
             cursor: pointer;
             transition: all 0.2s;
         }
 
-        .gender-btn.active {
-            background: var(--color-accent);
-            color: white;
+        .toggle-btn.active {
+            background: var(--accent);
+            color: var(--bg-primary);
+            font-weight: 600;
+        }
+
+        /* Gauge Display */
+        .display-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .gauge-container {
             position: relative;
             width: 280px;
-            height: 160px;
-            margin: 20px 0;
+            height: 180px;
+            margin-bottom: 32px;
         }
 
-        .gauge-reading {
+        .gauge-arc {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .gauge-value {
             position: absolute;
             bottom: 0;
             left: 50%;
@@ -309,185 +201,256 @@
             text-align: center;
         }
 
-        .reading-value {
-            display: block;
-            font-size: 3.5rem;
+        .value-display {
+            font-size: 4rem;
             font-weight: 700;
-            color: var(--color-text);
             line-height: 1;
+            color: var(--text-primary);
+            transition: color 0.3s;
         }
 
-        .reading-unit {
-            font-size: 0.875rem;
-            color: var(--color-text-muted);
+        .value-unit {
+            font-size: 1rem;
+            color: var(--text-muted);
         }
 
-        .scale-indicators {
+        .gauge-legend {
             display: flex;
             justify-content: space-between;
             width: 100%;
-            margin: 24px 0;
             padding: 16px;
-            background: var(--color-bg-tertiary);
+            background: var(--bg-tertiary);
             border-radius: 8px;
         }
 
-        .scale-item {
+        .legend-item {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            gap: 4px;
+            gap: 8px;
+            font-size: 0.75rem;
         }
 
-        .scale-color {
-            width: 24px;
-            height: 8px;
-            border-radius: 4px;
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
         }
 
-        .scale-color.underweight { background: #06b6d4; }
-        .scale-color.normal { background: #10b981; }
-        .scale-color.overweight { background: #f59e0b; }
-        .scale-color.obese { background: #ef4444; }
+        .legend-dot.underweight { background: var(--info); }
+        .legend-dot.normal { background: var(--accent); }
+        .legend-dot.overweight { background: var(--warning); }
+        .legend-dot.obese { background: var(--danger); }
 
-        .scale-label {
-            font-size: 0.7rem;
-            color: var(--color-text-muted);
-        }
-
-        .result-display {
-            width: 100%;
-            padding: 20px;
-            background: var(--color-bg-tertiary);
+        /* Result Panel */
+        .result-panel {
+            margin-top: 32px;
+            padding: 24px;
+            background: var(--bg-tertiary);
             border-radius: 12px;
-            border-left: 4px solid var(--color-border);
+            border-left: 4px solid var(--border);
+            transition: border-color 0.3s;
         }
 
-        .result-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .result-label {
-            font-size: 0.875rem;
-            color: var(--color-text-muted);
-        }
-
-        .result-value {
+        .result-classification {
             font-size: 1.25rem;
             font-weight: 600;
+            margin-bottom: 8px;
+            transition: color 0.3s;
         }
 
-        .result-value.underweight { color: #06b6d4; }
-        .result-value.normal { color: #10b981; }
-        .result-value.overweight { color: #f59e0b; }
-        .result-value.obese { color: #ef4444; }
-
-        .result-detail p {
-            font-size: 0.9rem;
-            color: var(--color-text-secondary);
+        .result-description {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
             line-height: 1.6;
         }
 
+        /* Slider */
+        .slider-container {
+            margin-top: 8px;
+        }
+
+        .slider {
+            width: 100%;
+            height: 6px;
+            -webkit-appearance: none;
+            background: linear-gradient(to right, 
+                var(--info) 0%, var(--info) 18.5%, 
+                var(--accent) 18.5%, var(--accent) 25%, 
+                var(--warning) 25%, var(--warning) 30%, 
+                var(--danger) 30%, var(--danger) 100%);
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--bg-primary);
+            border: 2px solid var(--text-primary);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+
         @media (max-width: 768px) {
-            .instrument-container {
+            .instrument-body {
                 grid-template-columns: 1fr;
             }
         }
     </style>
+</head>
+<body>
+    <div class="instrument-wrapper">
+        <a href="../index.html" class="back-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to Instruments
+        </a>
+
+        <div class="instrument-panel">
+            <div class="instrument-header">
+                <h1 class="instrument-title">BMI Measurement</h1>
+                <p class="instrument-subtitle">Body Mass Index Calculation</p>
+            </div>
+
+            <div class="instrument-body">
+                <!-- Controls -->
+                <div class="controls-section">
+                    <!-- Height -->
+                    <div class="control-group">
+                        <label class="control-label">Height</label>
+                        <div class="control-inputs">
+                            <div class="input-slot">
+                                <input type="number" id="feet" placeholder="ft" min="1" max="9">
+                                <div class="input-unit">ft</div>
+                            </div>
+                            <span style="color: var(--text-muted);">'</span>
+                            <div class="input-slot">
+                                <input type="number" id="inches" placeholder="in" min="0" max="11">
+                                <div class="input-unit">in</div>
+                            </div>
+                        </div>
+                        <div class="slider-container">
+                            <input type="range" id="height-slider" class="slider" min="100" max="220" value="170">
+                        </div>
+                    </div>
+
+                    <!-- Weight -->
+                    <div class="control-group">
+                        <label class="control-label">Weight</label>
+                        <div class="control-inputs">
+                            <div class="input-slot" style="flex: 2;">
+                                <input type="number" id="weight" placeholder="0" min="20" max="300">
+                                <div class="input-unit">kg</div>
+                            </div>
+                            <div class="toggle-group">
+                                <button class="toggle-btn active" data-unit="kg">kg</button>
+                                <button class="toggle-btn" data-unit="lbs">lbs</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Age -->
+                    <div class="control-group">
+                        <label class="control-label">Age</label>
+                        <div class="input-slot">
+                            <input type="number" id="age" placeholder="years" min="2" max="120">
+                        </div>
+                    </div>
+
+                    <!-- Gender -->
+                    <div class="control-group">
+                        <label class="control-label">Gender</label>
+                        <div class="toggle-group">
+                            <button class="toggle-btn" data-gender="male">Male</button>
+                            <button class="toggle-btn active" data-gender="female">Female</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Display -->
+                <div class="display-section">
+                    <div class="gauge-container">
+                        <svg class="gauge-arc" viewBox="0 0 280 140">
+                            <defs>
+                                <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#00aaff"/>
+                                    <stop offset="35%" style="stop-color:#00ff88"/>
+                                    <stop offset="55%" style="stop-color:#ffaa00"/>
+                                    <stop offset="70%" style="stop-color:#ff4444"/>
+                                </linearGradient>
+                            </defs>
+                            <path d="M 20 140 A 120 120 0 0 1 260 140" 
+                                  fill="none" 
+                                  stroke="url(#gaugeGradient)" 
+                                  stroke-width="20" 
+                                  stroke-linecap="round"/>
+                            <!-- Tick marks -->
+                            <g stroke="#444" stroke-width="1">
+                                <line x1="20" y1="140" x2="30" y2="140"/>
+                                <line x1="70" y1="100" x2="78" y2="108"/>
+                                <line x1="140" y1="60" x2="140" y2="70"/>
+                                <line x1="210" y1="100" x2="202" y2="108"/>
+                                <line x1="260" y1="140" x2="250" y2="140"/>
+                            </g>
+                            <!-- Labels -->
+                            <text x="20" y="125" fill="#555" font-size="10" text-anchor="middle">15</text>
+                            <text x="140" y="45" fill="#555" font-size="10" text-anchor="middle">22.5</text>
+                            <text x="260" y="125" fill="#555" font-size="10" text-anchor="middle">35</text>
+                        </svg>
+                        <div class="gauge-value">
+                            <div class="value-display" id="bmi-display">--</div>
+                            <div class="value-unit">kg/m²</div>
+                        </div>
+                    </div>
+
+                    <div class="gauge-legend">
+                        <div class="legend-item">
+                            <span class="legend-dot underweight"></span>
+                            <span>&lt;18.5</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-dot normal"></span>
+                            <span>18.5-24.9</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-dot overweight"></span>
+                            <span>25-29.9</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-dot obese"></span>
+                            <span>&ge;30</span>
+                        </div>
+                    </div>
+
+                    <div class="result-panel" id="result-panel">
+                        <div class="result-classification" id="classification">Enter your measurements</div>
+                        <div class="result-description" id="description">
+                            Adjust the sliders and inputs above to see your BMI classification.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         let weightUnit = 'kg';
         let gender = 'female';
-        let bmiChart = null;
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            createGauge();
-            setupEventListeners();
-        });
-
-        function createGauge() {
-            const ctx = document.getElementById('bmi-gauge').getContext('2d');
-            
-            bmiChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['0', '15', '18.5', '25', '30', '35', '40'],
-                    datasets: [{
-                        data: [0, 0, 0, 0, 0, 0, 0],
-                        borderColor: '#3b82f6',
-                        borderWidth: 3,
-                        fill: true,
-                        backgroundColor: function(context) {
-                            const chart = context.chart;
-                            const {ctx, chartArea} = chart;
-                            if (!chartArea) return null;
-                            
-                            const gradient = ctx.createLinearGradient(chartArea.left, 0, chartArea.right, 0);
-                            gradient.addColorStop(0, '#06b6d4');
-                            gradient.addColorStop(0.35, '#10b981');
-                            gradient.addColorStop(0.55, '#f59e0b');
-                            gradient.addColorStop(0.7, '#ef4444');
-                            return gradient;
-                        },
-                        tension: 0.4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: { enabled: false }
-                    },
-                    scales: {
-                        x: { display: false },
-                        y: { display: false }
-                    },
-                    animation: {
-                        duration: 500
-                    }
-                }
-            });
-        }
-
-        function setupEventListeners() {
-            // Unit toggles
-            document.querySelectorAll('.unit-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    document.querySelectorAll('.unit-btn').forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    weightUnit = this.dataset.unit;
-                    calculateBMI();
-                });
-            });
-
-            // Gender toggle
-            document.querySelectorAll('.gender-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    document.querySelectorAll('.gender-btn').forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    gender = this.dataset.gender;
-                    calculateBMI();
-                });
-            });
-
-            // Input listeners
-            ['feet', 'inches', 'height-cm', 'weight', 'age'].forEach(id => {
-                document.getElementById(id).addEventListener('input', calculateBMI);
-            });
-        }
 
         function calculateBMI() {
-            let heightCm = parseFloat(document.getElementById('height-cm').value) || 0;
+            let heightCm = parseFloat(document.getElementById('height-slider').value) || 170;
             
             const feet = parseFloat(document.getElementById('feet').value) || 0;
             const inches = parseFloat(document.getElementById('inches').value) || 0;
             
-            if (!heightCm && (feet || inches)) {
+            if (feet || inches) {
                 heightCm = (feet * 30.48) + (inches * 2.54);
             }
             
@@ -498,67 +461,83 @@
             }
             
             if (!heightCm || !weight) {
+                updateDisplay(null);
                 return;
             }
             
             const heightM = heightCm / 100;
             const bmi = weight / (heightM * heightM);
             
-            if (bmi && bmi > 0 && bmi < 60) {
-                updateDisplay(bmi);
-            }
+            updateDisplay(bmi);
         }
 
         function updateDisplay(bmi) {
-            // Update gauge needle position (simulated with bar)
-            const normalizedPos = Math.min(Math.max((bmi - 10) / 35, 0), 1);
-            bmiChart.data.datasets[0].data = [
-                0, 
-                normalizedPos < 0.2 ? normalizedPos * 5 : 1,
-                normalizedPos < 0.35 ? normalizedPos * 2.86 : 1,
-                normalizedPos < 0.55 ? normalizedPos * 1.82 : 1,
-                normalizedPos < 0.7 ? normalizedPos * 1.43 : 1,
-                normalizedPos < 0.85 ? normalizedPos * 1.25 : 1,
-                normalizedPos <= 1 ? normalizedPos * 1.14 : 1
-            ];
-            bmiChart.update('none');
-
-            // Update value
-            document.getElementById('bmi-value').textContent = bmi.toFixed(1);
-            
-            // Classification
+            const display = document.getElementById('bmi-display');
             const classification = document.getElementById('classification');
-            const resultText = document.getElementById('result-text');
-            const resultCard = document.getElementById('result-card');
+            const description = document.getElementById('description');
+            const panel = document.getElementById('result-panel');
+            const displayEl = document.querySelector('.value-display');
             
-            let classificationText = '';
-            let colorClass = '';
-            let description = '';
-            
-            if (bmi < 18.5) {
-                classificationText = 'Underweight';
-                colorClass = 'underweight';
-                description = 'Your BMI suggests you may be underweight. Consider consulting a healthcare provider about healthy nutrition strategies.';
-            } else if (bmi < 25) {
-                classificationText = 'Normal Weight';
-                colorClass = 'normal';
-                description = 'Your BMI is within the healthy range. Maintain your current lifestyle for continued health.';
-            } else if (bmi < 30) {
-                classificationText = 'Overweight';
-                colorClass = 'overweight';
-                description = 'Your BMI suggests overweight. Consider lifestyle modifications like balanced nutrition and regular activity.';
-            } else {
-                classificationText = 'Obesity';
-                colorClass = 'obese';
-                description = 'Your BMI indicates obesity. Consult a healthcare provider for personalized guidance.';
+            if (!bmi || bmi < 10 || bmi > 50) {
+                display.textContent = '--';
+                displayEl.style.color = 'var(--text-primary)';
+                panel.style.borderColor = 'var(--border)';
+                return;
             }
             
-            classification.textContent = classificationText;
-            classification.className = 'result-value ' + colorClass;
-            resultText.textContent = description;
-            resultCard.style.borderLeftColor = `var(--color-${colorClass})`;
-            document.getElementById('bmi-value').style.color = `var(--color-${colorClass})`;
+            display.textContent = bmi.toFixed(1);
+            
+            let color = '';
+            let classText = '';
+            let descText = '';
+            
+            if (bmi < 18.5) {
+                color = 'var(--info)';
+                classText = 'Underweight';
+                descText = 'Your BMI suggests you may be underweight. Consider consulting a healthcare provider about healthy nutrition strategies.';
+            } else if (bmi < 25) {
+                color = 'var(--accent)';
+                classText = 'Normal Weight';
+                descText = 'Your BMI is within the healthy range. Maintain your current lifestyle for continued health.';
+            } else if (bmi < 30) {
+                color = 'var(--warning)';
+                classText = 'Overweight';
+                descText = 'Your BMI suggests overweight. Consider lifestyle modifications like balanced nutrition and regular activity.';
+            } else {
+                color = 'var(--danger)';
+                classText = 'Obesity';
+                descText = 'Your BMI indicates obesity. Consult a healthcare provider for personalized guidance.';
+            }
+            
+            displayEl.style.color = color;
+            classification.textContent = classText;
+            classification.style.color = color;
+            description.textContent = descText;
+            panel.style.borderColor = color;
         }
+
+        // Event listeners
+        ['feet', 'inches', 'weight', 'age', 'height-slider'].forEach(id => {
+            document.getElementById(id).addEventListener('input', calculateBMI);
+        });
+
+        document.querySelectorAll('.toggle-btn[data-unit]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.toggle-btn[data-unit]').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                weightUnit = this.dataset.unit;
+                calculateBMI();
+            });
+        });
+
+        document.querySelectorAll('.toggle-btn[data-gender]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.toggle-btn[data-gender]').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                gender = this.dataset.gender;
+                calculateBMI();
+            });
+        });
     </script>
 </body>
 </html>

@@ -3,270 +3,639 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FitGauge - Precision Fitness Calculators</title>
+    <title>FitGauge - Precision Fitness Instruments</title>
     <link rel="stylesheet" href="assets/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <meta name="description" content="Precision-focused fitness and health calculators. Accurate measurements, clean visuals, trusted results.">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <meta name="description" content="Precision fitness and health instruments">
+    <style>
+        /* Precision Instrument Theme */
+        :root {
+            --bg-primary: #0d0d0d;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #252525;
+            --border: #333;
+            --border-light: #444;
+            --text-primary: #e0e0e0;
+            --text-secondary: #888;
+            --text-muted: #555;
+            --accent: #00ff88;
+            --accent-dim: #00aa55;
+            --warning: #ffaa00;
+            --danger: #ff4444;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-mono);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 24px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            color: var(--accent);
+        }
+
+        .logo-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .nav {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.2s;
+        }
+
+        .nav a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Main */
+        main {
+            padding: 100px 24px 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -0.03em;
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* Instruments Grid */
+        .instruments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .instrument-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .instrument-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .instrument-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .instrument-card:hover::before {
+            opacity: 1;
+        }
+
+        .instrument-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .instrument-icon {
+            width: 48px;
+            height: 48px;
+            color: var(--accent);
+            opacity: 0.8;
+        }
+
+        .instrument-number {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+        }
+
+        .instrument-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .instrument-desc {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .category-section {
+            margin-bottom: 60px;
+        }
+
+        .category-title {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 24px;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 8px 24px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        @media (max-width: 768px) {
+            .instruments-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
     <header class="header">
         <div class="header-content">
             <div class="logo">
-                <div class="logo-icon">
-                    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/>
-                        <circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/>
-                        <circle cx="20" cy="20" r="6" fill="currentColor"/>
-                        <line x1="20" y1="2" x2="20" y2="6" stroke="currentColor" stroke-width="1.5"/>
-                        <line x1="20" y1="34" x2="20" y2="38" stroke="currentColor" stroke-width="1.5"/>
-                        <line x1="2" y1="20" x2="6" y2="20" stroke="currentColor" stroke-width="1.5"/>
-                        <line x1="34" y1="20" x2="38" y2="20" stroke="currentColor" stroke-width="1.5"/>
-                    </svg>
-                </div>
+                <svg class="logo-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/>
+                    <circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/>
+                    <circle cx="20" cy="20" r="6" fill="currentColor"/>
+                    <line x1="20" y1="2" x2="20" y2="6" stroke="currentColor" stroke-width="1.5"/>
+                    <line x1="20" y1="34" x2="20" y2="38" stroke="currentColor" stroke-width="1.5"/>
+                    <line x1="2" y1="20" x2="6" y2="20" stroke="currentColor" stroke-width="1.5"/>
+                    <line x1="34" y1="20" x2="38" y2="20" stroke="currentColor" stroke-width="1.5"/>
+                </svg>
                 <span class="logo-text">FitGauge</span>
             </div>
             <nav class="nav">
-                <a href="#calculators" class="nav-link">Calculators</a>
-                <a href="#about" class="nav-link">About</a>
-                <a href="https://github.com/anand200530/fitgauge" class="nav-link">GitHub</a>
+                <a href="#body">Body</a>
+                <a href="#energy">Energy</a>
+                <a href="#nutrition">Nutrition</a>
+                <a href="#fitness">Fitness</a>
+                <a href="#goals">Goals</a>
             </nav>
         </div>
     </header>
 
     <main>
-        <!-- Hero Section -->
         <section class="hero">
-            <div class="hero-content">
-                <h1 class="hero-title">Precision Fitness Metrics</h1>
-                <p class="hero-subtitle">Accurate measurements. Clean visuals. Trusted results.</p>
-                <div class="hero-stats">
-                    <div class="stat">
-                        <span class="stat-value">25+</span>
-                        <span class="stat-label">Calculators</span>
+            <h1>Precision Fitness Instruments</h1>
+            <p>Accurate measurements. Clean design. Your health, quantified.</p>
+        </section>
+
+        <!-- Body Measurement -->
+        <section id="body" class="category-section">
+            <h2 class="category-title">█ Body Measurement</h2>
+            <div class="instruments-grid">
+                <a href="calculators/bmi.html" class="instrument-card">
+                    <div class="instrument-header">
+                        <svg class="instrument-icon" viewBox="0 0 48 48" fill="none">
+                            <rect x="4" y="8" width="40" height="32" rx="4" stroke="currentColor" stroke-width="2"/>
+                            <line x1="12" y1="20" x2="36" y2="20" stroke="currentColor" stroke-width="2"/>
+                            <line x1="12" y1="28" x2="32" y2="28" stroke="currentColor" stroke-width="2"/>
+                            <line x1="12" y1="36" x2="28" y2="36" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        <span class="instrument-number">01</span>
                     </div>
-                    <div class="stat">
-                        <span class="stat-value">100%</span>
-                        <span class="stat-label">Private</span>
+                    <h3 class="instrument-title">BMI Calculator</h3>
+                    <p class="instrument-desc">Body Mass Index classification using standard WHO criteria</p>
+                </a>
+
+                <a href="calculators/ideal-weight.html" class="instrument-card">
+                    <div class="instrument-header">
+                        <svg class="instrument-icon" viewBox="0 0 48 48" fill="none">
+                            <circle cx="24" cy="24" r="20" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="24" cy="24" r="12" stroke="currentColor" stroke-width="1.5"/>
+                            <circle cx="24" cy="24" r="4" fill="currentColor"/>
+                        </svg>
+                        <span class="instrument-number">02</span>
                     </div>
-                    <div class="stat">
-                        <span class="stat-value">Free</span>
-                        <span class="stat-label">Forever</span>
+                    <h3 class="instrument-title">Ideal Weight</h3>
+                    <p class="instrument-desc">Personalized target range based on height and frame</p>
+                </a>
+
+                <a href="calculators/body-fat.html" class="instrument-card">
+                    <div class="instrument-header">
+                        <svg class="instrument-icon" viewBox="0 0 48 48" fill="none">
+                            <path d="M24 8 L40 16 L40 32 L24 40 L8 32 L8 16 Z" stroke="currentColor" stroke-width="2"/>
+                            <path d="M24 16 L32 20 L32 28 L24 32 L16 28 L16 20 Z" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        <span class="instrument-number">03</span>
                     </div>
-                </div>
+                    <h3 class="instrument-title">Body Fat Percentage</h3>
+                    <p class="instrument-desc">US Navy method measurement</p>
+                </a>
+
+                <a href="calculators/lean-mass.html" class="instrument-card">
+                    <div class="instrument-header">
+                        <svg class="instrument-icon" viewBox="0 0 48 48" fill="none">
+                            <rect x="8" y="12" width="32" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+                            <line x1="8" y1="20" x2="40" y2="20" stroke="currentColor" stroke-width="1.5"/>
+                            <line x1="8" y1="28" x2="40" y2="28" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        <span class="instrument-number">04</span>
+                    </div>
+                    <h3 class="instrument-title">Lean Body Mass</h3>
+                    <p class="instrument-desc">Muscle and bone weight calculation</p>
+                </a>
+
+                <a href="calculators/waist-height.html" class="instrument-card">
+                    <div class="instrument-header">
+                        <svg class="instrument-icon" viewBox="0 0 48 48" fill="none">
+                            <line x1="24" y1="4" x2="24" y2="44" stroke="currentColor" stroke-width="2"/>
+                            <line x1="8" y1="20" x2="40" y2="20" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        <span class="instrument-number">05</span>
+                    </div>
+                    <h3 class="instrument-title">Waist-to-Height Ratio</h3>
+                    <p class="instrument-desc">Simple cardiovascular health indicator</p>
+                </a>
+
+                <a href="calculators/waist-hip.html" class="instrument-card">
+                    <div class="instrument-header">
+                        <svg class="instrument-icon" viewBox="0 0 48 48" fill="none">
+                            <ellipse cx="24" cy="16" rx="16" ry="10" stroke="currentColor" stroke-width="2"/>
+                            <ellipse cx="24" cy="32" rx="12" ry="8" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        <span class="instrument-number">06</span>
+                    </div>
+                    <h3 class="instrument-title">Waist-to-Hip Ratio</h3>
+                    <p class="instrument-desc">Distribution-based risk assessment</p>
+                </a>
             </div>
         </section>
 
-        <!-- Calculator Categories -->
-        <section id="calculators" class="calculators-section">
-            <div class="container">
-                <h2 class="section-title">Complete Calculator List</h2>
-                
-                <!-- Body Measurement -->
-                <div class="category">
-                    <h3 class="category-title">
-                        <span class="category-icon">📐</span>
-                        Body Measurement
-                    </h3>
-                    <div class="calculator-grid">
-                        <a href="calculators/bmi.html" class="calculator-card">
-                            <span class="calculator-name">Body Mass Index (BMI)</span>
-                            <span class="calculator-desc">Standard weight classification</span>
-                        </a>
-                        <a href="calculators/ideal-weight.html" class="calculator-card">
-                            <span class="calculator-name">Ideal Weight</span>
-                            <span class="calculator-desc">Personalized target range</span>
-                        </a>
-                        <a href="calculators/body-fat.html" class="calculator-card">
-                            <span class="calculator-name">Body Fat Percentage</span>
-                            <span class="calculator-desc">US Navy method</span>
-                        </a>
-                        <a href="calculators/lean-mass.html" class="calculator-card">
-                            <span class="calculator-name">Lean Body Mass</span>
-                            <span class="calculator-desc">Muscle and bone weight</span>
-                        </a>
-                        <a href="calculators/waist-height.html" class="calculator-card">
-                            <span class="calculator-name">Waist-to-Height Ratio</span>
-                            <span class="calculator-desc">Simple health indicator</span>
-                        </a>
-                        <a href="calculators/waist-hip.html" class="calculator-card">
-                            <span class="calculator-name">Waist-to-Hip Ratio</span>
-                            <span class="calculator-desc">Cardiovascular risk</span>
-                        </a>
+        <!-- Energy & Metabolism -->
+        <section id="energy" class="category-section">
+            <h2 class="category-title">█ Energy & Metabolism</h2>
+            <div class="instruments-grid">
+                <a href="calculators/bmr.html" class="instrument-card">
+                    <div class="instrument-header">
+                        <svg class="instrument-icon" viewBox="0 0 48 48" fill="none">
+                            <circle cx="24" cy="24" r="18" stroke="currentColor" stroke-width="2"/>
+                            <path d="M24 12 L24 24 L32 28" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <span class="instrument-number">07</span>
                     </div>
-                </div>
+                    <h3 class="instrument-title">Basal Metabolic Rate</h3>
+                    <p class="instrument-desc">Calories burned at complete rest</p>
+                </a>
 
-                <!-- Energy & Metabolism -->
-                <div class="category">
-                    <h3 class="category-title">
-                        <span class="category-icon">⚡</span>
-                        Energy & Metabolism
-                    </h3>
-                    <div class="calculator-grid">
-                        <a href="calculators/bmr.html" class="calculator-card">
-                            <span class="calculator-name">Basal Metabolic Rate</span>
-                            <span class="calculator-desc">Daily calories at rest</span>
-                        </a>
-                        <a href="calculators/tdee.html" class="calculator-card">
-                            <span class="calculator-name">TDEE Calculator</span>
-                            <span class="calculator-desc">Total daily energy</span>
-                        </a>
-                        <a href="calculators/calorie-needs.html" class="calculator-card">
-                            <span class="calculator-name">Calorie Needs</span>
-                            <span class="calculator-desc">Personalized targets</span>
-                        </a>
-                        <a href="calculators/maintenance-calories.html" class="calculator-card">
-                            <span class="calculator-name">Maintenance Calories</span>
-                            <span class="calculator-desc">Stay at current weight</span>
-                        </a>
-                        <a href="calculators/weight-loss-timeline.html" class="calculator-card">
-                            <span class="calculator-name">Weight Loss Timeline</span>
-                            <span class="calculator-desc">Realistic projections</span>
-                        </a>
+                <a href="calculators/tdee.html" class="instrument-card">
+                    <div class="instrument-header">
+                        <svg class="instrument-icon" viewBox="0 0 48 48" fill="none">
+                            <circle cx="24" cy="24" r="16" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="24" cy="24" r="8" stroke="currentColor" stroke-width="1.5"/>
+                            <circle cx="24" cy="24" r="2" fill="currentColor"/>
+                        </svg>
+                        <span class="instrument-number">08</span>
                     </div>
-                </div>
+                    <h3 class="instrument-title">TDEE Calculator</h3>
+                    <p class="instrument-desc">Total daily energy expenditure</p>
+                </a>
 
-                <!-- Nutrition -->
-                <div class="category">
-                    <h3 class="category-title">
-                        <span class="category-icon">🥗</span>
-                        Nutrition
-                    </h3>
-                    <div class="calculator-grid">
-                        <a href="calculators/protein.html" class="calculator-card">
-                            <span class="calculator-name">Protein Requirement</span>
-                            <span class="calculator-desc">Based on activity level</span>
-                        </a>
-                        <a href="calculators/macro-split.html" class="calculator-card">
-                            <span class="calculator-name">Macronutrient Split</span>
-                            <span class="calculator-desc">Balanced nutrition</span>
-                        </a>
-                        <a href="calculators/water-intake.html" class="calculator-card">
-                            <span class="calculator-name">Daily Water Intake</span>
-                            <span class="calculator-desc">Hydration targets</span>
-                        </a>
-                        <a href="calculators/meal-frequency.html" class="calculator-card">
-                            <span class="calculator-name">Meal Frequency</span>
-                            <span class="calculator-desc">Optimal eating pattern</span>
-                        </a>
+                <a href="calculators/calorie-needs.html" class="instrument-card">
+                    <div class="instrument-header">
+                        <svg class="instrument-icon" viewBox="0 0 48 48" fill="none">
+                            <rect x="8" y="8" width="32" height="32" rx="4" stroke="currentColor" stroke-width="2"/>
+                            <text x="24" y="30" text-anchor="middle" fill="currentColor" font-size="16" font-weight="bold">CAL</text>
+                        </svg>
+                        <span class="instrument-number">09</span>
                     </div>
-                </div>
+                    <h3 class="instrument-title">Calorie Needs</h3>
+                    <p class="instrument-desc">Personalized daily targets</p>
+                </a>
 
-                <!-- Fitness & Performance -->
-                <div class="category">
-                    <h3 class="category-title">
-                        <span class="category-icon">🏋️</span>
-                        Fitness & Performance
-                    </h3>
-                    <div class="calculator-grid">
-                        <a href="calculators/1rm.html" class="calculator-card">
-                            <span class="calculator-name">One-Rep Max (1RM)</span>
-                            <span class="calculator-desc">Strength measurement</span>
-                        </a>
-                        <a href="calculators/heart-rate-zones.html" class="calculator-card">
-                            <span class="calculator-name">Heart Rate Zones</span>
-                            <span class="calculator-desc">Training intensity</span>
-                        </a>
-                        <a href="calculators/calories-burned.html" class="calculator-card">
-                            <span class="calculator-name">Calories Burned</span>
-                            <span class="calculator-desc">Activity-based</span>
-                        </a>
-                        <a href="calculators/running-pace.html" class="calculator-card">
-                            <span class="calculator-name">Running Pace</span>
-                            <span class="calculator-desc">Speed & time estimates</span>
-                        </a>
+                <a href="calculators/maintenance-calories.html" class="instrument-card">
+                    <div class="instrument-header">
+                        <svg class="instrument-icon" viewBox="0 0 48 48" fill="none">
+                            <circle cx="24" cy="24" r="18" stroke="currentColor" stroke-width="2"/>
+                            <path d="M24 14 L24 24 L34 24" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <span class="instrument-number">10</span>
                     </div>
-                </div>
+                    <h3 class="instrument-title">Maintenance Calories</h3>
+                    <p class="instrument-desc">Stay at current weight</p>
+                </a>
 
-                <!-- Goal & Planning -->
-                <div class="category">
-                    <h3 class="category-title">
-                        <span class="category-icon">🎯</span>
-                        Goal & Planning
-                    </h3>
-                    <div class="calculator-grid">
-                        <a href="calculators/weight-gain.html" class="calculator-card">
-                            <span class="calculator-name">Healthy Weight Gain</span>
-                            <span class="calculator-desc">Muscle building plan</span>
-                        </a>
-                        <a href="calculators/fat-loss.html" class="calculator-card">
-                            <span class="calculator-name">Fat Loss Projection</span>
-                            <span class="calculator-desc">Timeline estimates</span>
-                        </a>
-                        <a href="calculators/rebound-prevention.html" class="calculator-card">
-                            <span class="calculator-name">Rebound Prevention</span>
-                            <span class="calculator-desc">Post-diet maintenance</span>
-                        </a>
+                <a href="calculators/weight-loss-timeline.html" class="instrument-card">
+                    <div class="instrument-header">
+                        <svg class="instrument-icon" viewBox="0 0 48 48" fill="none">
+                            <line x1="8" y1="40" x2="40" y2="8" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="24" cy="24" r="4" fill="currentColor"/>
+                        </svg>
+                        <span class="instrument-number">11</span>
                     </div>
-                </div>
-
-                <!-- Insights -->
-                <div class="category">
-                    <h3 class="category-title">
-                        <span class="category-icon">📊</span>
-                        Insights & Classification
-                    </h3>
-                    <div class="calculator-grid">
-                        <a href="calculators/body-shape.html" class="calculator-card">
-                            <span class="calculator-name">Body Shape</span>
-                            <span class="calculator-desc">Classification tool</span>
-                        </a>
-                        <a href="calculators/somatotype.html" class="calculator-card">
-                            <span class="calculator-name">Somatotype</span>
-                            <span class="calculator-desc">Ecto/Meso/Endomorph</span>
-                        </a>
-                        <a href="calculators/fitness-age.html" class="calculator-card">
-                            <span class="calculator-name">Fitness Age</span>
-                            <span class="calculator-desc">Compare to biological age</span>
-                        </a>
-                    </div>
-                </div>
+                    <h3 class="instrument-title">Weight Loss Timeline</h3>
+                    <p class="instrument-desc">Realistic projection models</p>
+                </a>
             </div>
         </section>
 
-        <!-- About Section -->
-        <section id="about" class="about-section">
-            <div class="container">
-                <h2 class="section-title">About FitGauge</h2>
-                <div class="about-content">
-                    <div class="about-text">
-                        <p>FitGauge is a precision-focused fitness and health calculator web application designed to help users clearly understand where they stand across key health metrics.</p>
-                        <p>Instead of offering generic advice or content-heavy experiences, FitGauge treats each metric as a measurement instrument, using clean visuals, accurate formulas, and calm interpretation to provide meaningful context.</p>
-                        <p>Built as a fully client-side, privacy-friendly application with a professional, instrument-style interface, FitGauge emphasizes clarity, accuracy, and trust.</p>
+        <!-- Nutrition -->
+        <section id="nutrition" class="category-section">
+            <h2 class="category-title">█ Nutrition</h2>
+            <div class="instruments-grid">
+                <a href="calculators/protein.html" class="instrument-card">
+                    <div class="instrument-header">
+                        <svg class="instrument-icon" viewBox="0 0 48 48" fill="none">
+                            <rect x="12" y="8" width="24" height="32" rx="2" stroke="currentColor" stroke-width="2"/>
+                            <line x1="12" y1="16" x2="36" y2="16" stroke="currentColor" stroke-width="1.5"/>
+                            <line x1="12" y1="24" x2="36" y2="24" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        <span class="instrument-number">12</span>
                     </div>
-                    <div class="about-features">
-                        <div class="feature">
-                            <span class="feature-icon">🎯</span>
-                            <span class="feature-title">Precision</span>
-                            <span class="feature-desc">Accurate formulas, verified results</span>
-                        </div>
-                        <div class="feature">
-                            <span class="feature-icon">🔒</span>
-                            <span class="feature-title">Private</span>
-                            <span class="feature-desc">100% client-side, no data collection</span>
-                        </div>
-                        <div class="feature">
-                            <span class="feature-icon">⚡</span>
-                            <span class="feature-title">Fast</span>
-                            <span class="feature-desc">Instant results, no waiting</span>
-                        </div>
-                        <div class="feature">
-                            <span class="feature-icon">📱</span>
-                            <span class="feature-title">Responsive</span>
-                            <span class="feature-desc">Works on any device</span>
-                        </div>
+                    <h3 class="instrument-title">Protein Calculator</h3>
+                    <p class="instrument-desc">Activity-based requirements</p>
+                </a>
+
+                <a href="calculators/macro-split.html" class="instrument-card">
+                    <div class="instrument-header">
+                        <svg class="instrument-icon" viewBox="0 0 48 48" fill="none">
+                            <circle cx="16" cy="24" r="8" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="32" cy="24" r="8" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="24" cy="24" r="8" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        <span class="instrument-number">13</span>
                     </div>
-                </div>
+                    <h3 class="instrument-title">Macronutrient Split</h3>
+                    <p class="instrument-desc">Balanced nutrition ratios</p>
+                </a>
+
+                <a href="calculators/water-intake.html" class="instrument-card">
+                    <div class="instrument-header">
+                        <svg class="instrument-icon" viewBox="0 0 48 48" fill="none">
+                            <path d="M24 8 C24 8 8 20 8 32 C8 40 16 44 24 44 C32 44 40 40 40 32 C40 20 24 8 24 8 Z" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        <span class="instrument-number">14</span>
+                    </div>
+                    <h3 class="instrument-title">Water Intake</h3>
+                    <p class="instrument-desc">Hydration targets</p>
+                </a>
+
+                <a href="calculators/meal-frequency.html" class="instrument-card">
+                    <div class="instrument-header">
+                        <svg class="instrument-icon" viewBox="0 0 48 48" fill="none">
+                            <circle cx="24" cy="24" r="18" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="24" cy="24" r="12" stroke="currentColor" stroke-width="1.5"/>
+                            <circle cx="24" cy="24" r="6" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        <span class="instrument-number">15</span>
+                    </div>
+                    <h3 class="instrument-title">Meal Frequency</h3>
+                    <p class="instrument-desc">Optimal eating patterns</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- Fitness -->
+        <section id="fitness" class="category-section">
+            <h2 class="category-title">█ Fitness & Performance</h2>
+            <div class="instruments-grid">
+                <a href="calculators/1rm.html" class="instrument-card">
+                    <div class="instrument-header">
+                        <svg class="instrument-icon" viewBox="0 0 48 48" fill="none">
+                            <rect x="8" y="20" width="32" height="8" rx="2" stroke="currentColor" stroke-width="2"/>
+                            <rect x="20" y="8" width="8" height="32" rx="2" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        <span class="instrument-number">16</span>
+                    </div>
+                    <h3 class="instrument-title">One-Rep Max</h3>
+                    <p class="instrument-desc">Strength measurement</p>
+                </a>
+
+                <a href="calculators/heart-rate-zones.html" class="instrument-card">
+                    <div class="instrument-header">
+                        <svg class="instrument-icon" viewBox="0 0 48 48" fill="none">
+                            <path d="M8 24 L16 24 L20 16 L28 32 L32 20 L40 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span class="instrument-number">17</span>
+                    </div>
+                    <h3 class="instrument-title">Heart Rate Zones</h3>
+                    <p class="instrument-desc">Training intensity ranges</p>
+                </a>
+
+                <a href="calculators/calories-burned.html" class="instrument-card">
+                    <div class="instrument-header">
+                        <svg class="instrument-icon" viewBox="0 0 48 48" fill="none">
+                            <circle cx="24" cy="24" r="18" stroke="currentColor" stroke-width="2"/>
+                            <path d="M24 12 L24 24 L32 28" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <span class="instrument-number">18</span>
+                    </div>
+                    <h3 class="instrument-title">Calories Burned</h3>
+                    <p class="instrument-desc">Activity-based expenditure</p>
+                </a>
+
+                <a href="calculators/running-pace.html" class="instrument-card">
+                    <div class="instrument-header">
+                        <svg class="instrument-icon" viewBox="0 0 48 48" fill="none">
+                            <circle cx="16" cy="32" r="6" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="32" cy="20" r="4" stroke="currentColor" stroke-width="2"/>
+                            <path d="M16 32 L24 24 L32 20" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        <span class="instrument-number">19</span>
+                    </div>
+                    <h3 class="instrument-title">Running Pace</h3>
+                    <p class="instrument-desc">Speed and time estimates</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- Goals -->
+        <section id="goals" class="category-section">
+            <h2 class="category-title">█ Goals & Planning</h2>
+            <div class="instruments-grid">
+                <a href="calculators/weight-gain.html" class="instrument-card">
+                    <div class="instrument-header">
+                        <svg class="instrument-icon" viewBox="0 0 48 48" fill="none">
+                            <path d="M8 40 L8 24 L16 16 L32 16 L40 24 L40 40" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                            <line x1="8" y1="40" x2="40" y2="40" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        <span class="instrument-number">20</span>
+                    </div>
+                    <h3 class="instrument-title">Healthy Weight Gain</h3>
+                    <p class="instrument-desc">Muscle building projection</p>
+                </a>
+
+                <a href="calculators/fat-loss.html" class="instrument-card">
+                    <div class="instrument-header">
+                        <svg class="instrument-icon" viewBox="0 0 48 48" fill="none">
+                            <path d="M8 8 L8 24 L16 32 L32 16 L40 24 L40 8" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                            <line x1="8" y1="8" x2="40" y2="8" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        <span class="instrument-number">21</span>
+                    </div>
+                    <h3 class="instrument-title">Fat Loss Projection</h3>
+                    <p class="instrument-desc">Timeline estimates</p>
+                </a>
+
+                <a href="calculators/rebound-prevention.html" class="instrument-card">
+                    <div class="instrument-header">
+                        <svg class="instrument-icon" viewBox="0 0 48 48" fill="none">
+                            <circle cx="24" cy="24" r="18" stroke="currentColor" stroke-width="2"/>
+                            <path d="M24 12 L24 24" stroke="currentColor" stroke-width="2"/>
+                            <path d="M16 24 L24 24 L32 24" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        <span class="instrument-number">22</span>
+                    </div>
+                    <h3 class="instrument-title">Rebound Prevention</h3>
+                    <p class="instrument-desc">Post-diet maintenance</p>
+                </a>
+
+                <a href="calculators/body-shape.html" class="instrument-card">
+                    <div class="instrument-header">
+                        <svg class="instrument-icon" viewBox="0 0 48 48" fill="none">
+                            <circle cx="24" cy="12" r="6" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 22 L36 22 L40 40 L8 40 Z" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        <span class="instrument-number">23</span>
+                    </div>
+                    <h3 class="instrument-title">Body Shape</h3>
+                    <p class="instrument-desc">Classification tool</p>
+                </a>
+
+                <a href="calculators/somatotype.html" class="instrument-card">
+                    <div class="instrument-header">
+                        <svg class="instrument-icon" viewBox="0 0 48 48" fill="none">
+                            <rect x="8" y="16" width="12" height="20" rx="2" stroke="currentColor" stroke-width="2"/>
+                            <rect x="18" y="8" width="12" height="32" rx="2" stroke="currentColor" stroke-width="2"/>
+                            <rect x="28" y="12" width="12" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        <span class="instrument-number">24</span>
+                    </div>
+                    <h3 class="instrument-title">Somatotype</h3>
+                    <p class="instrument-desc">Ecto/Meso/Endomorph analysis</p>
+                </a>
+
+                <a href="calculators/fitness-age.html" class="instrument-card">
+                    <div class="instrument-header">
+                        <svg class="instrument-icon" viewBox="0 0 48 48" fill="none">
+                            <circle cx="24" cy="24" r="18" stroke="currentColor" stroke-width="2"/>
+                            <line x1="24" y1="12" x2="24" y2="24" stroke="currentColor" stroke-width="2"/>
+                            <path d="M24 24 L32 32" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        <span class="instrument-number">25</span>
+                    </div>
+                    <h3 class="instrument-title">Fitness Age</h3>
+                    <p class="instrument-desc">Biological vs fitness comparison</p>
+                </a>
             </div>
         </section>
     </main>
 
     <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 FitGauge. Precision Fitness Calculators.</p>
-            <p class="footer-note">All calculations performed client-side. Your data never leaves your device.</p>
-        </div>
+        <p>FitGauge — Precision Fitness Instruments</p>
+        <p style="margin-top: 8px; opacity: 0.5;">100% client-side. No data collection. No tracking.</p>
     </footer>
+
+    <div class="status-bar">
+        <div class="status-item">
+            <span class="status-dot"></span>
+            <span>Ready</span>
+        </div>
+        <div class="status-item">
+            <span id="calc-count">25 calculators</span>
+        </div>
+        <div class="status-item">
+            <span>100% Private</span>
+        </div>
+    </div>
 </body>
 </html>
