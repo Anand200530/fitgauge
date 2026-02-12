@@ -5,217 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FitGauge</title>
     <link rel="stylesheet" href="assets/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <meta name="description" content="Precision fitness calculators">
-    <style>
-        :root {
-            --bg: #0a0a0a;
-            --surface: #161616;
-            --surface-hover: #202020;
-            --border: #2a2a2a;
-            --text: #ffffff;
-            --text-secondary: #888888;
-            --accent: #22c55e;
-            --accent-hover: #4ade80;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.5;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        /* Header */
-        header {
-            padding: 24px 0;
-            border-bottom: 1px solid var(--border);
-        }
-
-        header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--text);
-        }
-
-        .logo svg {
-            width: 28px;
-            height: 28px;
-            color: var(--accent);
-        }
-
-        nav {
-            display: flex;
-            gap: 32px;
-        }
-
-        nav a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.2s;
-        }
-
-        nav a:hover {
-            color: var(--text);
-        }
-
-        /* Hero */
-        .hero {
-            padding: 80px 0;
-            text-align: center;
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            font-weight: 600;
-            margin-bottom: 12px;
-            letter-spacing: -0.02em;
-        }
-
-        .hero p {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .hero-stats {
-            display: flex;
-            justify-content: center;
-            gap: 48px;
-            margin-top: 40px;
-        }
-
-        .stat {
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 600;
-            color: var(--accent);
-        }
-
-        .stat-label {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            margin-top: 4px;
-        }
-
-        /* Categories */
-        section {
-            padding: 60px 0;
-        }
-
-        .section-title {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 24px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 16px;
-        }
-
-        .card {
-            display: block;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 24px;
-            text-decoration: none;
-            color: var(--text);
-            transition: all 0.2s;
-        }
-
-        .card:hover {
-            background: var(--surface-hover);
-            border-color: var(--accent);
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 12px;
-        }
-
-        .card-title {
-            font-size: 1rem;
-            font-weight: 500;
-        }
-
-        .card-number {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            font-family: monospace;
-        }
-
-        .card-desc {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
-
-        /* Footer */
-        footer {
-            padding: 40px 0;
-            border-top: 1px solid var(--border);
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-        }
-
-        footer p {
-            margin-bottom: 8px;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-            
-            .hero-stats {
-                gap: 32px;
-            }
-            
-            .grid {
-                grid-template-columns: 1fr;
-            }
-            
-            nav {
-                display: none;
-            }
-        }
-    </style>
 </head>
 <body>
     <header>
@@ -245,17 +38,17 @@
     <main class="container">
         <section class="hero">
             <h1>Precision Fitness Instruments</h1>
-            <p>Accurate measurements for your health journey. Clean, private, and always free.</p>
+            <p>Accurate measurements for your health journey.</p>
             <div class="hero-stats">
-                <div class="stat">
+                <div>
                     <div class="stat-value">25</div>
                     <div class="stat-label">Calculators</div>
                 </div>
-                <div class="stat">
+                <div>
                     <div class="stat-value">100%</div>
                     <div class="stat-label">Private</div>
                 </div>
-                <div class="stat">
+                <div>
                     <div class="stat-value">Free</div>
                     <div class="stat-label">Forever</div>
                 </div>
@@ -266,46 +59,28 @@
             <h2 class="section-title">Body Measurement</h2>
             <div class="grid">
                 <a href="calculators/bmi.html" class="card">
-                    <div class="card-header">
-                        <span class="card-title">Body Mass Index</span>
-                        <span class="card-number">01</span>
-                    </div>
-                    <p class="card-desc">Standard weight classification</p>
+                    <span class="card-title">Body Mass Index</span>
+                    <span class="card-desc">Standard weight classification</span>
                 </a>
                 <a href="calculators/ideal-weight.html" class="card">
-                    <div class="card-header">
-                        <span class="card-title">Ideal Weight</span>
-                        <span class="card-number">02</span>
-                    </div>
-                    <p class="card-desc">Personalized target range</p>
+                    <span class="card-title">Ideal Weight</span>
+                    <span class="card-desc">Personalized target range</span>
                 </a>
                 <a href="calculators/body-fat.html" class="card">
-                    <div class="card-header">
-                        <span class="card-title">Body Fat</span>
-                        <span class="card-number">03</span>
-                    </div>
-                    <p class="card-desc">US Navy method</p>
+                    <span class="card-title">Body Fat</span>
+                    <span class="card-desc">US Navy method</span>
                 </a>
                 <a href="calculators/lean-mass.html" class="card">
-                    <div class="card-header">
-                        <span class="card-title">Lean Mass</span>
-                        <span class="card-number">04</span>
-                    </div>
-                    <p class="card-desc">Muscle and bone weight</p>
+                    <span class="card-title">Lean Mass</span>
+                    <span class="card-desc">Muscle and bone weight</span>
                 </a>
                 <a href="calculators/waist-height.html" class="card">
-                    <div class="card-header">
-                        <span class="card-title">Waist-to-Height</span>
-                        <span class="card-number">05</span>
-                    </div>
-                    <p class="card-desc">Simple health indicator</p>
+                    <span class="card-title">Waist-to-Height</span>
+                    <span class="card-desc">Simple health indicator</span>
                 </a>
                 <a href="calculators/waist-hip.html" class="card">
-                    <div class="card-header">
-                        <span class="card-title">Waist-to-Hip</span>
-                        <span class="card-number">06</span>
-                    </div>
-                    <p class="card-desc">Cardiovascular risk</p>
+                    <span class="card-title">Waist-to-Hip</span>
+                    <span class="card-desc">Cardiovascular risk</span>
                 </a>
             </div>
         </section>
@@ -314,39 +89,24 @@
             <h2 class="section-title">Energy & Metabolism</h2>
             <div class="grid">
                 <a href="calculators/bmr.html" class="card">
-                    <div class="card-header">
-                        <span class="card-title">Basal Metabolic Rate</span>
-                        <span class="card-number">07</span>
-                    </div>
-                    <p class="card-desc">Daily calories at rest</p>
+                    <span class="card-title">Basal Metabolic Rate</span>
+                    <span class="card-desc">Daily calories at rest</span>
                 </a>
                 <a href="calculators/tdee.html" class="card">
-                    <div class="card-header">
-                        <span class="card-title">TDEE</span>
-                        <span class="card-number">08</span>
-                    </div>
-                    <p class="card-desc">Total daily energy</p>
+                    <span class="card-title">TDEE</span>
+                    <span class="card-desc">Total daily energy</span>
                 </a>
                 <a href="calculators/calorie-needs.html" class="card">
-                    <div class="card-header">
-                        <span class="card-title">Calorie Needs</span>
-                        <span class="card-number">09</span>
-                    </div>
-                    <p class="card-desc">Personalized targets</p>
+                    <span class="card-title">Calorie Needs</span>
+                    <span class="card-desc">Personalized targets</span>
                 </a>
                 <a href="calculators/maintenance-calories.html" class="card">
-                    <div class="card-header">
-                        <span class="card-title">Maintenance</span>
-                        <span class="card-number">10</span>
-                    </div>
-                    <p class="card-desc">Stay at current weight</p>
+                    <span class="card-title">Maintenance</span>
+                    <span class="card-desc">Stay at current weight</span>
                 </a>
                 <a href="calculators/weight-loss-timeline.html" class="card">
-                    <div class="card-header">
-                        <span class="card-title">Weight Loss Timeline</span>
-                        <span class="card-number">11</span>
-                    </div>
-                    <p class="card-desc">Realistic projections</p>
+                    <span class="card-title">Weight Loss Timeline</span>
+                    <span class="card-desc">Realistic projections</span>
                 </a>
             </div>
         </section>
@@ -355,32 +115,20 @@
             <h2 class="section-title">Nutrition</h2>
             <div class="grid">
                 <a href="calculators/protein.html" class="card">
-                    <div class="card-header">
-                        <span class="card-title">Protein</span>
-                        <span class="card-number">12</span>
-                    </div>
-                    <p class="card-desc">Based on activity level</p>
+                    <span class="card-title">Protein</span>
+                    <span class="card-desc">Based on activity level</span>
                 </a>
                 <a href="calculators/macro-split.html" class="card">
-                    <div class="card-header">
-                        <span class="card-title">Macros</span>
-                        <span class="card-number">13</span>
-                    </div>
-                    <p class="card-desc">Balanced nutrition</p>
+                    <span class="card-title">Macros</span>
+                    <span class="card-desc">Balanced nutrition</span>
                 </a>
                 <a href="calculators/water-intake.html" class="card">
-                    <div class="card-header">
-                        <span class="card-title">Water Intake</span>
-                        <span class="card-number">14</span>
-                    </div>
-                    <p class="card-desc">Hydration targets</p>
+                    <span class="card-title">Water Intake</span>
+                    <span class="card-desc">Hydration targets</span>
                 </a>
                 <a href="calculators/meal-frequency.html" class="card">
-                    <div class="card-header">
-                        <span class="card-title">Meal Frequency</span>
-                        <span class="card-number">15</span>
-                    </div>
-                    <p class="card-desc">Optimal eating pattern</p>
+                    <span class="card-title">Meal Frequency</span>
+                    <span class="card-desc">Optimal eating pattern</span>
                 </a>
             </div>
         </section>
@@ -389,32 +137,20 @@
             <h2 class="section-title">Fitness & Performance</h2>
             <div class="grid">
                 <a href="calculators/1rm.html" class="card">
-                    <div class="card-header">
-                        <span class="card-title">One-Rep Max</span>
-                        <span class="card-number">16</span>
-                    </div>
-                    <p class="card-desc">Strength measurement</p>
+                    <span class="card-title">One-Rep Max</span>
+                    <span class="card-desc">Strength measurement</span>
                 </a>
                 <a href="calculators/heart-rate-zones.html" class="card">
-                    <div class="card-header">
-                        <span class="card-title">Heart Rate Zones</span>
-                        <span class="card-number">17</span>
-                    </div>
-                    <p class="card-desc">Training intensity</p>
+                    <span class="card-title">Heart Rate Zones</span>
+                    <span class="card-desc">Training intensity</span>
                 </a>
                 <a href="calculators/calories-burned.html" class="card">
-                    <div class="card-header">
-                        <span class="card-title">Calories Burned</span>
-                        <span class="card-number">18</span>
-                    </div>
-                    <p class="card-desc">Activity-based</p>
+                    <span class="card-title">Calories Burned</span>
+                    <span class="card-desc">Activity-based</span>
                 </a>
                 <a href="calculators/running-pace.html" class="card">
-                    <div class="card-header">
-                        <span class="card-title">Running Pace</span>
-                        <span class="card-number">19</span>
-                    </div>
-                    <p class="card-desc">Speed & time estimates</p>
+                    <span class="card-title">Running Pace</span>
+                    <span class="card-desc">Speed & time estimates</span>
                 </a>
             </div>
         </section>
@@ -423,46 +159,28 @@
             <h2 class="section-title">Goals & Planning</h2>
             <div class="grid">
                 <a href="calculators/weight-gain.html" class="card">
-                    <div class="card-header">
-                        <span class="card-title">Weight Gain</span>
-                        <span class="card-number">20</span>
-                    </div>
-                    <p class="card-desc">Muscle building plan</p>
+                    <span class="card-title">Weight Gain</span>
+                    <span class="card-desc">Muscle building plan</span>
                 </a>
                 <a href="calculators/fat-loss.html" class="card">
-                    <div class="card-header">
-                        <span class="card-title">Fat Loss</span>
-                        <span class="card-number">21</span>
-                    </div>
-                    <p class="card-desc">Timeline estimates</p>
+                    <span class="card-title">Fat Loss</span>
+                    <span class="card-desc">Timeline estimates</span>
                 </a>
                 <a href="calculators/rebound-prevention.html" class="card">
-                    <div class="card-header">
-                        <span class="card-title">Rebound Prevention</span>
-                        <span class="card-number">22</span>
-                    </div>
-                    <p class="card-desc">Post-diet maintenance</p>
+                    <span class="card-title">Rebound Prevention</span>
+                    <span class="card-desc">Post-diet maintenance</span>
                 </a>
                 <a href="calculators/body-shape.html" class="card">
-                    <div class="card-header">
-                        <span class="card-title">Body Shape</span>
-                        <span class="card-number">23</span>
-                    </div>
-                    <p class="card-desc">Classification</p>
+                    <span class="card-title">Body Shape</span>
+                    <span class="card-desc">Classification</span>
                 </a>
                 <a href="calculators/somatotype.html" class="card">
-                    <div class="card-header">
-                        <span class="card-title">Somatotype</span>
-                        <span class="card-number">24</span>
-                    </div>
-                    <p class="card-desc">Body type analysis</p>
+                    <span class="card-title">Somatotype</span>
+                    <span class="card-desc">Body type analysis</span>
                 </a>
                 <a href="calculators/fitness-age.html" class="card">
-                    <div class="card-header">
-                        <span class="card-title">Fitness Age</span>
-                        <span class="card-number">25</span>
-                    </div>
-                    <p class="card-desc">Compare to biological age</p>
+                    <span class="card-title">Fitness Age</span>
+                    <span class="card-desc">Compare to biological age</span>
                 </a>
             </div>
         </section>
@@ -471,7 +189,7 @@
     <footer>
         <div class="container">
             <p>FitGauge — Precision Fitness Calculators</p>
-            <p style="color: var(--text-secondary); margin-top: 8px; font-size: 0.8rem;">100% client-side. No data collection. No tracking.</p>
+            <p>100% client-side. No tracking. No cookies.</p>
         </div>
     </footer>
 </body>

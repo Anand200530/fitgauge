@@ -1,12 +1,13 @@
-/* FitGauge - Clean Minimal Styles */
+/* FitGauge - Professional Minimal Styles */
 
 :root {
     --bg: #0a0a0a;
-    --surface: #161616;
-    --surface-hover: #202020;
-    --border: #2a2a2a;
-    --text: #ffffff;
-    --text-secondary: #888888;
+    --surface: #141414;
+    --surface-hover: #1a1a1a;
+    --border: #262626;
+    --border-light: #333333;
+    --text: #f5f5f5;
+    --text-secondary: #737373;
     --accent: #22c55e;
     --accent-hover: #4ade80;
     --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -32,18 +33,18 @@ a {
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1100px;
     margin: 0 auto;
     padding: 0 24px;
 }
 
 /* Header */
 header {
-    padding: 24px 0;
+    padding: 20px 0;
     border-bottom: 1px solid var(--border);
+    background: var(--bg);
     position: sticky;
     top: 0;
-    background: var(--bg);
     z-index: 100;
 }
 
@@ -56,27 +57,27 @@ header .container {
 .logo {
     display: flex;
     align-items: center;
-    gap: 12px;
-    font-size: 1.25rem;
+    gap: 10px;
+    font-size: 1.1rem;
     font-weight: 600;
     color: var(--text);
 }
 
 .logo svg {
-    width: 28px;
-    height: 28px;
+    width: 26px;
+    height: 26px;
     color: var(--accent);
 }
 
 nav {
     display: flex;
-    gap: 32px;
+    gap: 28px;
 }
 
 nav a {
     color: var(--text-secondary);
-    font-size: 0.9rem;
-    transition: color 0.2s;
+    font-size: 0.85rem;
+    transition: color 0.2s ease;
 }
 
 nav a:hover {
@@ -85,21 +86,21 @@ nav a:hover {
 
 /* Hero */
 .hero {
-    padding: 80px 0;
+    padding: 72px 0;
     text-align: center;
 }
 
 .hero h1 {
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: 600;
-    margin-bottom: 12px;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
+    margin-bottom: 10px;
 }
 
 .hero p {
     color: var(--text-secondary);
-    font-size: 1.1rem;
-    max-width: 500px;
+    font-size: 1rem;
+    max-width: 450px;
     margin: 0 auto;
 }
 
@@ -107,95 +108,89 @@ nav a:hover {
     display: flex;
     justify-content: center;
     gap: 48px;
-    margin-top: 40px;
-}
-
-.stat {
-    text-align: center;
+    margin-top: 36px;
 }
 
 .stat-value {
-    font-size: 2rem;
+    font-size: 1.75rem;
     font-weight: 600;
     color: var(--accent);
 }
 
 .stat-label {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     margin-top: 4px;
 }
 
 /* Sections */
 section {
-    padding: 60px 0;
+    padding: 56px 0;
 }
 
 .section-title {
-    font-size: 0.85rem;
+    font-size: 0.7rem;
     color: var(--text-secondary);
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 24px;
-    padding-bottom: 16px;
+    letter-spacing: 0.15em;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
     border-bottom: 1px solid var(--border);
 }
 
-/* Grid */
+/* Cards Grid */
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
 }
 
 .card {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 20px 24px;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 24px;
-    transition: all 0.2s;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
 .card:hover {
     background: var(--surface-hover);
-    border-color: var(--accent);
+    border-color: var(--border-light);
 }
 
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 8px;
+.card:hover .card-title {
+    color: var(--accent);
 }
 
 .card-title {
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 500;
-}
-
-.card-number {
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-    font-family: monospace;
+    transition: color 0.2s ease;
 }
 
 .card-desc {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: var(--text-secondary);
 }
 
 /* Footer */
 footer {
     padding: 40px 0;
+    margin-top: 48px;
     border-top: 1px solid var(--border);
     text-align: center;
     color: var(--text-secondary);
-    font-size: 0.85rem;
+    font-size: 0.8rem;
 }
 
 footer p {
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 /* Responsive */
@@ -208,7 +203,7 @@ footer p {
         gap: 32px;
     }
     
-    .hero-stats .stat-value {
+    .stat-value {
         font-size: 1.5rem;
     }
     
@@ -218,153 +213,5 @@ footer p {
     
     nav {
         display: none;
-    }
-}
-
-/* Calculator Page Styles */
-.calculator-page {
-    padding: 100px 24px 60px;
-    min-height: 100vh;
-}
-
-.calculator-container {
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.calculator-panel {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 32px;
-}
-
-.calculator-header {
-    margin-bottom: 32px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid var(--border);
-}
-
-.calculator-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 8px;
-}
-
-.calculator-subtitle {
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-}
-
-.form-group {
-    margin-bottom: 24px;
-}
-
-.form-label {
-    display: block;
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    margin-bottom: 8px;
-}
-
-.form-input {
-    width: 100%;
-    padding: 14px 16px;
-    background: var(--surface-hover);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--text);
-    font-family: var(--font);
-    font-size: 1rem;
-    transition: border-color 0.2s;
-}
-
-.form-input:focus {
-    outline: none;
-    border-color: var(--accent);
-}
-
-.form-input::placeholder {
-    color: var(--text-secondary);
-}
-
-.form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-}
-
-.btn {
-    width: 100%;
-    padding: 16px;
-    background: var(--accent);
-    border: none;
-    border-radius: 8px;
-    color: var(--bg);
-    font-family: var(--font);
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.btn:hover {
-    background: var(--accent-hover);
-}
-
-.result-box {
-    margin-top: 32px;
-    padding: 24px;
-    background: var(--surface-hover);
-    border-radius: 12px;
-    text-align: center;
-    display: none;
-}
-
-.result-box.show {
-    display: block;
-}
-
-.result-value {
-    font-size: 3rem;
-    font-weight: 700;
-    color: var(--accent);
-    margin-bottom: 4px;
-}
-
-.result-label {
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-}
-
-.back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-    margin-bottom: 24px;
-    transition: color 0.2s;
-}
-
-.back-link:hover {
-    color: var(--text);
-}
-
-@media (max-width: 480px) {
-    .form-row {
-        grid-template-columns: 1fr;
-    }
-    
-    .calculator-panel {
-        padding: 24px;
-    }
-    
-    .hero {
-        padding: 60px 0;
-    }
-    
-    .hero h1 {
-        font-size: 1.75rem;
     }
 }
