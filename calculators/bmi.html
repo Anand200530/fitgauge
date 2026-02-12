@@ -6,46 +6,48 @@
     <title>BMI Calculator — FitGauge</title>
     <link rel="stylesheet" href="assets/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <meta name="description" content="Calculate your BMI with precision">
+    <meta name="description" content="Calculate your BMI">
+</head>
+<body>
     <style>
         :root {
             --bg: #0a0a0a;
             --surface: #141414;
-            --surface-hover: #1a1a1a;
             --border: #262626;
-            --border-light: #333333;
             --text: #f5f5f5;
             --text-secondary: #737373;
-            --text-muted: #525252;
             --accent: #22c55e;
-            --accent-hover: #4ade80;
             --blue: #3b82f6;
             --yellow: #eab308;
             --red: #ef4444;
-            --font: 'Inter', -apple-system, sans-serif;
+            --font: 'Inter', sans-serif;
         }
         
-        .page {
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
         }
         
-        .header {
+        header {
             padding: 16px 0;
             border-bottom: 1px solid var(--border);
-            background: var(--bg);
         }
         
-        .header-content {
+        header .container {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
         }
         
-        .logo-link {
+        .logo {
             display: flex;
             align-items: center;
             gap: 10px;
@@ -54,53 +56,27 @@
             font-size: 1.1rem;
         }
         
-        .logo-link svg {
-            width: 26px;
-            height: 26px;
-            color: var(--accent);
-        }
+        .logo svg { width: 26px; height: 26px; color: var(--accent); }
         
-        .nav {
-            display: flex;
-            gap: 28px;
-        }
+        nav { display: flex; gap: 28px; }
         
-        .nav a {
+        nav a {
             color: var(--text-secondary);
             font-size: 0.85rem;
             text-decoration: none;
-            transition: color 0.2s;
-        }
-        
-        .nav a:hover {
-            color: var(--text);
-        }
-        
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 24px;
         }
         
         main {
-            flex: 1;
-            padding: 48px 0;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 48px 24px;
         }
         
-        .page-header {
-            margin-bottom: 48px;
-        }
+        .page-header { margin-bottom: 48px; }
         
-        .page-title {
-            font-size: 1.75rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
+        .page-title { font-size: 1.75rem; font-weight: 600; margin-bottom: 8px; }
         
-        .page-desc {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
+        .page-desc { color: var(--text-secondary); font-size: 0.9rem; }
         
         .calculator {
             display: grid;
@@ -108,22 +84,11 @@
             gap: 48px;
         }
         
-        .form-section {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
+        .form-section { display: flex; flex-direction: column; gap: 24px; }
         
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
         
-        .form-label {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
+        .form-label { font-size: 0.85rem; color: var(--text-secondary); }
         
         .form-input {
             width: 100%;
@@ -134,23 +99,13 @@
             color: var(--text);
             font-family: var(--font);
             font-size: 1rem;
-            transition: border-color 0.2s;
         }
         
-        .form-input:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
+        .form-input:focus { outline: none; border-color: var(--accent); }
         
-        .form-input::placeholder {
-            color: var(--text-muted);
-        }
+        .form-input::placeholder { color: var(--text-secondary); }
         
-        .input-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
+        .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         
         .toggle-group {
             display: flex;
@@ -165,17 +120,13 @@
             padding: 12px;
             background: transparent;
             border: none;
-            color: var(--text-muted);
+            color: var(--text-secondary);
             font-family: var(--font);
             font-size: 0.9rem;
             cursor: pointer;
-            transition: all 0.2s;
         }
         
-        .toggle-btn.active {
-            background: var(--accent);
-            color: var(--bg);
-        }
+        .toggle-btn.active { background: var(--accent); color: var(--bg); }
         
         .result-section {
             display: flex;
@@ -195,11 +146,7 @@
             margin-bottom: 32px;
         }
         
-        .gauge-bg {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
+        .gauge-bg { position: absolute; width: 100%; height: 100%; }
         
         .gauge-value {
             position: absolute;
@@ -217,25 +164,7 @@
             transition: color 0.3s;
         }
         
-        .gauge-unit {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-top: 4px;
-        }
-        
-        .result-class {
-            font-size: 1.1rem;
-            font-weight: 500;
-            margin-bottom: 8px;
-            transition: color 0.3s;
-        }
-        
-        .result-desc {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            text-align: center;
-            max-width: 280px;
-        }
+        .gauge-unit { font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px; }
         
         .range-bar {
             display: flex;
@@ -255,7 +184,22 @@
             display: flex;
             justify-content: space-between;
             font-size: 0.7rem;
-            color: var(--text-muted);
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+        
+        .result-class {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+            transition: color 0.3s;
+        }
+        
+        .result-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-align: center;
+            max-width: 280px;
         }
         
         .back-link {
@@ -266,11 +210,6 @@
             font-size: 0.85rem;
             text-decoration: none;
             margin-bottom: 32px;
-            transition: color 0.2s;
-        }
-        
-        .back-link:hover {
-            color: var(--text);
         }
         
         footer {
@@ -282,179 +221,162 @@
         }
         
         @media (max-width: 768px) {
-            .calculator {
-                grid-template-columns: 1fr;
-            }
-            
-            .nav {
-                display: none;
-            }
-            
-            .gauge-container {
-                width: 240px;
-                height: 140px;
-            }
-            
-            .gauge-number {
-                font-size: 2.5rem;
-            }
+            .calculator { grid-template-columns: 1fr; }
+            nav { display: none; }
+            .gauge-container { width: 240px; height: 140px; }
+            .gauge-number { font-size: 2.5rem; }
         }
     </style>
 </head>
 <body>
-    <div class="page">
-        <header class="header">
-            <div class="container header-content">
-                <a href="../index.html" class="logo-link">
-                    <svg viewBox="0 0 40 40" fill="none">
-                        <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/>
-                        <circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/>
-                        <circle cx="20" cy="20" r="6" fill="currentColor"/>
-                        <line x1="20" y1="2" x2="20" y2="6" stroke="currentColor" stroke-width="1.5"/>
-                        <line x1="20" y1="34" x2="20" y2="38" stroke="currentColor" stroke-width="1.5"/>
-                        <line x1="2" y1="20" x2="6" y2="20" stroke="currentColor" stroke-width="1.5"/>
-                        <line x1="34" y1="20" x2="38" y2="20" stroke="currentColor" stroke-width="1.5"/>
-                    </svg>
-                    FitGauge
-                </a>
-                <nav class="nav">
-                    <a href="../index.html#body">Body</a>
-                    <a href="../index.html#energy">Energy</a>
-                    <a href="../index.html#nutrition">Nutrition</a>
-                    <a href="../index.html#fitness">Fitness</a>
-                    <a href="../index.html#goals">Goals</a>
-                </nav>
-            </div>
-        </header>
-
-        <main class="container">
-            <a href="../index.html" class="back-link">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <svg viewBox="0 0 40 40" fill="none">
+                    <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/>
+                    <circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/>
+                    <circle cx="20" cy="20" r="6" fill="currentColor"/>
+                    <line x1="20" y1="2" x2="20" y2="6" stroke="currentColor" stroke-width="1.5"/>
+                    <line x1="20" y1="34" x2="20" y2="38" stroke="currentColor" stroke-width="1.5"/>
+                    <line x1="2" y1="20" x2="6" y2="20" stroke="currentColor" stroke-width="1.5"/>
+                    <line x1="34" y1="20" x2="38" y2="20" stroke="currentColor" stroke-width="1.5"/>
                 </svg>
-                Back to calculators
+                FitGauge
             </a>
+            <nav>
+                <a href="index.html#body">Body</a>
+                <a href="index.html#energy">Energy</a>
+                <a href="index.html#nutrition">Nutrition</a>
+                <a href="index.html#fitness">Fitness</a>
+                <a href="index.html#goals">Goals</a>
+            </nav>
+        </div>
+    </header>
 
-            <div class="page-header">
-                <h1 class="page-title">Body Mass Index</h1>
-                <p class="page-desc">Calculate your BMI using standard WHO classification</p>
-            </div>
+    <main>
+        <a href="index.html" class="back-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to calculators
+        </a>
 
-            <div class="calculator">
-                <div class="form-section">
-                    <div class="form-group">
-                        <label class="form-label">Gender</label>
-                        <div class="toggle-group">
-                            <button class="toggle-btn" data-value="male">Male</button>
-                            <button class="toggle-btn active" data-value="female">Female</button>
-                        </div>
-                    </div>
+        <div class="page-header">
+            <h1 class="page-title">Body Mass Index</h1>
+            <p class="page-desc">Calculate your BMI using standard WHO classification</p>
+        </div>
 
-                    <div class="form-group">
-                        <label class="form-label">Age</label>
-                        <input type="number" class="form-input" id="age" placeholder="Years" min="2" max="120">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Height</label>
-                        <div class="input-row">
-                            <input type="number" class="form-input" id="feet" placeholder="ft" min="1" max="9">
-                            <input type="number" class="form-input" id="inches" placeholder="in" min="0" max="11">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Weight (kg)</label>
-                        <input type="number" class="form-input" id="weight" placeholder="kg" min="20" max="300">
+        <div class="calculator">
+            <div class="form-section">
+                <div class="form-group">
+                    <label class="form-label">Gender</label>
+                    <div class="toggle-group">
+                        <button class="toggle-btn" data-value="male">Male</button>
+                        <button class="toggle-btn active" data-value="female">Female</button>
                     </div>
                 </div>
 
-                <div class="result-section">
-                    <div class="gauge-container">
-                        <svg class="gauge-bg" viewBox="0 0 280 140">
-                            <defs>
-                                <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                                    <stop offset="0%" stop-color="#3b82f6"/>
-                                    <stop offset="35%" stop-color="#22c55e"/>
-                                    <stop offset="55%" stop-color="#eab308"/>
-                                    <stop offset="70%" stop-color="#ef4444"/>
-                                </linearGradient>
-                            </defs>
-                            <path d="M 20 140 A 120 120 0 0 1 260 140" 
-                                  fill="none" 
-                                  stroke="url(#gaugeGrad)" 
-                                  stroke-width="16" 
-                                  stroke-linecap="round"/>
-                            <circle cx="20" cy="140" r="6" fill="#3b82f6"/>
-                            <circle cx="140" cy="60" r="5" fill="#22c55e"/>
-                            <circle cx="260" cy="140" r="6" fill="#ef4444"/>
-                        </svg>
-                        <div class="gauge-value">
-                            <div class="gauge-number" id="bmi-value">--</div>
-                            <div class="gauge-unit">kg/m²</div>
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <label class="form-label">Age</label>
+                    <input type="number" class="form-input" id="age" placeholder="Years" min="2" max="120">
+                </div>
 
-                    <div class="range-bar">
-                        <div class="range-under"></div>
-                        <div class="range-normal"></div>
-                        <div class="range-over"></div>
-                        <div class="range-obese"></div>
+                <div class="form-group">
+                    <label class="form-label">Height</label>
+                    <div class="input-row">
+                        <input type="number" class="form-input" id="feet" placeholder="ft" min="1" max="9">
+                        <input type="number" class="form-input" id="inches" placeholder="in" min="0" max="11">
                     </div>
-                    <div class="range-labels" style="margin-bottom: 24px;">
-                        <span>15</span>
-                        <span>18.5</span>
-                        <span>25</span>
-                        <span>30</span>
-                        <span>35</span>
-                    </div>
+                </div>
 
-                    <div class="result-class" id="result-class">Enter your details</div>
-                    <p class="result-desc" id="result-desc">Add your measurements to calculate BMI</p>
+                <div class="form-group">
+                    <label class="form-label">Weight (kg)</label>
+                    <input type="number" class="form-input" id="weight" placeholder="kg" min="20" max="300">
                 </div>
             </div>
-        </main>
 
-        <footer>
-            <div class="container">
-                <p>FitGauge — Precision Fitness Calculators</p>
+            <div class="result-section">
+                <div class="gauge-container">
+                    <svg class="gauge-bg" viewBox="0 0 280 140">
+                        <defs>
+                            <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#3b82f6"/>
+                                <stop offset="35%" stop-color="#22c55e"/>
+                                <stop offset="55%" stop-color="#eab308"/>
+                                <stop offset="70%" stop-color="#ef4444"/>
+                            </linearGradient>
+                        </defs>
+                        <path d="M 20 140 A 120 120 0 0 1 260 140" 
+                              fill="none" 
+                              stroke="url(#gaugeGrad)" 
+                              stroke-width="16" 
+                              stroke-linecap="round"/>
+                    </svg>
+                    <div class="gauge-value">
+                        <div class="gauge-number" id="bmi-value">--</div>
+                        <div class="gauge-unit">kg/m2</div>
+                    </div>
+                </div>
+
+                <div class="range-bar">
+                    <div class="range-under"></div>
+                    <div class="range-normal"></div>
+                    <div class="range-over"></div>
+                    <div class="range-obese"></div>
+                </div>
+                <div class="range-labels">
+                    <span>15</span>
+                    <span>18.5</span>
+                    <span>25</span>
+                    <span>30</span>
+                    <span>35</span>
+                </div>
+
+                <div class="result-class" id="result-class">Enter your details</div>
+                <p class="result-desc" id="result-desc">Add your measurements to calculate BMI</p>
             </div>
-        </footer>
-    </div>
+        </div>
+    </main>
+
+    <footer>
+        FitGauge - Precision Fitness Calculators
+    </footer>
 
     <script>
         let gender = 'female';
         
-        document.querySelectorAll('.toggle-btn').forEach(btn => {
+        document.querySelectorAll('.toggle-btn').forEach(function(btn) {
             btn.addEventListener('click', function() {
-                const parent = this.parentElement;
-                parent.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+                var parent = this.parentElement;
+                parent.querySelectorAll('.toggle-btn').forEach(function(b) {
+                    b.classList.remove('active');
+                });
                 this.classList.add('active');
                 gender = this.dataset.value;
                 calculateBMI();
             });
         });
         
-        ['feet', 'inches', 'weight', 'age'].forEach(id => {
+        ['feet', 'inches', 'weight', 'age'].forEach(function(id) {
             document.getElementById(id).addEventListener('input', calculateBMI);
         });
         
         function calculateBMI() {
-            let heightCm = 0;
+            var heightCm = 0;
             
-            const feet = parseFloat(document.getElementById('feet').value) || 0;
-            const inches = parseFloat(document.getElementById('inches').value) || 0;
+            var feet = parseFloat(document.getElementById('feet').value) || 0;
+            var inches = parseFloat(document.getElementById('inches').value) || 0;
             
             if (feet || inches) {
                 heightCm = (feet * 30.48) + (inches * 2.54);
             }
             
-            let weight = parseFloat(document.getElementById('weight').value) || 0;
+            var weight = parseFloat(document.getElementById('weight').value) || 0;
             
             if (!heightCm || !weight) return;
             
-            const heightM = heightCm / 100;
-            const bmi = weight / (heightM * heightM);
+            var heightM = heightCm / 100;
+            var bmi = weight / (heightM * heightM);
             
             if (bmi > 10 && bmi < 60) {
                 updateDisplay(bmi);
@@ -462,13 +384,13 @@
         }
         
         function updateDisplay(bmi) {
-            const valueEl = document.getElementById('bmi-value');
-            const classEl = document.getElementById('result-class');
-            const descEl = document.getElementById('result-desc');
+            var valueEl = document.getElementById('bmi-value');
+            var classEl = document.getElementById('result-class');
+            var descEl = document.getElementById('result-desc');
             
             valueEl.textContent = bmi.toFixed(1);
             
-            let color, classText, desc;
+            var color, classText, desc;
             
             if (bmi < 18.5) {
                 color = '#3b82f6';
