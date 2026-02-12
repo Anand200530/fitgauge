@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BMI Calculator — FitGauge</title>
-    <meta name="description" content="Calculate your Body Mass Index accurately. Standard WHO classification with instant results.">
-    <meta name="robots" content="index, follow">
+    <meta name="description" content="Calculate your Body Mass Index accurately. Standard WHO classification.">
     <link rel="canonical" href="https://anand200530.github.io/fitgauge/calculators/bmi.html">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -17,12 +15,11 @@
             --border: #262626;
             --text: #f5f5f5;
             --text-secondary: #737373;
-            --text-muted: #525252;
             --accent: #22c55e;
             --blue: #3b82f6;
             --yellow: #eab308;
             --red: #ef4444;
-            --font: 'Inter', -apple-system, sans-serif;
+            --font: 'Inter', sans-serif;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -70,8 +67,8 @@
         main { padding: 48px 0; }
 
         .back-link {
-            display: align-items: center inline-flex;
-           ;
+            display: inline-flex;
+            align-items: center;
             gap: 8px;
             color: var(--text-secondary);
             font-size: 0.85rem;
@@ -156,7 +153,7 @@
             color: var(--bg);
         }
 
-        .form-row-3 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
         .unit-toggle { display: flex; gap: 8px; margin-bottom: 12px; }
 
@@ -219,7 +216,6 @@
             font-weight: 600;
             color: var(--text);
             line-height: 1;
-            transition: color 0.3s;
         }
 
         .gauge-unit { font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px; }
@@ -242,7 +238,7 @@
             display: flex;
             justify-content: space-between;
             font-size: 0.7rem;
-            color: var(--text-muted);
+            color: var(--text-secondary);
             margin-bottom: 24px;
             width: 100%;
         }
@@ -251,7 +247,6 @@
             font-size: 1.25rem;
             font-weight: 500;
             margin-bottom: 8px;
-            transition: color 0.3s;
         }
 
         .result-desc {
@@ -271,7 +266,7 @@
 
         .info-title {
             font-size: 0.75rem;
-            color: var(--text-muted);
+            color: var(--text-secondary);
             text-transform: uppercase;
             letter-spacing: 0.1em;
             margin-bottom: 12px;
@@ -357,7 +352,7 @@
 
                     <div class="form-group">
                         <label class="form-label">Age</label>
-                        <input type="number" class="form-input calc-input" id="age" placeholder="Years">
+                        <input type="number" class="form-input" id="age" placeholder="Years">
                     </div>
 
                     <div class="form-group">
@@ -367,12 +362,12 @@
                             <button class="unit-btn" id="height-ft-btn">ft</button>
                         </div>
                         <div id="height-cm-inputs">
-                            <input type="number" class="form-input calc-input" id="height-cm" placeholder="175">
+                            <input type="number" class="form-input" id="height-cm" placeholder="175">
                         </div>
                         <div id="height-ft-inputs" style="display: none;">
-                            <div class="form-row-3">
-                                <input type="number" class="form-input calc-input" id="height-ft" placeholder="5">
-                                <input type="number" class="form-input calc-input" id="height-in" placeholder="9">
+                            <div class="form-row">
+                                <input type="number" class="form-input" id="height-ft" placeholder="5">
+                                <input type="number" class="form-input" id="height-in" placeholder="9">
                             </div>
                         </div>
                     </div>
@@ -383,7 +378,7 @@
                             <button class="unit-btn active" id="weight-kg-btn">kg</button>
                             <button class="unit-btn" id="weight-lbs-btn">lbs</button>
                         </div>
-                        <input type="number" class="form-input calc-input" id="weight" placeholder="70">
+                        <input type="number" class="form-input" id="weight" placeholder="70">
                     </div>
                 </div>
             </div>
@@ -395,13 +390,13 @@
 
                 <div class="result-content">
                     <div class="gauge-container">
-                        <svg class="gauge-bg" viewBox="0 0 260 130">
+                        <svg width="260" height="130">
                             <defs>
                                 <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
                                     <stop offset="0%" stop-color="#3b82f6"/>
                                     <stop offset="35%" stop-color="#22c55e"/>
                                     <stop offset="55%" stop-color="#eab308"/>
-="70%" stop                                    <stop offset-color="#ef4444"/>
+                                    <stop offset="70%" stop-color="#ef4444"/>
                                 </linearGradient>
                             </defs>
                             <path d="M 20 130 A 110 110 0 0 1 240 130" 
@@ -431,7 +426,7 @@
                     </div>
 
                     <div class="result-status" id="result-status">Enter your details</div>
-                    <p class="result-desc" id="result-desc">Add your height and weight to see your BMI</p>
+                    <p class="result-desc" id="result-desc">Add height and weight to see your BMI</p>
                 </div>
 
                 <div class="info-card" id="info-card" style="display: none;">
@@ -510,9 +505,12 @@
             calculateBMI();
         });
 
-        var calcInputs = document.querySelectorAll('.calc-input');
-        for (var i = 0; i < calcInputs.length; i++) {
-            calcInputs[i].addEventListener('input', calculateBMI);
+        var inputs = ['age', 'height-cm', 'height-ft', 'height-in', 'weight'];
+        for (var i = 0; i < inputs.length; i++) {
+            var el = document.getElementById(inputs[i]);
+            if (el) {
+                el.addEventListener('input', calculateBMI);
+            }
         }
 
         function calculateBMI() {
@@ -538,10 +536,9 @@
 
             if (!heightCm || !weight || heightCm < 50 || heightCm > 300 || weight < 20 || weight > 300) {
                 valueEl.textContent = '--';
-                valueEl.style.color = 'var(--text)';
                 statusEl.textContent = 'Enter your details';
-                statusEl.style.color = 'var(--text-secondary)';
-                descEl.textContent = 'Add your height and weight to see your BMI';
+                statusEl.style.color = '';
+                descEl.textContent = 'Add height and weight to see your BMI';
                 infoCard.style.display = 'none';
                 return;
             }
@@ -551,7 +548,6 @@
 
             if (bmi < 10 || bmi > 60) {
                 valueEl.textContent = '--';
-                statusEl.textContent = 'Invalid values';
                 infoCard.style.display = 'none';
                 return;
             }
