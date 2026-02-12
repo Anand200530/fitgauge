@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator - FitGauge</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <meta name="description" content="Calculate your Body Mass Index with precision. Standard weight classification tool.">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="../index.html" class="logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/>
+                        <circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/>
+                        <circle cx="20" cy="20" r="6" fill="currentColor"/>
+                        <line x1="20" y1="2" x2="20" y2="6" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="20" y1="34" x2="20" y2="38" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="2" y1="20" x2="6" y2="20" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="34" y1="20" x2="38" y2="20" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <span class="logo-text">FitGauge</span>
+            </a>
+            <nav class="nav">
+                <a href="../index.html#calculators" class="nav-link">All Calculators</a>
+                <a href="../index.html#about" class="nav-link">About</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="calculator-page">
+        <div class="calculator-container">
+            <div class="calculator-header">
+                <h1 class="calculator-title">Body Mass Index (BMI)</h1>
+                <p class="calculator-subtitle">Standard weight classification based on height and weight</p>
+            </div>
+
+            <form id="bmi-form">
+                <div class="input-group">
+                    <label class="input-label">Gender</label>
+                    <select id="gender" class="input-field select-field" required>
+                        <option value="">Select gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Age</label>
+                    <input type="number" id="age" class="input-field" placeholder="Enter your age" min="2" max="120" required>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Height</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <input type="number" id="feet" class="input-field" placeholder="Feet" min="1" max="9">
+                        <input type="number" id="inches" class="input-field" placeholder="Inches" min="0" max="11">
+                    </div>
+                    <p style="font-size: 0.75rem; color: var(--color-text-muted); margin-top: 4px;">Or enter directly:</p>
+                    <input type="number" id="height-cm" class="input-field" placeholder="Height in cm" min="50" max="300" style="margin-top: 8px;">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Weight</label>
+                    <input type="number" id="weight" class="input-field" placeholder="Enter weight" min="20" max="500" step="0.1" required>
+                    <div style="display: flex; gap: 12px; margin-top: 8px;">
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="radio" name="weight-unit" value="kg" checked> kg
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="radio" name="weight-unit" value="lbs"> lbs
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn">Calculate BMI</button>
+            </form>
+
+            <div id="result" class="result-card" style="display: none;">
+                <div id="bmi-value" class="result-value">--</div>
+                <div id="bmi-label" class="result-label">Your BMI</div>
+                
+                <div class="result-interpretation">
+                    <div class="interpretation-item">
+                        <span class="interpretation-label">Underweight</span>
+                        <span class="interpretation-value">&lt; 18.5</span>
+                    </div>
+                    <div class="interpretation-item">
+                        <span class="interpretation-label">Normal weight</span>
+                        <span class="interpretation-value">18.5 - 24.9</span>
+                    </div>
+                    <div class="interpretation-item">
+                        <span class="interpretation-label">Overweight</span>
+                        <span class="interpretation-value">25 - 29.9</span>
+                    </div>
+                    <div class="interpretation-item">
+                        <span class="interpretation-label">Obesity</span>
+                        <span class="interpretation-value">&ge; 30</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="interpretation" class="result-card" style="display: none; margin-top: 16px;">
+                <h3 style="font-size: 1rem; margin-bottom: 12px;">Your Result</h3>
+                <p id="interpretation-text"></p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('bmi-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get values
+            let heightCm = parseFloat(document.getElementById('height-cm').value);
+            
+            // Convert feet/inches to cm
+            const feet = parseFloat(document.getElementById('feet').value) || 0;
+            const inches = parseFloat(document.getElementById('inches').value) || 0;
+            
+            if (!heightCm && (feet || inches)) {
+                heightCm = (feet * 30.48) + (inches * 2.54);
+            }
+            
+            let weight = parseFloat(document.getElementById('weight').value);
+            const weightUnit = document.querySelector('input[name="weight-unit"]:checked').value;
+            
+            // Validate
+            if (!heightCm || !weight) {
+                alert('Please enter height and weight');
+                return;
+            }
+            
+            // Convert lbs to kg
+            if (weightUnit === 'lbs') {
+                weight = weight * 0.453592;
+            }
+            
+            // Calculate BMI
+            const heightM = heightCm / 100;
+            const bmi = weight / (heightM * heightM);
+            
+            // Display result
+            document.getElementById('bmi-value').textContent = bmi.toFixed(1);
+            document.getElementById('result').style.display = 'block';
+            
+            // Interpretation
+            let interpretation = '';
+            let bmiClass = '';
+            
+            if (bmi < 18.5) {
+                interpretation = 'Your BMI indicates underweight. Consider consulting a healthcare provider about healthy weight gain strategies.';
+                bmiClass = 'underweight';
+            } else if (bmi < 25) {
+                interpretation = 'Your BMI is in the normal range. Maintain your current lifestyle for continued health.';
+                bmiClass = 'normal';
+            } else if (bmi < 30) {
+                interpretation = 'Your BMI indicates overweight. Consider lifestyle modifications for better health.';
+                bmiClass = 'overweight';
+            } else {
+                interpretation = 'Your BMI indicates obesity. Consult a healthcare provider for personalized advice.';
+                bmiClass = 'obese';
+            }
+            
+            document.getElementById('interpretation-text').textContent = interpretation;
+            document.getElementById('interpretation').style.display = 'block';
+            
+            // Color coding
+            const valueEl = document.getElementById('bmi-value');
+            valueEl.style.color = bmi < 18.5 ? 'var(--color-info)' : 
+                                   bmi < 25 ? 'var(--color-success)' : 
+                                   bmi < 30 ? 'var(--color-warning)' : 'var(--color-danger)';
+        });
+    </script>
+</body>
+</html>
