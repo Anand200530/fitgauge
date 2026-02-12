@@ -173,7 +173,8 @@
             color: var(--accent);
         }
 
-        .result-section {
+        /* Speedometer Gauge */
+        .gauge-wrapper {
             display: flex;
             flex-direction: column;
             background: var(--surface);
@@ -182,65 +183,105 @@
             overflow: hidden;
         }
 
-        .result-header {
+        .gauge-header {
             padding: 20px 24px;
             border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .result-title { font-size: 1rem; font-weight: 500; }
+        .gauge-title { font-size: 1rem; font-weight: 500; }
 
-        .result-content {
-            padding: 40px;
+        .gauge-body {
+            padding: 30px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        .gauge-container {
+        .speedometer {
             position: relative;
-            width: 260px;
-            height: 150px;
-            margin-bottom: 32px;
+            width: 280px;
+            height: 160px;
+            margin-bottom: 20px;
         }
 
-        .gauge-value {
+        .gauge-arc {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .needle {
             position: absolute;
             bottom: 0;
+            left: 50%;
+            width: 4px;
+            height: 120px;
+            background: var(--text);
+            transform-origin: bottom center;
+            transform: translateX(-50%) rotate(-90deg);
+            border-radius: 2px;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .needle::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 16px;
+            background: var(--text);
+            border-radius: 50%;
+        }
+
+        .gauge-center {
+            position: absolute;
+            bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
             text-align: center;
         }
 
-        .gauge-number {
-            font-size: 3.5rem;
+        .gauge-value {
+            font-size: 2.5rem;
             font-weight: 600;
             color: var(--text);
             line-height: 1;
         }
 
-        .gauge-unit { font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px; }
-
-        .range-bar {
-            display: flex;
-            height: 8px;
-            border-radius: 4px;
-            overflow: hidden;
-            margin-bottom: 16px;
-            width: 100%;
+        .gauge-unit {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
         }
 
-        .range-under { background: var(--blue); flex: 1.5; }
-        .range-normal { background: var(--accent); flex: 2; }
-        .range-over { background: var(--yellow); flex: 1.5; }
-        .range-obese { background: var(--red); flex: 1; }
-
-        .range-labels {
+        .gauge-labels {
             display: flex;
             justify-content: space-between;
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            margin-bottom: 24px;
             width: 100%;
+            padding: 0 10px;
+            margin-bottom: 20px;
+        }
+
+        .gauge-label {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            text-align: center;
+            width: 40px;
+        }
+
+        .gauge-label.active {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        /* Result Info */
+        .result-info {
+            text-align: center;
+            margin-bottom: 20px;
         }
 
         .result-status {
@@ -250,39 +291,46 @@
         }
 
         .result-desc {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--text-secondary);
-            text-align: center;
             max-width: 280px;
-            line-height: 1.6;
+            margin: 0 auto;
+            line-height: 1.5;
         }
 
-        .info-card {
-            margin-top: auto;
+        /* Analysis Card */
+        .analysis-card {
             padding: 20px 24px;
             border-top: 1px solid var(--border);
             background: var(--surface-hover);
         }
 
-        .info-title {
+        .analysis-title {
             font-size: 0.75rem;
             color: var(--text-secondary);
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
 
-        .info-grid {
+        .analysis-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 16px;
         }
 
-        .info-item { text-align: center; }
+        .analysis-item { text-align: center; }
 
-        .info-item-label { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 4px; }
+        .analysis-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
 
-        .info-item-value { font-size: 1rem; font-weight: 500; }
+        .analysis-value {
+            font-size: 1rem;
+            font-weight: 500;
+        }
 
         footer {
             padding: 24px 0;
@@ -295,9 +343,10 @@
         @media (max-width: 768px) {
             .calculator { grid-template-columns: 1fr; }
             nav { display: none; }
-            .gauge-container { width: 220px; height: 130px; }
-            .gauge-number { font-size: 2.5rem; }
-            .info-grid { grid-template-columns: 1fr; gap: 12px; }
+            .speedometer { width: 240px; height: 140px; }
+            .needle { height: 100px; }
+            .gauge-value { font-size: 2rem; }
+            .analysis-grid { grid-template-columns: 1fr; gap: 12px; }
         }
     </style>
 </head>
@@ -383,14 +432,14 @@
                 </div>
             </div>
 
-            <div class="result-section">
-                <div class="result-header">
-                    <span class="result-title">Your Result</span>
+            <div class="gauge-wrapper">
+                <div class="gauge-header">
+                    <span class="gauge-title">Your Result</span>
                 </div>
 
-                <div class="result-content">
-                    <div class="gauge-container">
-                        <svg width="260" height="130">
+                <div class="gauge-body">
+                    <div class="speedometer">
+                        <svg class="gauge-arc" viewBox="0 0 280 160">
                             <defs>
                                 <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
                                     <stop offset="0%" stop-color="#3b82f6"/>
@@ -399,50 +448,47 @@
                                     <stop offset="70%" stop-color="#ef4444"/>
                                 </linearGradient>
                             </defs>
-                            <path d="M 20 130 A 110 110 0 0 1 240 130" 
+                            <path d="M 20 140 A 120 120 0 0 1 260 140" 
                                   fill="none" 
                                   stroke="url(#gaugeGrad)" 
                                   stroke-width="12" 
                                   stroke-linecap="round"/>
                         </svg>
-                        <div class="gauge-value">
-                            <div class="gauge-number" id="bmi-value">--</div>
-                            <div class="gauge-unit">kg/m2</div>
+                        <div class="needle" id="needle"></div>
+                        <div class="gauge-center">
+                            <div class="gauge-value" id="bmi-value">--</div>
+                            <div class="gauge-unit">kg/m²</div>
                         </div>
                     </div>
 
-                    <div class="range-bar">
-                        <div class="range-under"></div>
-                        <div class="range-normal"></div>
-                        <div class="range-over"></div>
-                        <div class="range-obese"></div>
-                    </div>
-                    <div class="range-labels">
-                        <span>15</span>
-                        <span>18.5</span>
-                        <span>25</span>
-                        <span>30</span>
-                        <span>35</span>
+                    <div class="gauge-labels">
+                        <span class="gauge-label" id="label-15">15</span>
+                        <span class="gauge-label" id="label-18">18.5</span>
+                        <span class="gauge-label" id="label-25">25</span>
+                        <span class="gauge-label" id="label-30">30</span>
+                        <span class="gauge-label" id="label-35">35</span>
                     </div>
 
-                    <div class="result-status" id="result-status">Enter your details</div>
-                    <p class="result-desc" id="result-desc">Add height and weight to see your BMI</p>
+                    <div class="result-info">
+                        <div class="result-status" id="result-status">Enter your details</div>
+                        <p class="result-desc" id="result-desc">Add height and weight to see your BMI</p>
+                    </div>
                 </div>
 
-                <div class="info-card" id="info-card" style="display: none;">
-                    <div class="info-title">Analysis</div>
-                    <div class="info-grid">
-                        <div class="info-item">
-                            <div class="info-item-label">Target Range</div>
-                            <div class="info-item-value" id="target-range">--</div>
+                <div class="analysis-card" id="analysis-card" style="display: none;">
+                    <div class="analysis-title">Analysis</div>
+                    <div class="analysis-grid">
+                        <div class="analysis-item">
+                            <div class="analysis-label">Target Range</div>
+                            <div class="analysis-value" id="target-range">--</div>
                         </div>
-                        <div class="info-item">
-                            <div class="info-item-label">Category</div>
-                            <div class="info-item-value" id="bmi-category">--</div>
+                        <div class="analysis-item">
+                            <div class="analysis-label">Category</div>
+                            <div class="analysis-value" id="bmi-category">--</div>
                         </div>
-                        <div class="info-item">
-                            <div class="info-item-label">Risk Level</div>
-                            <div class="info-item-value" id="risk-level">--</div>
+                        <div class="analysis-item">
+                            <div class="analysis-label">Risk Level</div>
+                            <div class="analysis-value" id="risk-level">--</div>
                         </div>
                     </div>
                 </div>
@@ -529,17 +575,27 @@
                 weight = weight * 0.453592;
             }
 
+            var needle = document.getElementById('needle');
             var valueEl = document.getElementById('bmi-value');
             var statusEl = document.getElementById('result-status');
             var descEl = document.getElementById('result-desc');
-            var infoCard = document.getElementById('info-card');
+            var analysisCard = document.getElementById('analysis-card');
+
+            // Reset labels
+            document.getElementById('label-15').classList.remove('active');
+            document.getElementById('label-18').classList.remove('active');
+            document.getElementById('label-25').classList.remove('active');
+            document.getElementById('label-30').classList.remove('active');
+            document.getElementById('label-35').classList.remove('active');
 
             if (!heightCm || !weight || heightCm < 50 || heightCm > 300 || weight < 20 || weight > 300) {
+                needle.style.transform = 'translateX(-50%) rotate(-90deg)';
                 valueEl.textContent = '--';
+                valueEl.style.color = '';
                 statusEl.textContent = 'Enter your details';
                 statusEl.style.color = '';
                 descEl.textContent = 'Add height and weight to see your BMI';
-                infoCard.style.display = 'none';
+                analysisCard.style.display = 'none';
                 return;
             }
 
@@ -547,8 +603,9 @@
             var bmi = weight / (heightM * heightM);
 
             if (bmi < 10 || bmi > 60) {
+                needle.style.transform = 'translateX(-50%) rotate(-90deg)';
                 valueEl.textContent = '--';
-                infoCard.style.display = 'none';
+                analysisCard.style.display = 'none';
                 return;
             }
 
@@ -561,29 +618,48 @@
                 desc = 'Consider consulting a healthcare provider.';
                 category = 'Underweight';
                 risk = 'Low';
+                document.getElementById('label-15').classList.add('active');
             } else if (bmi < 25) {
                 color = '#22c55e';
                 status = 'Normal';
                 desc = 'Maintain your current lifestyle.';
                 category = 'Normal';
                 risk = 'Minimal';
+                document.getElementById('label-18').classList.add('active');
+                document.getElementById('label-25').classList.add('active');
             } else if (bmi < 30) {
                 color = '#eab308';
                 status = 'Overweight';
                 desc = 'Consider lifestyle modifications.';
                 category = 'Overweight';
                 risk = 'Moderate';
+                document.getElementById('label-25').classList.add('active');
+                document.getElementById('label-30').classList.add('active');
             } else {
                 color = '#ef4444';
                 status = 'Obese';
                 desc = 'Consult a healthcare provider.';
                 category = 'Obese';
                 risk = 'High';
+                document.getElementById('label-30').classList.add('active');
+                document.getElementById('label-35').classList.add('active');
             }
 
             targetMin = Math.round(18.5 * heightM * heightM);
             targetMax = Math.round(25 * heightM * heightM);
 
+            // Calculate needle rotation
+            // BMI range: 15 to 35
+            // Rotation: -90deg to 90deg (180 degrees total)
+            var minBMI = 15;
+            var maxBMI = 35;
+            var rotation = -90 + ((bmi - minBMI) / (maxBMI - minBMI)) * 180;
+
+            // Clamp rotation
+            if (rotation < -90) rotation = -90;
+            if (rotation > 90) rotation = 90;
+
+            needle.style.transform = 'translateX(-50%) rotate(' + rotation + 'deg)';
             valueEl.textContent = bmiValue;
             valueEl.style.color = color;
             statusEl.textContent = status;
@@ -595,7 +671,7 @@
             document.getElementById('risk-level').textContent = risk;
             document.getElementById('risk-level').style.color = color;
 
-            infoCard.style.display = 'block';
+            analysisCard.style.display = 'block';
         }
     </script>
 </body>
