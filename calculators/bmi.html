@@ -4,49 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BMI Calculator — FitGauge</title>
-    <link rel="stylesheet" href="assets/styles.css">
+    <meta name="description" content="Calculate your Body Mass Index accurately. Standard WHO classification with instant results.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://anand200530.github.io/fitgauge/calculators/bmi.html">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <meta name="description" content="Calculate your BMI">
-</head>
-<body>
     <style>
         :root {
             --bg: #0a0a0a;
-            --surface: #141414;
+            --surface: #161616;
+            --surface-hover: #1f1f1f;
             --border: #262626;
+            --border-light: #333333;
             --text: #f5f5f5;
             --text-secondary: #737373;
+            --text-muted: #525252;
             --accent: #22c55e;
+            --accent-hover: #4ade80;
             --blue: #3b82f6;
             --yellow: #eab308;
             --red: #ef4444;
-            --font: 'Inter', sans-serif;
+            --font: 'Inter', -apple-system, sans-serif;
         }
-        
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+
         body {
             font-family: var(--font);
             background: var(--bg);
             color: var(--text);
             min-height: 100vh;
+            line-height: 1.5;
         }
-        
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+
+        /* Header */
         header {
-            padding: 16px 0;
+            padding: 20px 0;
             border-bottom: 1px solid var(--border);
+            background: var(--bg);
         }
-        
+
         header .container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 24px;
         }
-        
+
         .logo {
             display: flex;
             align-items: center;
@@ -55,153 +60,23 @@
             font-weight: 600;
             font-size: 1.1rem;
         }
-        
+
         .logo svg { width: 26px; height: 26px; color: var(--accent); }
-        
+
         nav { display: flex; gap: 28px; }
-        
+
         nav a {
             color: var(--text-secondary);
             font-size: 0.85rem;
             text-decoration: none;
+            transition: color 0.2s;
         }
-        
-        main {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 48px 24px;
-        }
-        
-        .page-header { margin-bottom: 48px; }
-        
-        .page-title { font-size: 1.75rem; font-weight: 600; margin-bottom: 8px; }
-        
-        .page-desc { color: var(--text-secondary); font-size: 0.9rem; }
-        
-        .calculator {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 48px;
-        }
-        
-        .form-section { display: flex; flex-direction: column; gap: 24px; }
-        
-        .form-group { display: flex; flex-direction: column; gap: 8px; }
-        
-        .form-label { font-size: 0.85rem; color: var(--text-secondary); }
-        
-        .form-input {
-            width: 100%;
-            padding: 14px 16px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text);
-            font-family: var(--font);
-            font-size: 1rem;
-        }
-        
-        .form-input:focus { outline: none; border-color: var(--accent); }
-        
-        .form-input::placeholder { color: var(--text-secondary); }
-        
-        .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        
-        .toggle-group {
-            display: flex;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        
-        .toggle-btn {
-            flex: 1;
-            padding: 12px;
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            font-family: var(--font);
-            font-size: 0.9rem;
-            cursor: pointer;
-        }
-        
-        .toggle-btn.active { background: var(--accent); color: var(--bg); }
-        
-        .result-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 40px;
-        }
-        
-        .gauge-container {
-            position: relative;
-            width: 280px;
-            height: 160px;
-            margin-bottom: 32px;
-        }
-        
-        .gauge-bg { position: absolute; width: 100%; height: 100%; }
-        
-        .gauge-value {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-        }
-        
-        .gauge-number {
-            font-size: 3.5rem;
-            font-weight: 600;
-            color: var(--text);
-            line-height: 1;
-            transition: color 0.3s;
-        }
-        
-        .gauge-unit { font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px; }
-        
-        .range-bar {
-            display: flex;
-            height: 6px;
-            border-radius: 3px;
-            overflow: hidden;
-            margin-bottom: 16px;
-            width: 100%;
-        }
-        
-        .range-under { background: var(--blue); flex: 1.5; }
-        .range-normal { background: var(--accent); flex: 2; }
-        .range-over { background: var(--yellow); flex: 1.5; }
-        .range-obese { background: var(--red); flex: 1; }
-        
-        .range-labels {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            margin-bottom: 24px;
-        }
-        
-        .result-class {
-            font-size: 1.1rem;
-            font-weight: 500;
-            margin-bottom: 8px;
-            transition: color 0.3s;
-        }
-        
-        .result-desc {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            text-align: center;
-            max-width: 280px;
-        }
-        
+
+        nav a:hover { color: var(--text); }
+
+        /* Main */
+        main { padding: 48px 0; }
+
         .back-link {
             display: inline-flex;
             align-items: center;
@@ -211,7 +86,245 @@
             text-decoration: none;
             margin-bottom: 32px;
         }
-        
+
+        .back-link:hover { color: var(--text); }
+
+        .page-header { margin-bottom: 40px; }
+
+        .page-title { font-size: 1.75rem; font-weight: 600; margin-bottom: 8px; }
+
+        .page-desc { color: var(--text-secondary); font-size: 0.9rem; }
+
+        /* Calculator Grid */
+        .calculator {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        /* Form Section */
+        .form-section {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .form-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+        }
+
+        .form-group { margin-bottom: 20px; }
+
+        .form-group:last-child { margin-bottom: 0; }
+
+        .form-label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            background: var(--surface-hover);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: var(--font);
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .form-input::placeholder { color: var(--text-muted); }
+
+        /* Toggle Buttons */
+        .toggle-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .toggle-btn {
+            flex: 1;
+            padding: 12px 20px;
+            background: var(--surface-hover);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-family: var(--font);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .toggle-btn:hover { border-color: var(--border-light); }
+
+        .toggle-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg);
+        }
+
+        /* Row */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        /* Calculate Button */
+        .btn {
+            width: 100%;
+            padding: 16px 24px;
+            background: var(--accent);
+            border: none;
+            border-radius: 8px;
+            color: var(--bg);
+            font-family: var(--font);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn:hover { background: var(--accent-hover); }
+
+        /* Result Section */
+        .result-section {
+            display: flex;
+            flex-direction: column;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .result-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .result-title { font-size: 1rem; font-weight: 500; }
+
+        .result-content {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Gauge */
+        .gauge-container {
+            position: relative;
+            width: 260px;
+            height: 150px;
+            margin-bottom: 32px;
+        }
+
+        .gauge-bg { position: absolute; width: 100%; height: 100%; }
+
+        .gauge-value {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+
+        .gauge-number {
+            font-size: 3.5rem;
+            font-weight: 600;
+            color: var(--text);
+            line-height: 1;
+            transition: color 0.3s;
+        }
+
+        .gauge-unit { font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px; }
+
+        /* Range Bar */
+        .range-bar {
+            display: flex;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 16px;
+            width: 100%;
+        }
+
+        .range-under { background: var(--blue); flex: 1.5; }
+        .range-normal { background: var(--accent); flex: 2; }
+        .range-over { background: var(--yellow); flex: 1.5; }
+        .range-obese { background: var(--red); flex: 1; }
+
+        .range-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            width: 100%;
+        }
+
+        /* Result Text */
+        .result-status {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+            transition: color 0.3s;
+        }
+
+        .result-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-align: center;
+            max-width: 280px;
+            line-height: 1.6;
+        }
+
+        /* Info Card */
+        .info-card {
+            margin-top: auto;
+            padding: 20px 24px;
+            border-top: 1px solid var(--border);
+            background: var(--surface-hover);
+        }
+
+        .info-title {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 12px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .info-item {
+            text-align: center;
+        }
+
+        .info-item-label { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 4px; }
+
+        .info-item-value { font-size: 1rem; font-weight: 500; }
+
+        /* Footer */
         footer {
             padding: 24px 0;
             border-top: 1px solid var(--border);
@@ -219,12 +332,14 @@
             color: var(--text-secondary);
             font-size: 0.8rem;
         }
-        
+
+        /* Responsive */
         @media (max-width: 768px) {
             .calculator { grid-template-columns: 1fr; }
             nav { display: none; }
-            .gauge-container { width: 240px; height: 140px; }
+            .gauge-container { width: 220px; height: 130px; }
             .gauge-number { font-size: 2.5rem; }
+            .info-grid { grid-template-columns: 1fr; gap: 12px; }
         }
     </style>
 </head>
@@ -253,7 +368,7 @@
         </div>
     </header>
 
-    <main>
+    <main class="container">
         <a href="index.html" class="back-link">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M19 12H5M12 19l-7-7 7-7"/>
@@ -268,153 +383,204 @@
 
         <div class="calculator">
             <div class="form-section">
-                <div class="form-group">
-                    <label class="form-label">Gender</label>
-                    <div class="toggle-group">
-                        <button class="toggle-btn" data-value="male">Male</button>
-                        <button class="toggle-btn active" data-value="female">Female</button>
+                <div class="form-card">
+                    <div class="form-group">
+                        <label class="form-label">Gender</label>
+                        <div class="toggle-group">
+                            <button class="toggle-btn" id="male-btn">Male</button>
+                            <button class="toggle-btn active" id="female-btn">Female</button>
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <label class="form-label">Age</label>
-                    <input type="number" class="form-input" id="age" placeholder="Years" min="2" max="120">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Height</label>
-                    <div class="input-row">
-                        <input type="number" class="form-input" id="feet" placeholder="ft" min="1" max="9">
-                        <input type="number" class="form-input" id="inches" placeholder="in" min="0" max="11">
+                    <div class="form-group">
+                        <label class="form-label">Age</label>
+                        <input type="number" class="form-input" id="age" placeholder="Years" min="2" max="120">
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <label class="form-label">Weight (kg)</label>
-                    <input type="number" class="form-input" id="weight" placeholder="kg" min="20" max="300">
+                    <div class="form-group">
+                        <label class="form-label">Height</label>
+                        <input type="number" class="form-input" id="height" placeholder="cm" min="50" max="300">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Weight (kg)</label>
+                        <input type="number" class="form-input" id="weight" placeholder="kg" min="20" max="300">
+                    </div>
+
+                    <button class="btn" id="calculate-btn">Calculate BMI</button>
                 </div>
             </div>
 
             <div class="result-section">
-                <div class="gauge-container">
-                    <svg class="gauge-bg" viewBox="0 0 280 140">
-                        <defs>
-                            <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" stop-color="#3b82f6"/>
-                                <stop offset="35%" stop-color="#22c55e"/>
-                                <stop offset="55%" stop-color="#eab308"/>
-                                <stop offset="70%" stop-color="#ef4444"/>
-                            </linearGradient>
-                        </defs>
-                        <path d="M 20 140 A 120 120 0 0 1 260 140" 
-                              fill="none" 
-                              stroke="url(#gaugeGrad)" 
-                              stroke-width="16" 
-                              stroke-linecap="round"/>
-                    </svg>
-                    <div class="gauge-value">
-                        <div class="gauge-number" id="bmi-value">--</div>
-                        <div class="gauge-unit">kg/m2</div>
+                <div class="result-header">
+                    <span class="result-title">Your Result</span>
+                </div>
+
+                <div class="result-content">
+                    <div class="gauge-container">
+                        <svg class="gauge-bg" viewBox="0 0 260 130">
+                            <defs>
+                                <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#3b82f6"/>
+                                    <stop offset="35%" stop-color="#22c55e"/>
+                                    <stop offset="55%" stop-color="#eab308"/>
+                                    <stop offset="70%" stop-color="#ef4444"/>
+                                </linearGradient>
+                            </defs>
+                            <path d="M 20 130 A 110 110 0 0 1 240 130" 
+                                  fill="none" 
+                                  stroke="url(#gaugeGrad)" 
+                                  stroke-width="12" 
+                                  stroke-linecap="round"/>
+                        </svg>
+                        <div class="gauge-value">
+                            <div class="gauge-number" id="bmi-value">--</div>
+                            <div class="gauge-unit">kg/m2</div>
+                        </div>
+                    </div>
+
+                    <div class="range-bar">
+                        <div class="range-under"></div>
+                        <div class="range-normal"></div>
+                        <div class="range-over"></div>
+                        <div class="range-obese"></div>
+                    </div>
+                    <div class="range-labels">
+                        <span>15</span>
+                        <span>18.5</span>
+                        <span>25</span>
+                        <span>30</span>
+                        <span>35</span>
+                    </div>
+
+                    <div class="result-status" id="result-status">Enter your details</div>
+                    <p class="result-desc" id="result-desc">Add your measurements to calculate BMI</p>
+                </div>
+
+                <div class="info-card" id="info-card" style="display: none;">
+                    <div class="info-title">Analysis</div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-item-label">Target Range</div>
+                            <div class="info-item-value" id="target-range">--</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">Category</div>
+                            <div class="info-item-value" id="bmi-category">--</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">Risk Level</div>
+                            <div class="info-item-value" id="risk-level">--</div>
+                        </div>
                     </div>
                 </div>
-
-                <div class="range-bar">
-                    <div class="range-under"></div>
-                    <div class="range-normal"></div>
-                    <div class="range-over"></div>
-                    <div class="range-obese"></div>
-                </div>
-                <div class="range-labels">
-                    <span>15</span>
-                    <span>18.5</span>
-                    <span>25</span>
-                    <span>30</span>
-                    <span>35</span>
-                </div>
-
-                <div class="result-class" id="result-class">Enter your details</div>
-                <p class="result-desc" id="result-desc">Add your measurements to calculate BMI</p>
             </div>
         </div>
     </main>
 
     <footer>
-        FitGauge - Precision Fitness Calculators
+        FitGauge — Precision Fitness Calculators
     </footer>
 
     <script>
         let gender = 'female';
-        
-        document.querySelectorAll('.toggle-btn').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                var parent = this.parentElement;
-                parent.querySelectorAll('.toggle-btn').forEach(function(b) {
-                    b.classList.remove('active');
-                });
-                this.classList.add('active');
-                gender = this.dataset.value;
-                calculateBMI();
-            });
+
+        document.getElementById('male-btn').addEventListener('click', function() {
+            document.getElementById('male-btn').classList.add('active');
+            document.getElementById('female-btn').classList.remove('active');
+            gender = 'male';
         });
-        
-        ['feet', 'inches', 'weight', 'age'].forEach(function(id) {
-            document.getElementById(id).addEventListener('input', calculateBMI);
+
+        document.getElementById('female-btn').addEventListener('click', function() {
+            document.getElementById('female-btn').classList.add('active');
+            document.getElementById('male-btn').classList.remove('active');
+            gender = 'female';
         });
-        
+
+        document.getElementById('calculate-btn').addEventListener('click', calculateBMI);
+
         function calculateBMI() {
-            var heightCm = 0;
-            
-            var feet = parseFloat(document.getElementById('feet').value) || 0;
-            var inches = parseFloat(document.getElementById('inches').value) || 0;
-            
-            if (feet || inches) {
-                heightCm = (feet * 30.48) + (inches * 2.54);
-            }
-            
+            var heightCm = parseFloat(document.getElementById('height').value) || 0;
             var weight = parseFloat(document.getElementById('weight').value) || 0;
-            
-            if (!heightCm || !weight) return;
-            
+
+            if (!heightCm || !weight) {
+                alert('Please enter your height and weight');
+                return;
+            }
+
             var heightM = heightCm / 100;
             var bmi = weight / (heightM * heightM);
-            
+
             if (bmi > 10 && bmi < 60) {
                 updateDisplay(bmi);
+            } else {
+                alert('Please enter valid measurements');
             }
         }
-        
+
         function updateDisplay(bmi) {
+            var bmiValue = bmi.toFixed(1);
             var valueEl = document.getElementById('bmi-value');
-            var classEl = document.getElementById('result-class');
+            var statusEl = document.getElementById('result-status');
             var descEl = document.getElementById('result-desc');
-            
-            valueEl.textContent = bmi.toFixed(1);
-            
-            var color, classText, desc;
-            
+            var infoCard = document.getElementById('info-card');
+
+            valueEl.textContent = bmiValue;
+
+            var color, status, desc, category, risk, targetMin, targetMax;
+
             if (bmi < 18.5) {
                 color = '#3b82f6';
-                classText = 'Underweight';
+                status = 'Underweight';
                 desc = 'Your BMI suggests you may be underweight. Consider consulting a healthcare provider.';
+                category = 'Underweight';
+                risk = 'Low';
+                targetMin = Math.round(18.5 * heightM * heightM);
+                targetMax = Math.round(25 * heightM * heightM);
             } else if (bmi < 25) {
                 color = '#22c55e';
-                classText = 'Normal';
+                status = 'Normal';
                 desc = 'Your BMI is within the healthy range. Maintain your current lifestyle.';
+                category = 'Normal';
+                risk = 'Minimal';
+                targetMin = Math.round(18.5 * heightM * heightM);
+                targetMax = Math.round(25 * heightM * heightM);
             } else if (bmi < 30) {
                 color = '#eab308';
-                classText = 'Overweight';
+                status = 'Overweight';
                 desc = 'Your BMI suggests overweight. Consider lifestyle modifications.';
+                category = 'Overweight';
+                risk = 'Moderate';
+                targetMin = Math.round(18.5 * heightM * heightM);
+                targetMax = Math.round(25 * heightM * heightM);
             } else {
                 color = '#ef4444';
-                classText = 'Obesity';
+                status = 'Obese';
                 desc = 'Your BMI indicates obesity. Consult a healthcare provider for personalized advice.';
+                category = 'Obese';
+                risk = 'High';
+                targetMin = Math.round(18.5 * heightM * heightM);
+                targetMax = Math.round(25 * heightM * heightM);
             }
-            
+
             valueEl.style.color = color;
-            classEl.style.color = color;
-            classEl.textContent = classText;
+            statusEl.style.color = color;
+            statusEl.textContent = status;
             descEl.textContent = desc;
+
+            document.getElementById('target-range').textContent = targetMin + '-' + targetMax + ' kg';
+            document.getElementById('bmi-category').textContent = category;
+            document.getElementById('risk-level').textContent = risk;
+            document.getElementById('risk-level').style.color = color;
+
+            infoCard.style.display = 'block';
         }
+
+        // Get heightM for target calculation
+        var heightM = 0;
+        document.getElementById('height').addEventListener('input', function() {
+            heightM = (parseFloat(this.value) || 0) / 100;
+        });
     </script>
 </body>
 </html>
