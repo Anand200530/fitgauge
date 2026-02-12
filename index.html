@@ -3,12 +3,300 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FitGauge</title>
+    <title>FitGauge — Free Fitness Calculators</title>
+    <meta name="description" content="Calculate BMI, BMR, calories, and more. 100% private, always free.">
     <link rel="stylesheet" href="assets/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <meta name="description" content="Precision fitness calculators">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --surface: #161616;
+            --surface-hover: #1f1f1f;
+            --border: #262626;
+            --text: #f5f5f5;
+            --text-secondary: #737373;
+            --accent: #22c55e;
+            --accent-hover: #4ade80;
+            --font: 'Inter', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+        /* Header */
+        header {
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .logo svg { width: 28px; height: 28px; color: var(--accent); }
+
+        nav { display: flex; gap: 28px; }
+
+        nav a {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        nav a:hover { color: var(--text); }
+
+        /* Hero */
+        .hero {
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            max-width: 480px;
+            margin: 0 auto 32px;
+        }
+
+        /* Search */
+        .search-wrapper {
+            max-width: 500px;
+            margin: 0 auto 40px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 4px;
+            transition: border-color 0.2s;
+        }
+
+        .search-box:focus-within {
+            border-color: var(--accent);
+        }
+
+        .search-box svg {
+            width: 20px;
+            height: 20px;
+            color: var(--text-secondary);
+            margin-left: 12px;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 14px 12px;
+            background: transparent;
+            border: none;
+            color: var(--text);
+            font-family: var(--font);
+            font-size: 1rem;
+        }
+
+        .search-box input:focus { outline: none; }
+
+        .search-box input::placeholder { color: var(--text-secondary); }
+
+        /* Quick Access */
+        .quick-access {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 48px;
+        }
+
+        .quick-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .quick-btn:hover {
+            background: var(--surface-hover);
+            border-color: var(--accent);
+            color: var(--text);
+        }
+
+        .quick-btn svg {
+            width: 16px;
+            height: 16px;
+            color: var(--accent);
+        }
+
+        /* Stats */
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+        }
+
+        .stat { text-align: center; }
+
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 4px;
+        }
+
+        /* Categories */
+        section { padding: 48px 0; }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .section-count {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 12px;
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding: 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.2s;
+        }
+
+        .card:hover {
+            background: var(--surface-hover);
+            border-color: var(--accent);
+        }
+
+        .card:hover .card-title {
+            color: var(--accent);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-icon {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--surface-hover);
+            border-radius: 8px;
+        }
+
+        .card-icon svg {
+            width: 20px;
+            height: 20px;
+            color: var(--accent);
+        }
+
+        .card-title {
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .card-desc {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        footer p { margin-bottom: 8px; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .hero-stats { gap: 32px; }
+            .stat-value { font-size: 1.5rem; }
+            .grid { grid-template-columns: 1fr; }
+            nav { display: none; }
+            .quick-access { gap: 8px; }
+            .quick-btn { padding: 8px 12px; font-size: 0.8rem; }
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -37,149 +325,416 @@
 
     <main class="container">
         <section class="hero">
-            <h1>Precision Fitness Instruments</h1>
-            <p>Accurate measurements for your health journey.</p>
+            <h1>Free Fitness Calculators</h1>
+            <p>Calculate BMI, calories, macros, and more. 100% private, always free.</p>
+
+            <!-- Search -->
+            <div class="search-wrapper">
+                <div class="search-box">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="M21 21l-4.35-4.35"/>
+                    </svg>
+                    <input type="text" id="search" placeholder="Search calculators...">
+                </div>
+            </div>
+
+            <!-- Quick Access -->
+            <div class="quick-access">
+                <a href="calculators/bmi.html" class="quick-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2v20M2 12h20"/>
+                    </svg>
+                    BMI
+                </a>
+                <a href="calculators/bmr.html" class="quick-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 6v6l4 2"/>
+                    </svg>
+                    BMR
+                </a>
+                <a href="calculators/tdee.html" class="quick-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                    </svg>
+                    Calories
+                </a>
+                <a href="calculators/1rm.html" class="quick-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 5v14M18 5v14M6 9h12M6 14h12"/>
+                    </svg>
+                    1RM
+                </a>
+                <a href="calculators/body-fat.html" class="quick-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 6v6l4 2"/>
+                    </svg>
+                    Body Fat
+                </a>
+                <a href="calculators/heart-rate-zones.html" class="quick-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                    </svg>
+                    Heart Rate
+                </a>
+            </div>
+
             <div class="hero-stats">
-                <div>
+                <div class="stat">
                     <div class="stat-value">25</div>
                     <div class="stat-label">Calculators</div>
                 </div>
-                <div>
+                <div class="stat">
                     <div class="stat-value">100%</div>
                     <div class="stat-label">Private</div>
                 </div>
-                <div>
+                <div class="stat">
                     <div class="stat-value">Free</div>
                     <div class="stat-label">Forever</div>
                 </div>
             </div>
         </section>
 
+        <!-- Body Measurement -->
         <section id="body">
-            <h2 class="section-title">Body Measurement</h2>
+            <div class="section-header">
+                <h2 class="section-title">Body Measurement</h2>
+                <span class="section-count">6 calculators</span>
+            </div>
             <div class="grid">
                 <a href="calculators/bmi.html" class="card">
-                    <span class="card-title">Body Mass Index</span>
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 2v20M2 12h20"/>
+                            </svg>
+                        </div>
+                        <span class="card-title">Body Mass Index</span>
+                    </div>
                     <span class="card-desc">Standard weight classification</span>
                 </a>
                 <a href="calculators/ideal-weight.html" class="card">
-                    <span class="card-title">Ideal Weight</span>
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+                            </svg>
+                        </div>
+                        <span class="card-title">Ideal Weight</span>
+                    </div>
                     <span class="card-desc">Personalized target range</span>
                 </a>
                 <a href="calculators/body-fat.html" class="card">
-                    <span class="card-title">Body Fat</span>
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 6v6l4 2"/>
+                            </svg>
+                        </div>
+                        <span class="card-title">Body Fat</span>
+                    </div>
                     <span class="card-desc">US Navy method</span>
                 </a>
                 <a href="calculators/lean-mass.html" class="card">
-                    <span class="card-title">Lean Mass</span>
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 5v14M18 5v14M6 9h12M6 14h12"/>
+                            </svg>
+                        </div>
+                        <span class="card-title">Lean Mass</span>
+                    </div>
                     <span class="card-desc">Muscle and bone weight</span>
                 </a>
                 <a href="calculators/waist-height.html" class="card">
-                    <span class="card-title">Waist-to-Height</span>
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="8" width="18" height="12" rx="2"/>
+                                <path d="M12 8v4M8 10h8"/>
+                            </svg>
+                        </div>
+                        <span class="card-title">Waist-to-Height</span>
+                    </div>
                     <span class="card-desc">Simple health indicator</span>
                 </a>
                 <a href="calculators/waist-hip.html" class="card">
-                    <span class="card-title">Waist-to-Hip</span>
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <ellipse cx="12" cy="12" rx="10" ry="6"/>
+                                <path d="M12 2v4M12 18v4"/>
+                            </svg>
+                        </div>
+                        <span class="card-title">Waist-to-Hip</span>
+                    </div>
                     <span class="card-desc">Cardiovascular risk</span>
                 </a>
             </div>
         </section>
 
+        <!-- Energy & Metabolism -->
         <section id="energy">
-            <h2 class="section-title">Energy & Metabolism</h2>
+            <div class="section-header">
+                <h2 class="section-title">Energy & Metabolism</h2>
+                <span class="section-count">5 calculators</span>
+            </div>
             <div class="grid">
                 <a href="calculators/bmr.html" class="card">
-                    <span class="card-title">Basal Metabolic Rate</span>
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2v20M2 12h20"/>
+                                <circle cx="12" cy="12" r="10"/>
+                            </svg>
+                        </div>
+                        <span class="card-title">Basal Metabolic Rate</span>
+                    </div>
                     <span class="card-desc">Daily calories at rest</span>
                 </a>
                 <a href="calculators/tdee.html" class="card">
-                    <span class="card-title">TDEE</span>
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                            </svg>
+                        </div>
+                        <span class="card-title">TDEE</span>
+                    </div>
                     <span class="card-desc">Total daily energy</span>
                 </a>
                 <a href="calculators/calorie-needs.html" class="card">
-                    <span class="card-title">Calorie Needs</span>
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2"/>
+                                <path d="M12 6v6l4 2"/>
+                            </svg>
+                        </div>
+                        <span class="card-title">Calorie Needs</span>
+                    </div>
                     <span class="card-desc">Personalized targets</span>
                 </a>
                 <a href="calculators/maintenance-calories.html" class="card">
-                    <span class="card-title">Maintenance</span>
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 6v6l4 2"/>
+                            </svg>
+                        </div>
+                        <span class="card-title">Maintenance</span>
+                    </div>
                     <span class="card-desc">Stay at current weight</span>
                 </a>
                 <a href="calculators/weight-loss-timeline.html" class="card">
-                    <span class="card-title">Weight Loss Timeline</span>
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                            </svg>
+                        </div>
+                        <span class="card-title">Weight Loss Timeline</span>
+                    </div>
                     <span class="card-desc">Realistic projections</span>
                 </a>
             </div>
         </section>
 
+        <!-- Nutrition -->
         <section id="nutrition">
-            <h2 class="section-title">Nutrition</h2>
+            <div class="section-header">
+                <h2 class="section-title">Nutrition</h2>
+                <span class="section-count">4 calculators</span>
+            </div>
             <div class="grid">
                 <a href="calculators/protein.html" class="card">
-                    <span class="card-title">Protein</span>
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                <path d="M2 17l10 5 10-5"/>
+                                <path d="M2 12l10 5 10-5"/>
+                            </svg>
+                        </div>
+                        <span class="card-title">Protein</span>
+                    </div>
                     <span class="card-desc">Based on activity level</span>
                 </a>
                 <a href="calculators/macro-split.html" class="card">
-                    <span class="card-title">Macros</span>
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                <path d="M3 9h18M9 21V9"/>
+                            </svg>
+                        </div>
+                        <span class="card-title">Macros</span>
+                    </div>
                     <span class="card-desc">Balanced nutrition</span>
                 </a>
                 <a href="calculators/water-intake.html" class="card">
-                    <span class="card-title">Water Intake</span>
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+                            </svg>
+                        </div>
+                        <span class="card-title">Water Intake</span>
+                    </div>
                     <span class="card-desc">Hydration targets</span>
                 </a>
                 <a href="calculators/meal-frequency.html" class="card">
-                    <span class="card-title">Meal Frequency</span>
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 6v6l4 2"/>
+                            </svg>
+                        </div>
+                        <span class="card-title">Meal Frequency</span>
+                    </div>
                     <span class="card-desc">Optimal eating pattern</span>
                 </a>
             </div>
         </section>
 
+        <!-- Fitness -->
         <section id="fitness">
-            <h2 class="section-title">Fitness & Performance</h2>
+            <div class="section-header">
+                <h2 class="section-title">Fitness & Performance</h2>
+                <span class="section-count">4 calculators</span>
+            </div>
             <div class="grid">
                 <a href="calculators/1rm.html" class="card">
-                    <span class="card-title">One-Rep Max</span>
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 5v14M18 5v14M6 9h12M6 14h12"/>
+                            </svg>
+                        </div>
+                        <span class="card-title">One-Rep Max</span>
+                    </div>
                     <span class="card-desc">Strength measurement</span>
                 </a>
                 <a href="calculators/heart-rate-zones.html" class="card">
-                    <span class="card-title">Heart Rate Zones</span>
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                            </svg>
+                        </div>
+                        <span class="card-title">Heart Rate Zones</span>
+                    </div>
                     <span class="card-desc">Training intensity</span>
                 </a>
                 <a href="calculators/calories-burned.html" class="card">
-                    <span class="card-title">Calories Burned</span>
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                            </svg>
+                        </div>
+                        <span class="card-title">Calories Burned</span>
+                    </div>
                     <span class="card-desc">Activity-based</span>
                 </a>
                 <a href="calculators/running-pace.html" class="card">
-                    <span class="card-title">Running Pace</span>
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 8v8M8 12h8"/>
+                            </svg>
+                        </div>
+                        <span class="card-title">Running Pace</span>
+                    </div>
                     <span class="card-desc">Speed & time estimates</span>
                 </a>
             </div>
         </section>
 
+        <!-- Goals -->
         <section id="goals">
-            <h2 class="section-title">Goals & Planning</h2>
+            <div class="section-header">
+                <h2 class="section-title">Goals & Planning</h2>
+                <span class="section-count">6 calculators</span>
+            </div>
             <div class="grid">
                 <a href="calculators/weight-gain.html" class="card">
-                    <span class="card-title">Weight Gain</span>
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2v20M2 12h20"/>
+                            </svg>
+                        </div>
+                        <span class="card-title">Weight Gain</span>
+                    </div>
                     <span class="card-desc">Muscle building plan</span>
                 </a>
                 <a href="calculators/fat-loss.html" class="card">
-                    <span class="card-title">Fat Loss</span>
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                            </svg>
+                        </div>
+                        <span class="card-title">Fat Loss</span>
+                    </div>
                     <span class="card-desc">Timeline estimates</span>
                 </a>
                 <a href="calculators/rebound-prevention.html" class="card">
-                    <span class="card-title">Rebound Prevention</span>
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 6v6l4 2"/>
+                            </svg>
+                        </div>
+                        <span class="card-title">Rebound Prevention</span>
+                    </div>
                     <span class="card-desc">Post-diet maintenance</span>
                 </a>
                 <a href="calculators/body-shape.html" class="card">
-                    <span class="card-title">Body Shape</span>
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <circle cx="12" cy="12" r="4"/>
+                            </svg>
+                        </div>
+                        <span class="card-title">Body Shape</span>
+                    </div>
                     <span class="card-desc">Classification</span>
                 </a>
                 <a href="calculators/somatotype.html" class="card">
-                    <span class="card-title">Somatotype</span>
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/>
+                                <path d="M19 10v1a7 7 0 0 1-14 0v-1"/>
+                                <path d="M12 19v4M8 22h8"/>
+                            </svg>
+                        </div>
+                        <span class="card-title">Somatotype</span>
+                    </div>
                     <span class="card-desc">Body type analysis</span>
                 </a>
                 <a href="calculators/fitness-age.html" class="card">
-                    <span class="card-title">Fitness Age</span>
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 6v6l4 2"/>
+                            </svg>
+                        </div>
+                        <span class="card-title">Fitness Age</span>
+                    </div>
                     <span class="card-desc">Compare to biological age</span>
                 </a>
             </div>
@@ -188,9 +743,44 @@
 
     <footer>
         <div class="container">
-            <p>FitGauge — Precision Fitness Calculators</p>
-            <p>100% client-side. No tracking. No cookies.</p>
+            <p>FitGauge — Free Fitness Calculators</p>
+            <p style="color: var(--text-secondary); font-size: 0.8rem;">100% client-side. No tracking. No cookies.</p>
         </div>
     </footer>
+
+    <script>
+        // Simple search filter
+        document.getElementById('search').addEventListener('input', function(e) {
+            var query = e.target.value.toLowerCase();
+            var cards = document.querySelectorAll('.card');
+            var sections = document.querySelectorAll('section');
+            
+            cards.forEach(function(card) {
+                var title = card.querySelector('.card-title').textContent.toLowerCase();
+                var desc = card.querySelector('.card-desc').textContent.toLowerCase();
+                
+                if (title.indexOf(query) > -1 || desc.indexOf(query) > -1) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Hide empty sections
+            sections.forEach(function(section) {
+                var visibleCards = section.querySelectorAll('.card[style="display: flex;"]');
+                var allCards = section.querySelectorAll('.card');
+                if (allCards.length > 0) {
+                    var hasVisible = false;
+                    allCards.forEach(function(card) {
+                        if (card.style.display !== 'none') {
+                            hasVisible = true;
+                        }
+                    });
+                    section.style.display = hasVisible ? 'block' : 'none';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
