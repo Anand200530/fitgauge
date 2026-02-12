@@ -3,22 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FitGauge - Precision Fitness Instruments</title>
-    <link rel="stylesheet" href="assets/instrument-styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-    <meta name="description" content="Precision fitness and health instruments">
+    <title>FitGauge</title>
+    <link rel="stylesheet" href="assets/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <meta name="description" content="Precision fitness calculators">
     <style>
         :root {
-            --bg-primary: #0d0d0d;
-            --bg-secondary: #1a1a1a;
-            --bg-tertiary: #252525;
-            --border: #333;
-            --text-primary: #e0e0e0;
-            --text-secondary: #888;
-            --text-muted: #555;
-            --accent: #00ff88;
-            --accent-dim: #00aa55;
-            --font-mono: 'JetBrains Mono', monospace;
+            --bg: #0a0a0a;
+            --surface: #161616;
+            --surface-hover: #202020;
+            --border: #2a2a2a;
+            --text: #ffffff;
+            --text-secondary: #888888;
+            --accent: #22c55e;
+            --accent-hover: #4ade80;
         }
 
         * {
@@ -28,276 +26,202 @@
         }
 
         body {
-            font-family: var(--font-mono);
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            min-height: 100vh;
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
         }
 
         /* Header */
-        .header {
-            background: var(--bg-secondary);
+        header {
+            padding: 24px 0;
             border-bottom: 1px solid var(--border);
-            padding: 16px 24px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
         }
 
-        .header-content {
+        header .container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 1400px;
-            margin: 0 auto;
         }
 
         .logo {
             display: flex;
             align-items: center;
             gap: 12px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text);
         }
 
-        .logo-icon {
-            width: 32px;
-            height: 32px;
+        .logo svg {
+            width: 28px;
+            height: 28px;
             color: var(--accent);
         }
 
-        .logo-text {
-            font-size: 1.25rem;
-            font-weight: 700;
-        }
-
-        .nav {
+        nav {
             display: flex;
-            gap: 24px;
+            gap: 32px;
         }
 
-        .nav a {
+        nav a {
             color: var(--text-secondary);
             text-decoration: none;
-            font-size: 0.875rem;
+            font-size: 0.9rem;
             transition: color 0.2s;
         }
 
-        .nav a:hover {
-            color:        }
-
-        /* Main */
-        main var(--accent);
- {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 40px 24px;
+        nav a:hover {
+            color: var(--text);
         }
 
         /* Hero */
         .hero {
+            padding: 80px 0;
             text-align: center;
-            margin-bottom: 48px;
-            padding: 40px;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 16px;
         }
 
-        .hero-title {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 8px;
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
         }
 
-        .hero-subtitle {
+        .hero p {
             color: var(--text-secondary);
-            margin-bottom: 24px;
+            font-size: 1.1rem;
+            max-width: 500px;
+            margin: 0 auto;
         }
 
-        .stats-row {
+        .hero-stats {
             display: flex;
             justify-content: center;
             gap: 48px;
+            margin-top: 40px;
         }
 
-        .stat-item {
+        .stat {
             text-align: center;
         }
 
         .stat-value {
-            font-size: 1.5rem;
-            font-weight: 700;
+            font-size: 2rem;
+            font-weight: 600;
             color: var(--accent);
         }
 
         .stat-label {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
         }
 
-        /* Category */
-        .category {
-            margin-bottom: 48px;
+        /* Categories */
+        section {
+            padding: 60px 0;
         }
 
-        .category-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 24px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .category-number {
-            font-size: 0.75rem;
-            color: var(--accent);
-            background: var(--bg-secondary);
-            padding: 4px 8px;
-            border-radius: 4px;
-            border: 1px solid var(--border);
-        }
-
-        .category-title {
-            font-size: 0.875rem;
+        .section-title {
+            font-size: 0.85rem;
             color: var(--text-secondary);
             text-transform: uppercase;
             letter-spacing: 0.1em;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
         }
 
-        /* Instrument Grid */
-        .instrument-grid {
+        .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 16px;
         }
 
-        .instrument-link {
+        .card {
             display: block;
-            background: var(--bg-secondary);
+            background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 20px;
+            padding: 24px;
             text-decoration: none;
-            color: var(--text-primary);
+            color: var(--text);
             transition: all 0.2s;
-            position: relative;
-            overflow: hidden;
         }
 
-        .instrument-link::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--accent);
-            opacity: 0;
-            transition: opacity 0.2s;
-        }
-
-        .instrument-link:hover {
+        .card:hover {
+            background: var(--surface-hover);
             border-color: var(--accent);
-            transform: translateY(-2px);
         }
 
-        .instrument-link:hover::before {
-            opacity: 1;
-        }
-
-        .instrument-header {
+        .card-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             margin-bottom: 12px;
         }
 
-        .instrument-icon-small {
-            width: 24px;
-            height: 24px;
-            color: var(--accent);
-            opacity: 0.7;
+        .card-title {
+            font-size: 1rem;
+            font-weight: 500;
         }
 
-        .instrument-num {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            font-family: var(--font-mono);
-        }
-
-        .instrument-name {
-            font-size: 0.875rem;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .instrument-desc {
+        .card-number {
             font-size: 0.75rem;
             color: var(--text-secondary);
-            line-height: 1.4;
+            font-family: monospace;
+        }
+
+        .card-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
         }
 
         /* Footer */
-        .footer {
+        footer {
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
             text-align: center;
-            padding: 32px 24px;
-            border-top: 1px solid var(--border);
-            color: var(--text-muted);
-            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
         }
 
-        /* Status Bar */
-        .status-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: var(--bg-secondary);
-            border-top: 1px solid var(--border);
-            padding: 8px 24px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.7rem;
-            color: var(--text-muted);
+        footer p {
+            margin-bottom: 8px;
         }
 
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--accent);
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 8px;
-        }
-
-        body {
-            padding-bottom: 40px;
-        }
-
+        /* Responsive */
         @media (max-width: 768px) {
-            .stats-row {
-                gap: 24px;
+            .hero h1 {
+                font-size: 2rem;
             }
             
-            .instrument-grid {
-                grid-template-columns: 1fr 1fr;
+            .hero-stats {
+                gap: 32px;
             }
-        }
-
-        @media (max-width: 480px) {
-            .instrument-grid {
+            
+            .grid {
                 grid-template-columns: 1fr;
+            }
+            
+            nav {
+                display: none;
             }
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="header-content">
-            <div class="logo">
-                <svg class="logo-icon" viewBox="0 0 40 40" fill="none">
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <svg viewBox="0 0 40 40" fill="none">
                     <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/>
                     <circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/>
                     <circle cx="20" cy="20" r="6" fill="currentColor"/>
@@ -306,9 +230,9 @@
                     <line x1="2" y1="20" x2="6" y2="20" stroke="currentColor" stroke-width="1.5"/>
                     <line x1="34" y1="20" x2="38" y2="20" stroke="currentColor" stroke-width="1.5"/>
                 </svg>
-                <span class="logo-text">FitGauge</span>
-            </div>
-            <nav class="nav">
+                FitGauge
+            </a>
+            <nav>
                 <a href="#body">Body</a>
                 <a href="#energy">Energy</a>
                 <a href="#nutrition">Nutrition</a>
@@ -318,367 +242,237 @@
         </div>
     </header>
 
-    <main>
-        <!-- Hero -->
+    <main class="container">
         <section class="hero">
-            <h1 class="hero-title">Precision Fitness Instruments</h1>
-            <p class="hero-subtitle">Accurate measurements. Clean design. Your health, quantified.</p>
-            <div class="stats-row">
-                <div class="stat-item">
+            <h1>Precision Fitness Instruments</h1>
+            <p>Accurate measurements for your health journey. Clean, private, and always free.</p>
+            <div class="hero-stats">
+                <div class="stat">
                     <div class="stat-value">25</div>
-                    <div class="stat-label">Instruments</div>
+                    <div class="stat-label">Calculators</div>
                 </div>
-                <div class="stat-item">
+                <div class="stat">
                     <div class="stat-value">100%</div>
                     <div class="stat-label">Private</div>
                 </div>
-                <div class="stat-item">
+                <div class="stat">
                     <div class="stat-value">Free</div>
                     <div class="stat-label">Forever</div>
                 </div>
             </div>
         </section>
 
-        <!-- Body Measurement -->
-        <section id="body" class="category">
-            <div class="category-header">
-                <span class="category-number">█ 01</span>
-                <span class="category-title">Body Measurement</span>
-            </div>
-            <div class="instrument-grid">
-                <a href="calculators/bmi.html" class="instrument-link">
-                    <div class="instrument-header">
-                        <svg class="instrument-icon-small" viewBox="0 0 24 24" fill="none">
-                            <rect x="2" y="4" width="20" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/>
-                            <line x1="6" y1="10" x2="18" y2="10" stroke="currentColor" stroke-width="1.5"/>
-                            <line x1="6" y1="14" x2="14" y2="14" stroke="currentColor" stroke-width="1.5"/>
-                        </svg>
-                        <span class="instrument-num">01</span>
+        <section id="body">
+            <h2 class="section-title">Body Measurement</h2>
+            <div class="grid">
+                <a href="calculators/bmi.html" class="card">
+                    <div class="card-header">
+                        <span class="card-title">Body Mass Index</span>
+                        <span class="card-number">01</span>
                     </div>
-                    <div class="instrument-name">BMI</div>
-                    <div class="instrument-desc">Body Mass Index</div>
+                    <p class="card-desc">Standard weight classification</p>
                 </a>
-                <a href="calculators/ideal-weight.html" class="instrument-link">
-                    <div class="instrument-header">
-                        <svg class="instrument-icon-small" viewBox="0 0 24 24" fill="none">
-                            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/>
-                            <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5"/>
-                        </svg>
-                        <span class="instrument-num">02</span>
+                <a href="calculators/ideal-weight.html" class="card">
+                    <div class="card-header">
+                        <span class="card-title">Ideal Weight</span>
+                        <span class="card-number">02</span>
                     </div>
-                    <div class="instrument-name">Ideal Weight</div>
-                    <div class="instrument-desc">Target range</div>
+                    <p class="card-desc">Personalized target range</p>
                 </a>
-                <a href="calculators/body-fat.html" class="instrument-link">
-                    <div class="instrument-header">
-                        <svg class="instrument-icon-small" viewBox="0 0 24 24" fill="none">
-                            <path d="M12 2 L22 6 L22 14 C22 18 12 22 12 22 C12 22 2 18 2 14 L2 6 Z" stroke="currentColor" stroke-width="1.5"/>
-                        </svg>
-                        <span class="instrument-num">03</span>
+                <a href="calculators/body-fat.html" class="card">
+                    <div class="card-header">
+                        <span class="card-title">Body Fat</span>
+                        <span class="card-number">03</span>
                     </div>
-                    <div class="instrument-name">Body Fat</div>
-                    <div class="instrument-desc">US Navy method</div>
+                    <p class="card-desc">US Navy method</p>
                 </a>
-                <a href="calculators/lean-mass.html" class="instrument-link">
-                    <div class="instrument-header">
-                        <svg class="instrument-icon-small" viewBox="0 0 24 24" fill="none">
-                            <rect x="4" y="6" width="16" height="12" rx="1" stroke="currentColor" stroke-width="1.5"/>
-                            <line x1="4" y1="10" x2="20" y2="10" stroke="currentColor" stroke-width="1.5"/>
-                        </svg>
-                        <span class="instrument-num">04</span>
+                <a href="calculators/lean-mass.html" class="card">
+                    <div class="card-header">
+                        <span class="card-title">Lean Mass</span>
+                        <span class="card-number">04</span>
                     </div>
-                    <div class="instrument-name">Lean Mass</div>
-                    <div class="instrument-desc">Muscle & bone</div>
+                    <p class="card-desc">Muscle and bone weight</p>
                 </a>
-                <a href="calculators/waist-height.html" class="instrument-link">
-                    <div class="instrument-header">
-                        <svg class="instrument-icon-small" viewBox="0 0 24 24" fill="none">
-                            <line x1="12" y1="2" x2="12" y2="22" stroke="currentColor" stroke-width="1.5"/>
-                            <line x1="4" y1="10" x2="20" y2="10" stroke="currentColor" stroke-width="1.5"/>
-                        </svg>
-                        <span class="instrument-num">05</span>
+                <a href="calculators/waist-height.html" class="card">
+                    <div class="card-header">
+                        <span class="card-title">Waist-to-Height</span>
+                        <span class="card-number">05</span>
                     </div>
-                    <div class="instrument-name">Waist-Height</div>
-                    <div class="instrument-desc">Health ratio</div>
+                    <p class="card-desc">Simple health indicator</p>
                 </a>
-                <a href="calculators/waist-hip.html" class="instrument-link">
-                    <div class="instrument-header">
-                        <svg class="instrument-icon-small" viewBox="0 0 24 24" fill="none">
-                            <ellipse cx="12" cy="8" rx="8" ry="5" stroke="currentColor" stroke-width="1.5"/>
-                            <ellipse cx="12" cy="16" rx="6" ry="4" stroke="currentColor" stroke-width="1.5"/>
-                        </svg>
-                        <span class="instrument-num">06</span>
+                <a href="calculators/waist-hip.html" class="card">
+                    <div class="card-header">
+                        <span class="card-title">Waist-to-Hip</span>
+                        <span class="card-number">06</span>
                     </div>
-                    <div class="instrument-name">Waist-Hip</div>
-                    <div class="instrument-desc">Risk assessment</div>
+                    <p class="card-desc">Cardiovascular risk</p>
                 </a>
             </div>
         </section>
 
-        <!-- Energy -->
-        <section id="energy" class="category">
-            <div class="category-header">
-                <span class="category-number">█ 02</span>
-                <span class="category-title">Energy & Metabolism</span>
-            </div>
-            <div class="instrument-grid">
-                <a href="calculators/bmr.html" class="instrument-link">
-                    <div class="instrument-header">
-                        <svg class="instrument-icon-small" viewBox="0 0 24 24" fill="none">
-                            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/>
-                            <path d="M12 6 L12 12 L16 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                        </svg>
-                        <span class="instrument-num">07</span>
+        <section id="energy">
+            <h2 class="section-title">Energy & Metabolism</h2>
+            <div class="grid">
+                <a href="calculators/bmr.html" class="card">
+                    <div class="card-header">
+                        <span class="card-title">Basal Metabolic Rate</span>
+                        <span class="card-number">07</span>
                     </div>
-                    <div class="instrument-name">BMR</div>
-                    <div class="instrument-desc">Basal Metabolic Rate</div>
+                    <p class="card-desc">Daily calories at rest</p>
                 </a>
-                <a href="calculators/tdee.html" class="instrument-link">
-                    <div class="instrument-header">
-                        <svg class="instrument-icon-small" viewBox="0 0 24 24" fill="none">
-                            <circle cx="12" cy="12" r="7" stroke="currentColor" stroke-width="1.5"/>
-                            <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/>
-                        </svg>
-                        <span class="instrument-num">08</span>
+                <a href="calculators/tdee.html" class="card">
+                    <div class="card-header">
+                        <span class="card-title">TDEE</span>
+                        <span class="card-number">08</span>
                     </div>
-                    <div class="instrument-name">TDEE</div>
-                    <div class="instrument-desc">Daily expenditure</div>
+                    <p class="card-desc">Total daily energy</p>
                 </a>
-                <a href="calculators/calorie-needs.html" class="instrument-link">
-                    <div class="instrument-header">
-                        <svg class="instrument-icon-small" viewBox="0 0 24 24" fill="none">
-                            <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/>
-                            <text x="12" y="16" text-anchor="middle" fill="currentColor" font-size="8" font-weight="bold">CAL</text>
-                        </svg>
-                        <span class="instrument-num">09</span>
+                <a href="calculators/calorie-needs.html" class="card">
+                    <div class="card-header">
+                        <span class="card-title">Calorie Needs</span>
+                        <span class="card-number">09</span>
                     </div>
-                    <div class="instrument-name">Calorie Needs</div>
-                    <div class="instrument-desc">Daily targets</div>
+                    <p class="card-desc">Personalized targets</p>
                 </a>
-                <a href="calculators/maintenance-calories.html" class="instrument-link">
-                    <div class="instrument-header">
-                        <svg class="instrument-icon-small" viewBox="0 0 24 24" fill="none">
-                            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/>
-                            <path d="M12 7 L12 12 L16 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                        </svg>
-                        <span class="instrument-num">10</span>
+                <a href="calculators/maintenance-calories.html" class="card">
+                    <div class="card-header">
+                        <span class="card-title">Maintenance</span>
+                        <span class="card-number">10</span>
                     </div>
-                    <div class="instrument-name">Maintenance</div>
-                    <div class="instrument-desc">Stay at weight</div>
+                    <p class="card-desc">Stay at current weight</p>
                 </a>
-                <a href="calculators/weight-loss-timeline.html" class="instrument-link">
-                    <div class="instrument-header">
-                        <svg class="instrument-icon-small" viewBox="0 0 24 24" fill="none">
-                            <line x1="4" y1="20" x2="20" y2="4" stroke="currentColor" stroke-width="1.5"/>
-                            <circle cx="12" cy="12" r="2" fill="currentColor"/>
-                        </svg>
-                        <span class="instrument-num">11</span>
+                <a href="calculators/weight-loss-timeline.html" class="card">
+                    <div class="card-header">
+                        <span class="card-title">Weight Loss Timeline</span>
+                        <span class="card-number">11</span>
                     </div>
-                    <div class="instrument-name">Weight Timeline</div>
-                    <div class="instrument-desc">Projections</div>
+                    <p class="card-desc">Realistic projections</p>
                 </a>
             </div>
         </section>
 
-        <!-- Nutrition -->
-        <section id="nutrition" class="category">
-            <div class="category-header">
-                <span class="category-number">█ 03</span>
-                <span class="category-title">Nutrition</span>
-            </div>
-            <div class="instrument-grid">
-                <a href="calculators/protein.html" class="instrument-link">
-                    <div class="instrument-header">
-                        <svg class="instrument-icon-small" viewBox="0 0 24 24" fill="none">
-                            <rect x="6" y="4" width="12" height="16" rx="1" stroke="currentColor" stroke-width="1.5"/>
-                            <line x1="6" y1="8" x2="18" y2="8" stroke="currentColor" stroke-width="1.5"/>
-                            <line x1="6" y1="12" x2="18" y2="12" stroke="currentColor" stroke-width="1.5"/>
-                        </svg>
-                        <span class="instrument-num">12</span>
+        <section id="nutrition">
+            <h2 class="section-title">Nutrition</h2>
+            <div class="grid">
+                <a href="calculators/protein.html" class="card">
+                    <div class="card-header">
+                        <span class="card-title">Protein</span>
+                        <span class="card-number">12</span>
                     </div>
-                    <div class="instrument-name">Protein</div>
-                    <div class="instrument-desc">Requirements</div>
+                    <p class="card-desc">Based on activity level</p>
                 </a>
-                <a href="calculators/macro-split.html" class="instrument-link">
-                    <div class="instrument-header">
-                        <svg class="instrument-icon-small" viewBox="0 0 24 24" fill="none">
-                            <circle cx="8" cy="12" r="4" stroke="currentColor" stroke-width="1.5"/>
-                            <circle cx="16" cy="12" r="4" stroke="currentColor" stroke-width="1.5"/>
-                            <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5"/>
-                        </svg>
-                        <span class="instrument-num">13</span>
+                <a href="calculators/macro-split.html" class="card">
+                    <div class="card-header">
+                        <span class="card-title">Macros</span>
+                        <span class="card-number">13</span>
                     </div>
-                    <div class="instrument-name">Macros</div>
-                    <div class="instrument-desc">Nutrient ratios</div>
+                    <p class="card-desc">Balanced nutrition</p>
                 </a>
-                <a href="calculators/water-intake.html" class="instrument-link">
-                    <div class="instrument-header">
-                        <svg class="instrument-icon-small" viewBox="0 0 24 24" fill="none">
-                            <path d="M12 4 C12 4 4 10 4 14 C4 18 8 20 12 20 C16 20 20 18 20 14 C20 10 12 4 12 4 Z" stroke="currentColor" stroke-width="1.5"/>
-                        </svg>
-                        <span class="instrument-num">14</span>
+                <a href="calculators/water-intake.html" class="card">
+                    <div class="card-header">
+                        <span class="card-title">Water Intake</span>
+                        <span class="card-number">14</span>
                     </div>
-                    <div class="instrument-name">Water</div>
-                    <div class="instrument-desc">Hydration</div>
+                    <p class="card-desc">Hydration targets</p>
                 </a>
-                <a href="calculators/meal-frequency.html" class="instrument-link">
-                    <div class="instrument-header">
-                        <svg class="instrument-icon-small" viewBox="0 0 24 24" fill="none">
-                            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/>
-                            <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.5"/>
-                            <circle cx="12" cy="12" r="1" fill="currentColor"/>
-                        </svg>
-                        <span class="instrument-num">15</span>
+                <a href="calculators/meal-frequency.html" class="card">
+                    <div class="card-header">
+                        <span class="card-title">Meal Frequency</span>
+                        <span class="card-number">15</span>
                     </div>
-                    <div class="instrument-name">Meal Freq</div>
-                    <div class="instrument-desc">Eating patterns</div>
+                    <p class="card-desc">Optimal eating pattern</p>
                 </a>
             </div>
         </section>
 
-        <!-- Fitness -->
-        <section id="fitness" class="category">
-            <div class="category-header">
-                <span class="category-number">█ 04</span>
-                <span class="category-title">Fitness & Performance</span>
-            </div>
-            <div class="instrument-grid">
-                <a href="calculators/1rm.html" class="instrument-link">
-                    <div class="instrument-header">
-                        <svg class="instrument-icon-small" viewBox="0 0 24 24" fill="none">
-                            <rect x="4" y="10" width="16" height="4" rx="1" stroke="currentColor" stroke-width="1.5"/>
-                            <rect x="10" y="4" width="4" height="16" rx="1" stroke="currentColor" stroke-width="1.5"/>
-                        </svg>
-                        <span class="instrument-num">16</span>
+        <section id="fitness">
+            <h2 class="section-title">Fitness & Performance</h2>
+            <div class="grid">
+                <a href="calculators/1rm.html" class="card">
+                    <div class="card-header">
+                        <span class="card-title">One-Rep Max</span>
+                        <span class="card-number">16</span>
                     </div>
-                    <div class="instrument-name">1RM</div>
-                    <div class="instrument-desc">Strength max</div>
+                    <p class="card-desc">Strength measurement</p>
                 </a>
-                <a href="calculators/heart-rate-zones.html" class="instrument-link">
-                    <div class="instrument-header">
-                        <svg class="instrument-icon-small" viewBox="0 0 24 24" fill="none">
-                            <path d="M4 12 L8 12 L10 8 L14 16 L18 10 L20 12 L24 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        <span class="instrument-num">17</span>
+                <a href="calculators/heart-rate-zones.html" class="card">
+                    <div class="card-header">
+                        <span class="card-title">Heart Rate Zones</span>
+                        <span class="card-number">17</span>
                     </div>
-                    <div class="instrument-name">Heart Rate</div>
-                    <div class="instrument-desc">Training zones</div>
+                    <p class="card-desc">Training intensity</p>
                 </a>
-                <a href="calculators/calories-burned.html" class="instrument-link">
-                    <div class="instrument-header">
-                        <svg class="instrument-icon-small" viewBox="0 0 24 24" fill="none">
-                            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/>
-                            <path d="M12 6 L12 12 L16 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                        </svg>
-                        <span class="instrument-num">18</span>
+                <a href="calculators/calories-burned.html" class="card">
+                    <div class="card-header">
+                        <span class="card-title">Calories Burned</span>
+                        <span class="card-number">18</span>
                     </div>
-                    <div class="instrument-name">Calories</div>
-                    <div class="instrument-desc">Burned</div>
+                    <p class="card-desc">Activity-based</p>
                 </a>
-                <a href="calculators/running-pace.html" class="instrument-link">
-                    <div class="instrument-header">
-                        <svg class="instrument-icon-small" viewBox="0 0 24 24" fill="none">
-                            <circle cx="8" cy="16" r="3" stroke="currentColor" stroke-width="1.5"/>
-                            <circle cx="16" cy="10" r="2" stroke="currentColor" stroke-width="1.5"/>
-                            <path d="M8 16 L12 12 L16 10" stroke="currentColor" stroke-width="1.5"/>
-                        </svg>
-                        <span class="instrument-num">19</span>
+                <a href="calculators/running-pace.html" class="card">
+                    <div class="card-header">
+                        <span class="card-title">Running Pace</span>
+                        <span class="card-number">19</span>
                     </div>
-                    <div class="instrument-name">Running</div>
-                    <div class="instrument-desc">Pace & time</div>
+                    <p class="card-desc">Speed & time estimates</p>
                 </a>
             </div>
         </section>
 
-        <!-- Goals -->
-        <section id="goals" class="category">
-            <div class="category-header">
-                <span class="category-number">█ 05</span>
-                <span class="category-title">Goals & Planning</span>
-            </div>
-            <div class="instrument-grid">
-                <a href="calculators/weight-gain.html" class="instrument-link">
-                    <div class="instrument-header">
-                        <svg class="instrument-icon-small" viewBox="0 0 24 24" fill="none">
-                            <path d="M4 20 L4 12 L8 8 L16 8 L20 12 L20 20" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-                            <line x1="4" y1="20" x2="20" y2="20" stroke="currentColor" stroke-width="1.5"/>
-                        </svg>
-                        <span class="instrument-num">20</span>
+        <section id="goals">
+            <h2 class="section-title">Goals & Planning</h2>
+            <div class="grid">
+                <a href="calculators/weight-gain.html" class="card">
+                    <div class="card-header">
+                        <span class="card-title">Weight Gain</span>
+                        <span class="card-number">20</span>
                     </div>
-                    <div class="instrument-name">Weight Gain</div>
-                    <div class="instrument-desc">Muscle building</div>
+                    <p class="card-desc">Muscle building plan</p>
                 </a>
-                <a href="calculators/fat-loss.html" class="instrument-link">
-                    <div class="instrument-header">
-                        <svg class="instrument-icon-small" viewBox="0 0 24 24" fill="none">
-                            <path d="M4 4 L4 12 L8 16 L16 8 L20 12 L20 4" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-                            <line x1="4" y1="4" x2="20" y2="4" stroke="currentColor" stroke-width="1.5"/>
-                        </svg>
-                        <span class="instrument-num">21</span>
+                <a href="calculators/fat-loss.html" class="card">
+                    <div class="card-header">
+                        <span class="card-title">Fat Loss</span>
+                        <span class="card-number">21</span>
                     </div>
-                    <div class="instrument-name">Fat Loss</div>
-                    <div class="instrument-desc">Timeline</div>
+                    <p class="card-desc">Timeline estimates</p>
                 </a>
-                <a href="calculators/rebound-prevention.html" class="instrument-link">
-                    <div class="instrument-header">
-                        <svg class="instrument-icon-small" viewBox="0 0 24 24" fill="none">
-                            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/>
-                            <line x1="12" y1="6" x2="12" y2="12" stroke="currentColor" stroke-width="1.5"/>
-                            <line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" stroke-width="1.5"/>
-                        </svg>
-                        <span class="instrument-num">22</span>
+                <a href="calculators/rebound-prevention.html" class="card">
+                    <div class="card-header">
+                        <span class="card-title">Rebound Prevention</span>
+                        <span class="card-number">22</span>
                     </div>
-                    <div class="instrument-name">Rebound</div>
-                    <div class="instrument-desc">Prevention</div>
+                    <p class="card-desc">Post-diet maintenance</p>
                 </a>
-                <a href="calculators/body-shape.html" class="instrument-link">
-                    <div class="instrument-header">
-                        <svg class="instrument-icon-small" viewBox="0 0 24 24" fill="none">
-                            <circle cx="12" cy="6" r="3" stroke="currentColor" stroke-width="1.5"/>
-                            <path d="M6 11 L18 11 L20 20 L4 20 Z" stroke="currentColor" stroke-width="1.5"/>
-                        </svg>
-                        <span class="instrument-num">23</span>
+                <a href="calculators/body-shape.html" class="card">
+                    <div class="card-header">
+                        <span class="card-title">Body Shape</span>
+                        <span class="card-number">23</span>
                     </div>
-                    <div class="instrument-name">Body Shape</div>
-                    <div class="instrument-desc">Classification</div>
+                    <p class="card-desc">Classification</p>
                 </a>
-                <a href="calculators/somatotype.html" class="instrument-link">
-                    <div class="instrument-header">
-                        <svg class="instrument-icon-small" viewBox="0 0 24 24" fill="none">
-                            <rect x="4" y="8" width="6" height="10" rx="1" stroke="currentColor" stroke-width="1.5"/>
-                            <rect x="9" y="4" width="6" height="16" rx="1" stroke="currentColor" stroke-width="1.5"/>
-                            <rect x="14" y="6" width="6" height="12" rx="1" stroke="currentColor" stroke-width="1.5"/>
-                        </svg>
-                        <span class="instrument-num">24</span>
+                <a href="calculators/somatotype.html" class="card">
+                    <div class="card-header">
+                        <span class="card-title">Somatotype</span>
+                        <span class="card-number">24</span>
                     </div>
-                    <div class="instrument-name">Somatotype</div>
-                    <div class="instrument-desc">Body type</div>
+                    <p class="card-desc">Body type analysis</p>
                 </a>
-                <a href="calculators/fitness-age.html" class="instrument-link">
-                    <div class="instrument-header">
-                        <svg class="instrument-icon-small" viewBox="0 0 24 24" fill="none">
-                            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/>
-                            <line x1="12" y1="6" x2="12" y2="12" stroke="currentColor" stroke-width="1.5"/>
-                            <path d="M12 12 L16 16" stroke="currentColor" stroke-width="1.5"/>
-                        </svg>
-                        <span class="instrument-num">25</span>
+                <a href="calculators/fitness-age.html" class="card">
+                    <div class="card-header">
+                        <span class="card-title">Fitness Age</span>
+                        <span class="card-number">25</span>
                     </div>
-                    <div class="instrument-name">Fitness Age</div>
-                    <div class="instrument-desc">Comparison</div>
+                    <p class="card-desc">Compare to biological age</p>
                 </a>
             </div>
         </section>
     </main>
 
-    <footer class="footer">
-        <p>FitGauge — Precision Fitness Instruments</p>
-        <p style="margin-top: 8px; opacity: 0.5;">100% client-side. No data collection. No tracking.</p>
+    <footer>
+        <div class="container">
+            <p>FitGauge — Precision Fitness Calculators</p>
+            <p style="color: var(--text-secondary); margin-top: 8px; font-size: 0.8rem;">100% client-side. No data collection. No tracking.</p>
+        </div>
     </footer>
-
-    <div class="status-bar">
-        <div><span class="status-dot"></span>Ready</div>
-        <div>25 instruments available</div>
-        <div>100% Private</div>
-    </div>
 </body>
 </html>
