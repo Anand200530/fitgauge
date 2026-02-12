@@ -148,6 +148,17 @@
 
         .form-input::placeholder { color: var(--text-muted); }
 
+        /* Remove number input spinners */
+        .form-input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        .form-input[type="number"]::-webkit-outer-spin-button,
+        .form-input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
         /* Toggle Buttons */
         .toggle-group {
             display: flex;
@@ -180,6 +191,58 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
+        }
+
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+        }
+
+        /* Input with unit */
+        .input-with-unit {
+            position: relative;
+        }
+
+        .input-with-unit .form-input {
+            padding-right: 50px;
+        }
+
+        .input-unit {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            pointer-events: none;
+        }
+
+        /* Height/Weight Toggles */
+        .unit-toggle {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .unit-btn {
+            padding: 8px 16px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-family: var(--font);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .unit-btn:hover { border-color: var(--border-light); }
+
+        .unit-btn.active {
+            background: var(--surface-hover);
+            border-color: var(--accent);
+            color: var(--accent);
         }
 
         /* Calculate Button */
@@ -316,9 +379,7 @@
             gap: 16px;
         }
 
-        .info-item {
-            text-align: center;
-        }
+        .info-item { text-align: center; }
 
         .info-item-label { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 4px; }
 
@@ -340,6 +401,7 @@
             .gauge-container { width: 220px; height: 130px; }
             .gauge-number { font-size: 2.5rem; }
             .info-grid { grid-template-columns: 1fr; gap: 12px; }
+            .form-row-3 { grid-template-columns: 1fr 1fr; }
         }
     </style>
 </head>
@@ -399,12 +461,28 @@
 
                     <div class="form-group">
                         <label class="form-label">Height</label>
-                        <input type="number" class="form-input" id="height" placeholder="cm" min="50" max="300">
+                        <div class="unit-toggle">
+                            <button class="unit-btn active" id="height-cm-btn">cm</button>
+                            <button class="unit-btn" id="height-ft-btn">ft</button>
+                        </div>
+                        <div id="height-cm-inputs">
+                            <input type="number" class="form-input" id="height-cm" placeholder="175">
+                        </div>
+                        <div id="height-ft-inputs" style="display: none;">
+                            <div class="form-row-3">
+                                <input type="number" class="form-input" id="height-ft" placeholder="5">
+                                <input type="number" class="form-input" id="height-in" placeholder="9">
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Weight (kg)</label>
-                        <input type="number" class="form-input" id="weight" placeholder="kg" min="20" max="300">
+                        <label class="form-label">Weight</label>
+                        <div class="unit-toggle">
+                            <button class="unit-btn active" id="weight-kg-btn">kg</button>
+                            <button class="unit-btn" id="weight-lbs-btn">lbs</button>
+                        </div>
+                        <input type="number" class="form-input" id="weight" placeholder="70">
                     </div>
 
                     <button class="btn" id="calculate-btn">Calculate BMI</button>
@@ -484,7 +562,10 @@
 
     <script>
         let gender = 'female';
+        let heightUnit = 'cm';
+        let weightUnit = 'kg';
 
+        // Gender toggle
         document.getElementById('male-btn').addEventListener('click', function() {
             document.getElementById('male-btn').classList.add('active');
             document.getElementById('female-btn').classList.remove('active');
@@ -497,11 +578,55 @@
             gender = 'female';
         });
 
+        // Height unit toggle
+        document.getElementById('height-cm-btn').addEventListener('click', function() {
+            document.getElementById('height-cm-btn').classList.add('active');
+            document.getElementById('height-ft-btn').classList.remove('active');
+            document.getElementById('height-cm-inputs').style.display = 'block';
+            document.getElementById('height-ft-inputs').style.display = 'none';
+            heightUnit = 'cm';
+        });
+
+        document.getElementById('height-ft-btn').addEventListener('click', function() {
+            document.getElementById('height-ft-btn').classList.add('active');
+            document.getElementById('height-cm-btn').classList.remove('active');
+            document.getElementById('height-ft-inputs').style.display = 'block';
+            document.getElementById('height-cm-inputs').style.display = 'none';
+            heightUnit = 'ft';
+        });
+
+        // Weight unit toggle
+        document.getElementById('weight-kg-btn').addEventListener('click', function() {
+            document.getElementById('weight-kg-btn').classList.add('active');
+            document.getElementById('weight-lbs-btn').classList.remove('active');
+            weightUnit = 'kg';
+        });
+
+        document.getElementById('weight-lbs-btn').addEventListener('click', function() {
+            document.getElementById('weight-lbs-btn').classList.add('active');
+            document.getElementById('weight-kg-btn').classList.remove('active');
+            weightUnit = 'lbs';
+        });
+
         document.getElementById('calculate-btn').addEventListener('click', calculateBMI);
 
         function calculateBMI() {
-            var heightCm = parseFloat(document.getElementById('height').value) || 0;
+            var heightCm = 0;
             var weight = parseFloat(document.getElementById('weight').value) || 0;
+
+            // Get height based on unit
+            if (heightUnit === 'cm') {
+                heightCm = parseFloat(document.getElementById('height-cm').value) || 0;
+            } else {
+                var feet = parseFloat(document.getElementById('height-ft').value) || 0;
+                var inches = parseFloat(document.getElementById('height-in').value) || 0;
+                heightCm = (feet * 30.48) + (inches * 2.54);
+            }
+
+            // Convert weight to kg if needed
+            if (weightUnit === 'lbs') {
+                weight = weight * 0.453592;
+            }
 
             if (!heightCm || !weight) {
                 alert('Please enter your height and weight');
@@ -512,13 +637,13 @@
             var bmi = weight / (heightM * heightM);
 
             if (bmi > 10 && bmi < 60) {
-                updateDisplay(bmi);
+                updateDisplay(bmi, heightM);
             } else {
                 alert('Please enter valid measurements');
             }
         }
 
-        function updateDisplay(bmi) {
+        function updateDisplay(bmi, heightM) {
             var bmiValue = bmi.toFixed(1);
             var valueEl = document.getElementById('bmi-value');
             var statusEl = document.getElementById('result-status');
@@ -535,33 +660,28 @@
                 desc = 'Your BMI suggests you may be underweight. Consider consulting a healthcare provider.';
                 category = 'Underweight';
                 risk = 'Low';
-                targetMin = Math.round(18.5 * heightM * heightM);
-                targetMax = Math.round(25 * heightM * heightM);
             } else if (bmi < 25) {
                 color = '#22c55e';
                 status = 'Normal';
                 desc = 'Your BMI is within the healthy range. Maintain your current lifestyle.';
                 category = 'Normal';
                 risk = 'Minimal';
-                targetMin = Math.round(18.5 * heightM * heightM);
-                targetMax = Math.round(25 * heightM * heightM);
             } else if (bmi < 30) {
                 color = '#eab308';
                 status = 'Overweight';
                 desc = 'Your BMI suggests overweight. Consider lifestyle modifications.';
                 category = 'Overweight';
                 risk = 'Moderate';
-                targetMin = Math.round(18.5 * heightM * heightM);
-                targetMax = Math.round(25 * heightM * heightM);
             } else {
                 color = '#ef4444';
                 status = 'Obese';
                 desc = 'Your BMI indicates obesity. Consult a healthcare provider for personalized advice.';
                 category = 'Obese';
                 risk = 'High';
-                targetMin = Math.round(18.5 * heightM * heightM);
-                targetMax = Math.round(25 * heightM * heightM);
             }
+
+            targetMin = Math.round(18.5 * heightM * heightM);
+            targetMax = Math.round(25 * heightM * heightM);
 
             valueEl.style.color = color;
             statusEl.style.color = color;
@@ -575,12 +695,6 @@
 
             infoCard.style.display = 'block';
         }
-
-        // Get heightM for target calculation
-        var heightM = 0;
-        document.getElementById('height').addEventListener('input', function() {
-            heightM = (parseFloat(this.value) || 0) / 100;
-        });
     </script>
 </body>
 </html>
