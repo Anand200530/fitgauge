@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calorie Needs Calculator - FitGauge</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .calculator-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .calculator-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .calculator-header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+
+        .calculator-header p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        .calculator-body {
+            padding: 30px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 12px 16px;
+            border: 2px solid #e1e5eb;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #fafbfc;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .toggle-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .toggle-btn {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #e1e5eb;
+            background: #fafbfc;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            color: #666;
+        }
+
+        .toggle-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        .toggle-btn:hover:not(.active) {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .calculate-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .results-section {
+            margin-top: 40px;
+            display: none;
+        }
+
+        .results-section.visible {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .results-title {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 1.4rem;
+        }
+
+        .calorie-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .calorie-card {
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .calorie-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .calorie-card.loss {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%);
+            color: white;
+        }
+
+        .calorie-card.maintain {
+            background: linear-gradient(135deg, #51cf66 0%, #40c057 100%);
+            color: white;
+        }
+
+        .calorie-card.gain {
+            background: linear-gradient(135deg, #4dabf7 0%, #339af0 100%);
+            color: white;
+        }
+
+        .calorie-card .label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .calorie-card .value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .calorie-card .unit {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        .chart-container {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .chart-title {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+        }
+
+        .stacked-bar-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .stacked-bar-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .bar-label {
+            width: 100px;
+            font-weight: 600;
+            color: #555;
+            font-size: 0.9rem;
+            text-align: right;
+        }
+
+        .stacked-bar {
+            flex: 1;
+            height: 50px;
+            display: flex;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #e9ecef;
+        }
+
+        .bar-segment {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: width 0.5s ease;
+            min-width: 0;
+        }
+
+        .bar-segment.bmr {
+            background: linear-gradient(135deg, #845ef7 0%, #7950f2 100%);
+        }
+
+        .bar-segment.activity {
+            background: linear-gradient(135deg, #20c997 0%, #12b886 100%);
+        }
+
+        .bar-segment.goal {
+            background: linear-gradient(135deg, #fab005 0%, #f59f00 100%);
+        }
+
+        .bar-value {
+            width: 80px;
+            font-weight: 700;
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        .breakdown-legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+
+        .legend-color.bmr {
+            background: linear-gradient(135deg, #845ef7 0%, #7950f2 100%);
+        }
+
+        .legend-color.activity {
+            background: linear-gradient(135deg, #20c997 0%, #12b886 100%);
+        }
+
+        .legend-color.goal {
+            background: linear-gradient(135deg, #fab005 0%, #f59f00 100%);
+        }
+
+        .info-text {
+            text-align: center;
+            color: #888;
+            font-size: 0.85rem;
+            margin-top: 20px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 600px) {
+            .calculator-body {
+                padding: 20px;
+            }
+
+            .stacked-bar-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .bar-label {
+                text-align: left;
+            }
+
+            .bar-value {
+                margin-left: 115px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <div class="calculator-header">
+            <h1>🔥 Calorie Needs Calculator</h1>
+            <p>Calculate your daily calorie requirements for weight loss, maintenance, or gain</p>
+        </div>
+
+        <div class="calculator-body">
+            <form id="calorieForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <select id="gender" required>
+                            <option value="">Select gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Age (years)</label>
+                        <input type="number" id="age" placeholder="Enter your age" min="15" max="100" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Height</label>
+                        <div class="toggle-group">
+                            <button type="button" class="toggle-btn active" data-unit="cm" data-target="height">cm</button>
+                            <button type="button" class="toggle-btn" data-unit="ft" data-target="height">ft/in</button>
+                        </div>
+                        <input type="number" id="height" placeholder="Enter height" step="0.1" required style="margin-top: 8px;">
+                        <input type="number" id="height-ft" placeholder="Feet" step="1" style="margin-top: 8px; display: none;">
+                        <input type="number" id="height-in" placeholder="Inches" step="1" style="margin-top: 8px; display: none;">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Weight</label>
+                        <div class="toggle-group">
+                            <button type="button" class="toggle-btn active" data-unit="kg" data-target="weight">kg</button>
+                            <button type="button" class="toggle-btn" data-unit="lbs" data-target="weight">lbs</button>
+                        </div>
+                        <input type="number" id="weight" placeholder="Enter weight" step="0.1" required style="margin-top: 8px;">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Activity Level</label>
+                        <select id="activity" required>
+                            <option value="">Select activity level</option>
+                            <option value="1.2">Sedentary (little or no exercise)</option>
+                            <option value="1.375">Lightly Active (1-3 days/week)</option>
+                            <option value="1.55">Moderately Active (3-5 days/week)</option>
+                            <option value="1.725">Very Active (6-7 days/week)</option>
+                            <option value="1.9">Extra Active (very hard exercise)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Your Goal</label>
+                        <select id="goal" required>
+                            <option value="">Select your goal</option>
+                            <option value="loss">Lose Weight</option>
+                            <option value="maintain">Maintain Weight</option>
+                            <option value="gain">Gain Weight</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="calculate-btn">Calculate My Calories</button>
+            </form>
+
+            <div class="results-section" id="results">
+                <h2 class="results-title">Your Daily Calorie Recommendations</h2>
+
+                <div class="calorie-cards">
+                    <div class="calorie-card loss">
+                        <div class="label">Weight Loss</div>
+                        <div class="value" id="lossCalories">0</div>
+                        <div class="unit">calories/day</div>
+                    </div>
+                    <div class="calorie-card maintain">
+                        <div class="label">Maintenance</div>
+                        <div class="value" id="maintainCalories">0</div>
+                        <div class="unit">calories/day</div>
+                    </div>
+                    <div class="calorie-card gain">
+                        <div class="label">Weight Gain</div>
+                        <div class="value" id="gainCalories">0</div>
+                        <div class="unit">calories/day</div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <h3 class="chart-title">Daily Calorie Breakdown (Maintenance Goal)</h3>
+                    <div class="stacked-bar-wrapper">
+                        <div class="stacked-bar-row">
+                            <div class="bar-label">Loss</div>
+                            <div class="stacked-bar" id="lossBar">
+                                <div class="bar-segment bmr" id="lossBmr"></div>
+                                <div class="bar-segment activity" id="lossActivity"></div>
+                                <div class="bar-segment goal" id="lossGoal"></div>
+                            </div>
+                            <div class="bar-value" id="lossTotal">0</div>
+                        </div>
+                        <div class="stacked-bar-row">
+                            <div class="bar-label">Maintain</div>
+                            <div class="stacked-bar" id="maintainBar">
+                                <div class="bar-segment bmr" id="maintainBmr"></div>
+                                <div class="bar-segment activity" id="maintainActivity"></div>
+                                <div class="bar-segment goal" id="maintainGoal"></div>
+                            </div>
+                            <div class="bar-value" id="maintainTotal">0</div>
+                        </div>
+                        <div class="stacked-bar-row">
+                            <div class="bar-label">Gain</div>
+                            <div class="stacked-bar" id="gainBar">
+                                <div class="bar-segment bmr" id="gainBmr"></div>
+                                <div class="bar-segment activity" id="gainActivity"></div>
+                                <div class="bar-segment goal" id="gainGoal"></div>
+                            </div>
+                            <div class="bar-value" id="gainTotal">0</div>
+                        </div>
+                    </div>
+
+                    <div class="breakdown-legend">
+                        <div class="legend-item">
+                            <div class="legend-color bmr"></div>
+                            <span>BMR (Base Metabolic Rate)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color activity"></div>
+                            <span>Activity Burn</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color goal"></div>
+                            <span>Goal Adjustment</span>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="info-text">
+                    * BMR is the calories your body burns at rest. Activity burn is additional calories from movement.
+                    Goal adjustment shows calorie deficit/surplus for your target.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle button functionality
+        document.querySelectorAll('.toggle-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const target = this.dataset.target;
+                const unit = this.dataset.unit;
+                const group = this.parentElement;
+
+                group.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                if (target === 'height') {
+                    const heightInput = document.getElementById('height');
+                    const heightFt = document.getElementById('height-ft');
+                    const heightIn = document.getElementById('height-in');
+
+                    if (unit === 'ft') {
+                        heightInput.style.display = 'none';
+                        heightFt.style.display = 'block';
+                        heightIn.style.display = 'block';
+                        heightInput.required = false;
+                        heightFt.required = true;
+                        heightIn.required = true;
+                    } else {
+                        heightInput.style.display = 'block';
+                        heightFt.style.display = 'none';
+                        heightIn.style.display = 'none';
+                        heightInput.required = true;
+                        heightFt.required = false;
+                        heightIn.required = false;
+                        heightFt.value = '';
+                        heightIn.value = '';
+                    }
+                } else if (target === 'weight') {
+                    // Weight toggle - just visual, conversion happens on calculate
+                }
+            });
+        });
+
+        // Calculate BMR using Mifflin-St Jeor Equation
+        function calculateBMR(gender, weightKg, heightCm, age) {
+            if (gender === 'male') {
+                return (10 * weightKg) + (6.25 * heightCm) - (5 * age) + 5;
+            } else {
+                return (10 * weightKg) + (6.25 * heightCm) - (5 * age) - 161;
+            }
+        }
+
+        // Convert height from feet/inches to cm
+        function feetToCm(feet, inches) {
+            return (feet * 30.48) + (inches * 2.54);
+        }
+
+        // Convert weight from lbs to kg
+        function lbsToKg(lbs) {
+            return lbs * 0.453592;
+        }
+
+        // Form submission
+        document.getElementById('calorieForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const gender = document.getElementById('gender').value;
+            const age = parseInt(document.getElementById('age').value);
+            const activity = parseFloat(document.getElementById('activity').value);
+            const goal = document.getElementById('goal').value;
+
+            // Get height
+            let heightCm;
+            const heightUnit = document.querySelector('[data-target="height"].active').dataset.unit;
+            if (heightUnit === 'cm') {
+                heightCm = parseFloat(document.getElementById('height').value);
+            } else {
+                const feet = parseFloat(document.getElementById('height-ft').value);
+                const inches = parseFloat(document.getElementById('height-in').value);
+                heightCm = feetToCm(feet, inches);
+            }
+
+            // Get weight
+            let weightKg;
+            const weightUnit = document.querySelector('[data-target="weight"].active').dataset.unit;
+            if (weightUnit === 'kg') {
+                weightKg = parseFloat(document.getElementById('weight').value);
+            } else {
+                weightKg = lbsToKg(parseFloat(document.getElementById('weight').value));
+            }
+
+            // Calculate BMR and TDEE
+            const bmr = calculateBMR(gender, weightKg, heightCm, age);
+            const maintainCalories = Math.round(bmr * activity);
+
+            // Calculate goal calories
+            const lossCalories = maintainCalories - 500;
+            const gainCalories = maintainCalories + 500;
+
+            // Update display cards
+            document.getElementById('lossCalories').textContent = lossCalories;
+            document.getElementById('maintainCalories').textContent = maintainCalories;
+            document.getElementById('gainCalories').textContent = gainCalories;
+
+            // Calculate breakdown components
+            const activityCalories = Math.round(bmr * (activity - 1));
+            const goalAdjustment = -500;
+
+            // Update stacked bars with animation
+            updateStackedBar('loss', lossCalories, bmr, activityCalories, goalAdjustment);
+            updateStackedBar('maintain', maintainCalories, bmr, activityCalories, 0);
+            updateStackedBar('gain', gainCalories, bmr, activityCalories, 500);
+
+            // Show results
+            document.getElementById('results').classList.add('visible');
+        });
+
+        function updateStackedBar(type, totalCalories, bmr, activityCalories, goalAdjustment) {
+            const bmrPercent = (bmr / totalCalories) * 100;
+            const activityPercent = (activityCalories / totalCalories) * 100;
+            const goalPercent = (Math.abs(goalAdjustment) / totalCalories) * 100;
+
+            const bmrBar = document.getElementById(type + 'Bmr');
+            const activityBar = document.getElementById(type + 'Activity');
+            const goalBar = document.getElementById(type + 'Goal');
+            const totalValue = document.getElementById(type + 'Total');
+
+            // Set widths
+            bmrBar.style.width = bmrPercent + '%';
+            activityBar.style.width = activityPercent + '%';
+
+            if (goalAdjustment < 0) {
+                // Weight loss - show goal as negative segment (different visual)
+                goalBar.style.width = goalPercent + '%';
+                goalBar.style.background = 'linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%)';
+                goalBar.textContent = goalAdjustment + '';
+            } else if (goalAdjustment > 0) {
+                goalBar.style.width = goalPercent + '%';
+                goalBar.style.background = 'linear-gradient(135deg, #4dabf7 0%, #339af0 100%)';
+                goalBar.textContent = '+' + goalAdjustment;
+            } else {
+                goalBar.style.width = '0%';
+                goalBar.textContent = '';
+            }
+
+            // Set total value
+            totalValue.textContent = totalCalories;
+
+            // Add value labels to segments if they're wide enough
+            if (bmrPercent > 15) {
+                bmrBar.textContent = Math.round(bmr);
+            } else {
+                bmrBar.textContent = '';
+            }
+
+            if (activityPercent > 15) {
+                activityBar.textContent = activityCalories;
+            } else {
+                activityBar.textContent = '';
+            }
+        }
+    </script>
+</body>
+</html>
