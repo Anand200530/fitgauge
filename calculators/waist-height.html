@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waist-to-Height Ratio Calculator | FitGauge</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .calculator-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 32px;
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .calculator-header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .calculator-header h1 {
+            font-size: 1.5rem;
+            color: #1a1a2e;
+            margin-bottom: 6px;
+        }
+
+        .calculator-header p {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .input-label span {
+            font-weight: 500;
+            color: #374151;
+            font-size: 0.95rem;
+        }
+
+        .toggle-container {
+            display: flex;
+            background: #e5e7eb;
+            border-radius: 8px;
+            padding: 3px;
+        }
+
+        .toggle-btn {
+            padding: 6px 14px;
+            border: none;
+            background: transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #6b7280;
+            transition: all 0.2s ease;
+        }
+
+        .toggle-btn.active {
+            background: white;
+            color: #1a1a2e;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-field {
+            position: relative;
+        }
+
+        .input-field input {
+            width: 100%;
+            padding: 14px 60px 14px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.2s ease;
+            outline: none;
+        }
+
+        .input-field input:focus {
+            border-color: #3b82f6;
+        }
+
+        .input-unit {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .result-section {
+            margin-top: 28px;
+            padding-top: 24px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .ratio-display {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .ratio-value {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            line-height: 1;
+        }
+
+        .ratio-label {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
+
+        .bar-container {
+            margin: 20px 0;
+        }
+
+        .bar-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+
+        .bar-track {
+            height: 16px;
+            background: #e5e7eb;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bar-zones {
+            display: flex;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            right: 0;
+        }
+
+        .bar-zone {
+            height: 100%;
+        }
+
+        .bar-zone.green {
+            width: 25%;
+            background: #10b981;
+        }
+
+        .bar-zone.yellow {
+            width: 25%;
+            background: #f59e0b;
+        }
+
+        .bar-zone.red {
+            width: 50%;
+            background: #ef4444;
+        }
+
+        .bar-marker {
+            position: absolute;
+            top: -4px;
+            width: 4px;
+            height: 24px;
+            background: #1a1a2e;
+            border-radius: 2px;
+            transform: translateX(-50%);
+            transition: left 0.3s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .status-card {
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .status-card.excellent {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-card.good {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-card.needs-attention {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+
+        .status-card p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .info-text {
+            margin-top: 16px;
+            padding: 12px;
+            background: #f9fafb;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            color: #6b7280;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-card">
+        <div class="calculator-header">
+            <h1>Waist-to-Height Ratio</h1>
+            <p>Calculate your WHtR for health insights</p>
+        </div>
+
+        <div class="input-group">
+            <div class="input-label">
+                <span>Height</span>
+                <div class="toggle-container">
+                    <button class="toggle-btn active" data-unit="cm" data-type="height">cm</button>
+                    <button class="toggle-btn" data-unit="ft" data-type="height">ft</button>
+                </div>
+            </div>
+            <div class="input-field">
+                <input type="number" id="heightInput" placeholder="Enter height" step="0.1">
+                <span class="input-unit" id="heightUnit">cm</span>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <div class="input-label">
+                <span>Waist Circumference</span>
+                <div class="toggle-container">
+                    <button class="toggle-btn active" data-unit="cm" data-type="waist">cm</button>
+                    <button class="toggle-btn" data-unit="in" data-type="waist">in</button>
+                </div>
+            </div>
+            <div class="input-field">
+                <input type="number" id="waistInput" placeholder="Enter waist size" step="0.1">
+                <span class="input-unit" id="waistUnit">cm</span>
+            </div>
+        </div>
+
+        <div class="result-section">
+            <div class="ratio-display">
+                <div class="ratio-value" id="ratioValue">--</div>
+                <div class="ratio-label">Waist-to-Height Ratio</div>
+            </div>
+
+            <div class="bar-container">
+                <div class="bar-labels">
+                    <span>0.4</span>
+                    <span>0.5</span>
+                    <span>0.6</span>
+                    <span>0.8</span>
+                </div>
+                <div class="bar-track">
+                    <div class="bar-zones">
+                        <div class="bar-zone green"></div>
+                        <div class="bar-zone yellow"></div>
+                        <div class="bar-zone red"></div>
+                    </div>
+                    <div class="bar-marker" id="barMarker" style="left: 0%"></div>
+                </div>
+            </div>
+
+            <div class="status-card" id="statusCard">
+                <h3>Enter your measurements</h3>
+                <p>Calculate to see your health status</p>
+            </div>
+
+            <div class="info-text">
+                <strong>Waist-to-Height Ratio (WHtR)</strong> is a simple measurement that helps assess body fat distribution. 
+                A ratio between 0.4-0.5 is considered excellent for health.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const heightInput = document.getElementById('heightInput');
+        const waistInput = document.getElementById('waistInput');
+        const ratioValue = document.getElementById('ratioValue');
+        const barMarker = document.getElementById('barMarker');
+        const statusCard = document.getElementById('statusCard');
+        const heightUnit = document.getElementById('heightUnit');
+        const waistUnit = document.getElementById('waistUnit');
+
+        let heightUnitSystem = 'cm';
+        let waistUnitSystem = 'cm';
+
+        // Toggle button handlers
+        document.querySelectorAll('.toggle-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const type = this.dataset.type;
+                const unit = this.dataset.unit;
+
+                // Update active state
+                this.parentElement.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                // Update unit display
+                if (type === 'height') {
+                    heightUnitSystem = unit;
+                    heightUnit.textContent = unit;
+                } else {
+                    waistUnitSystem = unit;
+                    waistUnit.textContent = unit;
+                }
+
+                calculateRatio();
+            });
+        });
+
+        // Input handlers
+        heightInput.addEventListener('input', calculateRatio);
+        waistInput.addEventListener('input', calculateRatio);
+
+        function calculateRatio() {
+            const height = parseFloat(heightInput.value);
+            const waist = parseFloat(waistInput.value);
+
+            if (!height || !waist || height <= 0 || waist <= 0) {
+                ratioValue.textContent = '--';
+                barMarker.style.left = '0%';
+                statusCard.className = 'status-card';
+                statusCard.innerHTML = '<h3>Enter your measurements</h3><p>Calculate to see your health status</p>';
+                return;
+            }
+
+            // Convert to cm for calculation
+            let heightInCm = height;
+            let waistInCm = waist;
+
+            if (heightUnitSystem === 'ft') {
+                // Parse feet and inches
+                heightInCm = height * 30.48;
+            }
+
+            if (waistUnitSystem === 'in') {
+                waistInCm = waist * 2.54;
+            }
+
+            // Calculate ratio
+            const ratio = waistInCm / heightInCm;
+            ratioValue.textContent = ratio.toFixed(2);
+
+            // Update bar marker position (0.4 to 0.8 range, mapped to 0-100%)
+            const minRatio = 0.4;
+            const maxRatio = 0.8;
+            let markerPos = ((ratio - minRatio) / (maxRatio - minRatio)) * 100;
+            markerPos = Math.max(0, Math.min(100, markerPos));
+            barMarker.style.left = markerPos + '%';
+
+            // Update status
+            statusCard.className = 'status-card';
+
+            if (ratio <= 0.5) {
+                statusCard.classList.add('excellent');
+                statusCard.innerHTML = `<h3>Excellent!</h3><p>Your ratio is in the healthy range</p>`;
+            } else if (ratio <= 0.6) {
+                statusCard.classList.add('good');
+                statusCard.innerHTML = `<h3>Good</h3><p>Maintain a healthy lifestyle</p>`;
+            } else {
+                statusCard.classList.add('needs-attention');
+                statusCard.innerHTML = `<h3>Needs Attention</h3><p>Consider consulting a healthcare provider</p>`;
+            }
+        }
+    </script>
+</body>
+</html>
