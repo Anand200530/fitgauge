@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance Calories Calculator — FitGauge</title>
+    <meta name="description" content="Calculate your daily maintenance calories using the Mifflin-St Jeor equation with activity multipliers.">
+    <link rel="canonical" href="https://anand200530.github.io/fitgauge/calculators/maintenance-calories.html">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --surface: #141414;
+            --surface-hover: #1a1a1a;
+            --border: #262626;
+            --border-light: #333;
+            --text: #f5f5f5;
+            --text-secondary: #737373;
+            --text-muted: #555;
+            --accent: #22c55e;
+            --blue: #60a5fa;
+            --green: #4ade80;
+            --yellow: #facc15;
+            --red: #f87171;
+            --orange: #fb923c;
+            --font: 'Inter', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+        header {
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg);
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .logo svg { width: 26px; height: 26px; color: var(--accent); }
+
+        nav { display: flex; gap: 28px; }
+
+        nav a {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        nav a:hover { color: var(--text); }
+
+        main { padding: 48px 0; }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-decoration: none;
+            margin-bottom: 32px;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover { color: var(--text); }
+
+        .page-header { margin-bottom: 40px; }
+        .page-title { font-size: 1.75rem; font-weight: 600; margin-bottom: 8px; }
+        .page-desc { color: var(--text-secondary); font-size: 0.9rem; }
+
+        .calculator {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .form-section { display: flex; flex-direction: column; gap: 24px; }
+
+        .form-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+        }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group:last-child { margin-bottom: 0; }
+
+        .form-label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 14px 16px;
+            background: var(--surface-hover);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: var(--font);
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus, .form-select:focus { outline: none; border-color: var(--accent); }
+        .form-input::placeholder { color: var(--text-muted); }
+
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23737373' viewBox='0 0 16 16'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 40px;
+            cursor: pointer;
+        }
+
+        .form-select option { background: var(--surface); color: var(--text); }
+
+        .form-input[type="number"] { -moz-appearance: textfield; }
+        .form-input[type="number"]::-webkit-outer-spin-button,
+        .form-input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none; margin: 0;
+        }
+
+        .toggle-group { display: flex; gap: 8px; }
+
+        .toggle-btn {
+            flex: 1;
+            padding: 12px 20px;
+            background: var(--surface-hover);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-family: var(--font);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .toggle-btn:hover { background: var(--border-light); }
+
+        .toggle-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #000;
+        }
+
+        .unit-toggle { display: flex; gap: 8px; margin-bottom: 12px; }
+
+        .unit-btn {
+            padding: 8px 16px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .unit-btn:hover { background: var(--surface-hover); }
+
+        .unit-btn.active {
+            background: var(--border-light);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+        /* Result Card */
+        .result-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .result-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .result-title { font-size: 1rem; font-weight: 500; }
+
+        .result-badge {
+            padding: 6px 12px;
+            background: var(--surface-hover);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .result-body { padding: 32px 24px; }
+
+        /* Battery Indicator */
+        .battery-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 28px;
+        }
+
+        .battery {
+            position: relative;
+            width: 120px;
+            height: 200px;
+            border: 3px solid var(--border-light);
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--surface-hover);
+        }
+
+        .battery-cap {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 10px;
+            background: var(--border-light);
+            border-radius: 4px 4px 0 0;
+        }
+
+        .battery-fill {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0%;
+            transition: height 0.8s cubic-bezier(0.4, 0, 0.2, 1), background 0.5s ease;
+            border-radius: 0 0 9px 9px;
+        }
+
+        .battery-fill.low {
+            background: linear-gradient(to top, #f87171, #fb923c);
+        }
+
+        .battery-fill.medium {
+            background: linear-gradient(to top, #fb923c, #facc15);
+        }
+
+        .battery-fill.high {
+            background: linear-gradient(to top, #22c55e, #4ade80);
+        }
+
+        .battery-fill.very-high {
+            background: linear-gradient(to top, #3b82f6, #60a5fa);
+        }
+
+        .battery-segments {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            padding: 6px;
+            pointer-events: none;
+        }
+
+        .battery-segment {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .battery-bolt {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            opacity: 0.3;
+            transition: opacity 0.5s;
+        }
+
+        .battery-bolt.active { opacity: 0.9; }
+
+        .energy-value {
+            font-size: 3rem;
+            font-weight: 600;
+            line-height: 1;
+            margin-top: 20px;
+            transition: color 0.3s;
+        }
+
+        .energy-unit {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 6px;
+        }
+
+        .energy-label {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-top: 6px;
+            color: var(--text-secondary);
+            transition: color 0.3s;
+        }
+
+        /* Activity Breakdown */
+        .breakdown-section {
+            padding: 20px 24px;
+            border-top: 1px solid var(--border);
+            background: var(--surface-hover);
+        }
+
+        .breakdown-title {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 16px;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .breakdown-item:last-child { border-bottom: none; }
+
+        .breakdown-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .breakdown-bar-wrap {
+            flex: 1;
+            margin: 0 16px;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .breakdown-bar {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.6s ease;
+            width: 0%;
+        }
+
+        .breakdown-val {
+            font-size: 0.9rem;
+            font-weight: 500;
+            min-width: 60px;
+            text-align: right;
+        }
+
+        .breakdown-item.active .breakdown-label { color: var(--text); }
+        .breakdown-item.active .breakdown-val { color: var(--accent); font-weight: 600; }
+
+        /* Info Section */
+        .info-section {
+            padding: 20px 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .info-item { text-align: center; }
+
+        .info-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        footer {
+            padding: 32px 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 768px) {
+            .calculator { grid-template-columns: 1fr; }
+            nav { display: none; }
+            .energy-value { font-size: 2.5rem; }
+            .battery { width: 100px; height: 160px; }
+            .info-grid { grid-template-columns: 1fr; gap: 12px; }
+            .breakdown-bar-wrap { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="../index.html" class="logo">
+                <svg viewBox="0 0 40 40" fill="none">
+                    <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/>
+                    <circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/>
+                    <circle cx="20" cy="20" r="6" fill="currentColor"/>
+                    <line x1="20" y1="2" x2="20" y2="6" stroke="currentColor" stroke-width="1.5"/>
+                    <line x1="20" y1="34" x2="20" y2="38" stroke="currentColor" stroke-width="1.5"/>
+                    <line x1="2" y1="20" x2="6" y2="20" stroke="currentColor" stroke-width="1.5"/>
+                    <line x1="34" y1="20" x2="38" y2="20" stroke="currentColor" stroke-width="1.5"/>
+                </svg>
+                FitGauge
+            </a>
+            <nav>
+                <a href="../index.html#body">Body</a>
+                <a href="../index.html#energy">Energy</a>
+                <a href="../index.html#nutrition">Nutrition</a>
+                <a href="../index.html#fitness">Fitness</a>
+                <a href="../index.html#goals">Goals</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <a href="../index.html" class="back-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to calculators
+        </a>
+
+        <div class="page-header">
+            <h1 class="page-title">Maintenance Calories</h1>
+            <p class="page-desc">Find your Total Daily Energy Expenditure — the calories you need to maintain your current weight</p>
+        </div>
+
+        <div class="calculator">
+            <!-- Form -->
+            <div class="form-section">
+                <div class="form-card">
+                    <div class="form-group">
+                        <label class="form-label">Gender</label>
+                        <div class="toggle-group">
+                            <button class="toggle-btn active" id="male-btn">Male</button>
+                            <button class="toggle-btn" id="female-btn">Female</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Age</label>
+                        <input type="number" class="form-input" id="age" placeholder="Years" min="15" max="120">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Height</label>
+                        <div class="unit-toggle">
+                            <button class="unit-btn active" id="height-cm-btn">cm</button>
+                            <button class="unit-btn" id="height-ft-btn">ft</button>
+                        </div>
+                        <div id="height-cm-inputs">
+                            <input type="number" class="form-input" id="height-cm" placeholder="175">
+                        </div>
+                        <div id="height-ft-inputs" style="display: none;">
+                            <div class="form-row">
+                                <input type="number" class="form-input" id="height-ft" placeholder="Feet">
+                                <input type="number" class="form-input" id="height-in" placeholder="Inches">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Weight</label>
+                        <div class="unit-toggle">
+                            <button class="unit-btn active" id="weight-kg-btn">kg</button>
+                            <button class="unit-btn" id="weight-lbs-btn">lbs</button>
+                        </div>
+                        <input type="number" class="form-input" id="weight" placeholder="70" min="20" max="400" step="0.1">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Activity Level</label>
+                        <select class="form-select" id="activity">
+                            <option value="1.2">Sedentary — desk job, little exercise</option>
+                            <option value="1.375">Light — exercise 1-3 days/week</option>
+                            <option value="1.55" selected>Moderate — exercise 3-5 days/week</option>
+                            <option value="1.725">Active — exercise 6-7 days/week</option>
+                            <option value="1.9">Very Active — intense daily training</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Result -->
+            <div class="result-card">
+                <div class="result-header">
+                    <span class="result-title">Daily Energy</span>
+                    <span class="result-badge">Mifflin-St Jeor</span>
+                </div>
+
+                <div class="result-body">
+                    <div class="battery-container">
+                        <div class="battery">
+                            <div class="battery-cap"></div>
+                            <div class="battery-fill" id="battery-fill"></div>
+                            <div class="battery-segments">
+                                <div class="battery-segment"></div>
+                                <div class="battery-segment"></div>
+                                <div class="battery-segment"></div>
+                                <div class="battery-segment"></div>
+                                <div class="battery-segment"></div>
+                                <div class="battery-segment"></div>
+                                <div class="battery-segment"></div>
+                            </div>
+                            <svg class="battery-bolt" id="battery-bolt" width="32" height="40" viewBox="0 0 24 32" fill="white">
+                                <path d="M14 2L4 18h6l-2 12 10-16h-6z"/>
+                            </svg>
+                        </div>
+                        <div class="energy-value" id="cal-value">--</div>
+                        <div class="energy-unit">kcal / day</div>
+                        <div class="energy-label" id="energy-label">Enter your details</div>
+                    </div>
+                </div>
+
+                <!-- Activity Breakdown -->
+                <div class="breakdown-section" id="breakdown-section" style="display: none;">
+                    <div class="breakdown-title">Activity Level Comparison</div>
+                    <div id="breakdown-list"></div>
+                </div>
+
+                <!-- Info -->
+                <div class="info-section" id="info-section" style="display: none;">
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-label">BMR</div>
+                            <div class="info-value" id="info-bmr">--</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Multiplier</div>
+                            <div class="info-value" id="info-mult">--</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Hourly Burn</div>
+                            <div class="info-value" id="info-hourly">--</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        FitGauge — Precision Fitness Calculators
+    </footer>
+
+    <script>
+        var gender = 'male';
+        var heightUnit = 'cm';
+        var weightUnit = 'kg';
+
+        var activityLabels = {
+            '1.2': 'Sedentary',
+            '1.375': 'Light',
+            '1.55': 'Moderate',
+            '1.725': 'Active',
+            '1.9': 'Very Active'
+        };
+
+        var activityColors = {
+            '1.2': '#f87171',
+            '1.375': '#fb923c',
+            '1.55': '#facc15',
+            '1.725': '#4ade80',
+            '1.9': '#60a5fa'
+        };
+
+        // Gender toggles
+        document.getElementById('male-btn').addEventListener('click', function() {
+            this.classList.add('active');
+            document.getElementById('female-btn').classList.remove('active');
+            gender = 'male';
+            calculate();
+        });
+
+        document.getElementById('female-btn').addEventListener('click', function() {
+            this.classList.add('active');
+            document.getElementById('male-btn').classList.remove('active');
+            gender = 'female';
+            calculate();
+        });
+
+        // Height unit toggle
+        document.getElementById('height-cm-btn').addEventListener('click', function() {
+            this.classList.add('active');
+            document.getElementById('height-ft-btn').classList.remove('active');
+            document.getElementById('height-cm-inputs').style.display = 'block';
+            document.getElementById('height-ft-inputs').style.display = 'none';
+            heightUnit = 'cm';
+            calculate();
+        });
+
+        document.getElementById('height-ft-btn').addEventListener('click', function() {
+            this.classList.add('active');
+            document.getElementById('height-cm-btn').classList.remove('active');
+            document.getElementById('height-ft-inputs').style.display = 'block';
+            document.getElementById('height-cm-inputs').style.display = 'none';
+            heightUnit = 'ft';
+            calculate();
+        });
+
+        // Weight unit toggle
+        document.getElementById('weight-kg-btn').addEventListener('click', function() {
+            this.classList.add('active');
+            document.getElementById('weight-lbs-btn').classList.remove('active');
+            weightUnit = 'kg';
+            calculate();
+        });
+
+        document.getElementById('weight-lbs-btn').addEventListener('click', function() {
+            this.classList.add('active');
+            document.getElementById('weight-kg-btn').classList.remove('active');
+            weightUnit = 'lbs';
+            calculate();
+        });
+
+        // Input listeners
+        ['age', 'height-cm', 'height-ft', 'height-in', 'weight', 'activity'].forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) el.addEventListener('input', calculate);
+            if (el) el.addEventListener('change', calculate);
+        });
+
+        function calculate() {
+            var age = parseFloat(document.getElementById('age').value) || 0;
+            var heightCm = 0;
+            var weight = parseFloat(document.getElementById('weight').value) || 0;
+            var activityVal = parseFloat(document.getElementById('activity').value);
+
+            if (heightUnit === 'cm') {
+                heightCm = parseFloat(document.getElementById('height-cm').value) || 0;
+            } else {
+                var ft = parseFloat(document.getElementById('height-ft').value) || 0;
+                var inc = parseFloat(document.getElementById('height-in').value) || 0;
+                heightCm = (ft * 30.48) + (inc * 2.54);
+            }
+
+            if (weightUnit === 'lbs') {
+                weight = weight * 0.453592;
+            }
+
+            var calEl = document.getElementById('cal-value');
+            var labelEl = document.getElementById('energy-label');
+            var fillEl = document.getElementById('battery-fill');
+            var boltEl = document.getElementById('battery-bolt');
+            var breakdownSection = document.getElementById('breakdown-section');
+            var infoSection = document.getElementById('info-section');
+
+            if (!age || !heightCm || !weight || age < 15 || heightCm < 50 || weight < 20) {
+                calEl.textContent = '--';
+                calEl.style.color = '';
+                labelEl.textContent = 'Enter your details';
+                labelEl.style.color = '';
+                fillEl.style.height = '0%';
+                fillEl.className = 'battery-fill';
+                boltEl.classList.remove('active');
+                breakdownSection.style.display = 'none';
+                infoSection.style.display = 'none';
+                return;
+            }
+
+            // Mifflin-St Jeor BMR
+            var bmr;
+            if (gender === 'male') {
+                bmr = (10 * weight) + (6.25 * heightCm) - (5 * age) + 5;
+            } else {
+                bmr = (10 * weight) + (6.25 * heightCm) - (5 * age) - 161;
+            }
+
+            var tdee = Math.round(bmr * activityVal);
+
+            // Battery fill percentage (map 1200-4000 cal range)
+            var fillPercent = ((tdee - 1200) / (4000 - 1200)) * 100;
+            fillPercent = Math.max(5, Math.min(100, fillPercent));
+
+            // Color class
+            var fillClass = 'high';
+            var accentColor = '#4ade80';
+            if (tdee < 1600) {
+                fillClass = 'low';
+                accentColor = '#f87171';
+            } else if (tdee < 2200) {
+                fillClass = 'medium';
+                accentColor = '#facc15';
+            } else if (tdee > 3000) {
+                fillClass = 'very-high';
+                accentColor = '#60a5fa';
+            }
+
+            fillEl.style.height = fillPercent + '%';
+            fillEl.className = 'battery-fill ' + fillClass;
+            boltEl.classList.add('active');
+
+            calEl.textContent = tdee.toLocaleString();
+            calEl.style.color = accentColor;
+            labelEl.textContent = 'Maintenance calories';
+            labelEl.style.color = accentColor;
+
+            // Activity breakdown
+            var multipliers = [1.2, 1.375, 1.55, 1.725, 1.9];
+            var labels = ['Sedentary', 'Light', 'Moderate', 'Active', 'Very Active'];
+            var colors = ['#f87171', '#fb923c', '#facc15', '#4ade80', '#60a5fa'];
+
+            var maxCals = Math.round(bmr * 1.9);
+            var breakdownHTML = '';
+
+            for (var i = 0; i < multipliers.length; i++) {
+                var cals = Math.round(bmr * multipliers[i]);
+                var barW = (cals / maxCals) * 100;
+                var isActive = multipliers[i] === activityVal;
+
+                breakdownHTML += '<div class="breakdown-item' + (isActive ? ' active' : '') + '">' +
+                    '<span class="breakdown-label">' + labels[i] + '</span>' +
+                    '<div class="breakdown-bar-wrap"><div class="breakdown-bar" style="width:' + barW + '%;background:' + colors[i] + '"></div></div>' +
+                    '<span class="breakdown-val">' + cals.toLocaleString() + '</span>' +
+                    '</div>';
+            }
+
+            document.getElementById('breakdown-list').innerHTML = breakdownHTML;
+            breakdownSection.style.display = 'block';
+
+            // Info
+            document.getElementById('info-bmr').textContent = Math.round(bmr).toLocaleString() + ' kcal';
+            document.getElementById('info-mult').textContent = '×' + activityVal;
+            document.getElementById('info-hourly').textContent = Math.round(tdee / 24) + ' kcal/hr';
+            infoSection.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
