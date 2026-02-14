@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calories Burned Calculator | FitGauge</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-card: #21262d;
+            --bg-input: #30363d;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --accent-primary: #58a6ff;
+            --accent-secondary: #3fb950;
+            --accent-warning: #f0883e;
+            --border-color: #30363d;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 900px) {
+            .calculator-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+        }
+
+        .card h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .icon {
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.2);
+        }
+
+        .result-display {
+            background: var(--bg-card);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            margin-top: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .result-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-value {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-secondary), var(--accent-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .result-unit {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-top: 0.25rem;
+        }
+
+        .per-hour {
+            font-size: 1.1rem;
+            color: var(--accent-warning);
+            margin-top: 0.75rem;
+            font-weight: 600;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .activity-card {
+            background: var(--bg-card);
+            border-radius: 10px;
+            padding: 1rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .activity-card:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .activity-card.active {
+            border-color: var(--accent-primary);
+            background: rgba(88, 166, 255, 0.1);
+        }
+
+        .activity-card .activity-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .activity-card .activity-calories {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-secondary);
+        }
+
+        .activity-card .activity-met {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .methodology {
+            background: var(--bg-card);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .methodology h3 {
+            color: var(--accent-primary);
+            margin-bottom: 1rem;
+        }
+
+        .methodology p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 0.75rem;
+        }
+
+        .formula {
+            background: var(--bg-input);
+            padding: 1rem;
+            border-radius: 6px;
+            font-family: monospace;
+            color: var(--text-primary);
+            margin: 1rem 0;
+        }
+
+        .formula strong {
+            color: var(--accent-secondary);
+        }
+
+        .legend {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot.low { background: var(--accent-secondary); }
+        .dot.medium { background: var(--accent-warning); }
+        .dot.high { background: #f85149; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔥 Calories Burned Calculator</h1>
+            <p>Calculate calories burned for various activities based on your weight and duration</p>
+        </header>
+
+        <div class="calculator-grid">
+            <div class="card">
+                <h2><span class="icon">📊</span> Calculator</h2>
+                
+                <div class="form-group">
+                    <label for="activity">Activity</label>
+                    <select id="activity">
+                        <option value="walking">🚶 Walking (3.5 mph)</option>
+                        <option value="running">🏃 Running (6 mph)</option>
+                        <option value="cycling">🚲 Cycling (12-14 mph)</option>
+                        <option value="swimming">🏊 Swimming (moderate)</option>
+                        <option value="weights">🏋️ Weight Training</option>
+                        <option value="yoga">🧘 Yoga</option>
+                        <option value="hiit">🚤 HIIT</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="weight">Weight (kg)</label>
+                    <input type="number" id="weight" placeholder="Enter your weight" value="70" min="1" max="300">
+                </div>
+
+                <div class="form-group">
+                    <label for="duration">Duration (minutes)</label>
+                    <input type="number" id="duration" placeholder="Enter duration in minutes" value="30" min="1" max="600">
+                </div>
+
+                <div class="result-display">
+                    <div class="result-label">Calories Burned</div>
+                    <div class="result-value" id="total-calories">0</div>
+                    <div class="result-unit">kcal total</div>
+                    <div class="per-hour" id="per-hour">0 kcal/hour</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2><span class="icon">🎯</span> Activity Comparison</h2>
+                <div class="comparison-grid" id="comparison-grid">
+                    <!-- Generated by JS -->
+                </div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="dot low"></div>
+                        <span>Low intensity</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="dot medium"></div>
+                        <span>Medium intensity</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="dot high"></div>
+                        <span>High intensity</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="methodology">
+            <h3>📖 How It Works</h3>
+            <p>Calories burned are calculated using the <strong>MET (Metabolic Equivalent of Task)</strong> method.</p>
+            <div class="formula">
+                <strong>Calories/minute = (MET × 3.5 × weight in kg) / 200</strong><br>
+                <strong>Total Calories = Calories/minute × duration in minutes</strong>
+            </div>
+            <p><strong>MET Values used:</strong></p>
+            <p>• <strong>Walking (3.5 mph):</strong> 4 METs | <strong>Running (6 mph):</strong> 9.8 METs | <strong>Cycling (12-14 mph):</strong> 8 METs<br>
+            • <strong>Swimming (moderate):</strong> 7 METs | <strong>Weight Training:</strong> 4.5 METs<br>
+            • <strong>Yoga:</strong> 2.5 METs | <strong>HIIT:</strong> 11 METs</p>
+            <p style="font-size: 0.85rem; color: var(--text-secondary);">* Actual calories burned may vary based on individual factors such as fitness level, intensity, and metabolism.</p>
+        </div>
+    </div>
+
+    <script>
+        const activities = {
+            walking: { name: '🚶 Walking', met: 4.0, intensity: 'low' },
+            running: { name: '🏃 Running', met: 9.8, intensity: 'high' },
+            cycling: { name: '🚲 Cycling', met: 8.0, intensity: 'medium' },
+            swimming: { name: '🏊 Swimming', met: 7.0, intensity: 'medium' },
+            weights: { name: '🏋️ Weights', met: 4.5, intensity: 'low' },
+            yoga: { name: '🧘 Yoga', met: 2.5, intensity: 'low' },
+            hiit: { name: '🚤 HIIT', met: 11.0, intensity: 'high' }
+        };
+
+        const activitySelect = document.getElementById('activity');
+        const weightInput = document.getElementById('weight');
+        const durationInput = document.getElementById('duration');
+        const totalCaloriesEl = document.getElementById('total-calories');
+        const perHourEl = document.getElementById('per-hour');
+        const comparisonGrid = document.getElementById('comparison-grid');
+
+        function calculateCalories(activityKey, weight, duration) {
+            const met = activities[activityKey].met;
+            const caloriesPerMinute = (met * 3.5 * weight) / 200;
+            const totalCalories = Math.round(caloriesPerMinute * duration);
+            const perHour = Math.round(caloriesPerMinute * 60);
+            return { total: totalCalories, perHour: perHour };
+        }
+
+        function updateCalculator() {
+            const activity = activitySelect.value;
+            const weight = parseFloat(weightInput.value) || 70;
+            const duration = parseFloat(durationInput.value) || 30;
+            
+            const result = calculateCalories(activity, weight, duration);
+            totalCaloriesEl.textContent = result.total.toLocaleString();
+            perHourEl.textContent = `${result.perHour.toLocaleString()} kcal/hour`;
+            
+            updateComparisonGrid(weight, duration);
+        }
+
+        function updateComparisonGrid(weight, duration) {
+            comparisonGrid.innerHTML = '';
+            
+            Object.entries(activities).forEach(([key, activity]) => {
+                const result = calculateCalories(key, weight, duration);
+                const card = document.createElement('div');
+                card.className = `activity-card ${key === activitySelect.value ? 'active' : ''}`;
+                card.onclick = () => {
+                    activitySelect.value = key;
+                    updateCalculator();
+                };
+                
+                card.innerHTML = `
+                    <div class="activity-name">${activity.name}</div>
+                    <div class="activity-calories">${result.total.toLocaleString()}</div>
+                    <div class="activity-met">${result.perHour.toLocaleString()} cal/hr (MET: ${activity.met})</div>
+                `;
+                
+                comparisonGrid.appendChild(card);
+            });
+        }
+
+        activitySelect.addEventListener('change', updateCalculator);
+        weightInput.addEventListener('input', updateCalculator);
+        durationInput.addEventListener('input', updateCalculator);
+
+        // Initialize
+        updateCalculator();
+    </script>
+</body>
+</html>

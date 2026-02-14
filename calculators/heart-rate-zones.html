@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Rate Zones Calculator — FitGauge</title>
+    <meta name="description" content="Calculate your personalized heart rate training zones based on age and resting heart rate.">
+    <link rel="canonical" href="https://anand200530.github.io/fitgauge/calculators/heart-rate-zones.html">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --surface: #141414;
+            --surface-hover: #1a1a1a;
+            --border: #262626;
+            --border-light: #333;
+            --text: #f5f5f5;
+            --text-secondary: #737373;
+            --text-muted: #555;
+            --accent: #22c55e;
+            --blue: #60a5fa;
+            --green: #4ade80;
+            --teal: #2dd4bf;
+            --yellow: #facc15;
+            --orange: #fb923c;
+            --red: #f87171;
+            --font: 'Inter', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+        header {
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg);
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .logo svg { width: 26px; height: 26px; color: var(--accent); }
+
+        nav { display: flex; gap: 28px; }
+
+        nav a {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        nav a:hover { color: var(--text); }
+
+        main { padding: 48px 0; }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-decoration: none;
+            margin-bottom: 32px;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover { color: var(--text); }
+
+        .page-header { margin-bottom: 40px; }
+
+        .page-title { font-size: 1.75rem; font-weight: 600; margin-bottom: 8px; }
+
+        .page-desc { color: var(--text-secondary); font-size: 0.9rem; }
+
+        .calculator {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .form-section { display: flex; flex-direction: column; gap: 24px; }
+
+        .form-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+        }
+
+        .form-group { margin-bottom: 20px; }
+
+        .form-group:last-child { margin-bottom: 0; }
+
+        .form-label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            background: var(--surface-hover);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: var(--font);
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus { outline: none; border-color: var(--accent); }
+
+        .form-input::placeholder { color: var(--text-muted); }
+
+        .input-with-unit {
+            position: relative;
+        }
+
+        .input-unit-label {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            pointer-events: none;
+        }
+
+        .input-with-unit .form-input { padding-right: 50px; }
+
+        .form-input[type="number"] { -moz-appearance: textfield; }
+
+        .form-input[type="number"]::-webkit-outer-spin-button,
+        .form-input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .form-helper {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+
+        /* Result Card */
+        .result-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .result-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .result-title { font-size: 1rem; font-weight: 500; }
+
+        .result-badge {
+            padding: 6px 12px;
+            background: var(--surface-hover);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .result-body {
+            padding: 32px 24px;
+        }
+
+        /* Pulse Animation Section */
+        .pulse-section {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .pulse-container {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 20px;
+        }
+
+        .pulse-heart {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            color: var(--red);
+            z-index: 2;
+        }
+
+        .pulse-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            border: 2px solid var(--red);
+            border-radius: 50%;
+            opacity: 0;
+            animation: pulse-ring 1.5s ease-out infinite;
+        }
+
+        .pulse-ring:nth-child(2) { animation-delay: 0.5s; }
+        .pulse-ring:nth-child(3) { animation-delay: 1s; }
+
+        @keyframes pulse-ring {
+            0% {
+                width: 60px;
+                height: 60px;
+                opacity: 0.8;
+            }
+            100% {
+                width: 140px;
+                height: 140px;
+                opacity: 0;
+            }
+        }
+
+        .heart-rate-display {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .heart-rate-value {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--text);
+            line-height: 1;
+        }
+
+        .heart-rate-unit {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .heart-rate-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Zones Section */
+        .zones-section {
+            border-top: 1px solid var(--border);
+            padding-top: 24px;
+        }
+
+        .zones-title {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 20px;
+        }
+
+        .zone-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .zone-item:last-child {
+            border-bottom: none;
+        }
+
+        .zone-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .zone-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .zone-1 { background: rgba(96, 165, 250, 0.15); color: var(--blue); }
+        .zone-2 { background: rgba(45, 212, 191, 0.15); color: var(--teal); }
+        .zone-3 { background: rgba(74, 222, 128, 0.15); color: var(--green); }
+        .zone-4 { background: rgba(250, 204, 21, 0.15); color: var(--yellow); }
+        .zone-5 { background: rgba(248, 113, 113, 0.15); color: var(--red); }
+
+        .zone-info {
+            flex: 1;
+        }
+
+        .zone-name {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 2px;
+        }
+
+        .zone-desc {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .zone-range {
+            text-align: right;
+        }
+
+        .zone-bpm {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .zone-percent {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* Max HR Display */
+        .max-hr-section {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            padding: 20px 24px;
+            border-top: 1px solid var(--border);
+            background: var(--surface-hover);
+        }
+
+        .max-hr-item {
+            text-align: center;
+        }
+
+        .max-hr-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .max-hr-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        footer {
+            padding: 32px 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 768px) {
+            .calculator { grid-template-columns: 1fr; }
+            nav { display: none; }
+            .max-hr-section { flex-direction: column; gap: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <svg viewBox="0 0 40 40" fill="none">
+                    <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/>
+                    <circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/>
+                    <circle cx="20" cy="20" r="6" fill="currentColor"/>
+                    <line x1="20" y1="2" x2="20" y2="6" stroke="currentColor" stroke-width="1.5"/>
+                    <line x1="20" y1="34" x2="20" y2="38" stroke="currentColor" stroke-width="1.5"/>
+                    <line x1="2" y1="20" x2="6" y2="20" stroke="currentColor" stroke-width="1.5"/>
+                    <line x1="34" y1="20" x2="38" y2="20" stroke="currentColor" stroke-width="1.5"/>
+                </svg>
+                FitGauge
+            </a>
+            <nav>
+                <a href="index.html#body">Body</a>
+                <a href="index.html#energy">Energy</a>
+                <a href="index.html#nutrition">Nutrition</a>
+                <a href="index.html#fitness">Fitness</a>
+                <a href="index.html#goals">Goals</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <a href="index.html" class="back-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to calculators
+        </a>
+
+        <div class="page-header">
+            <h1 class="page-title">Heart Rate Zones</h1>
+            <p class="page-desc">Calculate your personalized training zones based on age and resting heart rate</p>
+        </div>
+
+        <div class="calculator">
+            <div class="form-section">
+                <div class="form-card">
+                    <div class="form-group">
+                        <label class="form-label">Age</label>
+                        <input type="number" class="form-input" id="age" placeholder="25" min="10" max="120">
+                        <p class="form-helper">Used to calculate your maximum heart rate (220 − age)</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Resting Heart Rate</label>
+                        <div class="input-with-unit">
+                            <input type="number" class="form-input" id="resting-hr" placeholder="60" min="30" max="120">
+                            <span class="input-unit-label">bpm</span>
+                        </div>
+                        <p class="form-helper">Measure your pulse at rest (typically 60-100 bpm)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="result-card">
+                <div class="result-header">
+                    <span class="result-title">Your Heart Rate Zones</span>
+                    <span class="result-badge">Karvonen Formula</span>
+                </div>
+
+                <div class="result-body">
+                    <!-- Pulse Animation Section -->
+                    <div class="pulse-section">
+                        <div class="pulse-container">
+                            <div class="pulse-ring"></div>
+                            <div class="pulse-ring"></div>
+                            <div class="pulse-ring"></div>
+                            <svg class="pulse-heart" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                            </svg>
+                        </div>
+                        <div class="heart-rate-display">
+                            <span class="heart-rate-value" id="max-hr-display">--</span>
+                            <span class="heart-rate-unit">bpm</span>
+                        </div>
+                        <div class="heart-rate-label">Maximum Heart Rate</div>
+                    </div>
+
+                    <!-- Zones Section -->
+                    <div class="zones-section">
+                        <div class="zones-title">Training Zones</div>
+                        
+                        <div class="zone-item">
+                            <div class="zone-icon zone-1">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 3v18M3 12h18"/>
+                                </svg>
+                            </div>
+                            <div class="zone-info">
+                                <div class="zone-name">Zone 1 — Recovery</div>
+                                <div class="zone-desc">Very light, warm-up & cool-down</div>
+                            </div>
+                            <div class="zone-range">
+                                <div class="zone-bpm" id="zone1-bpm">--</div>
+                                <div class="zone-percent">50-60%</div>
+                            </div>
+                        </div>
+
+                        <div class="zone-item">
+                            <div class="zone-icon zone-2">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                                </svg>
+                            </div>
+                            <div class="zone-info">
+                                <div class="zone-name">Zone 2 — Endurance</div>
+                                <div class="zone-desc">Aerobic fat burning, base training</div>
+                            </div>
+                            <div class="zone-range">
+                                <div class="zone-bpm" id="zone2-bpm">--</div>
+                                <div class="zone-percent">60-70%</div>
+                            </div>
+                        </div>
+
+                        <div class="zone-item">
+                            <div class="zone-icon zone-3">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M12 6v6l4 2"/>
+                                </svg>
+                            </div>
+                            <div class="zone-info">
+                                <div class="zone-name">Zone 3 — Tempo</div>
+                                <div class="zone-desc">Aerobic capacity, steady state</div>
+                            </div>
+                            <div class="zone-range">
+                                <div class="zone-bpm" id="zone3-bpm">--</div>
+                                <div class="zone-percent">70-80%</div>
+                            </div>
+                        </div>
+
+                        <div class="zone-item">
+                            <div class="zone-icon zone-4">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                </svg>
+                            </div>
+                            <div class="zone-info">
+                                <div class="zone-name">Zone 4 — Threshold</div>
+                                <div class="zone-desc">Lactate threshold, race pace</div>
+                            </div>
+                            <div class="zone-range">
+                                <div class="zone-bpm" id="zone4-bpm">--</div>
+                                <div class="zone-percent">80-90%</div>
+                            </div>
+                        </div>
+
+                        <div class="zone-item">
+                            <div class="zone-icon zone-5">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                                </svg>
+                            </div>
+                            <div class="zone-info">
+                                <div class="zone-name">Zone 5 — Maximum</div>
+                                <div class="zone-desc">Anaerobic, sprints, intervals</div>
+                            </div>
+                            <div class="zone-range">
+                                <div class="zone-bpm" id="zone5-bpm">--</div>
+                                <div class="zone-percent">90-100%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary Stats -->
+                <div class="max-hr-section">
+                    <div class="max-hr-item">
+                        <div class="max-hr-label">Heart Rate Reserve</div>
+                        <div class="max-hr-value" id="hrr-display">--</div>
+                    </div>
+                    <div class="max-hr-item">
+                        <div class="max-hr-label">Resting HR</div>
+                        <div class="max-hr-value" id="resting-display">--</div>
+                    </div>
+                    <div class="max-hr-item">
+                        <div class="max-hr-label">Max HR</div>
+                        <div class="max-hr-value" id="max-hr-summary">--</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        FitGauge — Precision Fitness Calculators
+    </footer>
+
+    <script>
+        // Zone definitions with percentages
+        var zones = {
+            zone1: { min: 0.50, max: 0.60, name: 'Recovery' },
+            zone2: { min: 0.60, max: 0.70, name: 'Endurance' },
+            zone3: { min: 0.70, max: 0.80, name: 'Tempo' },
+            zone4: { min: 0.80, max: 0.90, name: 'Threshold' },
+            zone5: { min: 0.90, max: 1.00, name: 'Maximum' }
+        };
+
+        var inputs = ['age', 'resting-hr'];
+        for (var i = 0; i < inputs.length; i++) {
+            var el = document.getElementById(inputs[i]);
+            if (el) {
+                el.addEventListener('input', calculateZones);
+            }
+        }
+
+        function calculateZones() {
+            var age = parseInt(document.getElementById('age').value) || 0;
+            var restingHR = parseInt(document.getElementById('resting-hr').value) || 0;
+
+            var maxHRDisplay = document.getElementById('max-hr-display');
+            var hrrDisplay = document.getElementById('hrr-display');
+            var restingDisplay = document.getElementById('resting-display');
+            var maxHRSummary = document.getElementById('max-hr-summary');
+
+            // Validate inputs
+            if (age < 10 || age > 120 || restingHR < 30 || restingHR > 120) {
+                maxHRDisplay.textContent = '--';
+                hrrDisplay.textContent = '--';
+                restingDisplay.textContent = '--';
+                maxHRSummary.textContent = '--';
+                
+                document.getElementById('zone1-bpm').textContent = '--';
+                document.getElementById('zone2-bpm').textContent = '--';
+                document.getElementById('zone3-bpm').textContent = '--';
+                document.getElementById('zone4-bpm').textContent = '--';
+                document.getElementById('zone5-bpm').textContent = '--';
+                return;
+            }
+
+            // Calculate Max HR using standard formula: 220 - age
+            var maxHR = 220 - age;
+            var hrr = maxHR - restingHR; // Heart Rate Reserve
+
+            // Update summary displays
+            maxHRDisplay.textContent = maxHR;
+            hrrDisplay.textContent = hrr + ' bpm';
+            restingDisplay.textContent = restingHR + ' bpm';
+            maxHRSummary.textContent = maxHR + ' bpm';
+
+            // Calculate zones using Karvonen formula: HRR × intensity% + restingHR
+            function calculateZoneBPM(minPercent, maxPercent) {
+                var minBPM = Math.round((hrr * minPercent) + restingHR);
+                var maxBPM = Math.round((hrr * maxPercent) + restingHR);
+                return minBPM + '-' + maxBPM;
+            }
+
+            document.getElementById('zone1-bpm').textContent = calculateZoneBPM(zones.zone1.min, zones.zone1.max);
+            document.getElementById('zone2-bpm').textContent = calculateZoneBPM(zones.zone2.min, zones.zone2.max);
+            document.getElementById('zone3-bpm').textContent = calculateZoneBPM(zones.zone3.min, zones.zone3.max);
+            document.getElementById('zone4-bpm').textContent = calculateZoneBPM(zones.zone4.min, zones.zone4.max);
+            document.getElementById('zone5-bpm').textContent = calculateZoneBPM(zones.zone5.min, zones.zone5.max);
+        }
+    </script>
+</body>
+</html>

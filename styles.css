@@ -1,3 +1,19 @@
+/* FitGauge - Professional Minimal Styles - Dark Theme */
+
+:root {
+    --bg: #0a0a0a;
+    --surface: #141414;
+    --surface-hover: #1a1a1a;
+    --border: #262626;
+    --border-light: #333333;
+    --text: #f5f5f5;
+    --text-secondary: #737373;
+    --text-muted: #555;
+    --accent: #22c55e;
+    --accent-hover: #4ade80;
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -5,11 +21,17 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: #f5f7fa;
+    font-family: var(--font);
+    background: var(--bg);
     min-height: 100vh;
-    color: #333;
+    color: var(--text);
     line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
 }
 
 .container {
@@ -18,40 +40,43 @@ body {
     padding: 40px 20px;
 }
 
+/* Header */
 .header {
     text-align: center;
     margin-bottom: 40px;
 }
 
 .back-link {
-    display: inline-block;
-    color: #4a6cf7;
-    text-decoration: none;
-    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
     margin-bottom: 20px;
     transition: color 0.2s;
 }
 
 .back-link:hover {
-    color: #3451b2;
+    color: var(--accent);
 }
 
 .header h1 {
     font-size: 28px;
-    color: #1a1a2e;
+    color: var(--text);
     margin-bottom: 8px;
 }
 
 .subtitle {
-    color: #666;
+    color: var(--text-secondary);
     font-size: 16px;
 }
 
+/* Calculator Card */
 .calculator-card {
-    background: #fff;
+    background: var(--surface);
     border-radius: 16px;
     padding: 32px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--border);
 }
 
 .calculator-form {
@@ -68,10 +93,11 @@ body {
 
 .form-label {
     font-weight: 600;
-    color: #1a1a2e;
+    color: var(--text);
     font-size: 14px;
 }
 
+/* Gender Toggle */
 .gender-toggle {
     display: flex;
     gap: 10px;
@@ -89,20 +115,27 @@ body {
     display: block;
     padding: 12px 20px;
     text-align: center;
-    border: 2px solid #e0e0e0;
+    border: 1px solid var(--border);
     border-radius: 10px;
     cursor: pointer;
     font-weight: 500;
-    color: #666;
+    color: var(--text-secondary);
+    background: var(--bg);
     transition: all 0.2s;
 }
 
-.gender-option input:checked + .gender-btn {
-    border-color: #4a6cf7;
-    background: #4a6cf7;
-    color: #fff;
+.gender-btn:hover {
+    border-color: var(--accent);
+    color: var(--text);
 }
 
+.gender-option input:checked + .gender-btn {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: #000;
+}
+
+/* Input with Toggle */
 .input-with-toggle {
     display: flex;
     gap: 10px;
@@ -111,21 +144,28 @@ body {
 .form-input {
     flex: 1;
     padding: 14px 16px;
-    border: 2px solid #e0e0e0;
+    background: var(--bg);
+    border: 1px solid var(--border);
     border-radius: 10px;
+    color: var(--text);
     font-size: 16px;
+    font-family: var(--font);
     transition: border-color 0.2s;
 }
 
 .form-input:focus {
     outline: none;
-    border-color: #4a6cf7;
+    border-color: var(--accent);
+}
+
+.form-input::placeholder {
+    color: var(--text-muted);
 }
 
 .unit-toggle {
     display: flex;
     gap: 4px;
-    background: #f0f0f0;
+    background: var(--surface-hover);
     padding: 4px;
     border-radius: 10px;
 }
@@ -143,20 +183,24 @@ body {
     padding: 10px 16px;
     font-size: 14px;
     font-weight: 500;
-    color: #666;
+    color: var(--text-secondary);
     border-radius: 8px;
     transition: all 0.2s;
 }
 
-.unit-toggle input:checked + .unit-btn {
-    background: #fff;
-    color: #4a6cf7;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.unit-btn:hover {
+    color: var(--text);
 }
 
+.unit-toggle input:checked + .unit-btn {
+    background: var(--accent);
+    color: #000;
+}
+
+/* Calculate Button */
 .calculate-btn {
-    background: #4a6cf7;
-    color: #fff;
+    background: var(--accent);
+    color: #000;
     border: none;
     padding: 16px 32px;
     font-size: 16px;
@@ -165,20 +209,22 @@ body {
     cursor: pointer;
     transition: background 0.2s, transform 0.2s;
     margin-top: 8px;
+    font-family: var(--font);
 }
 
 .calculate-btn:hover {
-    background: #3451b2;
+    background: var(--accent-hover);
 }
 
 .calculate-btn:active {
     transform: scale(0.98);
 }
 
+/* Result Section */
 .result-section {
     margin-top: 32px;
     padding-top: 32px;
-    border-top: 1px solid #e0e0e0;
+    border-top: 1px solid var(--border);
 }
 
 .result-section.hidden {
@@ -193,7 +239,7 @@ body {
 .ratio-label {
     display: block;
     font-size: 14px;
-    color: #666;
+    color: var(--text-secondary);
     margin-bottom: 8px;
 }
 
@@ -201,15 +247,17 @@ body {
     display: block;
     font-size: 56px;
     font-weight: 700;
-    color: #1a1a2e;
+    color: var(--text);
     line-height: 1;
 }
 
+/* Risk Indicator */
 .risk-indicator {
     text-align: center;
     padding: 20px;
     border-radius: 12px;
     transition: all 0.3s;
+    border: 1px solid var(--border);
 }
 
 .risk-badge {
@@ -219,42 +267,142 @@ body {
     font-weight: 600;
     font-size: 14px;
     margin-bottom: 12px;
-    transition: all 0.3s;
 }
 
 .risk-description {
     font-size: 14px;
-    color: #666;
+    color: var(--text-secondary);
     line-height: 1.5;
 }
 
 .risk-indicator.low-risk {
-    background: #e8f5e9;
+    background: rgba(34, 197, 94, 0.1);
+    border-color: rgba(34, 197, 94, 0.3);
 }
 
 .risk-indicator.low-risk .risk-badge {
-    background: #4caf50;
-    color: #fff;
+    background: var(--accent);
+    color: #000;
 }
 
 .risk-indicator.moderate-risk {
-    background: #fff3e0;
+    background: rgba(251, 146, 60, 0.1);
+    border-color: rgba(251, 146, 60, 0.3);
 }
 
 .risk-indicator.moderate-risk .risk-badge {
-    background: #ff9800;
-    color: #fff;
+    background: #f59e0b;
+    color: #000;
 }
 
 .risk-indicator.high-risk {
-    background: #ffebee;
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.3);
 }
 
 .risk-indicator.high-risk .risk-badge {
-    background: #f44336;
+    background: #ef4444;
     color: #fff;
 }
 
+/* Status Card (for waist-height style) */
+.status-card {
+    padding: 16px;
+    border-radius: 12px;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 1px solid var(--border);
+}
+
+.status-card.excellent {
+    background: rgba(34, 197, 94, 0.1);
+    border-color: rgba(34, 197, 94, 0.3);
+    color: var(--accent);
+}
+
+.status-card.good {
+    background: rgba(251, 146, 60, 0.1);
+    border-color: rgba(251, 146, 60, 0.3);
+    color: #f59e0b;
+}
+
+.status-card.needs-attention {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #ef4444;
+}
+
+.status-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+}
+
+.status-card p {
+    font-size: 0.85rem;
+    opacity: 0.9;
+}
+
+/* Bar Container */
+.bar-container {
+    margin: 20px 0;
+}
+
+.bar-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.bar-track {
+    height: 16px;
+    background: var(--border);
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.bar-zones {
+    display: flex;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+
+.bar-zone {
+    height: 100%;
+}
+
+.bar-zone.green {
+    width: 25%;
+    background: var(--accent);
+}
+
+.bar-zone.yellow {
+    width: 25%;
+    background: #f59e0b;
+}
+
+.bar-zone.red {
+    width: 50%;
+    background: #ef4444;
+}
+
+.bar-marker {
+    position: absolute;
+    top: -4px;
+    width: 4px;
+    height: 24px;
+    background: var(--text);
+    border-radius: 2px;
+    transform: translateX(-50%);
+    transition: left 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive */
 @media (max-width: 480px) {
     .container {
         padding: 20px 16px;
