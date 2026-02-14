@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Body Fat Calculator — FitGauge</title>
+    <meta name="description" content="Calculate your body fat percentage using the US Navy method. Accurate measurement without calipers.">
+    <link rel="canonical" href="https://anand200530.github.io/fitgauge/calculators/body-fat.html">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --surface: #141414;
+            --surface-hover: #1a1a1a;
+            --border: #262626;
+            --border-light: #333;
+            --text: #f5f5f5;
+            --text-secondary: #737373;
+            --text-muted: #555;
+            --accent: #22c55e;
+            --blue: #60a5fa;
+            --green: #4ade80;
+            --light-green: #86efac;
+            --yellow: #facc15;
+            --red: #f87171;
+            --font: 'Inter', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+        header {
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg);
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .logo svg { width: 26px; height: 26px; color: var(--accent); }
+
+        nav { display: flex; gap: 28px; }
+
+        nav a {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        nav a:hover { color: var(--text); }
+
+        main { padding: 48px 0; }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-decoration: none;
+            margin-bottom: 32px;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover { color: var(--text); }
+
+        .page-header { margin-bottom: 40px; }
+
+        .page-title { font-size: 1.75rem; font-weight: 600; margin-bottom: 8px; }
+
+        .page-desc { color: var(--text-secondary); font-size: 0.9rem; }
+
+        .calculator {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .form-section { display: flex; flex-direction: column; gap: 24px; }
+
+        .form-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+        }
+
+        .form-group { margin-bottom: 20px; }
+
+        .form-group:last-child { margin-bottom: 0; }
+
+        .form-label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            background: var(--surface-hover);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: var(--font);
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus { outline: none; border-color: var(--accent); }
+
+        .form-input::placeholder { color: var(--text-muted); }
+
+        .form-input[type="number"] { -moz-appearance: textfield; }
+
+        .form-input[type="number"]::-webkit-outer-spin-button,
+        .form-input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .toggle-group { display: flex; gap: 8px; }
+
+        .toggle-btn {
+            flex: 1;
+            padding: 12px 20px;
+            background: var(--surface-hover);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-family: var(--font);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .toggle-btn:hover { background: var(--border-light); }
+
+        .toggle-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #000;
+        }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+        .unit-toggle { display: flex; gap: 8px; margin-bottom: 12px; }
+
+        .unit-btn {
+            padding: 8px 16px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .unit-btn:hover { background: var(--surface-hover); }
+
+        .unit-btn.active {
+            background: var(--border-light);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .input-with-unit {
+            position: relative;
+        }
+
+        .input-unit-label {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            pointer-events: none;
+        }
+
+        .input-with-unit .form-input { padding-right: 50px; }
+
+        /* Result Card */
+        .result-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .result-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .result-title { font-size: 1rem; font-weight: 500; }
+
+        .result-badge {
+            padding: 6px 12px;
+            background: var(--surface-hover);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .result-body {
+            padding: 32px 24px;
+        }
+
+        /* Linear Gradient Bar */
+        .gradient-section {
+            margin-bottom: 32px;
+        }
+
+        .gradient-main {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .gradient-value {
+            font-size: 3rem;
+            font-weight: 600;
+            line-height: 1;
+            transition: color 0.3s;
+        }
+
+        .gradient-unit {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .gradient-status {
+            margin-top: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        /* Gradient Bar */
+        .gradient-bar-container {
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        .gradient-bar {
+            height: 24px;
+            border-radius: 12px;
+            background: linear-gradient(to right,
+                #60a5fa 0%,    /* Blue - Essential */
+                #60a5fa 15%,
+                #4ade80 15%,   /* Green - Athletes */
+                #4ade80 38%,
+                #86efac 38%,   /* Light Green - Fitness */
+                #86efac 50%,
+                #facc15 50%,   /* Yellow - Average */
+                #facc15 70%,
+                #f87171 70%,   /* Red - Obese */
+                #f87171 100%
+            );
+            position: relative;
+        }
+
+        .gradient-marker {
+            position: absolute;
+            top: -6px;
+            width: 4px;
+            height: 36px;
+            background: #fff;
+            border-radius: 2px;
+            transform: translateX(-50%);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+            transition: left 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .gradient-marker::after {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Zone Labels */
+        .zone-labels {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 4px;
+        }
+
+        .zone-label {
+            text-align: center;
+            flex: 1;
+        }
+
+        .zone-name {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-bottom: 2px;
+        }
+
+        .zone-range {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+        }
+
+        /* Legend */
+        .legend-section {
+            padding: 20px 24px;
+            border-top: 1px solid var(--border);
+            background: var(--surface-hover);
+        }
+
+        .legend-title {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 16px;
+        }
+
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        .legend-color.blue { background: var(--blue); }
+        .legend-color.green { background: var(--green); }
+        .legend-color.light-green { background: var(--light-green); }
+        .legend-color.yellow { background: var(--yellow); }
+        .legend-color.red { background: var(--red); }
+
+        .legend-text {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .legend-text strong {
+            display: block;
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        /* Analysis */
+        .analysis-section {
+            padding: 20px 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .analysis-title {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 16px;
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .analysis-item { text-align: center; }
+
+        .analysis-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .analysis-value {
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        footer {
+            padding: 32px 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 768px) {
+            .calculator { grid-template-columns: 1fr; }
+            nav { display: none; }
+            .gradient-value { font-size: 2.5rem; }
+            .legend-grid { grid-template-columns: repeat(2, 1fr); }
+            .analysis-grid { grid-template-columns: 1fr; gap: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <svg viewBox="0 0 40 40" fill="none">
+                    <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/>
+                    <circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/>
+                    <circle cx="20" cy="20" r="6" fill="currentColor"/>
+                    <line x1="20" y1="2" x2="20" y2="6" stroke="currentColor" stroke-width="1.5"/>
+                    <line x1="20" y1="34" x2="20" y2="38" stroke="currentColor" stroke-width="1.5"/>
+                    <line x1="2" y1="20" x2="6" y2="20" stroke="currentColor" stroke-width="1.5"/>
+                    <line x1="34" y1="20" x2="38" y2="20" stroke="currentColor" stroke-width="1.5"/>
+                </svg>
+                FitGauge
+            </a>
+            <nav>
+                <a href="index.html#body">Body</a>
+                <a href="index.html#energy">Energy</a>
+                <a href="index.html#nutrition">Nutrition</a>
+                <a href="index.html#fitness">Fitness</a>
+                <a href="index.html#goals">Goals</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <a href="index.html" class="back-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to calculators
+        </a>
+
+        <div class="page-header">
+            <h1 class="page-title">Body Fat</h1>
+            <p class="page-desc">Calculate your body fat percentage using the US Navy method</p>
+        </div>
+
+        <div class="calculator">
+            <div class="form-section">
+                <div class="form-card">
+                    <div class="form-group">
+                        <label class="form-label">Gender</label>
+                        <div class="toggle-group">
+                            <button class="toggle-btn active" id="male-btn">Male</button>
+                            <button class="toggle-btn" id="female-btn">Female</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Age</label>
+                        <input type="number" class="form-input" id="age" placeholder="Years" min="18" max="100">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Height</label>
+                        <div class="unit-toggle">
+                            <button class="unit-btn active" id="height-cm-btn">cm</button>
+                            <button class="unit-btn" id="height-ft-btn">ft</button>
+                        </div>
+                        <div id="height-cm-inputs">
+                            <input type="number" class="form-input" id="height-cm" placeholder="175" min="100" max="250">
+                        </div>
+                        <div id="height-ft-inputs" style="display: none;">
+                            <div class="form-row">
+                                <input type="number" class="form-input" id="height-ft" placeholder="5" min="3" max="8">
+                                <input type="number" class="form-input" id="height-in" placeholder="9" min="0" max="11">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Weight</label>
+                        <div class="unit-toggle">
+                            <button class="unit-btn active" id="weight-kg-btn">kg</button>
+                            <button class="unit-btn" id="weight-lbs-btn">lbs</button>
+                        </div>
+                        <input type="number" class="form-input" id="weight" placeholder="70" min="30" max="300">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Neck Circumference</label>
+                        <div class="unit-toggle">
+                            <button class="unit-btn active" id="neck-cm-btn">cm</button>
+                            <button class="unit-btn" id="neck-in-btn">in</button>
+                        </div>
+                        <div class="input-with-unit">
+                            <input type="number" class="form-input" id="neck" placeholder="38" step="0.1" min="20" max="60">
+                            <span class="input-unit-label" id="neck-unit-label">cm</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Waist Circumference</label>
+                        <div class="unit-toggle">
+                            <button class="unit-btn active" id="waist-cm-btn">cm</button>
+                            <button class="unit-btn" id="waist-in-btn">in</button>
+                        </div>
+                        <div class="input-with-unit">
+                            <input type="number" class="form-input" id="waist" placeholder="85" step="0.1" min="40" max="200">
+                            <span class="input-unit-label" id="waist-unit-label">cm</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="hip-group" style="display: none;">
+                        <label class="form-label">Hip Circumference</label>
+                        <div class="unit-toggle">
+                            <button class="unit-btn active" id="hip-cm-btn">cm</button>
+                            <button class="unit-btn" id="hip-in-btn">in</button>
+                        </div>
+                        <div class="input-with-unit">
+                            <input type="number" class="form-input" id="hip" placeholder="95" step="0.1" min="50" max="200">
+                            <span class="input-unit-label" id="hip-unit-label">cm</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="result-card">
+                <div class="result-header">
+                    <span class="result-title">Your Body Fat</span>
+                    <span class="result-badge">US Navy Method</span>
+                </div>
+
+                <div class="result-body">
+                    <!-- Gradient Bar Section -->
+                    <div class="gradient-section">
+                        <div class="gradient-main">
+                            <div class="gradient-value" id="bf-value">--</div>
+                            <div class="gradient-unit">% body fat</div>
+                            <div class="gradient-status" id="status-text">Enter measurements</div>
+                        </div>
+
+                        <div class="gradient-bar-container">
+                            <div class="gradient-bar"></div>
+                            <div class="gradient-marker" id="gradient-marker" style="left: 0%;"></div>
+                        </div>
+
+                        <div class="zone-labels">
+                            <div class="zone-label">
+                                <div class="zone-name">Essential</div>
+                                <div class="zone-range" id="essential-range">2-5% / 10-13%</div>
+                            </div>
+                            <div class="zone-label">
+                                <div class="zone-name">Athletes</div>
+                                <div class="zone-range" id="athletes-range">6-13% / 14-20%</div>
+                            </div>
+                            <div class="zone-label">
+                                <div class="zone-name">Fitness</div>
+                                <div class="zone-range" id="fitness-range">14-17% / 21-24%</div>
+                            </div>
+                            <div class="zone-label">
+                                <div class="zone-name">Average</div>
+                                <div class="zone-range" id="average-range">18-24% / 25-30%</div>
+                            </div>
+                            <div class="zone-label">
+                                <div class="zone-name">Obese</div>
+                                <div class="zone-range" id="obese-range">25%+ / 31%+</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Legend -->
+                    <div class="legend-section">
+                        <div class="legend-title">Body Fat Categories</div>
+                        <div class="legend-grid">
+                            <div class="legend-item">
+                                <div class="legend-color blue"></div>
+                                <div class="legend-text">
+                                    <strong>Essential Fat</strong>
+                                    <span id="legend-essential">2-5% M / 10-13% W</span>
+                                </div>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color green"></div>
+                                <div class="legend-text">
+                                    <strong>Athletes</strong>
+                                    <span id="legend-athletes">6-13% M / 14-20% W</span>
+                                </div>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color light-green"></div>
+                                <div class="legend-text">
+                                    <strong>Fitness</strong>
+                                    <span id="legend-fitness">14-17% M / 21-24% W</span>
+                                </div>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color yellow"></div>
+                                <div class="legend-text">
+                                    <strong>Average</strong>
+                                    <span id="legend-average">18-24% M / 25-30% W</span>
+                                </div>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color red"></div>
+                                <div class="legend-text">
+                                    <strong>Obese</strong>
+                                    <span id="legend-obese">25%+ M / 31%+ W</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Analysis -->
+                    <div class="analysis-section" id="analysis-section" style="display: none;">
+                        <div class="analysis-title">Analysis</div>
+                        <div class="analysis-grid">
+                            <div class="analysis-item">
+                                <div class="analysis-label">Lean Mass</div>
+                                <div class="analysis-value" id="lean-mass">--</div>
+                            </div>
+                            <div class="analysis-item">
+                                <div class="analysis-label">Fat Mass</div>
+                                <div class="analysis-value" id="fat-mass">--</div>
+                            </div>
+                            <div class="analysis-item">
+                                <div class="analysis-label">Category</div>
+                                <div class="analysis-value" id="bf-category">--</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        FitGauge — Precision Fitness Calculators
+    </footer>
+
+    <script>
+        var gender = 'male';
+        var heightUnit = 'cm';
+        var weightUnit = 'kg';
+        var neckUnit = 'cm';
+        var waistUnit = 'cm';
+        var hipUnit = 'cm';
+
+        // Zone definitions (percentages)
+        var zones = {
+            male: {
+                essential: { min: 2, max: 5 },
+                athletes: { min: 6, max: 13 },
+                fitness: { min: 14, max: 17 },
+                average: { min: 18, max: 24 },
+                obese: { min: 25, max: 50 }
+            },
+            female: {
+                essential: { min: 10, max: 13 },
+                athletes: { min: 14, max: 20 },
+                fitness: { min: 21, max: 24 },
+                average: { min: 25, max: 30 },
+                obese: { min: 31, max: 60 }
+            }
+        };
+
+        // Gender toggle
+        document.getElementById('male-btn').addEventListener('click', function() {
+            document.getElementById('male-btn').classList.add('active');
+            document.getElementById('female-btn').classList.remove('active');
+            gender = 'male';
+            document.getElementById('hip-group').style.display = 'none';
+            updateZoneLabels();
+            calculateBodyFat();
+        });
+
+        document.getElementById('female-btn').addEventListener('click', function() {
+            document.getElementById('female-btn').classList.add('active');
+            document.getElementById('male-btn').classList.remove('active');
+            gender = 'female';
+            document.getElementById('hip-group').style.display = 'block';
+            updateZoneLabels();
+            calculateBodyFat();
+        });
+
+        // Height unit toggle
+        document.getElementById('height-cm-btn').addEventListener('click', function() {
+            document.getElementById('height-cm-btn').classList.add('active');
+            document.getElementById('height-ft-btn').classList.remove('active');
+            document.getElementById('height-cm-inputs').style.display = 'block';
+            document.getElementById('height-ft-inputs').style.display = 'none';
+            heightUnit = 'cm';
+            calculateBodyFat();
+        });
+
+        document.getElementById('height-ft-btn').addEventListener('click', function() {
+            document.getElementById('height-ft-btn').classList.add('active');
+            document.getElementById('height-cm-btn').classList.remove('active');
+            document.getElementById('height-ft-inputs').style.display = 'block';
+            document.getElementById('height-cm-inputs').style.display = 'none';
+            heightUnit = 'ft';
+            calculateBodyFat();
+        });
+
+        // Weight unit toggle
+        document.getElementById('weight-kg-btn').addEventListener('click', function() {
+            document.getElementById('weight-kg-btn').classList.add('active');
+            document.getElementById('weight-lbs-btn').classList.remove('active');
+            weightUnit = 'kg';
+            calculateBodyFat();
+        });
+
+        document.getElementById('weight-lbs-btn').addEventListener('click', function() {
+            document.getElementById('weight-lbs-btn').classList.add('active');
+            document.getElementById('weight-kg-btn').classList.remove('active');
+            weightUnit = 'lbs';
+            calculateBodyFat();
+        });
+
+        // Neck unit toggle
+        document.getElementById('neck-cm-btn').addEventListener('click', function() {
+            document.getElementById('neck-cm-btn').classList.add('active');
+            document.getElementById('neck-in-btn').classList.remove('active');
+            neckUnit = 'cm';
+            document.getElementById('neck-unit-label').textContent = 'cm';
+            calculateBodyFat();
+        });
+
+        document.getElementById('neck-in-btn').addEventListener('click', function() {
+            document.getElementById('neck-in-btn').classList.add('active');
+            document.getElementById('neck-cm-btn').classList.remove('active');
+            neckUnit = 'in';
+            document.getElementById('neck-unit-label').textContent = 'in';
+            calculateBodyFat();
+        });
+
+        // Waist unit toggle
+        document.getElementById('waist-cm-btn').addEventListener('click', function() {
+            document.getElementById('waist-cm-btn').classList.add('active');
+            document.getElementById('waist-in-btn').classList.remove('active');
+            waistUnit = 'cm';
+            document.getElementById('waist-unit-label').textContent = 'cm';
+            calculateBodyFat();
+        });
+
+        document.getElementById('waist-in-btn').addEventListener('click', function() {
+            document.getElementById('waist-in-btn').classList.add('active');
+            document.getElementById('waist-cm-btn').classList.remove('active');
+            waistUnit = 'in';
+            document.getElementById('waist-unit-label').textContent = 'in';
+            calculateBodyFat();
+        });
+
+        // Hip unit toggle
+        document.getElementById('hip-cm-btn').addEventListener('click', function() {
+            document.getElementById('hip-cm-btn').classList.add('active');
+            document.getElementById('hip-in-btn').classList.remove('active');
+            hipUnit = 'cm';
+            document.getElementById('hip-unit-label').textContent = 'cm';
+            calculateBodyFat();
+        });
+
+        document.getElementById('hip-in-btn').addEventListener('click', function() {
+            document.getElementById('hip-in-btn').classList.add('active');
+            document.getElementById('hip-cm-btn').classList.remove('active');
+            hipUnit = 'in';
+            document.getElementById('hip-unit-label').textContent = 'in';
+            calculateBodyFat();
+        });
+
+        function updateZoneLabels() {
+            var z = zones[gender];
+            var suffix = gender === 'male' ? 'M' : 'W';
+            
+            document.getElementById('essential-range').textContent = z.essential.min + '-' + z.essential.max + '%';
+            document.getElementById('athletes-range').textContent = z.athletes.min + '-' + z.athletes.max + '%';
+            document.getElementById('fitness-range').textContent = z.fitness.min + '-' + z.fitness.max + '%';
+            document.getElementById('average-range').textContent = z.average.min + '-' + z.average.max + '%';
+            document.getElementById('obese-range').textContent = z.obese.min + '%+';
+            
+            document.getElementById('legend-essential').textContent = z.essential.min + '-' + z.essential.max + '% ' + suffix;
+            document.getElementById('legend-athletes').textContent = z.athletes.min + '-' + z.athletes.max + '% ' + suffix;
+            document.getElementById('legend-fitness').textContent = z.fitness.min + '-' + z.fitness.max + '% ' + suffix;
+            document.getElementById('legend-average').textContent = z.average.min + '-' + z.average.max + '% ' + suffix;
+            document.getElementById('legend-obese').textContent = z.obese.min + '%+ ' + suffix;
+        }
+
+        // Add input listeners
+        var inputs = ['age', 'height-cm', 'height-ft', 'height-in', 'weight', 'neck', 'waist', 'hip'];
+        for (var i = 0; i < inputs.length; i++) {
+            var el = document.getElementById(inputs[i]);
+            if (el) {
+                el.addEventListener('input', calculateBodyFat);
+            }
+        }
+
+        function calculateBodyFat() {
+            var heightCm = 0;
+            var weight = parseFloat(document.getElementById('weight').value) || 0;
+            var neck = parseFloat(document.getElementById('neck').value) || 0;
+            var waist = parseFloat(document.getElementById('waist').value) || 0;
+            var hip = parseFloat(document.getElementById('hip').value) || 0;
+
+            // Get height in cm
+            if (heightUnit === 'cm') {
+                heightCm = parseFloat(document.getElementById('height-cm').value) || 0;
+            } else {
+                var feet = parseFloat(document.getElementById('height-ft').value) || 0;
+                var inches = parseFloat(document.getElementById('height-in').value) || 0;
+                heightCm = (feet * 30.48) + (inches * 2.54);
+            }
+
+            // Convert weight to kg
+            if (weightUnit === 'lbs') {
+                weight = weight * 0.453592;
+            }
+
+            // Convert measurements to cm
+            if (neckUnit === 'in') {
+                neck = neck * 2.54;
+            }
+            if (waistUnit === 'in') {
+                waist = waist * 2.54;
+            }
+            if (hipUnit === 'in') {
+                hip = hip * 2.54;
+            }
+
+            var valueEl = document.getElementById('bf-value');
+            var statusEl = document.getElementById('status-text');
+            var markerEl = document.getElementById('gradient-marker');
+            var analysisSection = document.getElementById('analysis-section');
+
+            // Validation
+            var isValid = true;
+            if (!heightCm || heightCm < 100 || heightCm > 250) isValid = false;
+            if (!weight || weight < 30 || weight > 300) isValid = false;
+            if (!neck || neck < 20 || neck > 60) isValid = false;
+            if (!waist || waist < 40 || waist > 200) isValid = false;
+            if (gender === 'female' && (!hip || hip < 50 || hip > 200)) isValid = false;
+
+            if (!isValid) {
+                valueEl.textContent = '--';
+                valueEl.style.color = '';
+                statusEl.textContent = 'Enter measurements';
+                statusEl.style.color = '';
+                markerEl.style.left = '0%';
+                analysisSection.style.display = 'none';
+                return;
+            }
+
+            // US Navy Method calculation
+            var bodyFat = 0;
+
+            if (gender === 'male') {
+                // Men: 86.010 × log10(waist - neck) - 70.041 × log10(height) + 36.76
+                var waistNeckDiff = waist - neck;
+                if (waistNeckDiff <= 0) {
+                    valueEl.textContent = '--';
+                    statusEl.textContent = 'Invalid measurements';
+                    return;
+                }
+                bodyFat = 86.010 * Math.log10(waistNeckDiff) - 70.041 * Math.log10(heightCm) + 36.76;
+            } else {
+                // Women: 163.205 × log10(waist + hip - neck) - 97.684 × log10(height) - 78.387
+                var waistHipNeck = waist + hip - neck;
+                if (waistHipNeck <= 0) {
+                    valueEl.textContent = '--';
+                    statusEl.textContent = 'Invalid measurements';
+                    return;
+                }
+                bodyFat = 163.205 * Math.log10(waistHipNeck) - 97.684 * Math.log10(heightCm) - 78.387;
+            }
+
+            // Clamp to reasonable values
+            if (bodyFat < 2) bodyFat = 2;
+            if (bodyFat > 60) bodyFat = 60;
+
+            var bfValue = bodyFat.toFixed(1);
+
+            // Determine category and color
+            var z = zones[gender];
+            var color, status;
+
+            if (bodyFat <= z.essential.max) {
+                color = '#60a5fa';
+                status = '
