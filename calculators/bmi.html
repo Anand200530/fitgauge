@@ -204,28 +204,38 @@
             padding: 30px;
         }
 
-        /* Speedometer */
-        .speedometer {
+        /* Clean Minimal Gauge */
+        .gauge-container {
             position: relative;
             width: 280px;
             height: 140px;
-            margin: 0 auto 16px;
+            margin: 0 auto 20px;
         }
 
-        .gauge-bg {
+        .gauge-arc {
             position: absolute;
             width: 100%;
             height: 100%;
         }
 
-        .gauge-track {
+        .gauge-arc-bg {
             fill: none;
             stroke: var(--border);
-            stroke-width: 16;
+            stroke-width: 8;
             stroke-linecap: round;
         }
 
-        .needle-container {
+        .gauge-fill {
+            fill: none;
+            stroke-width: 8;
+            stroke-linecap: round;
+            stroke-dasharray: 440;
+            stroke-dashoffset: 440;
+            transition: stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Minimal Needle */
+        .needle-wrapper {
             position: absolute;
             bottom: 0;
             left: 50%;
@@ -236,35 +246,35 @@
         .needle {
             position: absolute;
             bottom: 0;
-            left: -3px;
-            width: 6px;
-            height: 105px;
+            left: -2px;
+            width: 4px;
+            height: 110px;
             background: var(--text);
-            border-radius: 3px;
+            border-radius: 2px;
             transform-origin: bottom center;
             transform: rotate(-90deg);
             transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .needle-cap {
+        .needle-center {
             position: absolute;
-            bottom: -10px;
+            bottom: -8px;
             left: 50%;
             transform: translateX(-50%);
-            width: 24px;
-            height: 24px;
+            width: 20px;
+            height: 20px;
             background: var(--text);
             border-radius: 50%;
         }
 
-        /* Calculated BMI Result Below Gauge */
+        /* BMI Value Display */
         .gauge-result {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .result-value {
-            font-size: 3rem;
+            font-size: 3.5rem;
             font-weight: 600;
             color: var(--text);
             line-height: 1;
@@ -273,20 +283,27 @@
         .result-unit {
             font-size: 0.9rem;
             color: var(--text-secondary);
-            margin-bottom: 8px;
+            margin-top: 4px;
         }
 
-        .result-status {
+        /* Status */
+        .gauge-status {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .status-text {
             font-size: 1.25rem;
             font-weight: 500;
             color: var(--text-secondary);
+            transition: color 0.3s ease;
         }
 
+        /* Labels Below Gauge */
         .gauge-labels {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 24px;
-            padding: 0 4px;
+            padding: 0 10px;
         }
 
         .gauge-label {
@@ -294,15 +311,10 @@
             flex: 1;
         }
 
-        .gauge-label-top {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-        }
-
         .gauge-label-value {
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: 500;
+            margin-bottom: 4px;
         }
 
         .gauge-label-value.blue { color: var(--blue); }
@@ -310,13 +322,12 @@
         .gauge-label-value.yellow { color: var(--yellow); }
         .gauge-label-value.red { color: var(--red); }
 
-        .gauge-label-range {
-            font-size: 0.65rem;
+        .gauge-label-name {
+            font-size: 0.75rem;
             color: var(--text-secondary);
-            margin-top: 2px;
         }
 
-        /* Analysis Grid */
+        /* Analysis Section */
         .analysis-section {
             padding: 20px 24px;
             border-top: 1px solid var(--border);
@@ -361,9 +372,9 @@
         @media (max-width: 768px) {
             .calculator { grid-template-columns: 1fr; }
             nav { display: none; }
-            .speedometer { width: 240px; height: 120px; }
-            .gauge-number { font-size: 2.5rem; }
-            .needle { height: 90px; }
+            .gauge-container { width: 240px; height: 120px; }
+            .result-value { font-size: 2.5rem; }
+            .needle { height: 95px; }
             .analysis-grid { grid-template-columns: 1fr; gap: 12px; }
             .gauge-labels { flex-wrap: wrap; gap: 8px; }
             .gauge-label { flex: none; width: 22%; }
@@ -459,65 +470,55 @@
                 </div>
 
                 <div class="gauge-body">
-                    <!-- Speedometer -->
-                    <div class="speedometer">
-                        <svg class="gauge-bg" viewBox="0 0 280 140">
-                            <!-- Gauge track background -->
-                            <path class="gauge-track" d="M 25 130 A 115 115 0 0 1 255 130"/>
-                            
-                            <!-- Color segments matching BMI categories -->
-                            <!-- Underweight: 15-18.5 (blue) - 20 degrees -->
-                            <path d="M 25 130 A 115 115 0 0 1 64.3 47.5" fill="none" stroke="#3b82f6" stroke-width="16" stroke-linecap="round"/>
-                            
-                            <!-- Normal: 18.5-25 (green) - 72.5 degrees -->
-                            <path d="M 64.3 47.5 A 115 115 0 0 1 140 15" fill="none" stroke="#22c55e" stroke-width="16" stroke-linecap="round"/>
-                            
-                            <!-- Overweight: 25-30 (yellow) - 52.5 degrees -->
-                            <path d="M 140 15 A 115 115 0 0 1 215.7 47.5" fill="none" stroke="#eab308" stroke-width="16" stroke-linecap="round"/>
-                            
-                            <!-- Obese: 30-35 (red) - 35 degrees -->
-                            <path d="M 215.7 47.5 A 115 115 0 0 1 255 130" fill="none" stroke="#ef4444" stroke-width="16" stroke-linecap="round"/>
-                            
-                            <!-- Value markers -->
-                            <text x="32" y="40" fill="#3b82f6" font-size="11" font-weight="600">18.5</text>
-                            <text x="140" y="8" fill="#22c55e" font-size="11" font-weight="600">25</text>
-                            <text x="248" y="40" fill="#eab308" font-size="11" font-weight="600">30</text>
+                    <!-- Clean Minimal Gauge -->
+                    <div class="gauge-container">
+                        <svg class="gauge-arc" viewBox="0 0 280 140">
+                            <path class="gauge-arc-bg" d="M 25 130 A 115 115 0 0 1 255 130"/>
+                            <defs>
+                                <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#3b82f6"/>
+                                    <stop offset="35%" stop-color="#22c55e"/>
+                                    <stop offset="55%" stop-color="#eab308"/>
+                                    <stop offset="70%" stop-color="#ef4444"/>
+                                </linearGradient>
+                            </defs>
+                            <path class="gauge-fill" id="gauge-fill" d="M 25 130 A 115 115 0 0 1 255 130" stroke="url(#gaugeGradient)"/>
                         </svg>
                         
-                        <div class="needle-container">
+                        <div class="needle-wrapper">
                             <div class="needle" id="needle"></div>
-                            <div class="needle-cap"></div>
+                            <div class="needle-center"></div>
                         </div>
                     </div>
 
-                    <!-- Calculated BMI Result -->
+                    <!-- BMI Value -->
                     <div class="gauge-result">
                         <div class="result-value" id="bmi-value">--</div>
                         <div class="result-unit">kg/m²</div>
-                        <div class="result-status" id="result-status">Enter your details</div>
                     </div>
 
-                    <!-- Color-coded Labels -->
+                    <!-- Status -->
+                    <div class="gauge-status">
+                        <div class="status-text" id="status-text">Enter your details</div>
+                    </div>
+
+                    <!-- Labels -->
                     <div class="gauge-labels">
                         <div class="gauge-label">
-                            <div class="gauge-label-top">Under</div>
                             <div class="gauge-label-value blue">18.5</div>
-                            <div class="gauge-label-range">kg/m²</div>
+                            <div class="gauge-label-name">Under</div>
                         </div>
                         <div class="gauge-label">
-                            <div class="gauge-label-top">Normal</div>
                             <div class="gauge-label-value green">25</div>
-                            <div class="gauge-label-range">kg/m²</div>
+                            <div class="gauge-label-name">Normal</div>
                         </div>
                         <div class="gauge-label">
-                            <div class="gauge-label-top">Over</div>
                             <div class="gauge-label-value yellow">30</div>
-                            <div class="gauge-label-range">kg/m²</div>
+                            <div class="gauge-label-name">Over</div>
                         </div>
                         <div class="gauge-label">
-                            <div class="gauge-label-top">Obese</div>
-                            <div class="gauge-label-value red">35+</div>
-                            <div class="gauge-label-range">kg/m²</div>
+                            <div class="gauge-label-value red">35</div>
+                            <div class="gauge-label-name">Obese</div>
                         </div>
                     </div>
 
@@ -624,12 +625,14 @@
             }
 
             var needle = document.getElementById('needle');
+            var gaugeFill = document.getElementById('gauge-fill');
             var valueEl = document.getElementById('bmi-value');
-            var statusEl = document.getElementById('result-status');
+            var statusEl = document.getElementById('status-text');
             var analysisSection = document.getElementById('analysis-section');
 
             if (!heightCm || !weight || heightCm < 50 || heightCm > 300 || weight < 20 || weight > 300) {
                 needle.style.transform = 'rotate(-90deg)';
+                gaugeFill.style.strokeDashoffset = '440';
                 valueEl.textContent = '--';
                 valueEl.style.color = '';
                 statusEl.textContent = 'Enter your details';
@@ -643,6 +646,7 @@
 
             if (bmi < 10 || bmi > 60) {
                 needle.style.transform = 'rotate(-90deg)';
+                gaugeFill.style.strokeDashoffset = '440';
                 valueEl.textContent = '--';
                 analysisSection.style.display = 'none';
                 return;
@@ -676,34 +680,21 @@
             targetMin = Math.round(18.5 * heightM * heightM);
             targetMax = Math.round(25 * heightM * heightM);
 
-            // Calculate needle rotation based on actual BMI categories
-            // Gauge spans from BMI 15 to 35 (180 degrees)
-            // BMI 18.5 is at 20 degrees
-            // BMI 25 is at 92.5 degrees
-            // BMI 30 is at 145 degrees
+            // Needle rotation
             var minBMI = 15;
             var maxBMI = 35;
-            var rotation;
-
-            if (bmi < 18.5) {
-                // Underweight: map 15-18.5 to -90 to -70 degrees
-                rotation = -90 + ((bmi - 15) / 3.5) * 20;
-            } else if (bmi < 25) {
-                // Normal: map 18.5-25 to -70 to 2.5 degrees
-                rotation = -70 + ((bmi - 18.5) / 6.5) * 72.5;
-            } else if (bmi < 30) {
-                // Overweight: map 25-30 to 2.5 to 55 degrees
-                rotation = 2.5 + ((bmi - 25) / 5) * 52.5;
-            } else {
-                // Obese: map 30-35 to 55 to 90 degrees
-                rotation = 55 + ((bmi - 30) / 5) * 35;
-            }
-
-            // Clamp rotation
+            var rotation = -90 + ((bmi - minBMI) / (maxBMI - minBMI)) * 180;
             if (rotation < -90) rotation = -90;
             if (rotation > 90) rotation = 90;
 
+            // Gauge fill
+            var fillPercent = (bmi - minBMI) / (maxBMI - minBMI);
+            if (fillPercent < 0) fillPercent = 0;
+            if (fillPercent > 1) fillPercent = 1;
+            var dashOffset = 440 - (fillPercent * 440);
+
             needle.style.transform = 'rotate(' + rotation + 'deg)';
+            gaugeFill.style.strokeDashoffset = dashOffset;
             
             valueEl.textContent = bmiValue;
             valueEl.style.color = color;
