@@ -257,20 +257,28 @@
             border-radius: 50%;
         }
 
-        .gauge-value {
+        /* Calculated BMI Result Below Gauge */
+        .gauge-result {
             text-align: center;
-            margin-bottom: 8px;
+            margin-bottom: 20px;
         }
 
-        .gauge-number {
+        .result-value {
             font-size: 3rem;
             font-weight: 600;
             color: var(--text);
             line-height: 1;
         }
 
-        .gauge-unit {
+        .result-unit {
             font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .result-status {
+            font-size: 1.25rem;
+            font-weight: 500;
             color: var(--text-secondary);
         }
 
@@ -306,30 +314,6 @@
             font-size: 0.65rem;
             color: var(--text-secondary);
             margin-top: 2px;
-        }
-
-        /* Result Section */
-        .result-section {
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
-        }
-
-        .result-display {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .result-status {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-
-        .result-desc {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            max-width: 280px;
-            margin: 0 auto;
         }
 
         /* Analysis Grid */
@@ -495,21 +479,22 @@
                             <path d="M 215.7 47.5 A 115 115 0 0 1 255 130" fill="none" stroke="#ef4444" stroke-width="16" stroke-linecap="round"/>
                             
                             <!-- Value markers -->
-                            <text x="35" y="35" fill="#3b82f6" font-size="11" font-weight="600">18.5</text>
-                            <text x="140" y="5" fill="#22c55e" font-size="11" font-weight="600">25</text>
-                            <text x="245" y="35" fill="#eab308" font-size="11" font-weight="600">30</text>
+                            <text x="32" y="40" fill="#3b82f6" font-size="11" font-weight="600">18.5</text>
+                            <text x="140" y="8" fill="#22c55e" font-size="11" font-weight="600">25</text>
+                            <text x="248" y="40" fill="#eab308" font-size="11" font-weight="600">30</text>
                         </svg>
                         
                         <div class="needle-container">
                             <div class="needle" id="needle"></div>
                             <div class="needle-cap"></div>
                         </div>
-                        
-                        <!-- BMI Value -->
-                        <div class="gauge-value">
-                            <div class="gauge-number" id="bmi-value">--</div>
-                            <div class="gauge-unit">kg/m²</div>
-                        </div>
+                    </div>
+
+                    <!-- Calculated BMI Result -->
+                    <div class="gauge-result">
+                        <div class="result-value" id="bmi-value">--</div>
+                        <div class="result-unit">kg/m²</div>
+                        <div class="result-status" id="result-status">Enter your details</div>
                     </div>
 
                     <!-- Color-coded Labels -->
@@ -536,29 +521,21 @@
                         </div>
                     </div>
 
-                    <!-- Result Status -->
-                    <div class="result-section">
-                        <div class="result-display">
-                            <div class="result-status" id="result-status">Enter your details</div>
-                            <p class="result-desc" id="result-desc">Add height and weight to calculate</p>
-                        </div>
-
-                        <!-- Analysis -->
-                        <div class="analysis-section" id="analysis-section" style="display: none;">
-                            <div class="analysis-title">Analysis</div>
-                            <div class="analysis-grid">
-                                <div class="analysis-item">
-                                    <div class="analysis-label">Target Range</div>
-                                    <div class="analysis-value" id="target-range">--</div>
-                                </div>
-                                <div class="analysis-item">
-                                    <div class="analysis-label">Category</div>
-                                    <div class="analysis-value" id="bmi-category">--</div>
-                                </div>
-                                <div class="analysis-item">
-                                    <div class="analysis-label">Risk Level</div>
-                                    <div class="analysis-value" id="risk-level">--</div>
-                                </div>
+                    <!-- Analysis -->
+                    <div class="analysis-section" id="analysis-section" style="display: none;">
+                        <div class="analysis-title">Analysis</div>
+                        <div class="analysis-grid">
+                            <div class="analysis-item">
+                                <div class="analysis-label">Target Range</div>
+                                <div class="analysis-value" id="target-range">--</div>
+                            </div>
+                            <div class="analysis-item">
+                                <div class="analysis-label">Category</div>
+                                <div class="analysis-value" id="bmi-category">--</div>
+                            </div>
+                            <div class="analysis-item">
+                                <div class="analysis-label">Risk Level</div>
+                                <div class="analysis-value" id="risk-level">--</div>
                             </div>
                         </div>
                     </div>
@@ -649,7 +626,6 @@
             var needle = document.getElementById('needle');
             var valueEl = document.getElementById('bmi-value');
             var statusEl = document.getElementById('result-status');
-            var descEl = document.getElementById('result-desc');
             var analysisSection = document.getElementById('analysis-section');
 
             if (!heightCm || !weight || heightCm < 50 || heightCm > 300 || weight < 20 || weight > 300) {
@@ -658,8 +634,6 @@
                 valueEl.style.color = '';
                 statusEl.textContent = 'Enter your details';
                 statusEl.style.color = '';
-                statusEl.className = 'result-status';
-                descEl.textContent = 'Add height and weight to calculate';
                 analysisSection.style.display = 'none';
                 return;
             }
@@ -675,30 +649,26 @@
             }
 
             var bmiValue = bmi.toFixed(1);
-            var color, status, desc, category, risk, targetMin, targetMax;
+            var color, status, category, risk, targetMin, targetMax;
 
             if (bmi < 18.5) {
                 color = '#3b82f6';
                 status = 'Underweight';
-                desc = 'Consider consulting a healthcare provider.';
                 category = 'Underweight';
                 risk = 'Low';
             } else if (bmi < 25) {
                 color = '#22c55e';
                 status = 'Normal';
-                desc = 'Maintain your current lifestyle.';
                 category = 'Normal';
                 risk = 'Minimal';
             } else if (bmi < 30) {
                 color = '#eab308';
                 status = 'Overweight';
-                desc = 'Consider lifestyle modifications.';
                 category = 'Overweight';
                 risk = 'Moderate';
             } else {
                 color = '#ef4444';
                 status = 'Obese';
-                desc = 'Consult a healthcare provider.';
                 category = 'Obese';
                 risk = 'High';
             }
@@ -739,8 +709,6 @@
             valueEl.style.color = color;
             statusEl.textContent = status;
             statusEl.style.color = color;
-            statusEl.className = 'result-status';
-            descEl.textContent = desc;
 
             document.getElementById('target-range').textContent = targetMin + '-' + targetMax + ' kg';
             document.getElementById('bmi-category').textContent = category;
