@@ -10,16 +10,18 @@
     <style>
         :root {
             --bg: #0a0a0a;
-            --surface: #161616;
-            --surface-hover: #1f1f1f;
+            --surface: #141414;
+            --surface-hover: #1a1a1a;
             --border: #262626;
+            --border-light: #333;
             --text: #f5f5f5;
             --text-secondary: #737373;
+            --text-muted: #555;
             --accent: #22c55e;
-            --blue: #3b82f6;
-            --green: #22c55e;
-            --yellow: #eab308;
-            --red: #ef4444;
+            --blue: #60a5fa;
+            --green: #4ade80;
+            --yellow: #facc15;
+            --red: #f87171;
             --font: 'Inter', sans-serif;
         }
 
@@ -30,9 +32,10 @@
             background: var(--bg);
             color: var(--text);
             min-height: 100vh;
+            line-height: 1.5;
         }
 
-        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
 
         header {
             padding: 20px 0;
@@ -50,9 +53,9 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            color: var(--text);
-            font-weight: 600;
             font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text);
         }
 
         .logo svg { width: 26px; height: 26px; color: var(--accent); }
@@ -63,7 +66,10 @@
             color: var(--text-secondary);
             font-size: 0.85rem;
             text-decoration: none;
+            transition: color 0.2s;
         }
+
+        nav a:hover { color: var(--text); }
 
         main { padding: 48px 0; }
 
@@ -75,7 +81,10 @@
             font-size: 0.85rem;
             text-decoration: none;
             margin-bottom: 32px;
+            transition: color 0.2s;
         }
+
+        .back-link:hover { color: var(--text); }
 
         .page-header { margin-bottom: 40px; }
 
@@ -104,7 +113,7 @@
 
         .form-label {
             display: block;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--text-secondary);
             margin-bottom: 10px;
             text-transform: uppercase;
@@ -120,13 +129,14 @@
             color: var(--text);
             font-family: var(--font);
             font-size: 1rem;
+            transition: border-color 0.2s;
         }
 
         .form-input:focus { outline: none; border-color: var(--accent); }
 
-        .form-input[type="number"] {
-            -moz-appearance: textfield;
-        }
+        .form-input::placeholder { color: var(--text-muted); }
+
+        .form-input[type="number"] { -moz-appearance: textfield; }
 
         .form-input[type="number"]::-webkit-outer-spin-button,
         .form-input[type="number"]::-webkit-inner-spin-button {
@@ -146,12 +156,15 @@
             font-family: var(--font);
             font-size: 0.9rem;
             cursor: pointer;
+            transition: all 0.2s;
         }
+
+        .toggle-btn:hover { background: var(--border-light); }
 
         .toggle-btn.active {
             background: var(--accent);
             border-color: var(--accent);
-            color: var(--bg);
+            color: #000;
         }
 
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -166,10 +179,13 @@
             color: var(--text-secondary);
             font-size: 0.8rem;
             cursor: pointer;
+            transition: all 0.2s;
         }
 
+        .unit-btn:hover { background: var(--surface-hover); }
+
         .unit-btn.active {
-            background: var(--surface-hover);
+            background: var(--border-light);
             border-color: var(--accent);
             color: var(--accent);
         }
@@ -201,109 +217,78 @@
         }
 
         .gauge-body {
-            padding: 30px;
+            padding: 32px 24px;
         }
 
-        /* Clean Minimal Gauge */
-        .gauge-container {
-            position: relative;
-            width: 280px;
-            height: 140px;
-            margin: 0 auto 20px;
-        }
-
-        .gauge-arc {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-
-        .gauge-arc-bg {
-            fill: none;
-            stroke: var(--border);
-            stroke-width: 8;
-            stroke-linecap: round;
-        }
-
-        .gauge-fill {
-            fill: none;
-            stroke-width: 8;
-            stroke-linecap: round;
-            stroke-dasharray: 440;
-            stroke-dashoffset: 440;
-            transition: stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* Minimal Needle */
-        .needle-wrapper {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 0;
-        }
-
-        .needle {
-            position: absolute;
-            bottom: 0;
-            left: -2px;
-            width: 4px;
-            height: 110px;
-            background: var(--text);
-            border-radius: 2px;
-            transform-origin: bottom center;
-            transform: rotate(-90deg);
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .needle-center {
-            position: absolute;
-            bottom: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 20px;
-            height: 20px;
-            background: var(--text);
-            border-radius: 50%;
-        }
-
-        /* BMI Value Display */
-        .gauge-result {
+        /* Modern Gauge */
+        .gauge-main {
             text-align: center;
             margin-bottom: 24px;
         }
 
-        .result-value {
-            font-size: 3.5rem;
+        .gauge-circle {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 16px;
+        }
+
+        .gauge-circle svg {
+            transform: rotate(-90deg);
+            width: 100%;
+            height: 100%;
+        }
+
+        .gauge-bg-circle {
+            fill: none;
+            stroke: var(--border);
+            stroke-width: 12;
+        }
+
+        .gauge-progress {
+            fill: none;
+            stroke-width: 12;
+            stroke-linecap: round;
+            stroke-dasharray: 565;
+            stroke-dashoffset: 565;
+            transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .gauge-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .gauge-value {
+            font-size: 3rem;
             font-weight: 600;
             color: var(--text);
             line-height: 1;
         }
 
-        .result-unit {
-            font-size: 0.9rem;
+        .gauge-unit {
+            font-size: 0.8rem;
             color: var(--text-secondary);
             margin-top: 4px;
         }
 
-        /* Status */
         .gauge-status {
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .status-text {
-            font-size: 1.25rem;
+            margin-top: 8px;
+            font-size: 1rem;
             font-weight: 500;
             color: var(--text-secondary);
-            transition: color 0.3s ease;
+            transition: color 0.3s;
         }
 
-        /* Labels Below Gauge */
+        /* Labels Row */
         .gauge-labels {
             display: flex;
             justify-content: space-between;
-            padding: 0 10px;
+            padding: 0 8px;
+            margin-bottom: 24px;
         }
 
         .gauge-label {
@@ -323,11 +308,11 @@
         .gauge-label-value.red { color: var(--red); }
 
         .gauge-label-name {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--text-secondary);
         }
 
-        /* Analysis Section */
+        /* Analysis */
         .analysis-section {
             padding: 20px 24px;
             border-top: 1px solid var(--border);
@@ -335,7 +320,7 @@
         }
 
         .analysis-title {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--text-secondary);
             text-transform: uppercase;
             letter-spacing: 0.1em;
@@ -351,18 +336,18 @@
         .analysis-item { text-align: center; }
 
         .analysis-label {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--text-secondary);
             margin-bottom: 4px;
         }
 
         .analysis-value {
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 500;
         }
 
         footer {
-            padding: 24px 0;
+            padding: 32px 0;
             border-top: 1px solid var(--border);
             text-align: center;
             color: var(--text-secondary);
@@ -372,9 +357,8 @@
         @media (max-width: 768px) {
             .calculator { grid-template-columns: 1fr; }
             nav { display: none; }
-            .gauge-container { width: 240px; height: 120px; }
-            .result-value { font-size: 2.5rem; }
-            .needle { height: 95px; }
+            .gauge-circle { width: 180px; height: 180px; }
+            .gauge-value { font-size: 2.5rem; }
             .analysis-grid { grid-template-columns: 1fr; gap: 12px; }
             .gauge-labels { flex-wrap: wrap; gap: 8px; }
             .gauge-label { flex: none; width: 22%; }
@@ -470,36 +454,19 @@
                 </div>
 
                 <div class="gauge-body">
-                    <!-- Clean Minimal Gauge -->
-                    <div class="gauge-container">
-                        <svg class="gauge-arc" viewBox="0 0 280 140">
-                            <path class="gauge-arc-bg" d="M 25 130 A 115 115 0 0 1 255 130"/>
-                            <defs>
-                                <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                    <stop offset="0%" stop-color="#3b82f6"/>
-                                    <stop offset="35%" stop-color="#22c55e"/>
-                                    <stop offset="55%" stop-color="#eab308"/>
-                                    <stop offset="70%" stop-color="#ef4444"/>
-                                </linearGradient>
-                            </defs>
-                            <path class="gauge-fill" id="gauge-fill" d="M 25 130 A 115 115 0 0 1 255 130" stroke="url(#gaugeGradient)"/>
-                        </svg>
-                        
-                        <div class="needle-wrapper">
-                            <div class="needle" id="needle"></div>
-                            <div class="needle-center"></div>
+                    <!-- Circular Gauge -->
+                    <div class="gauge-main">
+                        <div class="gauge-circle">
+                            <svg viewBox="0 0 200 200">
+                                <circle class="gauge-bg-circle" cx="100" cy="100" r="90"/>
+                                <circle class="gauge-progress" id="gauge-progress" cx="100" cy="100" r="90"/>
+                            </svg>
+                            <div class="gauge-center">
+                                <div class="gauge-value" id="bmi-value">--</div>
+                                <div class="gauge-unit">kg/m²</div>
+                                <div class="gauge-status" id="status-text">Enter details</div>
+                            </div>
                         </div>
-                    </div>
-
-                    <!-- BMI Value -->
-                    <div class="gauge-result">
-                        <div class="result-value" id="bmi-value">--</div>
-                        <div class="result-unit">kg/m²</div>
-                    </div>
-
-                    <!-- Status -->
-                    <div class="gauge-status">
-                        <div class="status-text" id="status-text">Enter your details</div>
                     </div>
 
                     <!-- Labels -->
@@ -624,18 +591,17 @@
                 weight = weight * 0.453592;
             }
 
-            var needle = document.getElementById('needle');
-            var gaugeFill = document.getElementById('gauge-fill');
+            var progress = document.getElementById('gauge-progress');
             var valueEl = document.getElementById('bmi-value');
             var statusEl = document.getElementById('status-text');
             var analysisSection = document.getElementById('analysis-section');
 
             if (!heightCm || !weight || heightCm < 50 || heightCm > 300 || weight < 20 || weight > 300) {
-                needle.style.transform = 'rotate(-90deg)';
-                gaugeFill.style.strokeDashoffset = '440';
+                progress.style.strokeDashoffset = '565';
+                progress.style.stroke = 'var(--border)';
                 valueEl.textContent = '--';
                 valueEl.style.color = '';
-                statusEl.textContent = 'Enter your details';
+                statusEl.textContent = 'Enter details';
                 statusEl.style.color = '';
                 analysisSection.style.display = 'none';
                 return;
@@ -645,8 +611,8 @@
             var bmi = weight / (heightM * heightM);
 
             if (bmi < 10 || bmi > 60) {
-                needle.style.transform = 'rotate(-90deg)';
-                gaugeFill.style.strokeDashoffset = '440';
+                progress.style.strokeDashoffset = '565';
+                progress.style.stroke = 'var(--border)';
                 valueEl.textContent = '--';
                 analysisSection.style.display = 'none';
                 return;
@@ -656,22 +622,22 @@
             var color, status, category, risk, targetMin, targetMax;
 
             if (bmi < 18.5) {
-                color = '#3b82f6';
+                color = '#60a5fa';
                 status = 'Underweight';
                 category = 'Underweight';
                 risk = 'Low';
             } else if (bmi < 25) {
-                color = '#22c55e';
+                color = '#4ade80';
                 status = 'Normal';
                 category = 'Normal';
                 risk = 'Minimal';
             } else if (bmi < 30) {
-                color = '#eab308';
+                color = '#facc15';
                 status = 'Overweight';
                 category = 'Overweight';
                 risk = 'Moderate';
             } else {
-                color = '#ef4444';
+                color = '#f87171';
                 status = 'Obese';
                 category = 'Obese';
                 risk = 'High';
@@ -680,21 +646,15 @@
             targetMin = Math.round(18.5 * heightM * heightM);
             targetMax = Math.round(25 * heightM * heightM);
 
-            // Needle rotation
-            var minBMI = 15;
-            var maxBMI = 35;
-            var rotation = -90 + ((bmi - minBMI) / (maxBMI - minBMI)) * 180;
-            if (rotation < -90) rotation = -90;
-            if (rotation > 90) rotation = 90;
+            // Progress calculation (BMI 10-40 maps to 0-100%)
+            var progressPercent = ((bmi - 10) / 30) * 100;
+            if (progressPercent < 0) progressPercent = 0;
+            if (progressPercent > 100) progressPercent = 100;
+            
+            var dashOffset = 565 - (progressPercent / 100) * 565;
 
-            // Gauge fill
-            var fillPercent = (bmi - minBMI) / (maxBMI - minBMI);
-            if (fillPercent < 0) fillPercent = 0;
-            if (fillPercent > 1) fillPercent = 1;
-            var dashOffset = 440 - (fillPercent * 440);
-
-            needle.style.transform = 'rotate(' + rotation + 'deg)';
-            gaugeFill.style.strokeDashoffset = dashOffset;
+            progress.style.strokeDashoffset = dashOffset;
+            progress.style.stroke = color;
             
             valueEl.textContent = bmiValue;
             valueEl.style.color = color;
