@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ideal Weight Calculator — FitGauge</title>
+    <meta name="description" content="Calculate your ideal weight using BMI, Hamwi, and Devine formulas. Visual scale shows where you stand.">
+    <link rel="canonical" href="https://anand200530.github.io/fitgauge/calculators/ideal-weight.html">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --surface: #141414;
+            --surface-hover: #1a1a1a;
+            --border: #262626;
+            --border-light: #333;
+            --text: #f5f5f5;
+            --text-secondary: #737373;
+            --text-muted: #555;
+            --accent: #22c55e;
+            --accent-hover: #4ade80;
+            --blue: #60a5fa;
+            --green: #4ade80;
+            --yellow: #facc15;
+            --orange: #fb923c;
+            --red: #f87171;
+            --font: 'Inter', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+        header {
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg);
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .logo svg { width: 26px; height: 26px; color: var(--accent); }
+
+        nav { display: flex; gap: 28px; }
+
+        nav a {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        nav a:hover { color: var(--text); }
+
+        main { padding: 48px 0; }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-decoration: none;
+            margin-bottom: 32px;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover { color: var(--text); }
+
+        .page-header { margin-bottom: 40px; }
+
+        .page-title { font-size: 1.75rem; font-weight: 600; margin-bottom: 8px; }
+
+        .page-desc { color: var(--text-secondary); font-size: 0.9rem; }
+
+        .calculator {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .form-section { display: flex; flex-direction: column; gap: 24px; }
+
+        .form-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+        }
+
+        .form-group { margin-bottom: 20px; }
+
+        .form-group:last-child { margin-bottom: 0; }
+
+        .form-label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            background: var(--surface-hover);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: var(--font);
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus { outline: none; border-color: var(--accent); }
+
+        .form-input::placeholder { color: var(--text-muted); }
+
+        .form-input[type="number"] { -moz-appearance: textfield; }
+
+        .form-input[type="number"]::-webkit-outer-spin-button,
+        .form-input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .toggle-group { display: flex; gap: 8px; }
+
+        .toggle-btn {
+            flex: 1;
+            padding: 12px 20px;
+            background: var(--surface-hover);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-family: var(--font);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .toggle-btn:hover { background: var(--border-light); }
+
+        .toggle-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #000;
+        }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+        .unit-toggle { display: flex; gap: 8px; margin-bottom: 12px; }
+
+        .unit-btn {
+            padding: 8px 16px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .unit-btn:hover { background: var(--surface-hover); }
+
+        .unit-btn.active {
+            background: var(--border-light);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Scale Card */
+        .scale-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .scale-header {
+            padding: 24px 28px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .scale-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .scale-body {
+            padding: 32px 28px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Balance Scale Visualization */
+        .balance-container {
+            width: 100%;
+            max-width: 400px;
+            height: 220px;
+            position: relative;
+            margin-bottom: 32px;
+        }
+
+        .scale-base {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 60px solid transparent;
+            border-right: 60px solid transparent;
+            border-bottom: 80px solid var(--border-light);
+        }
+
+        .scale-pole {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 100px;
+            background: linear-gradient(to top, var(--border-light), var(--border));
+            border-radius: 3px 3px 0 0;
+        }
+
+        .scale-beam {
+            position: absolute;
+            bottom: 175px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 280px;
+            height: 8px;
+            background: var(--border-light);
+            border-radius: 4px;
+            transform-origin: center center;
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .scale-pan-left,
+        .scale-pan-right {
+            position: absolute;
+            width: 70px;
+            height: 12px;
+            background: var(--border);
+            border-radius: 0 0 35px 35px;
+            top: 4px;
+        }
+
+        .scale-pan-left { left: 0; }
+        .scale-pan-right { right: 0; }
+
+        .scale-pan-string-left,
+        .scale-pan-string-right {
+            position: absolute;
+            width: 2px;
+            height: 40px;
+            background: var(--border);
+            top: -40px;
+        }
+
+        .scale-pan-string-left { left: 34px; }
+        .scale-pan-string-right { right: 34px; }
+
+        .weight-indicator {
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .weight-indicator .weight-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .weight-indicator .weight-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .weight-indicator.ideal {
+            color: var(--accent);
+        }
+
+        .weight-indicator.current {
+            color: var(--blue);
+        }
+
+        /* Scale Labels */
+        .scale-labels {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 360px;
+            margin-top: 8px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            padding: 0 10px;
+        }
+
+        .scale-label-under { color: var(--blue); }
+        .scale-label-normal { color: var(--accent); }
+        .scale-label-over { color: var(--orange); }
+
+        /* Results Section */
+        .results-section {
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        .result-main {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .result-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+
+        .result-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .result-range {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .result-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 28px;
+        }
+
+        .result-status.underweight {
+            background: rgba(96, 165, 250, 0.15);
+            color: var(--blue);
+        }
+
+        .result-status.normal {
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--accent);
+        }
+
+        .result-status.overweight {
+            background: rgba(251, 146, 60, 0.15);
+            color: var(--orange);
+        }
+
+        .result-status.obese {
+            background: rgba(248, 113, 113, 0.15);
+            color: var(--red);
+        }
+
+        /* Formula Breakdown */
+        .formula-breakdown {
+            background: var(--surface-hover);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 24px;
+        }
+
+        .formula-title {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 16px;
+        }
+
+        .formula-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .formula-item:last-child { border-bottom: none; padding-bottom: 0; }
+
+        .formula-name {
+            font-size: 0.85rem;
+            color: var(--text);
+        }
+
+        .formula-result {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        /* Weight Action */
+        .weight-action {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 16px 24px;
+            background: var(--surface-hover);
+            border-radius: 12px;
+            margin-top: 24px;
+        }
+
+        .weight-action-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .weight-action-icon.lose {
+            background: rgba(248, 113, 113, 0.2);
+            color: var(--red);
+        }
+
+        .weight-action-icon.gain {
+            background: rgba(96, 165, 250, 0.2);
+            color: var(--blue);
+        }
+
+        .weight-action-icon.maintain {
+            background: rgba(34, 197, 94, 0.2);
+            color: var(--accent);
+        }
+
+        .weight-action-text {
+            font-size: 1rem;
+            color: var(--text);
+        }
+
+        .weight-action-text span {
+            font-weight: 600;
+        }
+
+        .weight-action-unit {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .hidden { display: none !important; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .calculator { grid-template-columns: 1fr; }
+
+            .balance-container { height: 180px; }
+
+            .scale-beam { width: 240px; }
+
+            .scale-base {
+                border-left: 50px solid transparent;
+                border-right: 50px solid transparent;
+                border-bottom: 60px solid var(--border-light);
+            }
+
+            .scale-pole {
+                bottom: 60px;
+                height: 80px;
+            }
+
+            .scale-beam { bottom: 135px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="/" class="logo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+                FitGauge
+            </a>
+            <nav>
+                <a href="/">Home</a>
+                <a href="/calculators/bmi.html">Calculators</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <a href="/" class="back-link">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Back to calculators
+            </a>
+
+            <div class="page-header">
+                <h1 class="page-title">Ideal Weight Calculator</h1>
+                <p class="page-desc">Find your healthy weight range using multiple scientifically-validated formulas</p>
+            </div>
+
+            <div class="calculator">
+                <div class="form-section">
+                    <div class="form-card">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Gender</label>
+                                <div class="toggle-group">
+                                    <button class="toggle-btn active" data-gender="male" onclick="setGender('male')">Male</button>
+                                    <button class="toggle-btn" data-gender="female" onclick="setGender('female')">Female</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Age</label>
+                                <input type="number" class="form-input" id="age" placeholder="Years" value="30" oninput="calculate()">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Height</label>
+                            <div class="unit-toggle">
+                                <button class="unit-btn active" data-height-unit="cm" onclick="setHeightUnit('cm')">cm</button>
+                                <button class="unit-btn" data-height-unit="ft" onclick="setHeightUnit('ft')">ft/in</button>
+                            </div>
+                            <div id="height-cm-input">
+                                <input type="number" class="form-input" id="height-cm" placeholder="Height in cm" value="175" oninput="calculate()">
+                            </div>
+                            <div id="height-ft-input" class="hidden">
+                                <div class="form-row">
+                                    <input type="number" class="form-input" id="height-ft" placeholder="Feet" value="5" oninput="calculate()">
+                                    <input type="number" class="form-input" id="height-in" placeholder="Inches" value="9" oninput="calculate()">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Current Weight</label>
+                            <div class="unit-toggle">
+                                <button class="unit-btn active" data-weight-unit="kg" onclick="setWeightUnit('kg')">kg</button>
+                                <button class="unit-btn" data-weight-unit="lbs" onclick="setWeightUnit('lbs')">lbs</button>
+                            </div>
+                            <input type="number" class="form-input" id="current-weight" placeholder="Weight" value="80" oninput="calculate()">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="scale-card">
+                    <div class="scale-header">
+                        <h2 class="scale-title">Weight Balance</h2>
+                    </div>
+                    <div class="scale-body">
+                        <div class="balance-container">
+                            <div class="scale-beam" id="scale-beam">
+                                <div class="scale-pan-left">
+                                    <div class="scale-pan-string-left"></div>
+                                </div>
+                                <div class="scale-pan-right">
+                                    <div class="scale-pan-string-right"></div>
+                                </div>
+                            </div>
+                            <div class="scale-base"></div>
+                            <div class="scale-pole"></div>
+                            <div class="scale-labels">
+                                <span class="scale-label-under">Underweight</span>
+                                <span class="scale-label-normal">Ideal</span>
+                                <span class="scale-label-over">Overweight</span>
+                            </div>
+                        </div>
+
+                        <div class="results-section" id="results">
+                            <div class="result-main">
+                                <div class="result-label">Ideal Weight Range</div>
+                                <div class="result-value" id="ideal-range">—</div>
+                                <div class="result-range" id="ideal-formulas">Enter your details to calculate</div>
+                            </div>
+
+                            <div class="result-status normal hidden" id="status-badge">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                    <polyline points="22 4 12 14.01 9 11.01"/>
+                                </svg>
+                                <span id="status-text">Normal Weight</span>
+                            </div>
+
+                            <div class="weight-action hidden" id="weight-action">
+                                <div class="weight-action-icon lose" id="action-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 5v14M5 12l7-7 7 7"/>
+                                    </svg>
+                                </div>
+                                <div class="weight-action-text">
+                                    <span id="action-amount">0</span> <span class="weight-action-unit" id="action-unit">kg</span> to <span id="action-verb">lose</span>
+                                </div>
+                            </div>
+
+                            <div class="formula-breakdown">
+                                <div class="formula-title">Formula Breakdown</div>
+                                <div class="formula-item">
+                                    <span class="formula-name">BMI-based (18.5-25)</span>
+                                    <span class="formula-result" id="bmi-result">—</span>
+                                </div>
+                                <div class="formula-item">
+                                    <span class="formula-name">Hamwi Formula</span>
+                                    <span class="formula-result" id="hamwi-result">—</span>
+                                </div>
+                                <div class="formula-item">
+                                    <span class="formula-name">Devine Formula</span>
+                                    <span class="formula-result" id="devine-result">—</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let gender = 'male';
+        let heightUnit = 'cm';
+        let weightUnit = 'kg';
+
+        function setGender(value) {
+            gender = value;
+            document.querySelectorAll('[data-gender]').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.gender === value);
+            });
+            calculate();
+        }
+
+        function setHeightUnit(value) {
+            heightUnit = value;
+            document.querySelectorAll('[data-height-unit]').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.heightUnit === value);
+            });
+            document.getElementById('height-cm-input').classList.toggle('hidden', value !== 'cm');
+            document.getElementById('height-ft-input').classList.toggle('hidden', value !== 'ft');
+            calculate();
+        }
+
+        function setWeightUnit(value) {
+            weightUnit = value;
+            document.querySelectorAll('[data-weight-unit]').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.weightUnit === value);
+            });
+            calculate();
+        }
+
+        function getHeightInMeters() {
+            let heightCm;
+            if (heightUnit === 'cm') {
+                heightCm = parseFloat(document.getElementById('height-cm').value) || 0;
+            } else {
+                const ft = parseFloat(document.getElementById('height-ft').value) || 0;
+                const inches = parseFloat(document.getElementById('height-in').value) || 0;
+                heightCm = (ft * 30.48) + (inches * 2.54);
+            }
+            return heightCm / 100;
+        }
+
+        function getCurrentWeightKg() {
+            let weight = parseFloat(document.getElementById('current-weight').value) || 0;
+            if (weightUnit === 'lbs') {
+                weight = weight * 0.453592;
+            }
+            return weight;
+        }
+
+        function formatWeight(kg, decimals = 1) {
+            if (weightUnit === 'lbs') {
+                return (kg * 2.20462).toFixed(decimals) + ' lbs';
+            }
+            return kg.toFixed(decimals) + ' kg';
+        }
+
+        function formatRange(minKg, maxKg) {
+            if (weightUnit === 'lbs') {
+                return (minKg * 2.20462).toFixed(0) + ' - ' + (maxKg * 2.20462).toFixed(0) + ' lbs';
+            }
+            return minKg.toFixed(1) + ' - ' + maxKg.toFixed(1) + ' kg';
+        }
+
+        function calculate() {
+            const heightM = getHeightInMeters();
+            const currentWeightKg = getCurrentWeightKg();
+            const age = parseInt(document.getElementById('age').value) || 30;
+
+            if (heightM <= 0 || currentWeightKg <= 0) {
+                return;
+            }
+
+            // BMI-based ideal weight (BMI 18.5 - 25)
+            const minBMI = 18.5;
+            const maxBMI = 25;
+            const bmiMinWeight = minBMI * heightM * heightM;
+            const bmiMaxWeight = maxBMI * heightM * heightM;
+
+            // Hamwi Formula
+            let hamwiIdeal;
+            if (gender === 'male') {
+                hamwiIdeal = 48 + 2.7 * (heightM * 100 / 2.54 - 60);
+            } else {
+                hamwiIdeal = 45.5 + 2.2 * (heightM * 100 / 2.54 - 60);
+            }
+
+            // Devine Formula
+            let devineIdeal;
+            if (gender === 'male') {
+                devineIdeal = 50 + 2.3 * (heightM * 100 / 2.54 / 2 - 5);
+            } else {
+                devineIdeal = 45.5 + 2.3 * (heightM * 100 / 2.54 / 2 - 5);
+            }
+
+            // Calculate average ideal range
+            const avgMinWeight = (bmiMinWeight + hamwiIdeal * 0.8 + devineIdeal * 0.8) / 3;
+            const avgMaxWeight = (bmiMaxWeight + hamwiIdeal * 1.2 + devineIdeal * 1.2) / 3;
+
+            // Current BMI
+            const currentBMI = currentWeightKg / (heightM * heightM);
+
+            // Update display
+            document.getElementById('ideal-range').textContent = formatRange(avgMinWeight, avgMaxWeight);
+            document.getElementById('ideal-formulas').textContent = `BMI: ${bmiMinWeight.toFixed(1)}-${bmiMaxWeight.toFixed(1)} kg | Hamwi: ${hamwiIdeal.toFixed(1)} kg | Devine: ${devineIdeal.toFixed(1)} kg`;
+
+            // BMI-based result
+            document.getElementById('bmi-result').textContent = formatRange(bmiMinWeight, bmiMaxWeight);
+            document.getElementById('hamwi-result').textContent = formatWeight(hamwiIdeal);
+            document.getElementById('devine-result').textContent = formatWeight(devineIdeal);
+
+            // Determine status
+            const statusBadge = document.getElementById('status-badge');
+            const statusText = document.getElementById('status-text');
+            const weightAction = document.getElementById('weight-action');
+            const actionIcon = document.getElementById('action-icon');
+            const actionAmount = document.getElementById('action-amount');
+            const actionUnit = document.getElementById('action-unit');
+            const actionVerb = document.getElementById('action-verb');
+
+            statusBadge.classList.remove('hidden', 'underweight', 'normal', 'overweight', 'obese');
+
+            let tiltAngle = 0;
+            let diff = 0;
+
+            if (currentBMI < 18.5) {
+                statusBadge.classList.add('underweight');
+                statusText.textContent = 'Underweight';
+                diff = avgMinWeight - currentWeightKg;
+                actionIcon.className = 'weight-action-icon gain';
+                actionVerb.textContent = 'gain';
+                tiltAngle = -15 * Math.min(Math.abs(diff) / 20, 1);
+            } else if (currentBMI >= 18.5 && currentBMI <= 25) {
+                statusBadge.classList.add('normal');
+                statusText.textContent = 'Normal Weight';
+                weightAction.classList.add('hidden');
+                tiltAngle = 0;
+            } else if (currentBMI > 25 && currentBMI <= 30) {
+                statusBadge.classList.add('overweight');
+                statusText.textContent = 'Overweight';
+                diff = currentWeightKg - avgMaxWeight;
+                actionIcon.className = 'weight-action-icon lose';
+                actionVerb.textContent = 'lose';
+                tiltAngle = 15 * Math.min(Math.abs(diff) / 20, 1);
+            } else {
+                statusBadge.classList.add('obese');
+                statusText.textContent = 'Obese';
+                diff = currentWeightKg - avgMaxWeight;
+                actionIcon.className = 'weight-action-icon lose';
+                actionVerb.textContent = 'lose';
+                tiltAngle = 20 * Math.min(Math.abs(diff) / 30, 1);
+            }
+
+            // Update scale tilt
+            document.getElementById('scale-beam').style.transform = `translateX(-50%) rotate(${tiltAngle}deg)`;
+
+            // Update weight action
+            if (currentBMI < 18.5 || currentBMI > 25) {
+                weightAction.classList.remove('hidden');
+                const diffLbs = diff * 2.20462;
+                if (weightUnit === 'lbs') {
+                    actionAmount.textContent = diffLbs.toFixed(1);
+                    actionUnit.textContent = 'lbs';
+                } else {
+                    actionAmount.textContent = diff.toFixed(1);
+                    actionUnit.textContent = 'kg';
+                }
+            } else {
+                weightAction.classList.add('hidden');
+            }
+        }
+
+        // Initial calculation
+        calculate();
+    </script>
+</body>
+</html>
