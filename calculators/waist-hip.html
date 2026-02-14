@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waist-to-Hip Ratio Calculator | FitGauge</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <a href="../index.html" class="back-link">← Back to FitGauge</a>
+            <h1>Waist-to-Hip Ratio Calculator</h1>
+            <p class="subtitle">Calculate your WHR to assess health risk</p>
+        </header>
+
+        <main class="calculator-card">
+            <form id="whr-form" class="calculator-form">
+                <div class="form-group">
+                    <label class="form-label">Gender</label>
+                    <div class="gender-toggle">
+                        <label class="gender-option">
+                            <input type="radio" name="gender" value="male" checked>
+                            <span class="gender-btn">Male</span>
+                        </label>
+                        <label class="gender-option">
+                            <input type="radio" name="gender" value="female">
+                            <span class="gender-btn">Female</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Waist Circumference</label>
+                    <div class="input-with-toggle">
+                        <input type="number" id="waist" class="form-input" placeholder="Enter waist" step="0.1" min="0" required>
+                        <div class="unit-toggle">
+                            <label>
+                                <input type="radio" name="waist-unit" value="cm" checked>
+                                <span class="unit-btn">cm</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="waist-unit" value="in">
+                                <span class="unit-btn">in</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Hip Circumference</label>
+                    <div class="input-with-toggle">
+                        <input type="number" id="hip" class="form-input" placeholder="Enter hip" step="0.1" min="0" required>
+                        <div class="unit-toggle">
+                            <label>
+                                <input type="radio" name="hip-unit" value="cm" checked>
+                                <span class="unit-btn">cm</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="hip-unit" value="in">
+                                <span class="unit-btn">in</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="calculate-btn">Calculate WHR</button>
+            </form>
+
+            <div id="result" class="result-section hidden">
+                <div class="ratio-display">
+                    <span class="ratio-label">Your Waist-to-Hip Ratio</span>
+                    <span id="ratio-value" class="ratio-value">0.00</span>
+                </div>
+                <div id="risk-indicator" class="risk-indicator">
+                    <div class="risk-badge" id="risk-badge">Low Risk</div>
+                    <p id="risk-description" class="risk-description"></p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="waist-hip.js"></script>
+</body>
+</html>
