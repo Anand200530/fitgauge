@@ -24,10 +24,18 @@ main{padding:48px 0}
 .page-desc{color:var(--text-secondary);font-size:0.9rem}
 .calculator{display:grid;grid-template-columns:1fr 1fr;gap:40px}
 .input-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px}
+.gender-toggle{display:flex;gap:12px;margin-bottom:24px}
+.gender-btn{flex:1;padding:16px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text-secondary);font-size:1rem;cursor:pointer;text-align:center;transition:all 0.2s ease}
+.gender-btn:hover{background:var(--border)}
+.gender-btn.active{border-color:var(--accent);color:var(--accent)}
 .input-group{margin-bottom:20px}
 .input-label{display:block;font-size:0.85rem;color:var(--text-secondary);margin-bottom:8px}
 .input-field{width:100%;padding:14px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:1.1rem;text-align:center;font-weight:600;transition:all 0.2s ease}
 .input-field:focus{outline:none;border-color:var(--accent)}
+.activity-options{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.activity-btn{padding:14px;background:var(--surface-hover);border:2px solid var(--border);border-radius:10px;color:var(--text-secondary);font-size:0.85rem;cursor:pointer;text-align:center;transition:all 0.2s ease}
+.activity-btn:hover{background:var(--border)}
+.activity-btn.active{border-color:var(--accent);color:var(--accent)}
 .goal-options{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
 .goal-btn{padding:14px;background:var(--surface-hover);border:2px solid var(--border);border-radius:10px;color:var(--text-secondary);font-size:0.9rem;cursor:pointer;text-align:center;transition:all 0.2s ease}
 .goal-btn:hover{background:var(--border)}
@@ -73,9 +81,30 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 </div>
 <div class="calculator">
 <div class="input-card">
+<div class="gender-toggle">
+<div class="gender-btn" id="male-btn" onclick="setGender('male')">♂ Male</div>
+<div class="gender-btn active" id="female-btn" onclick="setGender('female')">♀ Female</div>
+</div>
+<div class="input-group">
+<div class="input-label">Age</div>
+<input type="number" class="input-field" id="age" value="25" oninput="calc()">
+</div>
+<div class="input-group">
+<div class="input-label">Height (cm)</div>
+<input type="number" class="input-field" id="height" value="170" oninput="calc()">
+</div>
 <div class="input-group">
 <div class="input-label">Weight (kg)</div>
 <input type="number" class="input-field" id="weight" value="65" oninput="calc()">
+</div>
+<div class="input-group">
+<div class="input-label">Activity Level</div>
+<div class="activity-options">
+<div class="activity-btn" data-factor="1.2" onclick="setActivity(this)">Sedentary</div>
+<div class="activity-btn active" data-factor="1.375" onclick="setActivity(this)">Light</div>
+<div class="activity-btn" data-factor="1.55" onclick="setActivity(this)">Moderate</div>
+<div class="activity-btn" data-factor="1.725" onclick="setActivity(this)">Active</div>
+</div>
 </div>
 <div class="input-group">
 <div class="input-label">Your Goal</div>
@@ -118,10 +147,14 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 </main>
 <footer>FitGauge</footer>
 <script>
+var gender='female';
+var factor=1.375;
 var goal='maintain';
+function setGender(g){gender=g;document.getElementById('male-btn').classList.toggle('active',g==='male');document.getElementById('female-btn').classList.toggle('active',g==='female');calc();}
+function setActivity(el){document.querySelectorAll('.activity-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');factor=parseFloat(el.dataset.factor);calc();}
 function setGoal(g){goal=g;document.querySelectorAll('.goal-btn').forEach(b=>b.classList.remove('active'));event.target.classList.add('active');calc();}
-function calc(){var w=parseFloat(document.getElementById('weight').value)||65;var base=w*30;if(goal==='lose')base-=500;else if(goal==='gain')base+=500;var cal=Math.round(base);document.getElementById('cal').textContent=cal;document.getElementById('b').textContent=Math.round(cal*0.25);document.getElementById('l').textContent=Math.round(cal*0.35);document.getElementById('d').textContent=Math.round(cal*0.30);document.getElementById('s').textContent=Math.round(cal*0.10);}
-function loadProfile(){var w=localStorage.getItem('fitgauge_weight');var wU=localStorage.getItem('fitgauge_weight_unit')||'kg';if(w){var weight=parseFloat(w);if(wU==='lbs')weight=Math.round(weight*0.453592);document.getElementById('weight').value=weight;}calc();}
+function calc(){var age=parseInt(document.getElementById('age').value)||25;var h=parseInt(document.getElementById('height').value)||170;var w=parseFloat(document.getElementById('weight').value)||65;var bmr=(10*w)+(6.25*h)-(5*age);bmr=gender==='male'?bmr+5:bmr-161;var tdee=bmr*factor;if(goal==='lose')tdee-=500;else if(goal==='gain')tdee+=500;var cal=Math.round(tdee);document.getElementById('cal').textContent=cal;document.getElementById('b').textContent=Math.round(cal*0.25);document.getElementById('l').textContent=Math.round(cal*0.35);document.getElementById('d').textContent=Math.round(cal*0.30);document.getElementById('s').textContent=Math.round(cal*0.10);}
+function loadProfile(){var g=localStorage.getItem('fitgauge_gender');var age=localStorage.getItem('fitgauge_age');var h=localStorage.getItem('fitgauge_height');var w=localStorage.getItem('fitgauge_weight');var wU=localStorage.getItem('fitgauge_weight_unit')||'kg';if(g)setGender(g);if(age)document.getElementById('age').value=age;if(h)document.getElementById('height').value=h;if(w){var weight=parseFloat(w);if(wU==='lbs')weight=Math.round(weight*0.453592);document.getElementById('weight').value=weight;}calc();}
 window.onload=loadProfile;
 </script>
 </body>
