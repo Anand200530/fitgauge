@@ -38,19 +38,45 @@
         .result-badge { padding: 6px 12px; background: rgba(34, 197, 94, 0.15); border-radius: 20px; font-size: 0.75rem; color: var(--accent); }
         .result-body { padding: 40px 24px; text-align: center; }
         
-        .gauge-wrapper { width: 240px; height: 240px; margin: 0 auto 32px; position: relative; }
-        .gauge-svg { width: 100%; height: 100%; transform: rotate(-90deg); }
-        .gauge-bg { fill: none; stroke: var(--border); stroke-width: 14; }
-        .gauge-progress { fill: none; stroke-width: 14; stroke-linecap: round; stroke-dasharray: 565; stroke-dashoffset: 565; transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.5s; }
+        /* Speedometer Gauge */
+        .gauge-wrapper { width: 260px; height: 160px; margin: 0 auto 32px; position: relative; }
+        .gauge-svg { width: 100%; height: 100%; }
         
-        .gauge-inner { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
-        .gauge-value { font-size: 3.5rem; font-weight: 600; line-height: 1; transition: color 0.3s; }
+        /* Background arc */
+        .gauge-arc-bg { fill: none; stroke: var(--border); stroke-width: 16; stroke-linecap: round; }
+        
+        /* Colored segments */
+        .gauge-segment { fill: none; stroke-width: 16; stroke-linecap: round; opacity: 0.3; }
+        .seg-under { stroke: var(--blue); }
+        .seg-normal { stroke: var(--green); }
+        .seg-over { stroke: var(--yellow); }
+        .seg-obese { stroke: var(--red); }
+        
+        /* Fill overlay */
+        .gauge-fill { 
+            fill: none; stroke-width: 16; stroke-linecap: round; 
+            stroke-dasharray: 377; stroke-dashoffset: 377;
+            transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.5s;
+        }
+        
+        /* Needle */
+        .gauge-needle {
+            fill: var(--text);
+            transform-origin: 130px 130px;
+            transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Center value */
+        .gauge-center { 
+            position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+            text-align: center;
+        }
+        .gauge-value { font-size: 3rem; font-weight: 600; line-height: 1; transition: color 0.3s; }
         .gauge-label { font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px; }
         
-        .status-dots { display: flex; justify-content: center; gap: 16px; margin-top: 24px; }
-        .status-dot { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-        .dot { width: 10px; height: 10px; border-radius: 50%; }
-        .dot-label { font-size: 0.65rem; color: var(--text-secondary); }
+        /* Scale labels */
+        .scale-labels { display: flex; justify-content: space-between; margin-top: 8px; padding: 0 20px; }
+        .scale-label { font-size: 0.65rem; color: var(--text-secondary); }
         
         .target-section { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding-top: 24px; border-top: 1px solid var(--border); margin-top: 24px; }
         .target-item { background: var(--surface-hover); border-radius: 12px; padding: 16px; }
@@ -58,7 +84,7 @@
         .target-label { font-size: 0.7rem; color: var(--text-secondary); margin-top: 4px; }
         
         footer { padding: 32px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-secondary); font-size: 0.8rem; margin-top: 48px; }
-        @media (max-width: 768px) { .calculator { grid-template-columns: 1fr; } nav { display: none; } .gauge-wrapper { width: 200px; height: 200px; } .gauge-value { font-size: 2.5rem; } }
+        @media (max-width: 768px) { .calculator { grid-template-columns: 1fr; } nav { display: none; } .gauge-wrapper { width: 220px; height: 140px; } .gauge-value { font-size: 2.5rem; } }
     </style>
 </head>
 <body>
@@ -100,20 +126,31 @@
                 <div class="result-header"><span class="result-badge">BMI</span></div>
                 <div class="result-body">
                     <div class="gauge-wrapper">
-                        <svg class="gauge-svg" viewBox="0 0 220 220">
-                            <circle class="gauge-bg" cx="110" cy="110" r="90"/>
-                            <circle class="gauge-progress" id="gauge" cx="110" cy="110" r="90"/>
+                        <svg class="gauge-svg" viewBox="0 0 260 160">
+                            <!-- Background arc -->
+                            <path class="gauge-arc-bg" d="M 30 130 A 100 100 0 0 1 230 130"/>
+                            
+                            <!-- Colored segments -->
+                            <path class="gauge-segment seg-under" d="M 30 130 A 100 100 0 0 1 55 45"/>
+                            <path class="gauge-segment seg-normal" d="M 55 45 A 100 100 0 0 1 130 30"/>
+                            <path class="gauge-segment seg-over" d="M 130 30 A 100 100 0 0 1 205 45"/>
+                            <path class="gauge-segment seg-obese" d="M 205 45 A 100 100 0 0 1 230 130"/>
+                            
+                            <!-- Fill arc -->
+                            <path class="gauge-fill" id="gauge-fill" d="M 30 130 A 100 100 0 0 1 230 130"/>
+                            
+                            <!-- Needle -->
+                            <polygon class="gauge-needle" id="needle" points="130,130 125,135 130,50 135,135"/>
                         </svg>
-                        <div class="gauge-inner">
+                        <div class="gauge-center">
                             <div class="gauge-value" id="bmi-value">22.9</div>
                             <div class="gauge-label">Body Mass Index</div>
                         </div>
                     </div>
-                    <div class="status-dots">
-                        <div class="status-dot"><div class="dot" style="background: var(--blue)"></div><span class="dot-label">Under</span></div>
-                        <div class="status-dot"><div class="dot" style="background: var(--green)"></div><span class="dot-label">Normal</span></div>
-                        <div class="status-dot"><div class="dot" style="background: var(--yellow)"></div><span class="dot-label">Over</span></div>
-                        <div class="status-dot"><div class="dot" style="background: var(--red)"></div><span class="dot-label">Obese</span></div>
+                    <div class="scale-labels">
+                        <span class="scale-label">15</span>
+                        <span class="scale-label">25</span>
+                        <span class="scale-label">40</span>
                     </div>
                     <div class="target-section">
                         <div class="target-item"><div class="target-value" id="target-min">54</div><div class="target-label">Min (kg)</div></div>
@@ -147,13 +184,21 @@
             document.getElementById('bmi-value').textContent = bmi;
             document.getElementById('bmi-value').style.color = color;
             
-            var pct = ((bmi - 15) / 25) * 100;
-            pct = Math.max(0, Math.min(100, pct));
+            // Needle rotation (15-40 BMI = -90 to 90 degrees)
+            var minBMI = 15, maxBMI = 40;
+            var pct = (bmi - minBMI) / (maxBMI - minBMI);
+            pct = Math.max(0, Math.min(1, pct));
+            var rotation = -90 + (pct * 180);
+            document.getElementById('needle').style.transform = 'rotate(' + rotation + 'deg)';
             
-            var gauge = document.getElementById('gauge');
-            gauge.style.stroke = color;
-            gauge.style.strokeDashoffset = 565 - (pct / 100) * 565;
+            // Arc fill
+            var arcLength = 377;
+            var fillOffset = arcLength - (pct * arcLength);
+            var gaugeFill = document.getElementById('gauge-fill');
+            gaugeFill.style.stroke = color;
+            gaugeFill.style.strokeDashoffset = fillOffset;
             
+            // Target weights
             var min = Math.round(18.5 * hM * hM);
             var max = Math.round(25 * hM * hM);
             document.getElementById('target-min').textContent = min;
