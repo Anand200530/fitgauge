@@ -3,762 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lean Mass Calculator — FitGauge</title>
-    <meta name="description" content="Calculate your Lean Body Mass using Boer formula or body fat percentage.">
-    <link rel="canonical" href="https://anand200530.github.io/fitgauge/calculators/lean-mass.html">
+    <title>Lean Mass - FitGauge</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg: #0a0a0a;
-            --surface: #141414;
-            --surface-hover: #1a1a1a;
-            --border: #262626;
-            --border-light: #333;
-            --text: #f5f5f5;
-            --text-secondary: #737373;
-            --text-muted: #555;
-            --accent: #22c55e;
-            --blue: #60a5fa;
-            --green: #4ade80;
-            --yellow: #facc15;
-            --red: #f87171;
-            --font: 'Inter', sans-serif;
-        }
-
+        :root { --bg: #0a0a0a; --surface: #141414; --surface-hover: #1a1a1a; --border: #262626; --text: #f5f5f5; --text-secondary: #737373; --accent: #22c55e; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: var(--font);
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            line-height: 1.5;
-        }
-
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
         .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-
-        header {
-            padding: 20px 0;
-            border-bottom: 1px solid var(--border);
-            background: var(--bg);
-        }
-
-        header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text);
-        }
-
+        header { padding: 20px 0; border-bottom: 1px solid var(--border); }
+        header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; gap: 10px; font-size: 1.1rem; font-weight: 600; color: var(--text); text-decoration: none; }
         .logo svg { width: 26px; height: 26px; color: var(--accent); }
-
         nav { display: flex; gap: 28px; }
-
-        nav a {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        nav a:hover { color: var(--text); }
-
+        nav a { color: var(--text-secondary); font-size: 0.85rem; text-decoration: none; }
         main { padding: 48px 0; }
-
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            text-decoration: none;
-            margin-bottom: 32px;
-            transition: color 0.2s;
-        }
-
-        .back-link:hover { color: var(--text); }
-
+        .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--text-secondary); font-size: 0.85rem; text-decoration: none; margin-bottom: 32px; }
         .page-header { margin-bottom: 40px; }
-
         .page-title { font-size: 1.75rem; font-weight: 600; margin-bottom: 8px; }
-
         .page-desc { color: var(--text-secondary); font-size: 0.9rem; }
-
-        .calculator {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-        }
-
-        .form-section { display: flex; flex-direction: column; gap: 24px; }
-
-        .form-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 28px;
-        }
-
-        .form-group { margin-bottom: 20px; }
-
-        .form-group:last-child { margin-bottom: 0; }
-
-        .form-label {
-            display: block;
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 14px 16px;
-            background: var(--surface-hover);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text);
-            font-family: var(--font);
-            font-size: 1rem;
-            transition: border-color 0.2s;
-        }
-
-        .form-input:focus { outline: none; border-color: var(--accent); }
-
-        .form-input::placeholder { color: var(--text-muted); }
-
-        .form-input[type="number"] { -moz-appearance: textfield; }
-
-        .form-input[type="number"]::-webkit-outer-spin-button,
-        .form-input[type="number"]::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        .toggle-group { display: flex; gap: 8px; }
-
-        .toggle-btn {
-            flex: 1;
-            padding: 12px 20px;
-            background: var(--surface-hover);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text-secondary);
-            font-family: var(--font);
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .toggle-btn:hover { background: var(--border-light); }
-
-        .toggle-btn.active {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: #000;
-        }
-
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
-        .unit-toggle { display: flex; gap: 8px; margin-bottom: 12px; }
-
-        .unit-btn {
-            padding: 8px 16px;
-            background: transparent;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            color: var(--text-secondary);
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .unit-btn:hover { background: var(--surface-hover); }
-
-        .unit-btn.active {
-            background: var(--border-light);
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-
-        .optional-badge {
-            display: inline-block;
-            padding: 2px 8px;
-            background: var(--surface-hover);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            font-size: 0.65rem;
-            color: var(--text-muted);
-            margin-left: 8px;
-        }
-
-        /* Bar Chart Card */
-        .chart-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            overflow: hidden;
-        }
-
-        .chart-header {
-            padding: 20px 24px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .chart-title { font-size: 1rem; font-weight: 500; }
-
-        .chart-badge {
-            padding: 6px 12px;
-            background: var(--surface-hover);
-            border-radius: 20px;
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-        }
-
-        .chart-body {
-            padding: 32px 24px;
-        }
-
-        /* Bar Chart */
-        .bar-chart {
-            margin-bottom: 24px;
-        }
-
-        .bar-row {
-            margin-bottom: 20px;
-        }
-
-        .bar-label-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-        }
-
-        .bar-label { font-size: 0.85rem; font-weight: 500; }
-
-        .bar-label.green { color: var(--green); }
-        .bar-label.yellow { color: var(--yellow); }
-        .bar-label.red { color: var(--red); }
-
-        .bar-value { font-size: 0.85rem; color: var(--text-secondary); }
-
-        .bar-container {
-            height: 32px;
-            background: var(--border);
-            border-radius: 8px;
-            overflow: hidden;
-            display: flex;
-        }
-
-        .bar-fill {
-            height: 100%;
-            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding-right: 12px;
-            min-width: 0;
-        }
-
-        .bar-fill.lean {
-            background: linear-gradient(90deg, var(--green), #22c55e);
-        }
-
-        .bar-fill.fat {
-            background: linear-gradient(90deg, var(--yellow), #facc15);
-        }
-
-        .bar-fill.total {
-            background: var(--border-light);
-        }
-
-        .bar-percent {
-            font-size: 0.75rem;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        .bar-fill.lean .bar-percent { color: #000; }
-        .bar-fill.fat .bar-percent { color: #000; }
-
-        /* Stacked Bar */
-        .stacked-bar-section { margin-bottom: 32px; }
-
-        .stacked-bar-title {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 12px;
-        }
-
-        .stacked-bar-container {
-            height: 48px;
-            background: var(--border);
-            border-radius: 12px;
-            overflow: hidden;
-            display: flex;
-        }
-
-        .stacked-bar-fill {
-            height: 100%;
-            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 0;
-        }
-
-        .stacked-bar-fill.lean {
-            background: linear-gradient(135deg, var(--green), #22c55e);
-        }
-
-        .stacked-bar-fill.fat {
-            background: linear-gradient(135deg, var(--yellow), #facc15);
-        }
-
-        .stacked-bar-label {
-            font-size: 0.8rem;
-            font-weight: 600;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            padding: 0 12px;
-        }
-
-        .stacked-bar-fill.lean .stacked-bar-label { color: #000; }
-        .stacked-bar-fill.fat .stacked-bar-label { color: #000; }
-
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-        }
-
-        .stat-item {
-            background: var(--surface-hover);
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .stat-label {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 8px;
-        }
-
-        .stat-value {
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-
-        .stat-value.green { color: var(--green); }
-        .stat-value.yellow { color: var(--yellow); }
-        .stat-value.red { color: var(--red); }
-
-        .stat-unit {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            margin-left: 2px;
-        }
-
-        /* Formula Info */
-        .formula-info {
-            padding: 16px 20px;
-            background: var(--surface-hover);
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-
-        .formula-title {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            margin-bottom: 8px;
-        }
-
-        .formula-text {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            font-family: monospace;
-        }
-
-        footer {
-            padding: 32px 0;
-            border-top: 1px solid var(--border);
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 0.8rem;
-        }
-
-        @media (max-width: 768px) {
-            .calculator { grid-template-columns: 1fr; }
-            nav { display: none; }
-            .stats-grid { grid-template-columns: 1fr; gap: 12px; }
-        }
+        .calculator { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        
+        .input-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; }
+        .gender-toggle { display: flex; gap: 12px; margin-bottom: 32px; }
+        .gender-btn { flex: 1; padding: 16px; background: var(--surface-hover); border: 2px solid var(--border); border-radius: 12px; color: var(--text-secondary); font-size: 1rem; cursor: pointer; text-align: center; }
+        .gender-btn.active { border-color: var(--accent); color: var(--accent); }
+        
+        .input-group { margin-bottom: 24px; }
+        .input-label { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px; }
+        .input-field { width: 100%; padding: 16px; background: var(--surface-hover); border: 2px solid var(--border); border-radius: 12px; color: var(--text); font-size: 1.25rem; text-align: center; font-weight: 600; }
+        .input-field:focus { outline: none; border-color: var(--accent); }
+        
+        .result-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; }
+        .result-header { padding: 20px 24px; border-bottom: 1px solid var(--border); }
+        .result-badge { padding: 6px 12px; background: rgba(34, 197, 94, 0.15); border-radius: 20px; font-size: 0.75rem; color: var(--accent); }
+        .result-body { padding: 48px 24px; text-align: center; }
+        
+        .result-value { font-size: 4rem; font-weight: 600; color: var(--accent); }
+        .result-unit { font-size: 1.1rem; color: var(--text-secondary); margin-top: 4px; }
+        
+        .stats { margin-top: 32px; padding-top: 32px; border-top: 1px solid var(--border); }
+        .stat-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border); }
+        .stat-item:last-child { border: none; }
+        .stat-label { color: var(--text-secondary); }
+        .stat-value { font-weight: 600; }
+        
+        footer { padding: 32px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-secondary); font-size: 0.8rem; margin-top: 48px; }
+        @media (max-width: 768px) { .calculator { grid-template-columns: 1fr; } nav { display: none; } }
     </style>
 </head>
 <body>
     <header>
         <div class="container">
-            <a href="index.html" class="logo">
-                <svg viewBox="0 0 40 40" fill="none">
-                    <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/>
-                    <circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/>
-                    <circle cx="20" cy="20" r="6" fill="currentColor"/>
-                    <line x1="20" y1="2" x2="20" y2="6" stroke="currentColor" stroke-width="1.5"/>
-                    <line x1="20" y1="34" x2="20" y2="38" stroke="currentColor" stroke-width="1.5"/>
-                    <line x1="2" y1="20" x2="6" y2="20" stroke="currentColor" stroke-width="1.5"/>
-                    <line x1="34" y1="20" x2="38" y2="20" stroke="currentColor" stroke-width="1.5"/>
-                </svg>
-                FitGauge
-            </a>
-            <nav>
-                <a href="index.html#body">Body</a>
-                <a href="index.html#energy">Energy</a>
-                <a href="index.html#nutrition">Nutrition</a>
-                <a href="index.html#fitness">Fitness</a>
-                <a href="index.html#goals">Goals</a>
-            </nav>
+            <a href="../index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
+            <nav><a href="../profile.html">Profile</a><a href="../index.html#body">Body</a></nav>
         </div>
     </header>
-
     <main class="container">
-        <a href="index.html" class="back-link">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M19 12H5M12 19l-7-7 7-7"/>
-            </svg>
-            Back to calculators
-        </a>
-
+        <a href="../index.html" class="back-link">← Back</a>
         <div class="page-header">
-            <h1 class="page-title">Lean Mass Calculator</h1>
-            <p class="page-desc">Calculate your Lean Body Mass using body fat percentage or Boer formula</p>
+            <h1 class="page-title">Lean Mass</h1>
+            <p class="page-desc">Muscle and bone weight</p>
         </div>
-
         <div class="calculator">
-            <div class="form-section">
-                <div class="form-card">
-                    <div class="form-group">
-                        <label class="form-label">Gender</label>
-                        <div class="toggle-group">
-                            <button class="toggle-btn" id="male-btn">Male</button>
-                            <button class="toggle-btn active" id="female-btn">Female</button>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Age</label>
-                        <input type="number" class="form-input" id="age" placeholder="Years">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Height</label>
-                        <div class="unit-toggle">
-                            <button class="unit-btn active" id="height-cm-btn">cm</button>
-                            <button class="unit-btn" id="height-ft-btn">ft</button>
-                        </div>
-                        <div id="height-cm-inputs">
-                            <input type="number" class="form-input" id="height-cm" placeholder="175">
-                        </div>
-                        <div id="height-ft-inputs" style="display: none;">
-                            <div class="form-row">
-                                <input type="number" class="form-input" id="height-ft" placeholder="5">
-                                <input type="number" class="form-input" id="height-in" placeholder="9">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Weight</label>
-                        <div class="unit-toggle">
-                            <button class="unit-btn active" id="weight-kg-btn">kg</button>
-                            <button class="unit-btn" id="weight-lbs-btn">lbs</button>
-                        </div>
-                        <input type="number" class="form-input" id="weight" placeholder="70">
-                    </div>
-
-                    <div class="form-group" style="margin-bottom: 0;">
-                        <label class="form-label">
-                            Body Fat Percentage
-                            <span class="optional-badge">Optional</span>
-                        </label>
-                        <input type="number" class="form-input" id="bodyfat" placeholder="Leave empty to use Boer formula">
-                        <div class="formula-info">
-                            <div class="formula-title">Boer Formula (when no BF% provided)</div>
-                            <div class="formula-text" id="boer-formula">
-                                Male: 0.407W + 0.267H - 19.2<br>
-                                Female: 0.252W + 0.473H - 48.3
-                            </div>
-                        </div>
-                    </div>
+            <div class="input-card">
+                <div class="gender-toggle">
+                    <div class="gender-btn" id="male-btn" onclick="setGender('male')">♂ Male</div>
+                    <div class="gender-btn active" id="female-btn" onclick="setGender('female')">♀ Female</div>
+                </div>
+                <div class="input-group">
+                    <div class="input-label">Weight (kg)</div>
+                    <input type="number" class="input-field" id="weight" value="65" oninput="calculate()">
+                </div>
+                <div class="input-group">
+                    <div class="input-label">Body Fat %</div>
+                    <input type="number" class="input-field" id="bf" value="24" oninput="calculate()">
                 </div>
             </div>
-
-            <div class="chart-card">
-                <div class="chart-header">
-                    <span class="chart-title">Body Composition</span>
-                    <span class="chart-badge" id="method-badge">Enter details</span>
-                </div>
-
-                <div class="chart-body">
-                    <!-- Stacked Bar Chart -->
-                    <div class="stacked-bar-section">
-                        <div class="stacked-bar-title">Weight Breakdown</div>
-                        <div class="stacked-bar-container" id="stacked-bar">
-                            <div class="stacked-bar-fill lean" id="stacked-lean" style="width: 0%;">
-                                <span class="stacked-bar-label" id="stacked-lean-label">-- kg</span>
-                            </div>
-                            <div class="stacked-bar-fill fat" id="stacked-fat" style="width: 0%;">
-                                <span class="stacked-bar-label" id="stacked-fat-label">-- kg</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Separate Bars -->
-                    <div class="bar-chart">
-                        <div class="bar-row">
-                            <div class="bar-label-row">
-                                <span class="bar-label green">Lean Mass</span>
-                                <span class="bar-value" id="lean-mass-value">-- kg (--%)</span>
-                            </div>
-                            <div class="bar-container">
-                                <div class="bar-fill lean" id="lean-bar" style="width: 0%;">
-                                    <span class="bar-percent" id="lean-percent">--%</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bar-row" style="margin-bottom: 0;">
-                            <div class="bar-label-row">
-                                <span class="bar-label yellow">Fat Mass</span>
-                                <span class="bar-value" id="fat-mass-value">-- kg (--%)</span>
-                            </div>
-                            <div class="bar-container">
-                                <div class="bar-fill fat" id="fat-bar" style="width: 0%;">
-                                    <span class="bar-percent" id="fat-percent">--%</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Stats Grid -->
-                    <div class="stats-grid">
-                        <div class="stat-item">
-                            <div class="stat-label">Lean Mass</div>
-                            <div class="stat-value green" id="stat-lean">--<span class="stat-unit">kg</span></div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-label">Fat Mass</div>
-                            <div class="stat-value yellow" id="stat-fat">--<span class="stat-unit">kg</span></div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-label">Total Weight</div>
-                            <div class="stat-value" id="stat-total">--<span class="stat-unit">kg</span></div>
-                        </div>
+            <div class="result-card">
+                <div class="result-header"><span class="result-badge">Lean Mass</span></div>
+                <div class="result-body">
+                    <div class="result-value" id="lean">49.4</div>
+                    <div class="result-unit">kg</div>
+                    <div class="stats">
+                        <div class="stat-item"><span class="stat-label">Fat Mass</span><span class="stat-value" id="fat">15.6 kg</span></div>
+                        <div class="stat-item"><span class="stat-label">Body Fat</span><span class="stat-value" id="bf-display">24%</span></div>
+                        <div class="stat-item"><span class="stat-label">Lean %</span><span class="stat-value" id="lean-pct">76%</span></div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
-
-    <footer>
-        FitGauge — Precision Fitness Calculators
-    </footer>
-
+    <footer>FitGauge</footer>
     <script>
         var gender = 'female';
-        var heightUnit = 'cm';
-        var weightUnit = 'kg';
-
-        document.getElementById('male-btn').addEventListener('click', function() {
-            document.getElementById('male-btn').classList.add('active');
-            document.getElementById('female-btn').classList.remove('active');
-            gender = 'male';
-            calculateLeanMass();
-        });
-
-        document.getElementById('female-btn').addEventListener('click', function() {
-            document.getElementById('female-btn').classList.add('active');
-            document.getElementById('male-btn').classList.remove('active');
-            gender = 'female';
-            calculateLeanMass();
-        });
-
-        document.getElementById('height-cm-btn').addEventListener('click', function() {
-            document.getElementById('height-cm-btn').classList.add('active');
-            document.getElementById('height-ft-btn').classList.remove('active');
-            document.getElementById('height-cm-inputs').style.display = 'block';
-            document.getElementById('height-ft-inputs').style.display = 'none';
-            heightUnit = 'cm';
-            calculateLeanMass();
-        });
-
-        document.getElementById('height-ft-btn').addEventListener('click', function() {
-            document.getElementById('height-ft-btn').classList.add('active');
-            document.getElementById('height-cm-btn').classList.remove('active');
-            document.getElementById('height-ft-inputs').style.display = 'block';
-            document.getElementById('height-cm-inputs').style.display = 'none';
-            heightUnit = 'ft';
-            calculateLeanMass();
-        });
-
-        document.getElementById('weight-kg-btn').addEventListener('click', function() {
-            document.getElementById('weight-kg-btn').classList.add('active');
-            document.getElementById('weight-lbs-btn').classList.remove('active');
-            weightUnit = 'kg';
-            calculateLeanMass();
-        });
-
-        document.getElementById('weight-lbs-btn').addEventListener('click', function() {
-            document.getElementById('weight-lbs-btn').classList.add('active');
-            document.getElementById('weight-kg-btn').classList.remove('active');
-            weightUnit = 'lbs';
-            calculateLeanMass();
-        });
-
-        var inputs = ['age', 'height-cm', 'height-ft', 'height-in', 'weight', 'bodyfat'];
-        for (var i = 0; i < inputs.length; i++) {
-            var el = document.getElementById(inputs[i]);
-            if (el) {
-                el.addEventListener('input', calculateLeanMass);
-            }
+        function setGender(g) { gender = g; document.getElementById('male-btn').classList.toggle('active', g === 'male'); document.getElementById('female-btn').classList.toggle('active', g === 'female'); calculate(); }
+        function calculate() {
+            var w = parseFloat(document.getElementById('weight').value) || 65;
+            var bf = parseFloat(document.getElementById('bf').value) || 20;
+            var fat = w * bf / 100;
+            var lean = w - fat;
+            document.getElementById('lean').textContent = lean.toFixed(1);
+            document.getElementById('fat').textContent = fat.toFixed(1) + ' kg';
+            document.getElementById('bf-display').textContent = bf + '%';
+            document.getElementById('lean-pct').textContent = (100 - bf) + '%';
         }
-
-        function calculateLeanMass() {
-            var heightCm = 0;
-            var weightKg = parseFloat(document.getElementById('weight').value) || 0;
-            var bodyFat = parseFloat(document.getElementById('bodyfat').value) || null;
-
-            if (heightUnit === 'cm') {
-                heightCm = parseFloat(document.getElementById('height-cm').value) || 0;
-            } else {
-                var feet = parseFloat(document.getElementById('height-ft').value) || 0;
-                var inches = parseFloat(document.getElementById('height-in').value) || 0;
-                heightCm = (feet * 30.48) + (inches * 2.54);
-            }
-
-            if (weightUnit === 'lbs') {
-                weightKg = weightKg * 0.453592;
-            }
-
-            var methodBadge = document.getElementById('method-badge');
-            var stackedLean = document.getElementById('stacked-lean');
-            var stackedFat = document.getElementById('stacked-fat');
-            var stackedLeanLabel = document.getElementById('stacked-lean-label');
-            var stackedFatLabel = document.getElementById('stacked-fat-label');
-            var leanBar = document.getElementById('lean-bar');
-            var fatBar = document.getElementById('fat-bar');
-            var leanPercent = document.getElementById('lean-percent');
-            var fatPercent = document.getElementById('fat-percent');
-            var leanMassValue = document.getElementById('lean-mass-value');
-            var fatMassValue = document.getElementById('fat-mass-value');
-            var statLean = document.getElementById('stat-lean');
-            var statFat = document.getElementById('stat-fat');
-            var statTotal = document.getElementById('stat-total');
-
-            if (!heightCm || !weightKg || heightCm < 50 || heightCm > 300 || weightKg < 20 || weightKg > 500) {
-                resetDisplay();
-                methodBadge.textContent = 'Enter details';
-                return;
-            }
-
-            var leanMass, fatMass;
-            var method = '';
-
-            if (bodyFat !== null && bodyFat > 0 && bodyFat <= 100) {
-                // Use body fat percentage
-                leanMass = weightKg * (1 - bodyFat / 100);
-                fatMass = weightKg * (bodyFat / 100);
-                method = 'Body Fat %';
-            } else {
-                // Use Boer formula
-                if (gender === 'male') {
-                    leanMass = (0.407 * weightKg) + (0.267 * heightCm) - 19.2;
-                } else {
-                    leanMass = (0.252 * weightKg) + (0.473 * heightCm) - 48.3;
-                }
-                fatMass = weightKg - leanMass;
-                method = 'Boer Formula';
-            }
-
-            // Ensure non-negative values
-            leanMass = Math.max(0, leanMass);
-            fatMass = Math.max(0, fatMass);
-
-            // Calculate percentages
-            var leanPercentValue = (leanMass / weightKg) * 100;
-            var fatPercentValue = (fatMass / weightKg) * 100;
-
-            // Update UI
-            methodBadge.textContent = method;
-
-            // Stacked bar
-            stackedLean.style.width = leanPercentValue + '%';
-            stackedFat.style.width = fatPercentValue + '%';
-            stackedLeanLabel.textContent = leanMass.toFixed(1) + ' kg';
-            stackedFatLabel.textContent = fatMass.toFixed(1) + ' kg';
-
-            // Individual bars
-            leanBar.style.width = leanPercentValue + '%';
-            fatBar.style.width = fatPercentValue + '%';
-            leanPercent.textContent = leanPercentValue.toFixed(1) + '%';
-            fatPercent.textContent = fatPercentValue.toFixed(1) + '%';
-
-            // Values
-            leanMassValue.textContent = leanMass.toFixed(1) + ' kg (' + leanPercentValue.toFixed(1) + '%)';
-            fatMassValue.textContent = fatMass.toFixed(1) + ' kg (' + fatPercentValue.toFixed(1) + '%)';
-
-            // Stats
-            statLean.innerHTML = leanMass.toFixed(1) + '<span class="stat-unit">kg</span>';
-            statFat.innerHTML = fatMass.toFixed(1) + '<span class="stat-unit">kg</span>';
-            statTotal.innerHTML = weightKg.toFixed(1) + '<span class="stat-unit">kg</span>';
+        function loadProfile() {
+            var w = localStorage.getItem('fitgauge_weight');
+            var wU = localStorage.getItem('fitgauge_weight_unit') || 'kg';
+            if (w) { var weight = parseFloat(w); if (wU === 'lbs') weight = Math.round(weight * 0.453592); document.getElementById('weight').value = weight; }
+            calculate();
         }
-
-        function resetDisplay() {
-            var stackedLean = document.getElementById('stacked-lean');
-            var stackedFat = document.getElementById('stacked-fat');
-            var stackedLeanLabel = document.getElementById('stacked-lean-label');
-            var stackedFatLabel = document.getElementById('stacked-fat-label');
-            var leanBar = document.getElementById('lean-bar');
-            var fatBar = document.getElementById('fat-bar');
-            var leanPercent = document.getElementById('lean-percent');
-            var fatPercent = document.getElementById('fat-percent');
-            var leanMassValue = document.getElementById('lean-mass-value');
-            var fatMassValue = document.getElementById('fat-mass-value');
-            var statLean = document.getElementById('stat-lean');
-            var statFat = document.getElementById('stat-fat');
-            var statTotal = document.getElementById('stat-total');
-
-            stackedLean.style.width = '0%';
-            stackedFat.style.width = '0%';
-            stackedLeanLabel.textContent = '-- kg';
-            stackedFatLabel.textContent = '-- kg';
-            leanBar.style.width = '0%';
-            fatBar.style.width = '0%';
-            leanPercent.textContent = '--%';
-            fatPercent.textContent = '--%';
-            leanMassValue.textContent = '-- kg (--%)';
-            fatMassValue.textContent = '-- kg (--%)';
-            statLean.innerHTML = '--<span class="stat-unit">kg</span>';
-            statFat.innerHTML = '--<span class="stat-unit">kg</span>';
-            statTotal.innerHTML = '--<span class="stat-unit">kg</span>';
-        }
+        window.onload = loadProfile;
     </script>
 </body>
 </html>
