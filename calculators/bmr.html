@@ -6,7 +6,7 @@
     <title>BMR Calculator - FitGauge</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #0a0a0a; --surface: #141414; --surface-hover: #1a1a1a; --border: #262626; --text: #f5f5f5; --text-secondary: #737373; --accent: #22c55e; --orange: #fb923c; --red: #ef4444; --yellow: #facc15; }
+        :root { --bg: #0a0a0a; --surface: #141414; --surface-hover: #1a1a1a; --border: #262626; --text: #f5f5f5; --text-secondary: #737373; --accent: #22c55e; --orange: #fb923c; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
         .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
@@ -32,29 +32,30 @@
         .input-label { display: flex; justify-content: space-between; margin-bottom: 8px; }
         .input-name { font-size: 0.85rem; color: var(--text-secondary); }
         .input-value { font-size: 1rem; font-weight: 600; color: var(--accent); }
-        .input-field { width: 100%; padding: 16px; background: var(--surface-hover); border: 2px solid var(--border); border-radius: 12px; color: var(--text); font-size: 1.25rem; text-align: center; font-weight: 600; transition: border-color 0.2s; }
+        .input-field { width: 100%; padding: 16px; background: var(--surface-hover); border: 2px solid var(--border); border-radius: 12px; color: var(--text); font-size: 1.25rem; text-align: center; font-weight: 600; }
         .input-field:focus { outline: none; border-color: var(--accent); }
         
         .result-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; }
         .result-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; }
-        .result-badge { padding: 6px 12px; background: rgba(251, 146, 60, 0.15); border-radius: 20px; font-size: 0.75rem; color: var(--orange); }
+        .result-badge { padding: 6px 12px; background: rgba(34, 197, 94, 0.15); border-radius: 20px; font-size: 0.75rem; color: var(--accent); }
         .result-body { padding: 40px 24px; text-align: center; }
         
-        .flame-container { height: 160px; display: flex; align-items: flex-end; justify-content: center; margin-bottom: 24px; }
-        .flame { width: 80px; }
-        .flame-core { width: 50px; height: 70px; background: linear-gradient(to top, var(--red), var(--orange), var(--yellow)); border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; margin: 0 auto; animation: flicker 0.5s ease-in-out infinite alternate; box-shadow: 0 0 40px var(--orange); transition: all 0.5s; }
-        @keyframes flicker { 0% { transform: scaleY(1); } 100% { transform: scaleY(1.1); } }
+        /* Circular Ring */
+        .ring-container { width: 220px; height: 220px; margin: 0 auto 24px; position: relative; }
+        .ring-outer { position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 10px solid var(--border); }
+        .ring-fill { position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 10px solid var(--orange); border-top-color: transparent; border-left-color: transparent; transform: rotate(-45deg); transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0; }
+        .ring-inner { position: absolute; top: 20px; left: 20px; width: calc(100% - 40px); height: calc(100% - 40px); border-radius: 50%; background: var(--surface); display: flex; align-items: center; justify-content: center; flex-direction: column; }
         
-        .result-value { font-size: 3.5rem; font-weight: 600; }
-        .result-unit { font-size: 1rem; color: var(--text-secondary); margin-top: 4px; }
+        .bmr-value { font-size: 3rem; font-weight: 600; color: var(--text); line-height: 1; }
+        .bmr-label { font-size: 0.9rem; color: var(--text-secondary); margin-top: 4px; }
         
-        .stats-section { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding-top: 24px; border-top: 1px solid var(--border); }
-        .stat-item { background: var(--surface-hover); border-radius: 12px; padding: 16px; }
+        .stats-section { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding-top: 24px; border-top: 1px solid var(--border); margin-top: 24px; }
+        .stat-item { background: var(--surface-hover); border-radius: 12px; padding: 16px; text-align: center; }
         .stat-value { font-size: 1.1rem; font-weight: 600; color: var(--orange); }
         .stat-label { font-size: 0.7rem; color: var(--text-secondary); margin-top: 4px; }
         
         footer { padding: 32px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-secondary); font-size: 0.8rem; margin-top: 48px; }
-        @media (max-width: 768px) { .calculator { grid-template-columns: 1fr; } nav { display: none; } .result-value { font-size: 2.5rem; } }
+        @media (max-width: 768px) { .calculator { grid-template-columns: 1fr; } nav { display: none; } .ring-container { width: 180px; height: 180px; } .bmr-value { font-size: 2.5rem; } }
     </style>
 </head>
 <body>
@@ -65,7 +66,6 @@
                     <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/>
                     <circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/>
                     <circle cx="20" cy="20" r="6" fill="currentColor"/>
-                    <line x1="20" y1="2" x2="20" y2="6" stroke="currentColor" stroke-width="1.5"/>
                 </svg>
                 FitGauge
             </a>
@@ -98,13 +98,16 @@
                 </div>
             </div>
             <div class="result-card">
-                <div class="result-header">
-                    <span class="result-badge">🔥 Energy</span>
-                </div>
+                <div class="result-header"><span class="result-badge">BMR</span></div>
                 <div class="result-body">
-                    <div class="flame-container"><div class="flame"><div class="flame-core" id="flame"></div></div></div>
-                    <div class="result-value" id="bmr">1,456</div>
-                    <div class="result-unit">calories/day at rest</div>
+                    <div class="ring-container">
+                        <div class="ring-outer"></div>
+                        <div class="ring-fill" id="ring-fill"></div>
+                        <div class="ring-inner">
+                            <div class="bmr-value" id="bmr-value">1,456</div>
+                            <div class="bmr-label">cal/day</div>
+                        </div>
+                    </div>
                     <div class="stats-section">
                         <div class="stat-item"><div class="stat-value" id="sedentary">1,747</div><div class="stat-label">Sedentary</div></div>
                         <div class="stat-item"><div class="stat-value" id="moderate">2,257</div><div class="stat-label">Moderate</div></div>
@@ -134,11 +137,16 @@
             var bmr = (10 * state.weight) + (6.25 * state.height) - (5 * state.age);
             bmr = state.gender === 'male' ? bmr + 5 : bmr - 161;
             bmr = Math.round(bmr);
-            document.getElementById('bmr').textContent = bmr.toLocaleString();
             
-            var size = ((bmr - 1200) / 1300) * 40 + 40;
-            size = Math.max(40, Math.min(80, size));
-            document.getElementById('flame').style.height = size + 'px';
+            document.getElementById('bmr-value').textContent = bmr.toLocaleString();
+            
+            // Ring fill (1200-2500 range)
+            var pct = ((bmr - 1200) / 1300) * 100;
+            pct = Math.max(0, Math.min(100, pct));
+            
+            var ring = document.getElementById('ring-fill');
+            ring.style.opacity = '1';
+            ring.style.transform = 'rotate(' + (-45 + pct * 3.6) + 'deg)';
             
             document.getElementById('sedentary').textContent = Math.round(bmr * 1.2).toLocaleString();
             document.getElementById('moderate').textContent = Math.round(bmr * 1.55).toLocaleString();
@@ -152,7 +160,7 @@
             var w = localStorage.getItem('fitgauge_weight');
             var wU = localStorage.getItem('fitgauge_weight_unit') || 'kg';
             if (g) setGender(g);
-            if (age) { document.getElementById('age').value = age; }
+            if (age) document.getElementById('age').value = age;
             if (h) document.getElementById('height').value = h;
             if (w) {
                 var weight = parseFloat(w);
