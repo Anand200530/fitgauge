@@ -38,15 +38,31 @@
         .result-badge { padding: 6px 12px; background: rgba(34, 197, 94, 0.15); border-radius: 20px; font-size: 0.75rem; color: var(--accent); }
         .result-body { padding: 40px 24px; text-align: center; }
         
-        /* Horizontal Bar Gauge */
-        .bar-container { margin-bottom: 32px; }
-        .bar-wrapper { height: 32px; background: var(--border); border-radius: 16px; position: relative; overflow: hidden; margin-bottom: 12px; }
-        .bar-fill { height: 100%; border-radius: 16px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
-        
-        .bar-labels { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-secondary); }
+        /* Body Stack Visual */
+        .stack-container { margin-bottom: 32px; }
+        .body-stack { 
+            width: 120px; height: 200px; margin: 0 auto 24px; 
+            border-radius: 60px 60px 20px 20px; overflow: hidden;
+            position: relative; display: flex; flex-direction: column;
+            background: var(--surface-hover);
+        }
+        .stack-fat { 
+            background: var(--orange); 
+            transition: height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            flex-shrink: 0;
+        }
+        .stack-lean { 
+            background: var(--accent); 
+            flex-grow: 1;
+            transition: all 0.8s;
+        }
         
         .fat-value { font-size: 3rem; font-weight: 600; }
         .fat-label { font-size: 1rem; color: var(--text-secondary); margin-top: 4px; }
+        
+        .legend { display: flex; justify-content: center; gap: 24px; margin-top: 16px; }
+        .legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: var(--text-secondary); }
+        .legend-dot { width: 12px; height: 12px; border-radius: 3px; }
         
         .stats-section { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding-top: 24px; border-top: 1px solid var(--border); margin-top: 24px; }
         .stat-item { background: var(--surface-hover); border-radius: 12px; padding: 16px; }
@@ -71,7 +87,7 @@
         <a href="../index.html" class="back-link">← Back</a>
         <div class="page-header">
             <h1 class="page-title">Body Fat</h1>
-            <p class="page-desc">Estimate your body fat percentage</p>
+            <p class="page-desc">See your body composition</p>
         </div>
         <div class="calculator">
             <div class="input-card">
@@ -101,31 +117,36 @@
                 </div>
             </div>
             <div class="result-card">
-                <div class="result-header"><span class="result-badge">Body Fat %</span></div>
+                <div class="result-header"><span class="result-badge">Composition</span></div>
                 <div class="result-body">
-                    <div class="bar-container">
-                        <div class="bar-wrapper">
-                            <div class="bar-fill" id="bar-fill" style="width: 30%; background: var(--green);"></div>
-                        </div>
-                        <div class="bar-labels">
-                            <span>Essential</span>
-                            <span>Athletes</span>
-                            <span>Fitness</span>
-                            <span>Average</span>
-                            <span>Obese</span>
+                    <div class="stack-container">
+                        <div class="body-stack">
+                            <div class="stack-fat" id="stack-fat" style="height: 25%"></div>
+                            <div class="stack-lean" id="stack-lean"></div>
                         </div>
                     </div>
-                    <div class="fat-value" id="fat-value">24.5</div>
-                    <div class="fat-label">% body fat</div>
+                    <div class="fat-value" id="fat-value">24.5%</div>
+                    <div class="fat-label">Body Fat</div>
+                    
+                    <div class="legend">
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background: var(--orange)"></div>
+                            <span>Fat</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background: var(--accent)"></div>
+                            <span>Lean</span>
+                        </div>
+                    </div>
                     
                     <div class="stats-section">
                         <div class="stat-item">
-                            <div class="stat-value" id="fat-mass">15.9</div>
-                            <div class="stat-label">Fat Mass (kg)</div>
+                            <div class="stat-value" id="fat-kg">15.9 kg</div>
+                            <div class="stat-label">Fat Mass</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-value" id="lean-mass">49.1</div>
-                            <div class="stat-label">Lean Mass (kg)</div>
+                            <div class="stat-value" id="lean-kg">49.1 kg</div>
+                            <div class="stat-label">Lean Mass</div>
                         </div>
                     </div>
                 </div>
@@ -179,23 +200,22 @@
                 else color = 'var(--red)';
             }
             
-            document.getElementById('fat-value').textContent = bf;
+            document.getElementById('fat-value').textContent = bf + '%';
             document.getElementById('fat-value').style.color = color;
             
-            var pct = Math.min(100, (bf / 50) * 100);
-            var bar = document.getElementById('bar-fill');
-            bar.style.width = pct + '%';
-            bar.style.background = color;
+            // Stack visual
+            var stackFat = document.getElementById('stack-fat');
+            stackFat.style.height = bf + '%';
+            stackFat.style.background = color;
             
             // Estimate weight
             var estWeight = (waist / 100) * (waist / 100) * 22;
-            var fatMass = (estWeight * bf / 100).toFixed(1);
-            var leanMass = (estWeight - fatMass).toFixed(1);
-            document.getElementById('fat-mass').textContent = fatMass;
-            document.getElementById('lean-mass').textContent = leanMass;
+            var fatKg = (estWeight * bf / 100).toFixed(1);
+            var leanKg = (estWeight - fatKg).toFixed(1);
+            document.getElementById('fat-kg').textContent = fatKg + ' kg';
+            document.getElementById('lean-kg').textContent = leanKg + ' kg';
         }
         
-        // Init
         document.getElementById('hip-group').style.display = 'none';
         setGender('female');
     </script>
