@@ -33,27 +33,37 @@ main{padding:48px 0}
 .result-body{padding:48px 24px;text-align:center}
 .result-value{font-size:4rem;font-weight:600;color:var(--accent)}
 .result-unit{font-size:1.1rem;color:var(--text-secondary);margin-top:4px}
-.range{display:block;margin-top:24px;font-size:1.2rem;color:var(--text-secondary)}
-.range span{color:var(--accent);font-weight:600}
+.msg{font-size:0.95rem;color:var(--text-secondary);margin-top:16px;line-height:1.5}
 footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color:var(--text-secondary);font-size:0.8rem;margin-top:48px}
 @media(max-width:768px){.calculator{grid-template-columns:1fr}nav{display:none}}
 </style>
 </head>
 <body>
-<header><div class="container"><a href="../index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a><nav><a href="../profile.html">Profile</a><a href="../index.html#body">Body</a></nav></div></header>
+<header>
+<div class="container">
+<a href="../index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
+<nav><a href="../profile.html">Profile</a><a href="../index.html#body">Body</a></nav>
+</div>
+</header>
 <main class="container">
 <a href="../index.html" class="back-link">← Back</a>
-<div class="page-header"><h1 class="page-title">Ideal Weight</h1><p class="page-desc">What's a healthy weight for you</p></div>
+<div class="page-header">
+<h1 class="page-title">Ideal Weight</h1>
+<p class="page-desc">What's a healthy weight for you</p>
+</div>
 <div class="calculator">
 <div class="input-card">
-<div class="input-group"><div class="input-label">Height (cm)</div><input type="number" class="input-field" id="height" value="170" oninput="calculate()"></div>
+<div class="input-group">
+<div class="input-label">Your Height (cm)</div>
+<input type="number" class="input-field" id="height" value="170" oninput="calculate()">
+</div>
 </div>
 <div class="result-card">
-<div class="result-header"><span class="result-badge">Ideal Weight</span></div>
+<div class="result-header"><span class="result-badge">Healthy Weight</span></div>
 <div class="result-body">
 <div class="result-value" id="ideal">65</div>
 <div class="result-unit">kg</div>
-<div class="range">Range: <span id="min">54</span> - <span id="max">72</span> kg</div>
+<div class="msg" id="msg">Based on your height, a weight between <b>54-72 kg</b> is considered healthy.</div>
 </div>
 </div>
 </div>
@@ -61,7 +71,15 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 </main>
 <footer>FitGauge</footer>
 <script>
-function calculate(){var h=parseInt(document.getElementById('height').value)||170;var hm=h/100;var min=Math.round(18.5*hm*hm);var max=Math.round(25*hm*hm);var ideal=Math.round(22*hm*hm);document.getElementById('ideal').textContent=ideal;document.getElementById('min').textContent=min;document.getElementById('max').textContent=max}
+function calculate(){
+var h=parseInt(document.getElementById('height').value)||170;
+var hm=h/100;
+var min=Math.round(18.5*hm*hm);
+var max=Math.round(25*hm*hm);
+var ideal=Math.round(22*hm*hm);
+document.getElementById('ideal').textContent=ideal;
+document.getElementById('msg').innerHTML='Based on your height, a weight between <b>'+min+'-'+max+' kg</b> is considered healthy.';
+}
 function loadProfile(){var h=localStorage.getItem('fitgauge_height');if(h)document.getElementById('height').value=h;calculate()}
 window.onload=loadProfile;
 </script>
