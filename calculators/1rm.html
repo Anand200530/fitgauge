@@ -1,374 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>One-Rep Max Calculator - FitGauge</title>
-    <link rel="stylesheet" href="../assets/styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #0a0a0a;
-            --surface: #161616;
-            --surface-hover: #1f1f1f;
-            --border: #262626;
-            --text: #f5f5f5;
-            --text-secondary: #737373;
-            --accent: #22c55e;
-            --accent-hover: #4ade80;
-            --font: 'Inter', sans-serif;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: var(--font);
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.5;
-            min-height: 100vh;
-        }
-
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-
-        header {
-            padding: 20px 0;
-            border-bottom: 1px solid var(--border);
-            background: var(--bg);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--text);
-            font-weight: 600;
-            font-size: 1.1rem;
-            text-decoration: none;
-        }
-
-        .logo svg { width: 28px; height: 28px; color: var(--accent); }
-
-        nav { display: flex; gap: 28px; }
-
-        nav a {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        nav a:hover { color: var(--text); }
-
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.9rem;
-            margin: 24px 0;
-            transition: color 0.2s;
-        }
-
-        .back-link:hover { color: var(--accent); }
-
-        .back-link svg { width: 20px; height: 20px; }
-
-        main { padding-bottom: 60px; }
-
-        .hero {
-            padding: 40px 0;
-            text-align: center;
-        }
-
-        .hero h1 {
-            font-size: 2rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .hero p {
-            color: var(--text-secondary);
-            font-size: 1rem;
-        }
-
-        .calculator-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 32px;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .input-group { margin-bottom: 20px; }
-
-        .input-group label {
-            display: block;
-            font-size: 0.9rem;
-            font-weight: 500;
-            margin-bottom: 8px;
-        }
-
-        .input-group input, .input-group select {
-            width: 100%;
-            padding: 14px 16px;
-            background: var(--surface-hover);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            color: var(--text);
-            font-family: var(--font);
-            font-size: 1rem;
-            transition: border-color 0.2s;
-        }
-
-        .input-group input:focus, .input-group select:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
-
-        .input-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 16px;
-            background: var(--accent);
-            border: none;
-            border-radius: 10px;
-            color: #000;
-            font-family: var(--font);
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .btn:hover { background: var(--accent-hover); }
-
-        .result-section {
-            margin-top: 32px;
-            padding-top: 32px;
-            border-top: 1px solid var(--border);
-            text-align: center;
-            display: none;
-        }
-
-        .result-section.active { display: block; }
-
-        .result-value {
-            font-size: 3rem;
-            font-weight: 600;
-            color: var(--accent);
-            margin-bottom: 4px;
-        }
-
-        .result-unit {
-            font-size: 1.25rem;
-            color: var(--text-secondary);
-            margin-bottom: 16px;
-        }
-
-        .result-label {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        .percentage-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 8px;
-            margin-top: 24px;
-        }
-
-        .percentage-item {
-            background: var(--surface-hover);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 12px 8px;
-            text-align: center;
-        }
-
-        .percentage-value {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--accent);
-        }
-
-        .percentage-label {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            margin-top: 4px;
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 1.75rem; }
-            .calculator-card { padding: 24px; }
-            .input-row { grid-template-columns: 1fr; }
-            .percentage-grid { grid-template-columns: repeat(3, 1fr); }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1RM Calculator - FitGauge</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--surface:#141414;--surface-hover:#1a1a1a;--border:#262626;--text:#f5f5f5;--text-secondary:#737373;--accent:#22c55e;--orange:#f97316;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.container{max-width:1100px;margin:0 auto;padding:0 24px}
+header{padding:20px 0;border-bottom:1px solid var(--border)}
+header .container{display:flex;justify-content:space-between;align-items:center}
+.logo{display:flex;align-items:center;gap:10px;font-size:1.1rem;font-weight:600;color:var(--text);text-decoration:none}
+.logo svg{width:26px;height:26px;color:var(--accent)}
+nav{display:flex;gap:28px}
+nav a{color:var(--text-secondary);font-size:0.85rem;text-decoration:none}
+main{padding:48px 0}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--text-secondary);font-size:0.85rem;text-decoration:none;margin-bottom:32px}
+.page-header{margin-bottom:40px}
+.page-title{font-size:1.75rem;font-weight:600;margin-bottom:8px}
+.page-desc{color:var(--text-secondary);font-size:0.9rem}
+.calculator{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.input-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px}
+.input-group{margin-bottom:20px}
+.input-label{font-size:0.85rem;color:var(--text-secondary);margin-bottom:8px}
+.input-field{width:100%;padding:14px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:1.1rem;text-align:center;font-weight:600}
+.input-field:focus{outline:none;border-color:var(--accent)}
+.result-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden}
+.result-header{padding:20px 24px;border-bottom:1px solid var(--border)}
+.result-badge{padding:6px 12px;background:rgba(249,115,22,0.15);border-radius:20px;font-size:0.75rem;color:var(--orange)}
+.result-body{padding:32px 24px}
+.max-display{text-align:center;margin-bottom:24px}
+.max-value{font-size:4rem;font-weight:600;color:var(--orange)}
+.max-label{font-size:0.9rem;color:var(--text-secondary)}
+.chart{display:flex;gap:8px;margin-bottom:24px}
+.chart-bar{flex:1;display:flex;flex-direction:column;align-items:center;padding:12px 8px;background:var(--surface-hover);border-radius:8px}
+.chart-fill{width:8px;height:60px;background:var(--orange);border-radius:4px;margin-bottom:8px}
+.chart-pct{font-size:0.85rem;font-weight:600;color:var(--text)}
+.chart-kg{font-size:0.7rem;color:var(--text-secondary)}
+footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color:var(--text-secondary);font-size:0.8rem;margin-top:48px}
+@media(max-width:768px){.calculator{grid-template-columns:1fr}nav{display:none}}
+</style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <a href="../index.html" class="logo">
-                <svg viewBox="0 0 40 40" fill="none">
-                    <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/>
-                    <circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/>
-                    <circle cx="20" cy="20" r="6" fill="currentColor"/>
-                    <line x1="20" y1="2" x2="20" y2="6" stroke="currentColor" stroke-width="1.5"/>
-                    <line x1="20" y1="34" x2="20" y2="38" stroke="currentColor" stroke-width="1.5"/>
-                    <line x1="2" y1="20" x2="6" y2="20" stroke="currentColor" stroke-width="1.5"/>
-                    <line x1="34" y1="20" x2="38" y2="20" stroke="currentColor" stroke-width="1.5"/>
-                </svg>
-                FitGauge
-            </a>
-            <nav>
-                <a href="../index.html#body">Body</a>
-                <a href="../index.html#energy">Energy</a>
-                <a href="../index.html#nutrition">Nutrition</a>
-                <a href="../index.html#fitness">Fitness</a>
-                <a href="../index.html#goals">Goals</a>
-            </nav>
-        </div>
-    </header>
-
-    <main class="container">
-        <a href="../index.html" class="back-link">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M19 12H5M12 19l-7-7 7-7"/>
-            </svg>
-            Back to calculators
-        </a>
-
-        <section class="hero">
-            <h1>One-Rep Max Calculator</h1>
-            <p>Estimate your maximum strength for any exercise</p>
-        </section>
-
-        <div class="calculator-card">
-            <div class="input-row">
-                <div class="input-group">
-                    <label for="weight">Weight Lifted</label>
-                    <input type="number" id="weight" placeholder="e.g., 100" min="0">
-                </div>
-                <div class="input-group">
-                    <label for="reps">Repetitions</label>
-                    <input type="number" id="reps" placeholder="e.g., 5" min="1" max="20" value="5">
-                </div>
-            </div>
-
-            <div class="input-group">
-                <label for="unit">Unit</label>
-                <select id="unit">
-                    <option value="kg">Kilograms (kg)</option>
-                    <option value="lbs">Pounds (lbs)</option>
-                </select>
-            </div>
-
-            <button class="btn" onclick="calculate()">Calculate 1RM</button>
-
-            <div class="result-section" id="result">
-                <div class="result-value" id="resultValue">0</div>
-                <div class="result-unit" id="resultUnit">kg</div>
-                <div class="result-label">Estimated One-Rep Max</div>
-
-                <div class="percentage-grid">
-                    <div class="percentage-item">
-                        <div class="percentage-value" id="p95">0</div>
-                        <div class="percentage-label">95%</div>
-                    </div>
-                    <div class="percentage-item">
-                        <div class="percentage-value" id="p90">0</div>
-                        <div class="percentage-label">90%</div>
-                    </div>
-                    <div class="percentage-item">
-                        <div class="percentage-value" id="p85">0</div>
-                        <div class="percentage-label">85%</div>
-                    </div>
-                    <div class="percentage-item">
-                        <div class="percentage-value" id="p80">0</div>
-                        <div class="percentage-label">80%</div>
-                    </div>
-                    <div class="percentage-item">
-                        <div class="percentage-value" id="p75">0</div>
-                        <div class="percentage-label">75%</div>
-                    </div>
-                    <div class="percentage-item">
-                        <div class="percentage-value" id="p70">0</div>
-                        <div class="percentage-label">70%</div>
-                    </div>
-                    <div class="percentage-item">
-                        <div class="percentage-value" id="p65">0</div>
-                        <div class="percentage-label">65%</div>
-                    </div>
-                    <div class="percentage-item">
-                        <div class="percentage-value" id="p60">0</div>
-                        <div class="percentage-label">60%</div>
-                    </div>
-                    <div class="percentage-item">
-                        <div class="percentage-value" id="p55">0</div>
-                        <div class="percentage-label">55%</div>
-                    </div>
-                    <div class="percentage-item">
-                        <div class="percentage-value" id="p50">0</div>
-                        <div class="percentage-label">50%</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <script>
-        function calculate() {
-            var weight = parseFloat(document.getElementById('weight').value);
-            var reps = parseInt(document.getElementById('reps').value);
-            var unit = document.getElementById('unit').value;
-
-            if (!weight || weight <= 0 || !reps || reps < 1) {
-                alert('Please enter valid weight and repetitions');
-                return;
-            }
-
-            // Epley formula for 1RM calculation
-            var oneRM = weight * (1 + reps / 30);
-
-            document.getElementById('resultValue').textContent = Math.round(oneRM);
-            document.getElementById('resultUnit').textContent = unit;
-
-            // Calculate percentages
-            var percentages = [0.95, 0.90, 0.85, 0.80, 0.75, 0.70, 0.65, 0.60, 0.55, 0.50];
-            var labels = ['p95', 'p90', 'p85', 'p80', 'p75', 'p70', 'p65', 'p60', 'p55', 'p50'];
-
-            for (var i = 0; i < percentages.length; i++) {
-                document.getElementById(labels[i]).textContent = Math.round(oneRM * percentages[i]);
-            }
-
-            document.getElementById('result').classList.add('active');
-        }
-
-        // Allow Enter key to submit
-        document.querySelectorAll('input').forEach(function(input) {
-            input.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') calculate();
-            });
-        });
-    </script>
+<header>
+<div class="container">
+<a href="../index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
+<nav><a href="../profile.html">Profile</a><a href="../index.html#fitness">Fitness</a></nav>
+</div>
+</header>
+<main class="container">
+<a href="../index.html" class="back-link">← Back</a>
+<div class="page-header">
+<h1 class="page-title">1RM Calculator</h1>
+<p class="page-desc">Your one rep max strength</p>
+</div>
+<div class="calculator">
+<div class="input-card">
+<div class="input-group">
+<div class="input-label">Weight lifted (kg)</div>
+<input type="number" class="input-field" id="weight" value="60" oninput="calc()">
+</div>
+<div class="input-group">
+<div class="input-label">Reps performed</div>
+<input type="number" class="input-field" id="reps" value="5" oninput="calc()">
+</div>
+</div>
+<div class="result-card">
+<div class="result-header"><span class="result-badge">💪 1 Rep Max</span></div>
+<div class="result-body">
+<div class="max-display">
+<div class="max-value" id="one-rm">72</div>
+<div class="max-label">kg (your max)</div>
+</div>
+<div class="chart">
+<div class="chart-bar"><div class="chart-fill" style="height:95%"></div><div class="chart-pct">95%</div><div class="chart-kg" id="p95">68</div></div>
+<div class="chart-bar"><div class="chart-fill" style="height:90%"></div><div class="chart-pct">90%</div><div class="chart-kg" id="p90">65</div></div>
+<div class="chart-bar"><div class="chart-fill" style="height:85%"></div><div class="chart-pct">85%</div><div class="chart-kg" id="p85">61</div></div>
+<div class="chart-bar"><div class="chart-fill" style="height:80%"></div><div class="chart-pct">80%</div><div class="chart-kg" id="p80">58</div></div>
+<div class="chart-bar"><div class="chart-fill" style="height:75%"></div><div class="chart-pct">75%</div><div class="chart-kg" id="p75">54</div></div>
+<div class="chart-bar"><div class="chart-fill" style="height:70%"></div><div class="chart-pct">70%</div><div class="chart-kg" id="p70">50</div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<footer>FitGauge</footer>
+<script>
+function calc(){var w=parseFloat(document.getElementById('weight').value)||60;var r=parseInt(document.getElementById('reps').value)||5;var oneRM=Math.round(w*(1+r/30));document.getElementById('one-rm').textContent=oneRM;document.getElementById('p95').textContent=Math.round(oneRM*0.95);document.getElementById('p90').textContent=Math.round(oneRM*0.90);document.getElementById('p85').textContent=Math.round(oneRM*0.85);document.getElementById('p80').textContent=Math.round(oneRM*0.80);document.getElementById('p75').textContent=Math.round(oneRM*0.75);document.getElementById('p70').textContent=Math.round(oneRM*0.70);}
+calc();
+</script>
 </body>
 </html>
