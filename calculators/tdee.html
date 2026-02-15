@@ -59,43 +59,28 @@
 <body>
     <header>
         <div class="container">
-            <a href="../index.html" class="logo">
-                <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>
-                FitGauge
-            </a>
+            <a href="../index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
             <nav><a href="../profile.html">Profile</a><a href="../index.html#energy">Energy</a></nav>
         </div>
     </header>
     <main class="container">
         <a href="../index.html" class="back-link">← Back</a>
-        <div class="page-header">
-            <h1 class="page-title">TDEE</h1>
-            <p class="page-desc">Total Daily Energy Expenditure</p>
-        </div>
+        <div class="page-header"><h1 class="page-title">TDEE</h1><p class="page-desc">Total Daily Energy Expenditure</p></div>
         <div class="calculator">
             <div class="input-card">
                 <div class="gender-toggle">
                     <div class="gender-btn" id="male-btn" onclick="setGender('male')">♂ Male</div>
                     <div class="gender-btn active" id="female-btn" onclick="setGender('female')">♀ Female</div>
                 </div>
-                <div class="input-group">
-                    <div class="input-label">Age (years)</div>
-                    <input type="number" class="input-field" id="age" value="25" oninput="calculate()">
-                </div>
-                <div class="input-group">
-                    <div class="input-label">Height (cm)</div>
-                    <input type="number" class="input-field" id="height" value="170" oninput="calculate()">
-                </div>
-                <div class="input-group">
-                    <div class="input-label">Weight (kg)</div>
-                    <input type="number" class="input-field" id="weight" value="65" oninput="calculate()">
-                </div>
-                <div class="activity-label">Activity Level</div>
+                <div class="input-group"><div class="input-label">Age (years)</div><input type="number" class="input-field" id="age" value="25" oninput="calculate()"></div>
+                <div class="input-group"><div class="input-label">Height (cm)</div><input type="number" class="input-field" id="height" value="170" oninput="calculate()"></div>
+                <div class="input-group"><div class="input-label">Weight (kg)</div><input type="number" class="input-field" id="weight" value="65" oninput="calculate()"></div>
+                <div class="activity-label">How active are you?</div>
                 <div class="activity-options">
-                    <div class="activity-btn" data-factor="1.2" onclick="setActivity(this)">Sedentary</div>
-                    <div class="activity-btn active" data-factor="1.375" onclick="setActivity(this)">Light</div>
-                    <div class="activity-btn" data-factor="1.55" onclick="setActivity(this)">Moderate</div>
-                    <div class="activity-btn" data-factor="1.725" onclick="setActivity(this)">Active</div>
+                    <div class="activity-btn" data-factor="1.2" onclick="setActivity(this)">Office job</div>
+                    <div class="activity-btn active" data-factor="1.375" onclick="setActivity(this)">Walking</div>
+                    <div class="activity-btn" data-factor="1.55" onclick="setActivity(this)">Exercise</div>
+                    <div class="activity-btn" data-factor="1.725" onclick="setActivity(this)">Sports</div>
                 </div>
             </div>
             <div class="result-card">
