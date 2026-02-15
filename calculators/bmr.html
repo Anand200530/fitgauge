@@ -4,26 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BMR Calculator - FitGauge</title>
-    <link rel="stylesheet" href="assets/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg: #0a0a0a;
-            --surface: #141414;
-            --surface-hover: #1a1a1a;
-            --border: #262626;
-            --text: #f5f5f5;
-            --text-secondary: #737373;
-            --accent: #22c55e;
-            --orange: #fb923c;
-            --red: #ef4444;
-            --yellow: #facc15;
-            --font: 'Inter', sans-serif;
-        }
+        :root { --bg: #0a0a0a; --surface: #141414; --surface-hover: #1a1a1a; --border: #262626; --text: #f5f5f5; --text-secondary: #737373; --accent: #22c55e; --orange: #fb923c; --red: #ef4444; --yellow: #facc15; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
         .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-        header { padding: 20px 0; border-bottom: 1px solid var(--border); background: var(--bg); position: sticky; top: 0; z-index: 100; }
+        header { padding: 20px 0; border-bottom: 1px solid var(--border); }
         header .container { display: flex; justify-content: space-between; align-items: center; }
         .logo { display: flex; align-items: center; gap: 10px; font-size: 1.1rem; font-weight: 600; color: var(--text); text-decoration: none; }
         .logo svg { width: 26px; height: 26px; color: var(--accent); }
@@ -31,61 +18,39 @@
         nav a { color: var(--text-secondary); font-size: 0.85rem; text-decoration: none; }
         main { padding: 48px 0; }
         .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--text-secondary); font-size: 0.85rem; text-decoration: none; margin-bottom: 32px; }
-        .back-link:hover { color: var(--accent); }
         .page-header { margin-bottom: 40px; }
         .page-title { font-size: 1.75rem; font-weight: 600; margin-bottom: 8px; }
         .page-desc { color: var(--text-secondary); font-size: 0.9rem; }
         .calculator { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
         
-        /* Slider Controls */
-        .slider-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; }
-        .slider-group { margin-bottom: 32px; }
-        .slider-label { display: flex; justify-content: space-between; margin-bottom: 12px; }
-        .slider-name { font-size: 0.85rem; color: var(--text-secondary); }
-        .slider-value { font-size: 1.1rem; font-weight: 600; color: var(--accent); }
-        .slider-track { position: relative; height: 8px; background: var(--border); border-radius: 4px; cursor: pointer; }
-        .slider-fill { position: absolute; height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.1s; }
-        .slider-thumb { 
-            position: absolute; top: 50%; width: 24px; height: 24px; background: var(--text); 
-            border-radius: 50%; transform: translate(-50%, -50%); cursor: grab;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3); transition: transform 0.1s;
-        }
-        .slider-thumb:hover { transform: translate(-50%, -50%) scale(1.1); }
-        .slider-thumb:active { cursor: grabbing; transform: translate(-50%, -50%) scale(0.95); }
-        
+        .input-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; }
         .gender-toggle { display: flex; gap: 12px; margin-bottom: 32px; }
-        .gender-btn { 
-            flex: 1; padding: 16px; background: var(--surface-hover); border: 2px solid var(--border); 
-            border-radius: 12px; color: var(--text-secondary); font-size: 1rem; cursor: pointer; text-align: center;
-            transition: all 0.2s;
-        }
-        .gender-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(34, 197, 94, 0.1); }
+        .gender-btn { flex: 1; padding: 16px; background: var(--surface-hover); border: 2px solid var(--border); border-radius: 12px; color: var(--text-secondary); font-size: 1rem; cursor: pointer; text-align: center; transition: all 0.2s; }
+        .gender-btn.active { border-color: var(--accent); color: var(--accent); }
+        
+        .input-group { margin-bottom: 24px; }
+        .input-label { display: flex; justify-content: space-between; margin-bottom: 8px; }
+        .input-name { font-size: 0.85rem; color: var(--text-secondary); }
+        .input-value { font-size: 1rem; font-weight: 600; color: var(--accent); }
+        .input-field { width: 100%; padding: 16px; background: var(--surface-hover); border: 2px solid var(--border); border-radius: 12px; color: var(--text); font-size: 1.25rem; text-align: center; font-weight: 600; transition: border-color 0.2s; }
+        .input-field:focus { outline: none; border-color: var(--accent); }
         
         .result-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; }
-        .result-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-        .result-title { font-size: 1rem; font-weight: 500; }
+        .result-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; }
         .result-badge { padding: 6px 12px; background: rgba(251, 146, 60, 0.15); border-radius: 20px; font-size: 0.75rem; color: var(--orange); }
-        .result-body { padding: 32px 24px; text-align: center; }
+        .result-body { padding: 40px 24px; text-align: center; }
         
-        /* Flame Gauge */
-        .flame-container { margin-bottom: 24px; position: relative; height: 180px; display: flex; align-items: flex-end; justify-content: center; }
-        .flame { width: 100px; position: relative; }
-        .flame-core {
-            width: 60px; height: 80px; background: linear-gradient(to top, var(--red), var(--orange), var(--yellow));
-            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-            margin: 0 auto;
-            animation: flicker 0.5s ease-in-out infinite alternate;
-            box-shadow: 0 0 40px var(--orange), 0 0 80px var(--red);
-            transition: all 0.5s;
-        }
-        @keyframes flicker { 0% { transform: scaleY(1) scaleX(1); } 100% { transform: scaleY(1.1) scaleX(0.95); } }
+        .flame-container { height: 160px; display: flex; align-items: flex-end; justify-content: center; margin-bottom: 24px; }
+        .flame { width: 80px; }
+        .flame-core { width: 50px; height: 70px; background: linear-gradient(to top, var(--red), var(--orange), var(--yellow)); border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; margin: 0 auto; animation: flicker 0.5s ease-in-out infinite alternate; box-shadow: 0 0 40px var(--orange); transition: all 0.5s; }
+        @keyframes flicker { 0% { transform: scaleY(1); } 100% { transform: scaleY(1.1); } }
         
-        .result-value { font-size: 3.5rem; font-weight: 600; color: var(--text); }
-        .result-unit { font-size: 1.1rem; color: var(--text-secondary); margin-top: 4px; }
+        .result-value { font-size: 3.5rem; font-weight: 600; }
+        .result-unit { font-size: 1rem; color: var(--text-secondary); margin-top: 4px; }
         
         .stats-section { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding-top: 24px; border-top: 1px solid var(--border); }
         .stat-item { background: var(--surface-hover); border-radius: 12px; padding: 16px; }
-        .stat-value { font-size: 1.25rem; font-weight: 600; color: var(--orange); }
+        .stat-value { font-size: 1.1rem; font-weight: 600; color: var(--orange); }
         .stat-label { font-size: 0.7rem; color: var(--text-secondary); margin-top: 4px; }
         
         footer { padding: 32px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-secondary); font-size: 0.8rem; margin-top: 48px; }
@@ -101,7 +66,6 @@
                     <circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/>
                     <circle cx="20" cy="20" r="6" fill="currentColor"/>
                     <line x1="20" y1="2" x2="20" y2="6" stroke="currentColor" stroke-width="1.5"/>
-                    <line x1="20" y1="34" x2="20" y2="38" stroke="currentColor" stroke-width="1.5"/>
                 </svg>
                 FitGauge
             </a>
@@ -115,49 +79,32 @@
             <p class="page-desc">Calories your body burns at complete rest</p>
         </div>
         <div class="calculator">
-            <div class="slider-card">
+            <div class="input-card">
                 <div class="gender-toggle">
                     <div class="gender-btn" id="male-btn" onclick="setGender('male')">♂ Male</div>
                     <div class="gender-btn active" id="female-btn" onclick="setGender('female')">♀ Female</div>
                 </div>
-                
-                <div class="slider-group">
-                    <div class="slider-label"><span class="slider-name">Age</span><span class="slider-value" id="age-value">25 yrs</span></div>
-                    <div class="slider-track" id="age-slider">
-                        <div class="slider-fill" id="age-fill" style="width: 30%"></div>
-                        <div class="slider-thumb" id="age-thumb" style="left: 30%"></div>
-                    </div>
+                <div class="input-group">
+                    <div class="input-label"><span class="input-name">Age</span><span class="input-value" id="age-display">25 yrs</span></div>
+                    <input type="number" class="input-field" id="age" value="25" oninput="update()">
                 </div>
-                
-                <div class="slider-group">
-                    <div class="slider-label"><span class="slider-name">Height</span><span class="slider-value" id="height-value">170 cm</span></div>
-                    <div class="slider-track" id="height-slider">
-                        <div class="slider-fill" id="height-fill" style="width: 50%"></div>
-                        <div class="slider-thumb" id="height-thumb" style="left: 50%"></div>
-                    </div>
+                <div class="input-group">
+                    <div class="input-label"><span class="input-name">Height</span><span class="input-value" id="height-display">170 cm</span></div>
+                    <input type="number" class="input-field" id="height" value="170" oninput="update()">
                 </div>
-                
-                <div class="slider-group">
-                    <div class="slider-label"><span class="slider-name">Weight</span><span class="slider-value" id="weight-value">65 kg</span></div>
-                    <div class="slider-track" id="weight-slider">
-                        <div class="slider-fill" id="weight-fill" style="width: 50%"></div>
-                        <div class="slider-thumb" id="weight-thumb" style="left: 50%"></div>
-                    </div>
+                <div class="input-group">
+                    <div class="input-label"><span class="input-name">Weight</span><span class="input-value" id="weight-display">65 kg</span></div>
+                    <input type="number" class="input-field" id="weight" value="65" oninput="update()">
                 </div>
             </div>
-            
             <div class="result-card">
                 <div class="result-header">
-                    <span class="result-title">Your BMR</span>
                     <span class="result-badge">🔥 Energy</span>
                 </div>
                 <div class="result-body">
-                    <div class="flame-container">
-                        <div class="flame"><div class="flame-core" id="flame-core"></div></div>
-                    </div>
-                    <div class="result-value" id="bmr-value">1,456</div>
+                    <div class="flame-container"><div class="flame"><div class="flame-core" id="flame"></div></div></div>
+                    <div class="result-value" id="bmr">1,456</div>
                     <div class="result-unit">calories/day at rest</div>
-                    
                     <div class="stats-section">
                         <div class="stat-item"><div class="stat-value" id="sedentary">1,747</div><div class="stat-label">Sedentary</div></div>
                         <div class="stat-item"><div class="stat-value" id="moderate">2,257</div><div class="stat-label">Moderate</div></div>
@@ -167,85 +114,52 @@
             </div>
         </div>
     </main>
-    <footer>FitGauge — Free Fitness Calculators</footer>
+    <footer>FitGauge</footer>
     <script>
         var state = { gender: 'female', age: 25, height: 170, weight: 65 };
         
         function setGender(g) { state.gender = g; document.getElementById('male-btn').classList.toggle('active', g === 'male'); document.getElementById('female-btn').classList.toggle('active', g === 'female'); calculate(); }
         
-        // Slider setup
-        function setupSlider(id, min, max, initial, key, suffix) {
-            var track = document.getElementById(id + '-slider');
-            var thumb = document.getElementById(id + '-thumb');
-            var fill = document.getElementById(id + '-fill');
-            var valueEl = document.getElementById(id + '-value');
-            var isDragging = false;
-            
-            function update(val) {
-                val = Math.max(min, Math.min(max, val));
-                state[key] = val;
-                var pct = ((val - min) / (max - min)) * 100;
-                thumb.style.left = pct + '%';
-                fill.style.width = pct + '%';
-                valueEl.textContent = val + suffix;
-                calculate();
-            }
-            
-            thumb.onmousedown = function(e) { isDragging = true; e.preventDefault(); };
-            track.onclick = function(e) { var rect = track.getBoundingClientRect(); var pct = (e.clientX - rect.left) / rect.width; update(min + pct * (max - min)); };
-            
-            document.onmousemove = function(e) {
-                if (!isDragging) return;
-                var rect = track.getBoundingClientRect();
-                var pct = (e.clientX - rect.left) / rect.width;
-                update(min + pct * (max - min));
-            };
-            document.onmouseup = function() { isDragging = false; };
-            
-            update(initial);
+        function update() {
+            state.age = parseInt(document.getElementById('age').value) || 25;
+            state.height = parseInt(document.getElementById('height').value) || 170;
+            state.weight = parseInt(document.getElementById('weight').value) || 65;
+            document.getElementById('age-display').textContent = state.age + ' yrs';
+            document.getElementById('height-display').textContent = state.height + ' cm';
+            document.getElementById('weight-display').textContent = state.weight + ' kg';
+            calculate();
         }
-        
-        setupSlider('age', 15, 80, 25, 'age', ' yrs');
-        setupSlider('height', 140, 210, 170, 'height', ' cm');
-        setupSlider('weight', 40, 150, 65, 'weight', ' kg');
         
         function calculate() {
             var bmr = (10 * state.weight) + (6.25 * state.height) - (5 * state.age);
             bmr = state.gender === 'male' ? bmr + 5 : bmr - 161;
             bmr = Math.round(bmr);
+            document.getElementById('bmr').textContent = bmr.toLocaleString();
             
-            document.getElementById('bmr-value').textContent = bmr.toLocaleString();
-            
-            var size = ((bmr - 1200) / 1300) * 60 + 40;
-            size = Math.max(40, Math.min(100, size));
-            document.getElementById('flame-core').style.height = size + 'px';
+            var size = ((bmr - 1200) / 1300) * 40 + 40;
+            size = Math.max(40, Math.min(80, size));
+            document.getElementById('flame').style.height = size + 'px';
             
             document.getElementById('sedentary').textContent = Math.round(bmr * 1.2).toLocaleString();
             document.getElementById('moderate').textContent = Math.round(bmr * 1.55).toLocaleString();
             document.getElementById('active').textContent = Math.round(bmr * 1.9).toLocaleString();
         }
         
-        // Load from profile
         function loadProfile() {
             var g = localStorage.getItem('fitgauge_gender');
             var age = localStorage.getItem('fitgauge_age');
             var h = localStorage.getItem('fitgauge_height');
             var w = localStorage.getItem('fitgauge_weight');
             var wU = localStorage.getItem('fitgauge_weight_unit') || 'kg';
-            
             if (g) setGender(g);
-            if (age) { state.age = parseInt(age); document.getElementById('age-value').textContent = age + ' yrs'; var p = ((state.age-15)/65)*100; document.getElementById('age-thumb').style.left = p+'%'; document.getElementById('age-fill').style.width = p+'%'; }
-            if (h) { state.height = parseInt(h); document.getElementById('height-value').textContent = h + ' cm'; var p = ((h-140)/70)*100; document.getElementById('height-thumb').style.left = p+'%'; document.getElementById('height-fill').style.width = p+'%'; }
-            if (w) { 
+            if (age) { document.getElementById('age').value = age; }
+            if (h) document.getElementById('height').value = h;
+            if (w) {
                 var weight = parseFloat(w);
-                if (wU === 'lbs') weight = weight * 0.453592;
-                state.weight = Math.round(weight);
-                document.getElementById('weight-value').textContent = state.weight + ' kg';
-                var p = ((state.weight-40)/110)*100;
-                document.getElementById('weight-thumb').style.left = p+'%';
-                document.getElementById('weight-fill').style.width = p+'%';
+                if (wU === 'lbs') weight = Math.round(weight * 0.453592);
+                document.getElementById('weight').value = weight;
             }
-            calculate();
+            update();
         }
         
         window.onload = loadProfile;
