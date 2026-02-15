@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Running Pace Calculator - FitGauge</title>
+    <link rel="stylesheet" href="assets/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --surface: #141414;
+            --surface-hover: #1a1a1a;
+            --border: #262626;
+            --text: #f5f5f5;
+            --text-secondary: #737373;
+            --accent: #22c55e;
+            --accent-dim: rgba(34, 197, 94, 0.15);
+            --orange: #fb923c;
+            --red: #f87171;
+            --font: 'Inter', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+        header {
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .logo svg { width: 26px; height: 26px; color: var(--accent); }
+
+        nav { display: flex; gap: 28px; }
+
+        nav a {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        nav a:hover { color: var(--text); }
+
+        main { padding: 48px 0; }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-decoration: none;
+            margin-bottom: 32px;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover { color: var(--accent); }
+
+        .page-header { margin-bottom: 40px; }
+
+        .page-title { font-size: 1.75rem; font-weight: 600; margin-bottom: 8px; }
+
+        .page-desc { color: var(--text-secondary); font-size: 0.9rem; }
+
+        .calculator {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .form-section { display: flex; flex-direction: column; gap: 20px; }
+
+        .form-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .form-group { margin-bottom: 20px; }
+
+        .form-group:last-child { margin-bottom: 0; }
+
+        .form-label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            background: var(--surface-hover);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: var(--font);
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: var(--bg);
+        }
+
+        .form-input::placeholder { color: var(--text-secondary); }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+        .unit-toggle { display: flex; gap: 8px; margin-bottom: 12px; }
+
+        .unit-btn {
+            padding: 8px 16px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .unit-btn:hover { background: var(--surface-hover); }
+
+        .unit-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #000;
+        }
+
+        .toggle-group { display: flex; gap: 8px; }
+
+        .toggle-btn {
+            flex: 1;
+            padding: 12px 20px;
+            background: var(--surface-hover);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-family: var(--font);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .toggle-btn:hover { background: var(--border); }
+
+        .toggle-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #000;
+            font-weight: 500;
+        }
+
+        /* Result Card */
+        .result-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .result-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .result-title { font-size: 1rem; font-weight: 500; }
+
+        .result-badge {
+            padding: 6px 12px;
+            background: rgba(34, 197, 94, 0.15);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: var(--accent);
+        }
+
+        .result-body { padding: 32px 24px; }
+
+        /* Pace Speedometer */
+        .pace-visual {
+            text-align: center;
+            margin-bottom: 32px;
+            position: relative;
+        }
+
+        .speedometer {
+            width: 220px;
+            height: 140px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .speed-arc {
+            width: 220px;
+            height: 110px;
+            border: 12px solid var(--border);
+            border-bottom: none;
+            border-radius: 110px 110px 0 0;
+            position: absolute;
+            top: 30px;
+            left: 0;
+        }
+
+        .speed-fill {
+            width: 220px;
+            height: 110px;
+            border: 12px solid var(--accent);
+            border-bottom: none;
+            border-radius: 110px 110px 0 0;
+            position: absolute;
+            top: 30px;
+            left: 0;
+            clip-path: polygon(0 100%, 50% 0, 100% 100%);
+            transform-origin: center bottom;
+            transform: rotate(-90deg);
+            opacity: 0;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+        }
+
+        .speed-needle {
+            width: 4px;
+            height: 45px;
+            background: var(--text);
+            border-radius: 2px;
+            position: absolute;
+            top: 45px;
+            left: 50%;
+            transform-origin: bottom center;
+            transform: translateX(-50%) rotate(-90deg);
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .speed-center {
+            width: 16px;
+            height: 16px;
+            background: var(--text);
+            border-radius: 50%;
+            position: absolute;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .speed-labels {
+            display: flex;
+            justify-content: space-between;
+            width: 260px;
+            margin: 0 auto;
+            padding-top: 10px;
+        }
+
+        .speed-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        .speed-label.fast { color: var(--accent); }
+
+        .result-value {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--text);
+            line-height: 1;
+            margin-top: 16px;
+        }
+
+        .result-unit {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .result-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+
+        /* Split Times */
+        .splits-section {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .split-item {
+            background: var(--surface-hover);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .split-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .split-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* Zone Reference */
+        .zone-section {
+            padding: 20px 24px;
+            border-top: 1px solid var(--border);
+            background: var(--surface-hover);
+        }
+
+        .zone-title {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 12px;
+        }
+
+        .zone-list {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .zone-tag {
+            padding: 6px 12px;
+            background: var(--surface);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .zone-tag.active {
+            background: var(--accent);
+            color: #000;
+        }
+
+        footer {
+            padding: 32px 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-top: 48px;
+        }
+
+        @media (max-width: 768px) {
+            .calculator { grid-template-columns: 1fr; }
+            nav { display: none; }
+            .result-value { font-size: 2rem; }
+            .splits-section { grid-template-columns: repeat(2, 1fr); }
+            .form-row { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <svg viewBox="0 0 40 40" fill="none">
+                    <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/>
+                    <circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/>
+                    <circle cx="20" cy="20" r="6" fill="currentColor"/>
+                    <line x1="20" y1="2" x2="20" y2="6" stroke="currentColor" stroke-width="1.5"/>
+                    <line x1="20" y1="34" x2="20" y2="38" stroke="currentColor" stroke-width="1.5"/>
+                    <line x1="2" y1="20" x2="6" y2="20" stroke="currentColor" stroke-width="1.5"/>
+                    <line x1="34" y1="20" x2="38" y2="20" stroke="currentColor" stroke-width="1.5"/>
+                </svg>
+                FitGauge
+            </a>
+            <nav>
+                <a href="index.html#body">Body</a>
+                <a href="index.html#energy">Energy</a>
+                <a href="index.html#nutrition">Nutrition</a>
+                <a href="index.html#fitness">Fitness</a>
+                <a href="index.html#goals">Goals</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <a href="index.html" class="back-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to calculators
+        </a>
+
+        <div class="page-header">
+            <h1 class="page-title">Running Pace</h1>
+            <p class="page-desc">Calculate pace, time, and distance for your runs</p>
+        </div>
+
+        <div class="calculator">
+            <div class="form-section">
+                <div class="form-card">
+                    <div class="form-group">
+                        <label class="form-label">Calculate</label>
+                        <div class="toggle-group">
+                            <button class="toggle-btn active" id="calc-pace">Pace</button>
+                            <button class="toggle-btn" id="calc-time">Time</button>
+                            <button class="toggle-btn" id="calc-distance">Distance</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="distance-group">
+                        <label class="form-label">Distance</label>
+                        <div class="unit-toggle">
+                            <button class="unit-btn active" id="dist-km-btn">km</button>
+                            <button class="unit-btn" id="dist-mi-btn">mi</button>
+                        </div>
+                        <div class="form-row">
+                            <input type="number" class="form-input" id="dist-km" placeholder="5">
+                            <input type="number" class="form-input" id="dist-m" placeholder="0" style="display:none">
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="time-group" style="display:none">
+                        <label class="form-label">Time</label>
+                        <div class="form-row">
+                            <input type="number" class="form-input" id="time-hr" placeholder="0">
+                            <input type="number" class="form-input" id="time-min" placeholder="30">
+                            <input type="number" class="form-input" id="time-sec" placeholder="0">
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="pace-group">
+                        <label class="form-label">Pace (per km)</label>
+                        <div class="form-row">
+                            <input type="number" class="form-input" id="pace-min" placeholder="5">
+                            <input type="number" class="form-input" id="pace-sec" placeholder="30">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="result-card">
+                <div class="result-header">
+                    <span class="result-title">Your Pace</span>
+                    <span class="result-badge">Running</span>
+                </div>
+
+                <div class="result-body">
+                    <div class="pace-visual">
+                        <div class="speedometer">
+                            <div class="speed-arc"></div>
+                            <div class="speed-fill" id="speed-fill"></div>
+                            <div class="speed-needle" id="speed-needle"></div>
+                            <div class="speed-center"></div>
+                        </div>
+                        <div class="speed-labels">
+                            <span class="speed-label">8:00</span>
+                            <span class="speed-label">6:00</span>
+                            <span class="speed-label fast">4:00</span>
+                            <span class="speed-label">5:00</span>
+                            <span class="speed-label">7:00</span>
+                        </div>
+                        <div class="result-value" id="result-value">--:--</div>
+                        <div class="result-unit">min/km</div>
+                        <div class="result-subtitle" id="result-subtitle">Enter distance and time</div>
+                    </div>
+
+                    <div class="splits-section">
+                        <div class="split-item">
+                            <div class="split-value" id="split-5k">--:--</div>
+                            <div class="split-label">5K Time</div>
+                        </div>
+                        <div class="split-item">
+                            <div class="split-value" id="split-10k">--:--</div>
+                            <div class="split-label">10K Time</div>
+                        </div>
+                        <div class="split-item">
+                            <div class="split-value" id="split-hm">--:--</div>
+                            <div class="split-label">Half Marathon</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="zone-section">
+                    <div class="zone-title">Training Zones</div>
+                    <div class="zone-list">
+                        <span class="zone-tag" data-pace="9-10">Easy</span>
+                        <span class="zone-tag" data-pace="7-8">Moderate</span>
+                        <span class="zone-tag active" data-pace="5-6">Tempo</span>
+                        <span class="zone-tag" data-pace="4-5">Threshold</span>
+                        <span class="zone-tag" data-pace="3-4">VO2 Max</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        FitGauge — Precision Fitness Calculators
+    </footer>
+
+    <script>
+        var calcMode = 'pace';
+
+        // Toggle between calculation modes
+        document.getElementById('calc-pace').addEventListener('click', function() {
+            setCalcMode('pace', this);
+        });
+
+        document.getElementById('calc-time').addEventListener('click', function() {
+            setCalcMode('time', this);
+        });
+
+        document.getElementById('calc-distance').addEventListener('click', function() {
+            setCalcMode('distance', this);
+        });
+
+        function setCalcMode(mode, btn) {
+            calcMode = mode;
+            document.querySelectorAll('.toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+
+            document.getElementById('distance-group').style.display = mode === 'pace' ? 'block' : 'block';
+            document.getElementById('time-group').style.display = mode === 'pace' ? 'none' : 'block';
+            document.getElementById('pace-group').style.display = mode === 'time' ? 'none' : 'block';
+
+            calculatePace();
+        }
+
+        document.getElementById('dist-km-btn').addEventListener('click', function() {
+            this.classList.add('active');
+            document.getElementById('dist-mi-btn').classList.remove('active');
+            document.getElementById('dist-km').placeholder = '5';
+            calculatePace();
+        });
+
+        document.getElementById('dist-mi-btn').addEventListener('click', function() {
+            this.classList.add('active');
+            document.getElementById('dist-km-btn').classList.remove('active');
+            document.getElementById('dist-km').placeholder = '3.1';
+            calculatePace();
+        });
+
+        var inputs = ['dist-km', 'dist-m', 'time-hr', 'time-min', 'time-sec', 'pace-min', 'pace-sec'];
+        for (var i = 0; i < inputs.length; i++) {
+            var el = document.getElementById(inputs[i]);
+            if (el) el.addEventListener('input', calculatePace);
+        }
+
+        function formatTime(totalSeconds) {
+            var hours = Math.floor(totalSeconds / 3600);
+            var mins = Math.floor((totalSeconds % 3600) / 60);
+            var secs = Math.round(totalSeconds % 60);
+
+            if (hours > 0) {
+                return hours + ':' + (mins < 10 ? '0' : '') + mins + ':' + (secs < 10 ? '0' : '') + secs;
+            }
+            return mins + ':' + (secs < 10 ? '0' : '') + secs;
+        }
+
+        function formatPace(secondsPerKm) {
+            var mins = Math.floor(secondsPerKm / 60);
+            var secs = Math.round(secondsPerKm % 60);
+            return mins + ':' + (secs < 10 ? '0' : '') + secs;
+        }
+
+        function parsePace(paceMin, paceSec) {
+            return (parseInt(paceMin) || 0) * 60 + (parseInt(paceSec) || 0);
+        }
+
+        function calculatePace() {
+            var distKm = parseFloat(document.getElementById('dist-km').value) || 0;
+            var timeHr = parseInt(document.getElementById('time-hr').value) || 0;
+            var timeMin = parseInt(document.getElementById('time-min').value) || 0;
+            var timeSec = parseInt(document.getElementById('time-sec').value) || 0;
+            var paceMin = parseInt(document.getElementById('pace-min').value) || 0;
+            var paceSec = parseInt(document.getElementById('pace-sec').value) || 0;
+
+            var isMiles = document.getElementById('dist-mi-btn').classList.contains('active');
+            if (isMiles) {
+                distKm = distKm * 1.60934;
+            }
+
+            var resultEl = document.getElementById('result-value');
+            var subtitleEl = document.getElementById('result-subtitle');
+            var speedFill = document.getElementById('speed-fill');
+            var speedNeedle = document.getElementById('speed-needle');
+
+            var paceSeconds = parsePace(paceMin, paceSec);
+            var totalSeconds = (timeHr * 3600) + (timeMin * 60) + timeSec;
+
+            if (calcMode === 'pace' && distKm > 0 && totalSeconds > 0) {
+                // Calculate pace from distance and time
+                paceSeconds = totalSeconds / distKm;
+                resultEl.textContent = formatPace(paceSeconds);
+                subtitleEl.textContent = 'Based on your time and distance';
+            } else if (calcMode === 'time' && distKm > 0 && paceSeconds > 0) {
+                // Calculate time from distance and pace
+                totalSeconds = paceSeconds * distKm;
+                resultEl.textContent = formatTime(totalSeconds);
+                subtitleEl.textContent = 'Estimated finish time';
+            } else if (calcMode === 'distance' && totalSeconds > 0 && paceSeconds > 0) {
+                // Calculate distance from time and pace
+                distKm = totalSeconds / paceSeconds;
+                resultEl.textContent = distKm.toFixed(2) + ' km';
+                subtitleEl.textContent = (isMiles ? (distKm / 1.60934).toFixed(2) + ' mi' : 'Estimated distance');
+            } else {
+                resultEl.textContent = '--:--';
+                subtitleEl.textContent = 'Enter values to calculate';
+                speedFill.style.opacity = '0';
+                speedNeedle.style.transform = 'translateX(-50%) rotate(-90deg)';
+                updateSplits(0);
+                return;
+            }
+
+            // Update speedometer needle (faster pace = more rotation)
+            // Map 3:00/km to 8:00/km across the arc
+            var maxPace = 480; // 8:00 per km in seconds
+            var minPace = 180; // 3:00 per km in seconds
+            var range = maxPace - minPace;
+            var normalized = (maxPace - paceSeconds) / range;
+            var rotation = -90 + (normalized * 180);
+
+            speedNeedle.style.transform = 'translateX(-50%) rotate(' + rotation + 'deg)';
+            speedFill.style.opacity = '1';
+
+            // Update fill arc to match
+            var fillRotation = -90 + (normalized * 180);
+            speedFill.style.transform = 'rotate(' + fillRotation + 'deg)';
+
+            updateSplits(paceSeconds);
+        }
+
+        function updateSplits(paceSeconds) {
+            if (paceSeconds <= 0) {
+                document.getElementById('split-5k').textContent = '--:--';
+                document.getElementById('split-10k').textContent = '--:--';
+                document.getElementById('split-hm').textContent = '--:--';
+                return;
+            }
+
+            document.getElementById('split-5k').textContent = formatTime(paceSeconds * 5);
+            document.getElementById('split-10k').textContent = formatTime(paceSeconds * 10);
+            document.getElementById('split-hm').textContent = formatTime(paceSeconds * 21.097);
+        }
+
+        // Zone tags
+        document.querySelectorAll('.zone-tag').forEach(function(tag) {
+            tag.addEventListener('click', function() {
+                document.querySelectorAll('.zone-tag').forEach(function(t) { t.classList.remove('active'); });
+                this.classList.add('active');
+
+                var paceRange = this.getAttribute('data-pace').split('-');
+                var paceMin = parseInt(paceRange[0]);
+                var paceSec = parseInt(paceRange[1]) || 0;
+
+                document.getElementById('pace-min').value = paceMin;
+                document.getElementById('pace-sec').value = paceSec;
+                calcMode = 'pace';
+                document.querySelectorAll('.toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+                document.getElementById('calc-pace').classList.add('active');
+
+                calculatePace();
+            });
+        });
+    </script>
+</body>
+</html>
