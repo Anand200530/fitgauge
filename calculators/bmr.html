@@ -4,597 +4,259 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BMR Calculator - FitGauge</title>
-    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="assets/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --fire-orange: #ff6b35;
-            --fire-red: #dc3545;
-            --fire-yellow: #ffc107;
-            --fire-dark: #1a0a0a;
-            --flame-gradient: linear-gradient(135deg, #ff6b35 0%, #dc3545 50%, #8b0000 100%);
+            --bg: #0a0a0a;
+            --surface: #141414;
+            --surface-hover: #1a1a1a;
+            --border: #262626;
+            --text: #f5f5f5;
+            --text-secondary: #737373;
+            --accent: #22c55e;
+            --orange: #fb923c;
+            --red: #ef4444;
+            --yellow: #facc15;
+            --font: 'Inter', sans-serif;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(180deg, var(--fire-dark) 0%, #2d1515 100%);
-            min-height: 100vh;
-            color: #fff;
-            overflow-x: hidden;
-        }
-
-        .container {
-            max-width: 600px;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+        header { padding: 20px 0; border-bottom: 1px solid var(--border); background: var(--bg); position: sticky; top: 0; z-index: 100; }
+        header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; gap: 10px; font-size: 1.1rem; font-weight: 600; color: var(--text); text-decoration: none; }
+        .logo svg { width: 26px; height: 26px; color: var(--accent); }
+        nav { display: flex; gap: 28px; }
+        nav a { color: var(--text-secondary); font-size: 0.85rem; text-decoration: none; }
+        main { padding: 48px 0; }
+        .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--text-secondary); font-size: 0.85rem; text-decoration: none; margin-bottom: 32px; }
+        .back-link:hover { color: var(--accent); }
+        .page-header { margin-bottom: 40px; }
+        .page-title { font-size: 1.75rem; font-weight: 600; margin-bottom: 8px; }
+        .page-desc { color: var(--text-secondary); font-size: 0.9rem; }
+        .calculator { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .form-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
+        .form-group { margin-bottom: 20px; }
+        .form-label { display: block; font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .form-input { width: 100%; padding: 14px 16px; background: var(--surface-hover); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: var(--font); font-size: 1rem; }
+        .form-input:focus { outline: none; border-color: var(--accent); }
+        .toggle-group { display: flex; gap: 8px; }
+        .toggle-btn { flex: 1; padding: 12px 20px; background: var(--surface-hover); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); font-family: var(--font); font-size: 0.9rem; cursor: pointer; }
+        .toggle-btn.active { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 500; }
+        
+        .result-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; }
+        .result-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .result-title { font-size: 1rem; font-weight: 500; }
+        .result-badge { padding: 6px 12px; background: rgba(251, 146, 60, 0.15); border-radius: 20px; font-size: 0.75rem; color: var(--orange); }
+        .result-body { padding: 32px 24px; text-align: center; }
+        
+        /* Flame Gauge */
+        .flame-container { margin-bottom: 24px; position: relative; height: 200px; display: flex; align-items: flex-end; justify-content: center; }
+        .flame { width: 100px; position: relative; }
+        .flame-core {
+            width: 60px; height: 80px; background: linear-gradient(to top, var(--red), var(--orange), var(--yellow));
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
             margin: 0 auto;
-            padding: 40px 20px;
+            animation: flicker 0.5s ease-in-out infinite alternate;
+            box-shadow: 0 0 40px var(--orange), 0 0 80px var(--red);
+            transition: all 0.5s;
         }
-
-        h1 {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            background: var(--flame-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 0 30px rgba(255, 107, 53, 0.3);
-        }
-
-        .subtitle {
-            text-align: center;
-            color: #aaa;
-            margin-bottom: 30px;
-            font-size: 1rem;
-        }
-
-        .calculator-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            padding: 30px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 107, 53, 0.2);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #ddd;
-        }
-
-        .input-wrapper {
-            position: relative;
-        }
-
-        input[type="number"] {
-            width: 100%;
-            padding: 14px 16px;
-            border: 2px solid rgba(255, 107, 53, 0.3);
-            border-radius: 12px;
-            background: rgba(0, 0, 0, 0.3);
-            color: #fff;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        input[type="number"]:focus {
-            outline: none;
-            border-color: var(--fire-orange);
-            box-shadow: 0 0 15px rgba(255, 107, 53, 0.3);
-        }
-
-        .toggle-wrapper {
-            display: flex;
-            gap: 10px;
-            margin-top: 8px;
-        }
-
-        .toggle-btn {
-            flex: 1;
-            padding: 10px;
-            border: 2px solid rgba(255, 107, 53, 0.3);
-            border-radius: 8px;
-            background: rgba(0, 0, 0, 0.3);
-            color: #aaa;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
-        }
-
-        .toggle-btn.active {
-            background: var(--flame-gradient);
-            border-color: var(--fire-orange);
-            color: #fff;
-        }
-
-        .toggle-btn:hover:not(.active) {
-            border-color: var(--fire-orange);
-            color: #fff;
-        }
-
-        .gender-toggle {
-            display: flex;
-            gap: 10px;
-        }
-
-        .gender-btn {
-            flex: 1;
-            padding: 14px;
-            border: 2px solid rgba(255, 107, 53, 0.3);
-            border-radius: 12px;
-            background: rgba(0, 0, 0, 0.3);
-            color: #aaa;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .gender-btn.active {
-            background: var(--flame-gradient);
-            border-color: var(--fire-orange);
-            color: #fff;
-        }
-
-        .gender-btn:hover:not(.active) {
-            border-color: var(--fire-orange);
-            color: #fff;
-        }
-
-        .formula-select {
-            width: 100%;
-            padding: 14px 16px;
-            border: 2px solid rgba(255, 107, 53, 0.3);
-            border-radius: 12px;
-            background: rgba(0, 0, 0, 0.3);
-            color: #fff;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .formula-select:focus {
-            outline: none;
-            border-color: var(--fire-orange);
-        }
-
-        .formula-select option {
-            background: #1a0a0a;
-            color: #fff;
-        }
-
-        .calculate-btn {
-            width: 100%;
-            padding: 16px;
-            background: var(--flame-gradient);
-            border: none;
-            border-radius: 12px;
-            color: #fff;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .calculate-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4);
-        }
-
-        .calculate-btn:active {
-            transform: translateY(0);
-        }
-
-        .result-section {
-            margin-top: 30px;
-            text-align: center;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.5s ease;
-        }
-
-        .result-section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .flame-container {
-            position: relative;
-            width: 150px;
-            height: 200px;
-            margin: 0 auto 20px;
-        }
-
-        .flame {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 150px;
-            background: var(--flame-gradient);
+        .flame-core::before {
+            content: ''; position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%);
+            width: 30px; height: 40px; background: linear-gradient(to top, var(--red), transparent);
             border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-            animation: flicker 0.5s infinite alternate;
-            filter: blur(5px);
+            filter: blur(8px);
         }
-
-        .flame::before {
-            content: '';
-            position: absolute;
-            bottom: 20%;
-            left: 25%;
-            width: 50%;
-            height: 60%;
-            background: linear-gradient(180deg, var(--fire-yellow) 0%, var(--fire-orange) 100%);
-            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-            animation: flicker 0.3s infinite alternate;
-        }
-
-        .flame::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60%;
-            height: 40%;
-            background: var(--fire-orange);
-            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-            filter: blur(10px);
-        }
-
         @keyframes flicker {
-            0% {
-                transform: translateX(-50%) scale(1) rotate(-2deg);
-                filter: blur(5px) brightness(1);
-            }
-            50% {
-                transform: translateX(-50%) scale(1.05) rotate(1deg);
-                filter: blur(4px) brightness(1.1);
-            }
-            100% {
-                transform: translateX(-50%) scale(0.95) rotate(-1deg);
-                filter: blur(6px) brightness(0.9);
-            }
+            0% { transform: scaleY(1) scaleX(1); opacity: 1; }
+            100% { transform: scaleY(1.1) scaleX(0.95); opacity: 0.9; }
         }
-
-        .particles {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
+        
+        .flame-level {
+            position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+            font-size: 3rem; font-weight: 600; line-height: 1;
         }
-
-        .particle {
-            position: absolute;
-            bottom: 50px;
-            width: 4px;
-            height: 4px;
-            background: var(--fire-yellow);
-            border-radius: 50%;
-            animation: rise 2s infinite;
-            opacity: 0;
-        }
-
-        @keyframes rise {
-            0% {
-                transform: translateY(0) scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100px) scale(0);
-                opacity: 0;
-            }
-        }
-
-        .bmr-value {
-            font-size: 3.5rem;
-            font-weight: 700;
-            background: var(--flame-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 5px;
-        }
-
-        .bmr-label {
-            font-size: 1.2rem;
-            color: #aaa;
-            margin-bottom: 15px;
-        }
-
-        .formula-info {
-            background: rgba(255, 107, 53, 0.1);
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 20px;
-            font-size: 0.85rem;
-            color: #ccc;
-            text-align: left;
-        }
-
-        .formula-info strong {
-            color: var(--fire-orange);
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 2rem;
-            }
-            
-            .calculator-card {
-                padding: 20px;
-            }
-            
-            .bmr-value {
-                font-size: 2.5rem;
-            }
-        }
+        
+        .result-value { font-size: 3rem; font-weight: 600; color: var(--text); }
+        .result-unit { font-size: 1rem; color: var(--text-secondary); margin-top: 4px; }
+        .result-label { font-size: 0.9rem; color: var(--text-secondary); margin-top: 8px; }
+        
+        /* Stats */
+        .stats-section { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding-top: 24px; border-top: 1px solid var(--border); }
+        .stat-item { background: var(--surface-hover); border-radius: 12px; padding: 16px; }
+        .stat-value { font-size: 1.25rem; font-weight: 600; color: var(--orange); }
+        .stat-label { font-size: 0.7rem; color: var(--text-secondary); margin-top: 4px; }
+        
+        /* Explanation */
+        .explain-section { padding: 20px 24px; border-top: 1px solid var(--border); background: var(--surface-hover); }
+        .explain-title { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; }
+        .explain-text { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+        
+        footer { padding: 32px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-secondary); font-size: 0.8rem; margin-top: 48px; }
+        @media (max-width: 768px) { .calculator { grid-template-columns: 1fr; } nav { display: none; } .result-value { font-size: 2rem; } .stats-section { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🔥 BMR Calculator</h1>
-        <p class="subtitle">Discover your body's daily caloric needs</p>
-        
-        <div class="calculator-card">
-            <div class="form-group">
-                <label>Formula</label>
-                <select class="formula-select" id="formula">
-                    <option value="mifflin">Mifflin-St Jeor (Recommended)</option>
-                    <option value="harris">Harris-Benedict (Original)</option>
-                    <option value="katch">Katch-McArdle (With Body Fat)</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Gender</label>
-                <div class="gender-toggle">
-                    <button class="gender-btn active" data-gender="male">
-                        <span>👨</span> Male
-                    </button>
-                    <button class="gender-btn" data-gender="female">
-                        <span>👩</span> Female
-                    </button>
+    <header>
+        <div class="container">
+            <a href="../index.html" class="logo">
+                <svg viewBox="0 0 40 40" fill="none">
+                    <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/>
+                    <circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/>
+                    <circle cx="20" cy="20" r="6" fill="currentColor"/>
+                    <line x1="20" y1="2" x2="20" y2="6" stroke="currentColor" stroke-width="1.5"/>
+                    <line x1="20" y1="34" x2="20" y2="38" stroke="currentColor" stroke-width="1.5"/>
+                    <line x1="2" y1="20" x2="6" y2="20" stroke="currentColor" stroke-width="1.5"/>
+                    <line x1="34" y1="20" x2="38" y2="20" stroke="currentColor" stroke-width="1.5"/>
+                </svg>
+                FitGauge
+            </a>
+            <nav>
+                <a href="../profile.html">Profile</a>
+                <a href="../index.html#body">Body</a>
+                <a href="../index.html#energy">Energy</a>
+            </nav>
+        </div>
+    </header>
+    <main class="container">
+        <a href="../index.html" class="back-link">← Back to calculators</a>
+        <div class="page-header">
+            <h1 class="page-title">Basal Metabolic Rate</h1>
+            <p class="page-desc">Calories your body burns at complete rest</p>
+        </div>
+        <div class="calculator">
+            <div class="form-card">
+                <div class="form-group">
+                    <label class="form-label">Gender</label>
+                    <div class="toggle-group">
+                        <button class="toggle-btn" id="male-btn">Male</button>
+                        <button class="toggle-btn active" id="female-btn">Female</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Age</label>
+                    <input type="number" class="form-input" id="age" placeholder="Years">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Height (cm)</label>
+                    <input type="number" class="form-input" id="height" placeholder="175">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Weight (kg)</label>
+                    <input type="number" class="form-input" id="weight" placeholder="70">
                 </div>
             </div>
-
-            <div class="form-group">
-                <label for="age">Age (years)</label>
-                <input type="number" id="age" placeholder="Enter your age" min="1" max="120">
-            </div>
-
-            <div class="form-group">
-                <label>Height</label>
-                <div class="toggle-wrapper">
-                    <button class="toggle-btn active" data-height-unit="cm">cm</button>
-                    <button class="toggle-btn" data-height-unit="ft">ft/in</button>
+            <div class="result-card">
+                <div class="result-header">
+                    <span class="result-title">Your BMR</span>
+                    <span class="result-badge">🔥 Flame</span>
                 </div>
-                <div class="input-wrapper">
-                    <input type="number" id="height" placeholder="Enter height">
+                <div class="result-body">
+                    <div class="flame-container">
+                        <div class="flame">
+                            <div class="flame-core" id="flame-core"></div>
+                            <div class="flame-level" id="flame-level"></div>
+                        </div>
+                    </div>
+                    <div class="result-value" id="bmr-value">--</div>
+                    <div class="result-unit">calories/day</div>
+                    <div class="result-label" id="bmr-label">Your body's baseline</div>
+                    
+                    <div class="stats-section">
+                        <div class="stat-item">
+                            <div class="stat-value" id="sedentary">--</div>
+                            <div class="stat-label">Sedentary</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="moderate">--</div>
+                            <div class="stat-label">Moderate</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="active">--</div>
+                            <div class="stat-label">Active</div>
+                        </div>
+                    </div>
                 </div>
-                <div id="ft-inputs" class="toggle-wrapper hidden">
-                    <input type="number" id="height-ft" placeholder="Feet" min="1" max="8">
-                    <input type="number" id="height-in" placeholder="Inches" min="0" max="11">
+                <div class="explain-section">
+                    <div class="explain-title">What is BMR?</div>
+                    <div class="explain-text">Your BMR is the calories your body burns just to keep you alive - breathing, heartbeat, cell production. It's about 60-70% of your total daily calorie burn.</div>
                 </div>
-            </div>
-
-            <div class="form-group">
-                <label>Weight</label>
-                <div class="toggle-wrapper">
-                    <button class="toggle-btn active" data-weight-unit="kg">kg</button>
-                    <button class="toggle-btn" data-weight-unit="lbs">lbs</button>
-                </div>
-                <input type="number" id="weight" placeholder="Enter weight" min="1">
-            </div>
-
-            <div class="form-group hidden" id="bodyfat-group">
-                <label for="bodyfat">Body Fat % (optional)</label>
-                <input type="number" id="bodyfat" placeholder="Enter body fat percentage" min="3" max="60">
-            </div>
-
-            <button class="calculate-btn" id="calculate">🔥 Calculate BMR</button>
-
-            <div class="result-section" id="result">
-                <div class="flame-container">
-                    <div class="flame"></div>
-                    <div class="particles" id="particles"></div>
-                </div>
-                <div class="bmr-value" id="bmr-value">0</div>
-                <div class="bmr-label">calories/day</div>
-                <div class="formula-info" id="formula-info"></div>
             </div>
         </div>
-    </div>
-
+    </main>
+    <footer>FitGauge — Free Fitness Calculators</footer>
     <script>
-        // DOM Elements
-        const genderBtns = document.querySelectorAll('.gender-btn');
-        const heightToggles = document.querySelectorAll('[data-height-unit]');
-        const weightToggles = document.querySelectorAll('[data-weight-unit]');
-        const formulaSelect = document.getElementById('formula');
-        const calculateBtn = document.getElementById('calculate');
-        const resultSection = document.getElementById('result');
-        const bmrValue = document.getElementById('bmr-value');
-        const formulaInfo = document.getElementById('formula-info');
-        const bodyFatGroup = document.getElementById('bodyfat-group');
-        const ftInputs = document.getElementById('ft-inputs');
-        const heightInput = document.getElementById('height');
-
-        // State
-        let gender = 'male';
-        let heightUnit = 'cm';
-        let weightUnit = 'kg';
-        let formula = 'mifflin';
-
-        // Event Listeners
-        genderBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                genderBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                gender = btn.dataset.gender;
-            });
+        var gender = 'female';
+        
+        document.getElementById('male-btn').onclick = function() { gender = 'male'; this.classList.add('active'); document.getElementById('female-btn').classList.remove('active'); calculate(); };
+        document.getElementById('female-btn').onclick = function() { gender = 'female'; this.classList.add('active'); document.getElementById('male-btn').classList.remove('active'); calculate(); };
+        
+        ['age', 'height', 'weight'].forEach(function(id) {
+            document.getElementById(id).oninput = calculate;
         });
-
-        heightToggles.forEach(btn => {
-            btn.addEventListener('click', () => {
-                heightToggles.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                heightUnit = btn.dataset.heightUnit;
-                
-                if (heightUnit === 'ft') {
-                    heightInput.classList.add('hidden');
-                    ftInputs.classList.remove('hidden');
-                } else {
-                    heightInput.classList.remove('hidden');
-                    ftInputs.classList.add('hidden');
-                }
-            });
-        });
-
-        weightToggles.forEach(btn => {
-            btn.addEventListener('click', () => {
-                weightToggles.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                weightUnit = btn.dataset.weightUnit;
-            });
-        });
-
-        formulaSelect.addEventListener('change', (e) => {
-            formula = e.target.value;
-            if (formula === 'katch') {
-                bodyFatGroup.classList.remove('hidden');
-            } else {
-                bodyFatGroup.classList.add('hidden');
-            }
-        });
-
-        calculateBtn.addEventListener('click', calculateBMR);
-
-        // Create particles
-        function createParticles() {
-            const container = document.getElementById('particles');
-            container.innerHTML = '';
+        
+        function calculate() {
+            var age = parseInt(document.getElementById('age').value) || 0;
+            var height = parseInt(document.getElementById('height').value) || 0;
+            var weight = parseInt(document.getElementById('weight').value) || 0;
             
-            for (let i = 0; i < 5; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = (30 + Math.random() * 40) + '%';
-                particle.style.animationDelay = (Math.random() * 2) + 's';
-                particle.style.animationDuration = (1.5 + Math.random()) + 's';
-                container.appendChild(particle);
-            }
-        }
-
-        // Calculate BMR
-        function calculateBMR() {
-            const age = parseFloat(document.getElementById('age').value);
-            let height = parseFloat(document.getElementById('height').value);
-            let weight = parseFloat(document.getElementById('weight').value);
-            const bodyFat = parseFloat(document.getElementById('bodyfat').value);
-
-            if (!age || !weight) {
-                alert('Please fill in all required fields');
+            var valueEl = document.getElementById('bmr-value');
+            var labelEl = document.getElementById('bmr-label');
+            var flame = document.getElementById('flame-core');
+            var flameLevel = document.getElementById('flame-level');
+            
+            if (!age || !height || !weight || age < 10 || age > 100) {
+                valueEl.textContent = '--';
+                labelEl.textContent = 'Enter your details';
+                flame.style.height = '20px';
+                flame.style.opacity = '0.3';
+                flameLevel.textContent = '';
+                document.getElementById('sedentary').textContent = '--';
+                document.getElementById('moderate').textContent = '--';
+                document.getElementById('active').textContent = '--';
                 return;
             }
-
-            // Convert to standard units (cm, kg)
-            if (heightUnit === 'ft') {
-                const feet = parseFloat(document.getElementById('height-ft').value) || 0;
-                const inches = parseFloat(document.getElementById('height-in').value) || 0;
-                if (!feet && !inches) {
-                    alert('Please enter your height');
-                    return;
-                }
-                height = (feet * 30.48) + (inches * 2.54);
-            }
-
-            if (weightUnit === 'lbs') {
-                weight = weight * 0.453592;
-            }
-
-            let bmr = 0;
-            let formulaDescription = '';
-
-            switch (formula) {
-                case 'mifflin':
-                    if (gender === 'male') {
-                        bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
-                    } else {
-                        bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161;
-                    }
-                    formulaDescription = `<strong>Mifflin-St Jeor:</strong> Most accurate for modern populations. Developed in 1990, widely used by dietitians.`;
-                    break;
-
-                case 'harris':
-                    if (gender === 'male') {
-                        bmr = 66.47 + (13.75 * weight) + (5.003 * height) - (6.755 * age);
-                    } else {
-                        bmr = 655.1 + (9.563 * weight) + (1.850 * height) - (4.676 * age);
-                    }
-                    formulaDescription = `<strong>Harris-Benedict:</strong> Original formula (1919), tends to overestimate caloric needs. Good for general reference.`;
-                    break;
-
-                case 'katch':
-                    if (!bodyFat) {
-                        alert('Please enter your body fat percentage for Katch-McArdle formula');
-                        return;
-                    }
-                    const leanMass = weight * (1 - (bodyFat / 100));
-                    bmr = 370 + (21.6 * leanMass);
-                    formulaDescription = `<strong>Katch-McArdle:</strong> Most accurate as it uses lean body mass. Ideal for athletes and those who know their body fat %.`;
-                    break;
-            }
-
+            
+            // Mifflin-St Jeor Equation
+            var bmr = (10 * weight) + (6.25 * height) - (5 * age);
+            bmr = gender === 'male' ? bmr + 5 : bmr - 161;
             bmr = Math.round(bmr);
-            bmrValue.textContent = bmr.toLocaleString();
-            formulaInfo.innerHTML = formulaDescription;
-
-            resultSection.classList.add('visible');
-            createParticles();
-
-            // Animate the number
-            animateValue(bmrValue, 0, bmr, 1000);
-        }
-
-        // Animate number counting
-        function animateValue(element, start, end, duration) {
-            const startTimestamp = performance.now();
             
-            function step(timestamp) {
-                const elapsed = timestamp - startTimestamp;
-                const progress = Math.min(elapsed / duration, 1);
-                const easeProgress = 1 - Math.pow(1 - progress, 3);
-                const current = Math.floor(easeProgress * (end - start) + start);
-                element.textContent = current.toLocaleString();
-                
-                if (progress < 1) {
-                    requestAnimationFrame(step);
-                }
+            valueEl.textContent = bmr;
+            labelEl.textContent = "calories at complete rest";
+            
+            // Flame size based on BMR (1200-2500 range)
+            var minBMR = 1200, maxBMR = 2500;
+            var flameSize = ((bmr - minBMR) / (maxBMR - minBMR)) * 60 + 40;
+            flameSize = Math.max(40, Math.min(100, flameSize));
+            flame.style.height = flameSize + 'px';
+            flame.style.opacity = '1';
+            
+            // Activity multipliers
+            document.getElementById('sedentary').textContent = Math.round(bmr * 1.2);
+            document.getElementById('moderate').textContent = Math.round(bmr * 1.55);
+            document.getElementById('active').textContent = Math.round(bmr * 1.9);
+        }
+        
+        function loadProfile() {
+            var g = localStorage.getItem('fitgauge_gender');
+            var age = localStorage.getItem('fitgauge_age');
+            var h = localStorage.getItem('fitgauge_height');
+            var w = localStorage.getItem('fitgauge_weight');
+            var wU = localStorage.getItem('fitgauge_weight_unit') || 'kg';
+            
+            if (g) { gender = g; if (g === 'male') { document.getElementById('male-btn').classList.add('active'); document.getElementById('female-btn').classList.remove('active'); } }
+            if (age) document.getElementById('age').value = age;
+            if (h) document.getElementById('height').value = h;
+            if (w) {
+                if (wU === 'lbs') w = Math.round(parseFloat(w) * 0.453592);
+                document.getElementById('weight').value = w;
             }
-            
-            requestAnimationFrame(step);
+            calculate();
         }
+        
+        window.onload = loadProfile;
     </script>
 </body>
 </html>
