@@ -25,46 +25,28 @@
         
         .input-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; }
         .gender-toggle { display: flex; gap: 12px; margin-bottom: 32px; }
-        .gender-btn { flex: 1; padding: 16px; background: var(--surface-hover); border: 2px solid var(--border); border-radius: 12px; color: var(--text-secondary); font-size: 1rem; cursor: pointer; text-align: center; transition: all 0.2s; }
+        .gender-btn { flex: 1; padding: 16px; background: var(--surface-hover); border: 2px solid var(--border); border-radius: 12px; color: var(--text-secondary); font-size: 1rem; cursor: pointer; text-align: center; }
         .gender-btn.active { border-color: var(--accent); color: var(--accent); }
         
-        .input-group { margin-bottom: 24px; }
+        .input-group { margin-bottom: 20px; }
         .input-label { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px; }
-        .input-field { width: 100%; padding: 16px; background: var(--surface-hover); border: 2px solid var(--border); border-radius: 12px; color: var(--text); font-size: 1.25rem; text-align: center; font-weight: 600; }
+        .input-field { width: 100%; padding: 14px; background: var(--surface-hover); border: 2px solid var(--border); border-radius: 12px; color: var(--text); font-size: 1.1rem; text-align: center; font-weight: 600; }
         .input-field:focus { outline: none; border-color: var(--accent); }
         
         .result-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; }
-        .result-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; }
+        .result-header { padding: 20px 24px; border-bottom: 1px solid var(--border); }
         .result-badge { padding: 6px 12px; background: rgba(34, 197, 94, 0.15); border-radius: 20px; font-size: 0.75rem; color: var(--accent); }
-        .result-body { padding: 40px 24px; text-align: center; }
+        .result-body { padding: 48px 24px; text-align: center; }
         
-        /* Body Stack Visual */
-        .stack-container { margin-bottom: 32px; }
-        .body-stack { 
-            width: 120px; height: 200px; margin: 0 auto 24px; 
-            border-radius: 60px 60px 20px 20px; overflow: hidden;
-            position: relative; display: flex; flex-direction: column;
-            background: var(--surface-hover);
-        }
-        .stack-fat { 
-            background: var(--orange); 
-            transition: height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            flex-shrink: 0;
-        }
-        .stack-lean { 
-            background: var(--accent); 
-            flex-grow: 1;
-            transition: all 0.8s;
-        }
-        
-        .fat-value { font-size: 3rem; font-weight: 600; }
+        .fat-value { font-size: 3.5rem; font-weight: 600; }
         .fat-label { font-size: 1rem; color: var(--text-secondary); margin-top: 4px; }
         
-        .legend { display: flex; justify-content: center; gap: 24px; margin-top: 16px; }
-        .legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: var(--text-secondary); }
-        .legend-dot { width: 12px; height: 12px; border-radius: 3px; }
+        .bar-wrap { margin: 32px 0; }
+        .bar-bg { height: 16px; background: var(--border); border-radius: 8px; position: relative; overflow: hidden; }
+        .bar-fill { height: 100%; border-radius: 8px; transition: width 1s, background 0.5s; }
+        .bar-labels { display: flex; justify-content: space-between; margin-top: 8px; font-size: 0.7rem; color: var(--text-secondary); }
         
-        .stats-section { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding-top: 24px; border-top: 1px solid var(--border); margin-top: 24px; }
+        .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding-top: 24px; border-top: 1px solid var(--border); }
         .stat-item { background: var(--surface-hover); border-radius: 12px; padding: 16px; }
         .stat-value { font-size: 1.25rem; font-weight: 600; }
         .stat-label { font-size: 0.7rem; color: var(--text-secondary); margin-top: 4px; }
@@ -76,78 +58,38 @@
 <body>
     <header>
         <div class="container">
-            <a href="../index.html" class="logo">
-                <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>
-                FitGauge
-            </a>
+            <a href="../index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
             <nav><a href="../profile.html">Profile</a><a href="../index.html#body">Body</a></nav>
         </div>
     </header>
     <main class="container">
         <a href="../index.html" class="back-link">← Back</a>
-        <div class="page-header">
-            <h1 class="page-title">Body Fat</h1>
-            <p class="page-desc">See your body composition</p>
-        </div>
+        <div class="page-header"><h1 class="page-title">Body Fat</h1><p class="page-desc">Estimate your body fat percentage</p></div>
         <div class="calculator">
             <div class="input-card">
                 <div class="gender-toggle">
                     <div class="gender-btn" id="male-btn" onclick="setGender('male')">♂ Male</div>
                     <div class="gender-btn active" id="female-btn" onclick="setGender('female')">♀ Female</div>
                 </div>
-                <div class="input-group">
-                    <div class="input-label">Age (years)</div>
-                    <input type="number" class="input-field" id="age" value="25" oninput="calculate()">
-                </div>
-                <div class="input-group">
-                    <div class="input-label">Height (cm)</div>
-                    <input type="number" class="input-field" id="height" value="170" oninput="calculate()">
-                </div>
-                <div class="input-group">
-                    <div class="input-label">Neck (cm)</div>
-                    <input type="number" class="input-field" id="neck" value="38" oninput="calculate()">
-                </div>
-                <div class="input-group">
-                    <div class="input-label">Waist (cm)</div>
-                    <input type="number" class="input-field" id="waist" value="80" oninput="calculate()">
-                </div>
-                <div class="input-group" id="hip-group">
-                    <div class="input-label">Hip (cm)</div>
-                    <input type="number" class="input-field" id="hip" value="95" oninput="calculate()">
-                </div>
+                <div class="input-group"><div class="input-label">Height (cm)</div><input type="number" class="input-field" id="height" value="170" oninput="calculate()"></div>
+                <div class="input-group"><div class="input-label">Neck (cm)</div><input type="number" class="input-field" id="neck" value="38" oninput="calculate()"></div>
+                <div class="input-group"><div class="input-label">Waist (cm)</div><input type="number" class="input-field" id="waist" value="80" oninput="calculate()"></div>
+                <div class="input-group" id="hip-group"><div class="input-label">Hip (cm)</div><input type="number" class="input-field" id="hip" value="95" oninput="calculate()"></div>
             </div>
             <div class="result-card">
-                <div class="result-header"><span class="result-badge">Composition</span></div>
+                <div class="result-header"><span class="result-badge">Body Fat</span></div>
                 <div class="result-body">
-                    <div class="stack-container">
-                        <div class="body-stack">
-                            <div class="stack-fat" id="stack-fat" style="height: 25%"></div>
-                            <div class="stack-lean" id="stack-lean"></div>
-                        </div>
-                    </div>
                     <div class="fat-value" id="fat-value">24.5%</div>
-                    <div class="fat-label">Body Fat</div>
+                    <div class="fat-label">body fat</div>
                     
-                    <div class="legend">
-                        <div class="legend-item">
-                            <div class="legend-dot" style="background: var(--orange)"></div>
-                            <span>Fat</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-dot" style="background: var(--accent)"></div>
-                            <span>Lean</span>
-                        </div>
+                    <div class="bar-wrap">
+                        <div class="bar-bg"><div class="bar-fill" id="bar-fill" style="width: 50%; background: var(--green);"></div></div>
+                        <div class="bar-labels"><span>Essential</span><span>Athletes</span><span>Fitness</span><span>Average</span><span>Obese</span></div>
                     </div>
                     
-                    <div class="stats-section">
-                        <div class="stat-item">
-                            <div class="stat-value" id="fat-kg">15.9 kg</div>
-                            <div class="stat-label">Fat Mass</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value" id="lean-kg">49.1 kg</div>
-                            <div class="stat-label">Lean Mass</div>
-                        </div>
+                    <div class="stats-row">
+                        <div class="stat-item"><div class="stat-value" id="fat-kg">15.9 kg</div><div class="stat-label">Fat Mass</div></div>
+                        <div class="stat-item"><div class="stat-value" id="lean-kg">49.1 kg</div><div class="stat-label">Lean Mass</div></div>
                     </div>
                 </div>
             </div>
@@ -156,66 +98,35 @@
     <footer>FitGauge</footer>
     <script>
         var gender = 'female';
-        
-        function setGender(g) { 
-            gender = g; 
-            document.getElementById('male-btn').classList.toggle('active', g === 'male'); 
-            document.getElementById('female-btn').classList.toggle('active', g === 'female');
-            document.getElementById('hip-group').style.display = g === 'female' ? 'block' : 'none';
-            calculate(); 
-        }
-        
+        function setGender(g) { gender = g; document.getElementById('male-btn').classList.toggle('active', g === 'male'); document.getElementById('female-btn').classList.toggle('active', g === 'female'); document.getElementById('hip-group').style.display = g === 'female' ? 'block' : 'none'; calculate(); }
         function calculate() {
-            var age = parseInt(document.getElementById('age').value) || 25;
-            var height = parseInt(document.getElementById('height').value) || 170;
+            var h = parseInt(document.getElementById('height').value) || 170;
             var neck = parseInt(document.getElementById('neck').value) || 38;
             var waist = parseInt(document.getElementById('waist').value) || 80;
             var hip = parseInt(document.getElementById('hip').value) || 95;
             
-            if (!height || !neck || !waist) return;
-            
             var bf = 0;
             if (gender === 'male') {
-                bf = 495 / (1.0324 - 0.19077 * Math.log10(waist - neck) + 0.15456 * Math.log10(height)) - 450;
+                bf = 495 / (1.0324 - 0.19077 * Math.log10(waist - neck) + 0.15456 * Math.log10(h)) - 450;
             } else {
-                bf = 495 / (1.29579 - 0.35004 * Math.log10(waist + hip - neck) + 0.22100 * Math.log10(height)) - 450;
+                bf = 495 / (1.29579 - 0.35004 * Math.log10(waist + hip - neck) + 0.22100 * Math.log10(h)) - 450;
             }
-            
             bf = Math.round(bf * 10) / 10;
-            if (bf < 2) bf = 2;
-            if (bf > 60) bf = 60;
+            if (bf < 2) bf = 2; if (bf > 60) bf = 60;
             
-            var color;
-            if (gender === 'male') {
-                if (bf < 6) color = 'var(--blue)';
-                else if (bf < 14) color = 'var(--green)';
-                else if (bf < 18) color = 'var(--yellow)';
-                else if (bf < 25) color = 'var(--orange)';
-                else color = 'var(--red)';
-            } else {
-                if (bf < 14) color = 'var(--blue)';
-                else if (bf < 21) color = 'var(--green)';
-                else if (bf < 25) color = 'var(--yellow)';
-                else if (bf < 32) color = 'var(--orange)';
-                else color = 'var(--red)';
-            }
+            var c = gender === 'male' 
+                ? (bf < 6 ? 'var(--blue)' : bf < 14 ? 'var(--green)' : bf < 18 ? 'var(--yellow)' : bf < 25 ? 'var(--orange)' : 'var(--red)')
+                : (bf < 14 ? 'var(--blue)' : bf < 21 ? 'var(--green)' : bf < 25 ? 'var(--yellow)' : bf < 32 ? 'var(--orange)' : 'var(--red)');
             
             document.getElementById('fat-value').textContent = bf + '%';
-            document.getElementById('fat-value').style.color = color;
+            document.getElementById('fat-value').style.color = c;
+            document.getElementById('bar-fill').style.width = (bf / 50 * 100) + '%';
+            document.getElementById('bar-fill').style.background = c;
             
-            // Stack visual
-            var stackFat = document.getElementById('stack-fat');
-            stackFat.style.height = bf + '%';
-            stackFat.style.background = color;
-            
-            // Estimate weight
-            var estWeight = (waist / 100) * (waist / 100) * 22;
-            var fatKg = (estWeight * bf / 100).toFixed(1);
-            var leanKg = (estWeight - fatKg).toFixed(1);
-            document.getElementById('fat-kg').textContent = fatKg + ' kg';
-            document.getElementById('lean-kg').textContent = leanKg + ' kg';
+            var est = (waist/100) * (waist/100) * 22;
+            document.getElementById('fat-kg').textContent = (est * bf / 100).toFixed(1) + ' kg';
+            document.getElementById('lean-kg').textContent = (est - est * bf / 100).toFixed(1) + ' kg';
         }
-        
         document.getElementById('hip-group').style.display = 'none';
         setGender('female');
     </script>
