@@ -4,109 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BMI Calculator - FitGauge</title>
-    <link rel="stylesheet" href="assets/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg: #0a0a0a;
-            --surface: #141414;
-            --surface-hover: #1a1a1a;
-            --border: #262626;
-            --text: #f5f5f5;
-            --text-secondary: #737373;
-            --accent: #22c55e;
-            --blue: #60a5fa;
-            --green: #4ade80;
-            --yellow: #facc15;
-            --orange: #fb923c;
-            --red: #f87171;
-            --font: 'Inter', sans-serif;
-        }
+        :root { --bg: #0a0a0a; --surface: #141414; --surface-hover: #1a1a1a; --border: #262626; --text: #f5f5f5; --text-secondary: #737373; --accent: #22c55e; --blue: #60a5fa; --green: #4ade80; --yellow: #facc15; --orange: #fb923c; --red: #f87171; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
         .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-        header { padding: 20px 0; border-bottom: 1px solid var(--border); background: var(--bg); position: sticky; top: 0; z-index: 100; }
+        header { padding: 20px 0; border-bottom: 1px solid var(--border); }
         header .container { display: flex; justify-content: space-between; align-items: center; }
         .logo { display: flex; align-items: center; gap: 10px; font-size: 1.1rem; font-weight: 600; color: var(--text); text-decoration: none; }
         .logo svg { width: 26px; height: 26px; color: var(--accent); }
         nav { display: flex; gap: 28px; }
-        nav a { color: var(--text-secondary); font-size: 0.85rem; text-decoration: none; transition: color 0.2s; }
-        nav a:hover { color: var(--text); }
+        nav a { color: var(--text-secondary); font-size: 0.85rem; text-decoration: none; }
         main { padding: 48px 0; }
         .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--text-secondary); font-size: 0.85rem; text-decoration: none; margin-bottom: 32px; }
-        .back-link:hover { color: var(--accent); }
         .page-header { margin-bottom: 40px; }
         .page-title { font-size: 1.75rem; font-weight: 600; margin-bottom: 8px; }
         .page-desc { color: var(--text-secondary); font-size: 0.9rem; }
         .calculator { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
         
-        .form-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
-        .form-group { margin-bottom: 20px; }
-        .form-label { display: block; font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .form-input { width: 100%; padding: 14px 16px; background: var(--surface-hover); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: var(--font); font-size: 1rem; }
-        .form-input:focus { outline: none; border-color: var(--accent); }
-        .toggle-group { display: flex; gap: 8px; }
-        .toggle-btn { flex: 1; padding: 12px 20px; background: var(--surface-hover); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); font-family: var(--font); font-size: 0.9rem; cursor: pointer; }
-        .toggle-btn:hover { background: var(--border); }
-        .toggle-btn.active { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 500; }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .unit-toggle { display: flex; gap: 8px; margin-bottom: 12px; }
-        .unit-btn { padding: 8px 16px; background: transparent; border: 1px solid var(--border); border-radius: 6px; color: var(--text-secondary); font-size: 0.8rem; cursor: pointer; }
-        .unit-btn.active { background: var(--accent); border-color: var(--accent); color: #000; }
+        .input-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; }
+        .gender-toggle { display: flex; gap: 12px; margin-bottom: 32px; }
+        .gender-btn { flex: 1; padding: 16px; background: var(--surface-hover); border: 2px solid var(--border); border-radius: 12px; color: var(--text-secondary); font-size: 1rem; cursor: pointer; text-align: center; transition: all 0.2s; }
+        .gender-btn.active { border-color: var(--accent); color: var(--accent); }
+        
+        .input-group { margin-bottom: 24px; }
+        .input-label { display: flex; justify-content: space-between; margin-bottom: 8px; }
+        .input-name { font-size: 0.85rem; color: var(--text-secondary); }
+        .input-value { font-size: 1rem; font-weight: 600; color: var(--accent); }
+        .input-field { width: 100%; padding: 16px; background: var(--surface-hover); border: 2px solid var(--border); border-radius: 12px; color: var(--text); font-size: 1.25rem; text-align: center; font-weight: 600; }
+        .input-field:focus { outline: none; border-color: var(--accent); }
         
         .result-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; }
-        .result-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-        .result-title { font-size: 1rem; font-weight: 500; }
+        .result-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; }
         .result-badge { padding: 6px 12px; background: rgba(34, 197, 94, 0.15); border-radius: 20px; font-size: 0.75rem; color: var(--accent); }
-        .result-body { padding: 32px 24px; }
+        .result-body { padding: 40px 24px; text-align: center; }
         
-        /* Target Arrow Gauge */
-        .gauge-section { text-align: center; margin-bottom: 32px; }
+        /* Circular Ring Gauge */
+        .ring-container { width: 220px; height: 220px; margin: 0 auto 24px; position: relative; }
+        .ring-outer { position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 10px solid var(--border); }
+        .ring-fill { position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 10px solid var(--accent); border-top-color: transparent; border-right-color: transparent; transform: rotate(-45deg); transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0; }
+        .ring-inner { position: absolute; top: 20px; left: 20px; width: calc(100% - 40px); height: calc(100% - 40px); border-radius: 50%; background: var(--surface); display: flex; align-items: center; justify-content: center; flex-direction: column; }
         
-        .bmi-value { font-size: 3.5rem; font-weight: 600; line-height: 1; }
-        .bmi-label { font-size: 1rem; color: var(--text-secondary); margin-top: 4px; }
+        .bmi-value { font-size: 3rem; font-weight: 600; line-height: 1; }
+        .bmi-label { font-size: 0.9rem; color: var(--text-secondary); margin-top: 4px; }
         
-        .target-bar-container { margin: 32px 0; position: relative; }
-        .target-bar { height: 24px; border-radius: 12px; background: linear-gradient(to right, var(--blue), var(--green) 25%, var(--green) 40%, var(--yellow) 55%, var(--orange) 70%, var(--red) 85%); position: relative; }
+        .status-row { display: flex; justify-content: center; gap: 24px; margin-top: 16px; }
+        .status-item { text-align: center; }
+        .status-dot { width: 12px; height: 12px; border-radius: 50%; margin: 0 auto 6px; }
+        .status-name { font-size: 0.7rem; color: var(--text-secondary); }
         
-        /* Healthy zone marker */
-        .healthy-zone { position: absolute; top: -8px; height: 40px; border: 2px dashed var(--green); border-radius: 8px; opacity: 0.6; }
-        
-        /* Current position arrow */
-        .current-arrow { 
-            position: absolute; top: -16px; width: 0; height: 0; 
-            border-left: 12px solid transparent; border-right: 12px solid transparent; 
-            border-top: 16px solid var(--text); transform: translateX(-50%);
-            transition: left 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-        }
-        
-        .arrow-label {
-            position: absolute; top: -36px; transform: translateX(-50%);
-            background: var(--text); color: var(--bg); padding: 4px 10px; border-radius: 6px;
-            font-size: 0.8rem; font-weight: 600; white-space: nowrap;
-        }
-        
-        .bar-labels { display: flex; justify-content: space-between; margin-top: 8px; }
-        .bar-label { font-size: 0.7rem; color: var(--text-secondary); }
-        
-        /* Status message */
-        .status-box { 
-            background: var(--surface-hover); border-radius: 12px; padding: 20px; text-align: center;
-            margin-bottom: 24px;
-        }
-        .status-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 4px; }
-        .status-desc { font-size: 0.85rem; color: var(--text-secondary); }
-        
-        /* Target weight */
-        .target-section { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .target-section { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding-top: 24px; border-top: 1px solid var(--border); margin-top: 24px; }
         .target-item { background: var(--surface-hover); border-radius: 12px; padding: 16px; text-align: center; }
-        .target-value { font-size: 1.5rem; font-weight: 600; }
+        .target-value { font-size: 1.25rem; font-weight: 600; }
         .target-label { font-size: 0.7rem; color: var(--text-secondary); margin-top: 4px; }
         
         footer { padding: 32px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-secondary); font-size: 0.8rem; margin-top: 48px; }
-        
-        @media (max-width: 768px) { .calculator { grid-template-columns: 1fr; } nav { display: none; } .bmi-value { font-size: 2.5rem; } }
+        @media (max-width: 768px) { .calculator { grid-template-columns: 1fr; } nav { display: none; } .ring-container { width: 180px; height: 180px; } .bmi-value { font-size: 2.5rem; } }
     </style>
 </head>
 <body>
@@ -117,231 +71,123 @@
                     <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/>
                     <circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/>
                     <circle cx="20" cy="20" r="6" fill="currentColor"/>
-                    <line x1="20" y1="2" x2="20" y2="6" stroke="currentColor" stroke-width="1.5"/>
-                    <line x1="20" y1="34" x2="20" y2="38" stroke="currentColor" stroke-width="1.5"/>
-                    <line x1="2" y1="20" x2="6" y2="20" stroke="currentColor" stroke-width="1.5"/>
-                    <line x1="34" y1="20" x2="38" y2="20" stroke="currentColor" stroke-width="1.5"/>
                 </svg>
                 FitGauge
             </a>
-            <nav>
-                <a href="../profile.html">Profile</a>
-                <a href="../index.html#body">Body</a>
-                <a href="../index.html#energy">Energy</a>
-                <a href="../index.html#nutrition">Nutrition</a>
-                <a href="../index.html#fitness">Fitness</a>
-            </nav>
+            <nav><a href="../profile.html">Profile</a><a href="../index.html#body">Body</a></nav>
         </div>
     </header>
     <main class="container">
-        <a href="../index.html" class="back-link">← Back to calculators</a>
+        <a href="../index.html" class="back-link">← Back</a>
         <div class="page-header">
             <h1 class="page-title">Body Mass Index</h1>
-            <p class="page-desc">Calculate your BMI and see where you stand</p>
+            <p class="page-desc">Check your body mass index</p>
         </div>
         <div class="calculator">
-            <div class="form-card">
-                <div class="form-group">
-                    <label class="form-label">Gender</label>
-                    <div class="toggle-group">
-                        <button class="toggle-btn" id="male-btn">Male</button>
-                        <button class="toggle-btn active" id="female-btn">Female</button>
-                    </div>
+            <div class="input-card">
+                <div class="gender-toggle">
+                    <div class="gender-btn" id="male-btn" onclick="setGender('male')">♂ Male</div>
+                    <div class="gender-btn active" id="female-btn" onclick="setGender('female')">♀ Female</div>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Age</label>
-                    <input type="number" class="form-input" id="age" placeholder="Years">
+                <div class="input-group">
+                    <div class="input-label"><span class="input-name">Age</span><span class="input-value" id="age-display">25 yrs</span></div>
+                    <input type="number" class="input-field" id="age" value="25" oninput="update()">
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Height</label>
-                    <div class="unit-toggle">
-                        <button class="unit-btn active" id="height-cm-btn">cm</button>
-                        <button class="unit-btn" id="height-ft-btn">ft</button>
-                    </div>
-                    <div id="height-cm-inputs">
-                        <input type="number" class="form-input" id="height-cm" placeholder="175">
-                    </div>
-                    <div id="height-ft-inputs" style="display:none">
-                        <div class="form-row">
-                            <input type="number" class="form-input" id="height-ft" placeholder="5">
-                            <input type="number" class="form-input" id="height-in" placeholder="9">
-                        </div>
-                    </div>
+                <div class="input-group">
+                    <div class="input-label"><span class="input-name">Height</span><span class="input-value" id="height-display">170 cm</span></div>
+                    <input type="number" class="input-field" id="height" value="170" oninput="update()">
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Weight</label>
-                    <div class="unit-toggle">
-                        <button class="unit-btn active" id="weight-kg-btn">kg</button>
-                        <button class="unit-btn" id="weight-lbs-btn">lbs</button>
-                    </div>
-                    <input type="number" class="form-input" id="weight" placeholder="70">
+                <div class="input-group">
+                    <div class="input-label"><span class="input-name">Weight</span><span class="input-value" id="weight-display">65 kg</span></div>
+                    <input type="number" class="input-field" id="weight" value="65" oninput="update()">
                 </div>
             </div>
             <div class="result-card">
-                <div class="result-header">
-                    <span class="result-title">Your BMI</span>
-                    <span class="result-badge">Target View</span>
-                </div>
+                <div class="result-header"><span class="result-badge">BMI</span></div>
                 <div class="result-body">
-                    <div class="gauge-section">
-                        <div class="bmi-value" id="bmi-value">--</div>
-                        <div class="bmi-label">Body Mass Index</div>
-                    </div>
-                    
-                    <div class="target-bar-container">
-                        <div class="current-arrow" id="current-arrow">
-                            <div class="arrow-label" id="arrow-label">--</div>
-                        </div>
-                        <div class="target-bar" id="target-bar"></div>
-                        <div class="healthy-zone" id="healthy-zone"></div>
-                        <div class="bar-labels">
-                            <span class="bar-label">Under</span>
-                            <span class="bar-label">Normal</span>
-                            <span class="bar-label">Over</span>
-                            <span class="bar-label">Obese</span>
+                    <div class="ring-container">
+                        <div class="ring-outer"></div>
+                        <div class="ring-fill" id="ring-fill"></div>
+                        <div class="ring-inner">
+                            <div class="bmi-value" id="bmi-value">22.9</div>
+                            <div class="bmi-label">Body Mass Index</div>
                         </div>
                     </div>
-                    
-                    <div class="status-box" id="status-box">
-                        <div class="status-title" id="status-title">Enter your details</div>
-                        <div class="status-desc" id="status-desc">Fill in your info to see your BMI</div>
+                    <div class="status-row">
+                        <div class="status-item"><div class="status-dot" style="background: var(--blue)"></div><div class="status-name">Under</div></div>
+                        <div class="status-item"><div class="status-dot" style="background: var(--green)"></div><div class="status-name">Normal</div></div>
+                        <div class="status-item"><div class="status-dot" style="background: var(--yellow)"></div><div class="status-name">Over</div></div>
+                        <div class="status-item"><div class="status-dot" style="background: var(--red)"></div><div class="status-name">Obese</div></div>
                     </div>
-                    
                     <div class="target-section">
-                        <div class="target-item">
-                            <div class="target-value" id="target-min">--</div>
-                            <div class="target-label">Healthy Min (kg)</div>
-                        </div>
-                        <div class="target-item">
-                            <div class="target-value" id="target-max">--</div>
-                            <div class="target-label">Healthy Max (kg)</div>
-                        </div>
+                        <div class="target-item"><div class="target-value" id="target-min">54</div><div class="target-label">Min (kg)</div></div>
+                        <div class="target-item"><div class="target-value" id="target-max">72</div><div class="target-label">Max (kg)</div></div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
-    <footer>FitGauge — Free Fitness Calculators</footer>
+    <footer>FitGauge</footer>
     <script>
-        var gender = 'female', heightUnit = 'cm', weightUnit = 'kg';
+        var state = { gender: 'female', age: 25, height: 170, weight: 65 };
         
-        // Event listeners
-        document.getElementById('male-btn').onclick = function() { gender = 'male'; this.classList.add('active'); document.getElementById('female-btn').classList.remove('active'); calculate(); };
-        document.getElementById('female-btn').onclick = function() { gender = 'female'; this.classList.add('active'); document.getElementById('male-btn').classList.remove('active'); calculate(); };
-        document.getElementById('height-cm-btn').onclick = function() { heightUnit = 'cm'; this.classList.add('active'); document.getElementById('height-ft-btn').classList.remove('active'); document.getElementById('height-cm-inputs').style.display = 'block'; document.getElementById('height-ft-inputs').style.display = 'none'; calculate(); };
-        document.getElementById('height-ft-btn').onclick = function() { heightUnit = 'ft'; this.classList.add('active'); document.getElementById('height-cm-btn').classList.remove('active'); document.getElementById('height-cm-inputs').style.display = 'none'; document.getElementById('height-ft-inputs').style.display = 'block'; calculate(); };
-        document.getElementById('weight-kg-btn').onclick = function() { weightUnit = 'kg'; this.classList.add('active'); document.getElementById('weight-lbs-btn').classList.remove('active'); calculate(); };
-        document.getElementById('weight-lbs-btn').onclick = function() { weightUnit = 'lbs'; this.classList.add('active'); document.getElementById('weight-kg-btn').classList.remove('active'); calculate(); };
+        function setGender(g) { state.gender = g; document.getElementById('male-btn').classList.toggle('active', g === 'male'); document.getElementById('female-btn').classList.toggle('active', g === 'female'); calculate(); }
         
-        ['age', 'height-cm', 'height-ft', 'height-in', 'weight'].forEach(function(id) {
-            document.getElementById(id).oninput = calculate;
-        });
-        
-        function calculate() {
-            var heightCm = 0, weight = parseFloat(document.getElementById('weight').value) || 0;
-            
-            if (heightUnit === 'cm') {
-                heightCm = parseFloat(document.getElementById('height-cm').value) || 0;
-            } else {
-                var ft = parseFloat(document.getElementById('height-ft').value) || 0;
-                var inch = parseFloat(document.getElementById('height-in').value) || 0;
-                heightCm = ft * 30.48 + inch * 2.54;
-            }
-            if (weightUnit === 'lbs') weight = weight * 0.453592;
-            
-            var valueEl = document.getElementById('bmi-value');
-            var arrow = document.getElementById('current-arrow');
-            var arrowLabel = document.getElementById('arrow-label');
-            var healthyZone = document.getElementById('healthy-zone');
-            var statusTitle = document.getElementById('status-title');
-            var statusDesc = document.getElementById('status-desc');
-            
-            if (!heightCm || !weight || heightCm < 100 || weight < 20) {
-                valueEl.textContent = '--';
-                valueEl.style.color = '';
-                arrow.style.left = '0%';
-                arrowLabel.textContent = '--';
-                healthyZone.style.display = 'none';
-                statusTitle.textContent = 'Enter your details';
-                statusDesc.textContent = 'Fill in your info to see your BMI';
-                document.getElementById('target-min').textContent = '--';
-                document.getElementById('target-max').textContent = '--';
-                return;
-            }
-            
-            var heightM = heightCm / 100;
-            var bmi = weight / (heightM * heightM);
-            var bmiValue = bmi.toFixed(1);
-            
-            // Color and status
-            var color, status, title, desc;
-            if (bmi < 18.5) { color = 'var(--blue)'; status = 'underweight'; title = 'Underweight'; desc = 'Aim to reach the healthy zone'; }
-            else if (bmi < 25) { color = 'var(--green)'; status = 'healthy'; title = 'Healthy Weight'; desc = 'Great job! Stay in this range'; }
-            else if (bmi < 30) { color = 'var(--yellow)'; status = 'overweight'; title = 'Overweight'; desc = 'Move toward the green zone'; }
-            else { color = 'var(--red)'; status = 'obese'; title = 'Obese'; desc = 'Small changes make a big difference'; }
-            
-            valueEl.textContent = bmiValue;
-            valueEl.style.color = color;
-            
-            // Arrow position (BMI 15-40 maps to 0-100%)
-            var minBMI = 15, maxBMI = 40;
-            var pct = ((bmi - minBMI) / (maxBMI - minBMI)) * 100;
-            pct = Math.max(0, Math.min(100, pct));
-            
-            arrow.style.left = pct + '%';
-            arrowLabel.textContent = bmiValue;
-            arrowLabel.style.color = color;
-            
-            // Healthy zone (18.5-25)
-            var healthyMin = ((18.5 - minBMI) / (maxBMI - minBMI)) * 100;
-            var healthyMax = ((25 - minBMI) / (maxBMI - minBMI)) * 100;
-            healthyZone.style.display = 'block';
-            healthyZone.style.left = healthyMin + '%';
-            healthyZone.style.width = (healthyMax - healthyMin) + '%';
-            
-            // Target weights
-            var targetMin = Math.round(18.5 * heightM * heightM);
-            var targetMax = Math.round(25 * heightM * heightM);
-            document.getElementById('target-min').textContent = targetMin;
-            document.getElementById('target-max').textContent = targetMax;
-            
-            // Status
-            statusTitle.textContent = title;
-            statusTitle.style.color = color;
-            statusDesc.textContent = desc;
+        function update() {
+            state.age = parseInt(document.getElementById('age').value) || 25;
+            state.height = parseInt(document.getElementById('height').value) || 170;
+            state.weight = parseInt(document.getElementById('weight').value) || 65;
+            document.getElementById('age-display').textContent = state.age + ' yrs';
+            document.getElementById('height-display').textContent = state.height + ' cm';
+            document.getElementById('weight-display').textContent = state.weight + ' kg';
+            calculate();
         }
         
-        // Auto-fill from profile
+        function calculate() {
+            var hM = state.height / 100;
+            var bmi = state.weight / (hM * hM);
+            bmi = Math.round(bmi * 10) / 10;
+            
+            var color;
+            if (bmi < 18.5) color = 'var(--blue)';
+            else if (bmi < 25) color = 'var(--green)';
+            else if (bmi < 30) color = 'var(--yellow)';
+            else color = 'var(--red)';
+            
+            document.getElementById('bmi-value').textContent = bmi;
+            document.getElementById('bmi-value').style.color = color;
+            
+            // Ring fill (BMI 15-40 = 0-100%)
+            var pct = ((bmi - 15) / 25) * 100;
+            pct = Math.max(0, Math.min(100, pct));
+            
+            var ring = document.getElementById('ring-fill');
+            ring.style.opacity = '1';
+            ring.style.borderColor = color;
+            ring.style.transform = 'rotate(' + (-45 + pct * 3.6) + 'deg)';
+            
+            // Target weights
+            var min = Math.round(18.5 * hM * hM);
+            var max = Math.round(25 * hM * hM);
+            document.getElementById('target-min').textContent = min;
+            document.getElementById('target-max').textContent = max;
+        }
+        
         function loadProfile() {
             var g = localStorage.getItem('fitgauge_gender');
             var age = localStorage.getItem('fitgauge_age');
             var h = localStorage.getItem('fitgauge_height');
-            var hU = localStorage.getItem('fitgauge_height_unit') || 'cm';
             var w = localStorage.getItem('fitgauge_weight');
             var wU = localStorage.getItem('fitgauge_weight_unit') || 'kg';
-            
-            if (g) { gender = g; if (g === 'male') { document.getElementById('male-btn').classList.add('active'); document.getElementById('female-btn').classList.remove('active'); } }
+            if (g) setGender(g);
             if (age) document.getElementById('age').value = age;
-            if (h) {
-                if (hU === 'ft') {
-                    var ft = Math.floor(parseFloat(h) / 12);
-                    var inch = Math.round(parseFloat(h) % 12);
-                    document.getElementById('height-ft').value = ft;
-                    document.getElementById('height-in').value = inch;
-                    document.getElementById('height-ft-btn').classList.add('active');
-                    document.getElementById('height-cm-btn').classList.remove('active');
-                    document.getElementById('height-cm-inputs').style.display = 'none';
-                    document.getElementById('height-ft-inputs').style.display = 'block';
-                    heightUnit = 'ft';
-                } else {
-                    document.getElementById('height-cm').value = h;
-                }
-            }
+            if (h) document.getElementById('height').value = h;
             if (w) {
-                document.getElementById('weight').value = w;
-                if (wU === 'lbs') { document.getElementById('weight-lbs-btn').classList.add('active'); document.getElementById('weight-kg-btn').classList.remove('active'); weightUnit = 'lbs'; }
+                var weight = parseFloat(w);
+                if (wU === 'lbs') weight = Math.round(weight * 0.453592);
+                document.getElementById('weight').value = weight;
             }
-            calculate();
+            update();
         }
         
         window.onload = loadProfile;
