@@ -29,9 +29,7 @@
         .gender-btn.active { border-color: var(--accent); color: var(--accent); }
         
         .input-group { margin-bottom: 24px; }
-        .input-label { display: flex; justify-content: space-between; margin-bottom: 8px; }
-        .input-name { font-size: 0.85rem; color: var(--text-secondary); }
-        .input-value { font-size: 1rem; font-weight: 600; color: var(--accent); }
+        .input-label { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px; }
         .input-field { width: 100%; padding: 16px; background: var(--surface-hover); border: 2px solid var(--border); border-radius: 12px; color: var(--text); font-size: 1.25rem; text-align: center; font-weight: 600; }
         .input-field:focus { outline: none; border-color: var(--accent); }
         
@@ -40,33 +38,28 @@
         .result-badge { padding: 6px 12px; background: rgba(34, 197, 94, 0.15); border-radius: 20px; font-size: 0.75rem; color: var(--accent); }
         .result-body { padding: 40px 24px; text-align: center; }
         
-        /* Circular Ring */
         .ring-container { width: 220px; height: 220px; margin: 0 auto 24px; position: relative; }
         .ring-outer { position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 10px solid var(--border); }
-        .ring-fill { position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 10px solid var(--orange); border-top-color: transparent; border-left-color: transparent; transform: rotate(-45deg); transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0; }
+        .ring-fill { position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 10px solid var(--orange); border-top-color: transparent; border-left-color: transparent; transform: rotate(-45deg); transition: all 0.8s; opacity: 0; }
         .ring-inner { position: absolute; top: 20px; left: 20px; width: calc(100% - 40px); height: calc(100% - 40px); border-radius: 50%; background: var(--surface); display: flex; align-items: center; justify-content: center; flex-direction: column; }
         
-        .bmr-value { font-size: 3rem; font-weight: 600; color: var(--text); line-height: 1; }
-        .bmr-label { font-size: 0.9rem; color: var(--text-secondary); margin-top: 4px; }
+        .bmr-value { font-size: 2.5rem; font-weight: 600; }
+        .bmr-label { font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px; }
         
         .stats-section { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding-top: 24px; border-top: 1px solid var(--border); margin-top: 24px; }
-        .stat-item { background: var(--surface-hover); border-radius: 12px; padding: 16px; text-align: center; }
+        .stat-item { background: var(--surface-hover); border-radius: 12px; padding: 16px; }
         .stat-value { font-size: 1.1rem; font-weight: 600; color: var(--orange); }
         .stat-label { font-size: 0.7rem; color: var(--text-secondary); margin-top: 4px; }
         
         footer { padding: 32px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-secondary); font-size: 0.8rem; margin-top: 48px; }
-        @media (max-width: 768px) { .calculator { grid-template-columns: 1fr; } nav { display: none; } .ring-container { width: 180px; height: 180px; } .bmr-value { font-size: 2.5rem; } }
+        @media (max-width: 768px) { .calculator { grid-template-columns: 1fr; } nav { display: none; } }
     </style>
 </head>
 <body>
     <header>
         <div class="container">
             <a href="../index.html" class="logo">
-                <svg viewBox="0 0 40 40" fill="none">
-                    <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/>
-                    <circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/>
-                    <circle cx="20" cy="20" r="6" fill="currentColor"/>
-                </svg>
+                <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>
                 FitGauge
             </a>
             <nav><a href="../profile.html">Profile</a><a href="../index.html#body">Body</a></nav>
@@ -76,7 +69,7 @@
         <a href="../index.html" class="back-link">← Back</a>
         <div class="page-header">
             <h1 class="page-title">Basal Metabolic Rate</h1>
-            <p class="page-desc">Calories your body burns at complete rest</p>
+            <p class="page-desc">Calories your body burns at rest</p>
         </div>
         <div class="calculator">
             <div class="input-card">
@@ -85,16 +78,16 @@
                     <div class="gender-btn active" id="female-btn" onclick="setGender('female')">♀ Female</div>
                 </div>
                 <div class="input-group">
-                    <div class="input-label"><span class="input-name">Age</span><span class="input-value" id="age-display">25 yrs</span></div>
-                    <input type="number" class="input-field" id="age" value="25" oninput="update()">
+                    <div class="input-label">Age (years)</div>
+                    <input type="number" class="input-field" id="age" value="25" oninput="calculate()">
                 </div>
                 <div class="input-group">
-                    <div class="input-label"><span class="input-name">Height</span><span class="input-value" id="height-display">170 cm</span></div>
-                    <input type="number" class="input-field" id="height" value="170" oninput="update()">
+                    <div class="input-label">Height (cm)</div>
+                    <input type="number" class="input-field" id="height" value="170" oninput="calculate()">
                 </div>
                 <div class="input-group">
-                    <div class="input-label"><span class="input-name">Weight</span><span class="input-value" id="weight-display">65 kg</span></div>
-                    <input type="number" class="input-field" id="weight" value="65" oninput="update()">
+                    <div class="input-label">Weight (kg)</div>
+                    <input type="number" class="input-field" id="weight" value="65" oninput="calculate()">
                 </div>
             </div>
             <div class="result-card">
@@ -104,7 +97,7 @@
                         <div class="ring-outer"></div>
                         <div class="ring-fill" id="ring-fill"></div>
                         <div class="ring-inner">
-                            <div class="bmr-value" id="bmr-value">1,456</div>
+                            <div class="bmr-value" id="bmr">1,456</div>
                             <div class="bmr-label">cal/day</div>
                         </div>
                     </div>
@@ -123,27 +116,19 @@
         
         function setGender(g) { state.gender = g; document.getElementById('male-btn').classList.toggle('active', g === 'male'); document.getElementById('female-btn').classList.toggle('active', g === 'female'); calculate(); }
         
-        function update() {
+        function calculate() {
             state.age = parseInt(document.getElementById('age').value) || 25;
             state.height = parseInt(document.getElementById('height').value) || 170;
             state.weight = parseInt(document.getElementById('weight').value) || 65;
-            document.getElementById('age-display').textContent = state.age + ' yrs';
-            document.getElementById('height-display').textContent = state.height + ' cm';
-            document.getElementById('weight-display').textContent = state.weight + ' kg';
-            calculate();
-        }
-        
-        function calculate() {
+            
             var bmr = (10 * state.weight) + (6.25 * state.height) - (5 * state.age);
             bmr = state.gender === 'male' ? bmr + 5 : bmr - 161;
             bmr = Math.round(bmr);
             
-            document.getElementById('bmr-value').textContent = bmr.toLocaleString();
+            document.getElementById('bmr').textContent = bmr.toLocaleString();
             
-            // Ring fill (1200-2500 range)
             var pct = ((bmr - 1200) / 1300) * 100;
             pct = Math.max(0, Math.min(100, pct));
-            
             var ring = document.getElementById('ring-fill');
             ring.style.opacity = '1';
             ring.style.transform = 'rotate(' + (-45 + pct * 3.6) + 'deg)';
@@ -162,14 +147,9 @@
             if (g) setGender(g);
             if (age) document.getElementById('age').value = age;
             if (h) document.getElementById('height').value = h;
-            if (w) {
-                var weight = parseFloat(w);
-                if (wU === 'lbs') weight = Math.round(weight * 0.453592);
-                document.getElementById('weight').value = weight;
-            }
-            update();
+            if (w) { var weight = parseFloat(w); if (wU === 'lbs') weight = Math.round(weight * 0.453592); document.getElementById('weight').value = weight; }
+            calculate();
         }
-        
         window.onload = loadProfile;
     </script>
 </body>
