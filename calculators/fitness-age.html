@@ -1,755 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fitness Age Calculator - FitGauge</title>
-    <link rel="stylesheet" href="assets/styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #0a0a0a;
-            --surface: #141414;
-            --surface-hover: #1a1a1a;
-            --border: #262626;
-            --text: #f5f5f5;
-            --text-secondary: #737373;
-            --accent: #22c55e;
-            --accent-dim: rgba(34, 197, 94, 0.15);
-            --blue: #60a5fa;
-            --cyan: #22d3ee;
-            --purple: #a78bfa;
-            --pink: #f472b6;
-            --orange: #fb923c;
-            --font: 'Inter', sans-serif;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: var(--font);
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            line-height: 1.5;
-        }
-
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-
-        header {
-            padding: 20px 0;
-            border-bottom: 1px solid var(--border);
-            background: var(--bg);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text);
-            text-decoration: none;
-        }
-
-        .logo svg { width: 26px; height: 26px; color: var(--accent); }
-
-        nav { display: flex; gap: 28px; }
-
-        nav a {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        nav a:hover { color: var(--text); }
-
-        main { padding: 48px 0; }
-
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            text-decoration: none;
-            margin-bottom: 32px;
-            transition: color 0.2s;
-        }
-
-        .back-link:hover { color: var(--accent); }
-
-        .page-header { margin-bottom: 40px; }
-
-        .page-title { font-size: 1.75rem; font-weight: 600; margin-bottom: 8px; }
-
-        .page-desc { color: var(--text-secondary); font-size: 0.9rem; }
-
-        .calculator {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-        }
-
-        .form-section { display: flex; flex-direction: column; gap: 20px; }
-
-        .form-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 24px;
-        }
-
-        .form-group { margin-bottom: 20px; }
-
-        .form-group:last-child { margin-bottom: 0; }
-
-        .form-label {
-            display: block;
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 14px 16px;
-            background: var(--surface-hover);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text);
-            font-family: var(--font);
-            font-size: 1rem;
-            transition: all 0.2s;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--accent);
-            background: var(--bg);
-        }
-
-        .form-input::placeholder { color: var(--text-secondary); }
-
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
-        .toggle-group { display: flex; gap: 8px; }
-
-        .toggle-btn {
-            flex: 1;
-            padding: 12px 20px;
-            background: var(--surface-hover);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text-secondary);
-            font-family: var(--font);
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .toggle-btn:hover { background: var(--border); }
-
-        .toggle-btn.active {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: #000;
-            font-weight: 500;
-        }
-
-        /* Living Ring Gauge */
-        .result-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            overflow: hidden;
-        }
-
-        .result-header {
-            padding: 20px 24px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .result-title { font-size: 1rem; font-weight: 500; }
-
-        .result-badge {
-            padding: 6px 12px;
-            background: rgba(34, 197, 94, 0.15);
-            border-radius: 20px;
-            font-size: 0.75rem;
-            color: var(--accent);
-        }
-
-        .result-body { padding: 32px 24px; text-align: center; }
-
-        /* Living Ring Container */
-        .living-ring-container {
-            width: 280px;
-            height: 280px;
-            margin: 0 auto 24px;
-            position: relative;
-        }
-
-        /* Outer Ring */
-        .ring-outer {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 3px solid var(--border);
-            transform: rotate(-45deg);
-        }
-
-        .ring-outer-fill {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 3px solid transparent;
-            border-top-color: var(--accent);
-            border-right-color: var(--accent);
-            transform: rotate(-45deg);
-            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
-            opacity: 0;
-        }
-
-        /* Middle Ring */
-        .ring-middle {
-            position: absolute;
-            top: 25px;
-            left: 25px;
-            width: calc(100% - 50px);
-            height: calc(100% - 50px);
-            border-radius: 50%;
-            border: 3px solid var(--border);
-            transform: rotate(-45deg);
-        }
-
-        .ring-middle-fill {
-            position: absolute;
-            top: 25px;
-            left: 25px;
-            width: calc(100% - 50px);
-            height: calc(100% - 50px);
-            border-radius: 50%;
-            border: 3px solid transparent;
-            border-bottom-color: var(--cyan);
-            border-left-color: var(--cyan);
-            transform: rotate(-45deg);
-            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
-            opacity: 0;
-        }
-
-        /* Inner Ring */
-        .ring-inner {
-            position: absolute;
-            top: 50px;
-            left: 50px;
-            width: calc(100% - 100px);
-            height: calc(100% - 100px);
-            border-radius: 50%;
-            border: 3px solid var(--border);
-            transform: rotate(-45deg);
-        }
-
-        .ring-inner-fill {
-            position: absolute;
-            top: 50px;
-            left: 50px;
-            width: calc(100% - 100px);
-            height: calc(100% - 100px);
-            border-radius: 50%;
-            border: 3px solid transparent;
-            border-top-color: var(--purple);
-            border-right-color: var(--purple);
-            transform: rotate(-45deg);
-            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
-            opacity: 0;
-        }
-
-        /* Center Display */
-        .ring-center {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-        }
-
-        .age-value {
-            font-size: 4rem;
-            font-weight: 600;
-            line-height: 1;
-            transition: color 0.5s;
-        }
-
-        .age-label {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            margin-top: 4px;
-        }
-
-        .age-diff {
-            font-size: 1.1rem;
-            margin-top: 8px;
-            font-weight: 500;
-        }
-
-        /* Particles */
-        .particles {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-        }
-
-        .particle {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            opacity: 0;
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(0) translateX(0);
-                opacity: 0;
-            }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% {
-                transform: translateY(-100px) translateX(20px);
-                opacity: 0;
-            }
-        }
-
-        /* Orbiting Dot */
-        .orbit-dot {
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            background: var(--accent);
-            border-radius: 50%;
-            box-shadow: 0 0 20px var(--accent);
-            top: 50%;
-            left: 50%;
-            margin: -6px 0 0 -6px;
-            opacity: 0;
-            transition: all 1s;
-        }
-
-        /* Status Rings */
-        .status-section {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-            padding-top: 24px;
-            border-top: 1px solid var(--border);
-        }
-
-        .status-item {
-            text-align: center;
-            padding: 16px;
-            background: var(--surface-hover);
-            border-radius: 12px;
-        }
-
-        .status-value {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--text);
-        }
-
-        .status-label {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            margin-top: 4px;
-        }
-
-        /* Tips */
-        .tips-section {
-            padding: 20px 24px;
-            border-top: 1px solid var(--border);
-            background: var(--surface-hover);
-        }
-
-        .tips-title {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 12px;
-        }
-
-        .tip-list {
-            list-style: none;
-        }
-
-        .tip-list li {
-            padding: 8px 0;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .tip-list li:last-child { border-bottom: none; }
-
-        .tip-list li::before {
-            content: '⚡';
-            font-size: 1rem;
-        }
-
-        footer {
-            padding: 32px 0;
-            border-top: 1px solid var(--border);
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 0.8rem;
-            margin-top: 48px;
-        }
-
-        @media (max-width: 768px) {
-            .calculator { grid-template-columns: 1fr; }
-            nav { display: none; }
-            .age-value { font-size: 3rem; }
-            .living-ring-container { width: 220px; height: 220px; }
-            .status-section { grid-template-columns: 1fr; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fitness Age - FitGauge</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--surface:#141414;--surface-hover:#1a1a1a;--border:#262626;--text:#f5f5f5;--text-secondary:#737373;--accent:#22c55e;--green:#4ade80;--blue:#60a5fa;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.container{max-width:1100px;margin:0 auto;padding:0 24px}
+header{padding:20px 0;border-bottom:1px solid var(--border)}
+header .container{display:flex;justify-content:space-between;align-items:center}
+.logo{display:flex;align-items:center;gap:10px;font-size:1.1rem;font-weight:600;color:var(--text);text-decoration:none}
+.logo svg{width:26px;height:26px;color:var(--accent)}
+nav{display:flex;gap:28px}
+nav a{color:var(--text-secondary);font-size:0.85rem;text-decoration:none}
+main{padding:48px 0}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--text-secondary);font-size:0.85rem;text-decoration:none;margin-bottom:32px}
+.page-header{margin-bottom:40px}
+.page-title{font-size:1.75rem;font-weight:600;margin-bottom:8px}
+.page-desc{color:var(--text-secondary);font-size:0.9rem}
+.calculator{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.input-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px}
+.input-group{margin-bottom:20px}
+.input-label{font-size:0.85rem;color:var(--text-secondary);margin-bottom:8px}
+.input-field{width:100%;padding:14px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:1.1rem;text-align:center;font-weight:600}
+.input-field:focus{outline:none;border-color:var(--accent)}
+.activity-options{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.activity-btn{padding:14px;background:var(--surface-hover);border:2px solid var(--border);border-radius:10px;color:var(--text-secondary);font-size:0.85rem;cursor:pointer;text-align:center}
+.activity-btn.active{border-color:var(--green);color:var(--green)}
+.result-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden}
+.result-header{padding:20px 24px;border-bottom:1px solid var(--border)}
+.result-badge{padding:6px 12px;background:rgba(74,222,128,0.15);border-radius:20px;font-size:0.75rem;color:var(--green)}
+.result-body{padding:48px 24px;text-align:center}
+.age-visual{position:relative;width:140px;height:140px;margin:0 auto 24px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--blue));display:flex;align-items:center;justify-content:center}
+.age-inner{width:110px;height:110px;background:var(--surface);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.age-value{font-size:2.5rem;font-weight:600;color:var(--text)}
+.age-label{font-size:0.75rem;color:var(--text-secondary)}
+.comparison{font-size:1rem;color:var(--text-secondary);margin-top:16px}
+.comparison span{color:var(--green);font-weight:600}
+footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color:var(--text-secondary);font-size:0.8rem;margin-top:48px}
+@media(max-width:768px){.calculator{grid-template-columns:1fr}nav{display:none}}
+</style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <a href="index.html" class="logo">
-                <svg viewBox="0 0 40 40" fill="none">
-                    <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/>
-                    <circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/>
-                    <circle cx="20" cy="20" r="6" fill="currentColor"/>
-                    <line x1="20" y1="2" x2="20" y2="6" stroke="currentColor" stroke-width="1.5"/>
-                    <line x1="20" y1="34" x2="20" y2="38" stroke="currentColor" stroke-width="1.5"/>
-                    <line x1="2" y1="20" x2="6" y2="20" stroke="currentColor" stroke-width="1.5"/>
-                    <line x1="34" y1="20" x2="38" y2="20" stroke="currentColor" stroke-width="1.5"/>
-                </svg>
-                FitGauge
-            </a>
-            <nav>
-                <a href="index.html#body">Body</a>
-                <a href="index.html#energy">Energy</a>
-                <a href="index.html#nutrition">Nutrition</a>
-                <a href="index.html#fitness">Fitness</a>
-                <a href="index.html#goals">Goals</a>
-            </nav>
-        </div>
-    </header>
-
-    <main class="container">
-        <a href="index.html" class="back-link">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M19 12H5M12 19l-7-7 7-7"/>
-            </svg>
-            Back to calculators
-        </a>
-
-        <div class="page-header">
-            <h1 class="page-title">Fitness Age</h1>
-            <p class="page-desc">Compare your fitness level to your biological age</p>
-        </div>
-
-        <div class="calculator">
-            <div class="form-section">
-                <div class="form-card">
-                    <div class="form-group">
-                        <label class="form-label">Gender</label>
-                        <div class="toggle-group">
-                            <button class="toggle-btn active" id="male-btn">Male</button>
-                            <button class="toggle-btn" id="female-btn">Female</button>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Biological Age</label>
-                        <input type="number" class="form-input" id="age" placeholder="Years">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Resting Heart Rate</label>
-                        <input type="number" class="form-input" id="bpm" placeholder="70 bpm">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Weekly Exercise</label>
-                        <div class="toggle-group">
-                            <button class="toggle-btn active" data-mins="30">30 min</button>
-                            <button class="toggle-btn" data-mins="60">1 hr</button>
-                            <button class="toggle-btn" data-mins="150">2.5 hrs</button>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Exercise Intensity</label>
-                        <div class="toggle-group">
-                            <button class="toggle-btn active" data-intensity="light">Light</button>
-                            <button class="toggle-btn" data-intensity="moderate">Moderate</button>
-                            <button class="toggle-btn" data-intensity="vigorous">Vigorous</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="result-card">
-                <div class="result-header">
-                    <span class="result-title">Your Fitness Age</span>
-                    <span class="result-badge">Analysis</span>
-                </div>
-
-                <div class="result-body">
-                    <div class="living-ring-container">
-                        <div class="ring-outer">
-                            <div class="ring-outer-fill" id="ring-outer-fill"></div>
-                        </div>
-                        <div class="ring-middle">
-                            <div class="ring-middle-fill" id="ring-middle-fill"></div>
-                        </div>
-                        <div class="ring-inner">
-                            <div class="ring-inner-fill" id="ring-inner-fill"></div>
-                        </div>
-                        <div class="particles" id="particles"></div>
-                        <div class="orbit-dot" id="orbit-dot"></div>
-
-                        <div class="ring-center">
-                            <div class="age-value" id="fitness-age">--</div>
-                            <div class="age-label">fitness age</div>
-                            <div class="age-diff" id="age-diff"></div>
-                        </div>
-                    </div>
-
-                    <div class="status-section">
-                        <div class="status-item">
-                            <div class="status-value" id="vo2">--</div>
-                            <div class="status-label">Est. VO2 Max</div>
-                        </div>
-                        <div class="status-item">
-                            <div class="status-value" id="recovery">--</div>
-                            <div class="status-label">Recovery Time</div>
-                        </div>
-                        <div class="status-item">
-                            <div class="status-value" id="level">--</div>
-                            <div class="status-label">Fitness Level</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="tips-section">
-                    <div class="tips-title">Improve Your Fitness Age</div>
-                    <ul class="tip-list">
-                        <li>Increase cardio intensity gradually</li>
-                        <li>Add strength training 2x per week</li>
-                        <li>Monitor your resting heart rate</li>
-                        <li>Prioritize sleep and recovery</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <footer>
-        FitGauge — Precision Fitness Calculators
-    </footer>
-
-    <script>
-        var gender = 'male';
-        var weeklyMins = 30;
-        var intensity = 'light';
-        var particleInterval;
-
-        // Gender toggle
-        document.getElementById('male-btn').addEventListener('click', function() {
-            document.getElementById('male-btn').classList.add('active');
-            document.getElementById('female-btn').classList.remove('active');
-            gender = 'male';
-            calculateFitnessAge();
-        });
-
-        document.getElementById('female-btn').addEventListener('click', function() {
-            document.getElementById('female-btn').classList.add('active');
-            document.getElementById('male-btn').classList.remove('active');
-            gender = 'female';
-            calculateFitnessAge();
-        });
-
-        // Weekly exercise toggle
-        document.querySelectorAll('[data-mins]').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('[data-mins]').forEach(function(b) { b.classList.remove('active'); });
-                this.classList.add('active');
-                weeklyMins = parseInt(this.getAttribute('data-mins'));
-                calculateFitnessAge();
-            });
-        });
-
-        // Intensity toggle
-        document.querySelectorAll('[data-intensity]').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('[data-intensity]').forEach(function(b) { b.classList.remove('active'); });
-                this.classList.add('active');
-                intensity = this.getAttribute('data-intensity');
-                calculateFitnessAge();
-            });
-        });
-
-        var inputs = ['age', 'bpm'];
-        for (var i = 0; i < inputs.length; i++) {
-            document.getElementById(inputs[i]).addEventListener('input', calculateFitnessAge);
-        }
-
-        function calculateFitnessAge() {
-            var bioAge = parseInt(document.getElementById('age').value) || 0;
-            var bpm = parseInt(document.getElementById('bpm').value) || 70;
-
-            var ageValue = document.getElementById('fitness-age');
-            var ageDiff = document.getElementById('age-diff');
-            var ringOuter = document.getElementById('ring-outer-fill');
-            var ringMiddle = document.getElementById('ring-middle-fill');
-            var ringInner = document.getElementById('ring-inner-fill');
-            var orbitDot = document.getElementById('orbit-dot');
-
-            if (!bioAge || bioAge < 10 || bioAge > 100) {
-                ageValue.textContent = '--';
-                ageValue.style.color = '';
-                ageDiff.textContent = '';
-                ringOuter.style.opacity = '0';
-                ringMiddle.style.opacity = '0';
-                ringInner.style.opacity = '0';
-                orbitDot.style.opacity = '0';
-                orbitDot.style.transform = 'translate(-50%, -50%) rotate(-90deg)';
-                stopParticles();
-                document.getElementById('vo2').textContent = '--';
-                document.getElementById('recovery').textContent = '--';
-                document.getElementById('level').textContent = '--';
-                return;
-            }
-
-            // Calculate fitness age based on inputs
-            var bpmFactor = (70 - bpm) * 0.1; // Lower BPM = younger fitness age
-            var exerciseFactor = (weeklyMins / 30 - 1) * 2; // More exercise = younger
-            var intensityFactor = intensity === 'vigorous' ? -3 : intensity === 'moderate' ? -1 : 0;
-
-            var fitnessAge = bioAge + bpmFactor - exerciseFactor + intensityFactor;
-            fitnessAge = Math.max(10, Math.min(100, Math.round(fitnessAge)));
-
-            var ageDiffYears = bioAge - fitnessAge;
-            var color = fitnessAge < bioAge ? 'var(--accent)' : fitnessAge > bioAge ? 'var(--orange)' : 'var(--text)';
-
-            ageValue.textContent = fitnessAge;
-            ageValue.style.color = color;
-
-            if (ageDiffYears > 0) {
-                ageDiff.textContent = '↓ ' + ageDiffYears + ' years younger!';
-                ageDiff.style.color = 'var(--accent)';
-            } else if (ageDiffYears < 0) {
-                ageDiff.textContent = '↑ ' + Math.abs(ageDiffYears) + ' years older';
-                ageDiff.style.color = 'var(--orange)';
-            } else {
-                ageDiff.textContent = 'Match!';
-                ageDiff.style.color = 'var(--text-secondary)';
-            }
-
-            // Calculate ring fills (percentage of max effect)
-            var outerFill = Math.min(100, (bioAge - fitnessAge + 20) / 40 * 100);
-            var middleFill = Math.min(100, (bpmFactor + 10) / 20 * 100);
-            var innerFill = Math.min(100, (exerciseFactor + 5) / 15 * 100);
-
-            ringOuter.style.opacity = outerFill > 0 ? '1' : '0';
-            ringOuter.style.borderTopColor = color;
-            ringOuter.style.borderRightColor = color;
-            ringOuter.style.transform = 'rotate(-45deg) rotate(' + (outerFill * 3.6 - 90) + 'deg)';
-
-            ringMiddle.style.opacity = '1';
-            ringMiddle.style.borderBottomColor = 'var(--cyan)';
-            ringMiddle.style.borderLeftColor = 'var(--cyan)';
-            ringMiddle.style.transform = 'rotate(-45deg) rotate(' + (middleFill * 3.6 - 90) + 'deg)';
-
-            ringInner.style.opacity = '1';
-            ringInner.style.borderTopColor = 'var(--purple)';
-            ringInner.style.borderRightColor = 'var(--purple)';
-            ringInner.style.transform = 'rotate(-45deg) rotate(' + (innerFill * 3.6 - 90) + 'deg)';
-
-            // Orbit dot
-            orbitDot.style.opacity = '1';
-            var orbitRotation = -90 + (outerFill * 3.6);
-            orbitDot.style.transform = 'translate(-50%, -50%) rotate(' + orbitRotation + 'deg) translateX(120px)';
-
-            // Estimate VO2 Max
-            var vo2 = 55 - (bpm - 60) * 0.3 - (fitnessAge - 30) * 0.2 + weeklyMins * 0.05;
-            vo2 = Math.max(20, Math.min(80, Math.round(vo2)));
-            document.getElementById('vo2').textContent = vo2;
-
-            // Recovery time
-            var recovery = 24 - (weeklyMins / 30) * 4 - (intensity === 'vigorous' ? -4 : intensity === 'moderate' ? -2 : 0);
-            recovery = Math.max(12, Math.min(72, Math.round(recovery)));
-            document.getElementById('recovery').textContent = recovery + 'h';
-
-            // Fitness level
-            var level = fitnessAge < bioAge - 5 ? 'Excellent' : fitnessAge < bioAge ? 'Good' : fitnessAge === bioAge ? 'Average' : 'Needs Work';
-            document.getElementById('level').textContent = level;
-
-            // Start particles
-            startParticles(color);
-        }
-
-        function startParticles(color) {
-            var container = document.getElementById('particles');
-            container.innerHTML = '';
-
-            stopParticles();
-
-            particleInterval = setInterval(function() {
-                for (var i = 0; i < 3; i++) {
-                    var particle = document.createElement('div');
-                    particle.className = 'particle';
-                    particle.style.background = color;
-                    particle.style.left = Math.random() * 80 + 10 + '%';
-                    particle.style.top = '80%';
-                    particle.style.animation = 'float 2s ease-out forwards';
-                    container.appendChild(particle);
-
-                    setTimeout(function() {
-                        if (particle.parentNode) {
-                            particle.parentNode.removeChild(particle);
-                        }
-                    }, 2000);
-                }
-            }, 500);
-        }
-
-        function stopParticles() {
-            if (particleInterval) {
-                clearInterval(particleInterval);
-            }
-        }
-    </script>
+<header>
+<div class="container">
+<a href="../index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
+<nav><a href="../profile.html">Profile</a><a href="../index.html#fitness">Fitness</a></nav>
+</div>
+</header>
+<main class="container">
+<a href="../index.html" class="back-link">← Back</a>
+<div class="page-header">
+<h1 class="page-title">Fitness Age</h1>
+<p class="page-desc">How fit are you?</p>
+</div>
+<div class="calculator">
+<div class="input-card">
+<div class="input-group">
+<div class="input-label">Your Age</div>
+<input type="number" class="input-field" id="age" value="30" oninput="calc()">
+</div>
+<div class="input-group">
+<div class="input-label">Resting Heart Rate (bpm)</div>
+<input type="number" class="input-field" id="hr" value="70" oninput="calc()">
+</div>
+<div class="input-group">
+<div class="input-label">Weekly Activity</div>
+<div class="activity-options">
+<div class="activity-btn" data-factor="1.2" onclick="setActivity(this)">None</div>
+<div class="activity-btn" data-factor="0.9" onclick="setActivity(this)">1-2 days</div>
+<div class="activity-btn active" data-factor="0.7" onclick="setActivity(this)">3-4 days</div>
+<div class="activity-btn" data-factor="0.5" onclick="setActivity(this)">5+ days</div>
+</div>
+</div>
+</div>
+<div class="result-card">
+<div class="result-header"><span class="result-badge">❤️ Fitness Age</span></div>
+<div class="result-body">
+<div class="age-visual"><div class="age-inner"><div class="age-value" id="fitness-age">28</div><div class="age-label">years</div></div></div>
+<div class="comparison" id="comparison">You look younger!</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<footer>FitGauge</footer>
+<script>
+var factor=0.7;
+function setActivity(el){document.querySelectorAll('.activity-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');factor=parseFloat(el.dataset.factor);calc();}
+function calc(){var age=parseInt(document.getElementById('age').value)||30;var hr=parseInt(document.getElementById('hr').value)||70;var base=220-hr;var fitAge=Math.round(age*factor+base*0.3*factor);fitAge=Math.max(15,Math.min(80,fitAge));document.getElementById('fitness-age').textContent=fitAge;var diff=age-fitAge;var el=document.getElementById('comparison');if(diff>0){el.innerHTML='You look <span>'+diff+' years</span> younger!';el.style.color='var(--green)'}else if(diff<0){el.innerHTML='You look <span>'+(-diff)+' years</span> older';el.style.color='#f87171'}else{el.textContent='Right on track!';el.style.color='var(--text-secondary)'}}
+calc();
+</script>
 </body>
 </html>
