@@ -43,14 +43,14 @@
         .result-badge { padding: 6px 12px; background: rgba(34, 197, 94, 0.15); border-radius: 20px; font-size: 0.75rem; color: var(--accent); }
         .result-body { padding: 48px 24px; text-align: center; }
         
-        .result-value { font-size: 4rem; font-weight: 600; }
+        .result-value { font-size: 4rem; font-weight: 600; color: var(--accent); }
         .result-unit { font-size: 1.1rem; color: var(--text-secondary); margin-top: 4px; }
         
         .goals { margin-top: 32px; padding-top: 32px; border-top: 1px solid var(--border); }
         .goal-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border); }
         .goal-item:last-child { border: none; }
         .goal-label { color: var(--text-secondary); }
-        .goal-value { font-weight: 600; }
+        .goal-value { font-weight: 600; color: var(--text); }
         
         footer { padding: 32px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-secondary); font-size: 0.8rem; margin-top: 48px; }
         @media (max-width: 768px) { .calculator { grid-template-columns: 1fr; } nav { display: none; } .result-value { font-size: 3rem; } }
@@ -103,20 +103,10 @@
                 <div class="result-body">
                     <div class="result-value" id="tdee">2,000</div>
                     <div class="result-unit">calories/day</div>
-                    
                     <div class="goals">
-                        <div class="goal-item">
-                            <span class="goal-label">Lose Weight</span>
-                            <span class="goal-value" id="lose" style="color: #f87171">1,500</span>
-                        </div>
-                        <div class="goal-item">
-                            <span class="goal-label">Maintain</span>
-                            <span class="goal-value" id="maintain">2,000</span>
-                        </div>
-                        <div class="goal-item">
-                            <span class="goal-label">Gain Weight</span>
-                            <span class="goal-value" id="gain" style="color: #4ade80">2,500</span>
-                        </div>
+                        <div class="goal-item"><span class="goal-label">Lose Weight</span><span class="goal-value" id="lose">1,500</span></div>
+                        <div class="goal-item"><span class="goal-label">Maintain</span><span class="goal-value" id="maintain">2,000</span></div>
+                        <div class="goal-item"><span class="goal-label">Gain Weight</span><span class="goal-value" id="gain">2,500</span></div>
                     </div>
                 </div>
             </div>
@@ -125,26 +115,20 @@
     <footer>FitGauge</footer>
     <script>
         var state = { gender: 'female', activity: 1.375 };
-        
         function setGender(g) { state.gender = g; document.getElementById('male-btn').classList.toggle('active', g === 'male'); document.getElementById('female-btn').classList.toggle('active', g === 'female'); calculate(); }
-        
         function setActivity(el) { document.querySelectorAll('.activity-btn').forEach(b => b.classList.remove('active')); el.classList.add('active'); state.activity = parseFloat(el.dataset.factor); calculate(); }
-        
         function calculate() {
             var age = parseInt(document.getElementById('age').value) || 25;
             var height = parseInt(document.getElementById('height').value) || 170;
             var weight = parseInt(document.getElementById('weight').value) || 65;
-            
             var bmr = (10 * weight) + (6.25 * height) - (5 * age);
             bmr = state.gender === 'male' ? bmr + 5 : bmr - 161;
             var tdee = Math.round(bmr * state.activity);
-            
             document.getElementById('tdee').textContent = tdee.toLocaleString();
             document.getElementById('lose').textContent = (tdee - 500).toLocaleString();
             document.getElementById('maintain').textContent = tdee.toLocaleString();
             document.getElementById('gain').textContent = (tdee + 500).toLocaleString();
         }
-        
         function loadProfile() {
             var g = localStorage.getItem('fitgauge_gender');
             var age = localStorage.getItem('fitgauge_age');
