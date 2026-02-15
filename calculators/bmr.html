@@ -6,7 +6,7 @@
     <title>BMR Calculator - FitGauge</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #0a0a0a; --surface: #141414; --surface-hover: #1a1a1a; --border: #262626; --text: #f5f5f5; --text-secondary: #737373; --accent: #22c55e; --orange: #fb923c; }
+        :root { --bg: #0a0a0a; --surface: #141414; --surface-hover: #1a1a1a; --border: #262626; --text: #f5f5f5; --text-secondary: #737373; --accent: #22c55e; --orange: #fb923c; --red: #ef4444; --yellow: #facc15; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
         .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
@@ -35,16 +35,17 @@
         
         .result-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; }
         .result-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; }
-        .result-badge { padding: 6px 12px; background: rgba(34, 197, 94, 0.15); border-radius: 20px; font-size: 0.75rem; color: var(--accent); }
+        .result-badge { padding: 6px 12px; background: rgba(251, 146, 60, 0.15); border-radius: 20px; font-size: 0.75rem; color: var(--orange); }
         .result-body { padding: 40px 24px; text-align: center; }
         
-        .ring-container { width: 220px; height: 220px; margin: 0 auto 24px; position: relative; }
-        .ring-outer { position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 10px solid var(--border); }
-        .ring-fill { position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 10px solid var(--orange); border-top-color: transparent; border-left-color: transparent; transform: rotate(-45deg); transition: all 0.8s; opacity: 0; }
-        .ring-inner { position: absolute; top: 20px; left: 20px; width: calc(100% - 40px); height: calc(100% - 40px); border-radius: 50%; background: var(--surface); display: flex; align-items: center; justify-content: center; flex-direction: column; }
+        /* Flame Animation */
+        .flame-container { height: 160px; display: flex; align-items: flex-end; justify-content: center; margin-bottom: 24px; }
+        .flame { width: 80px; }
+        .flame-core { width: 50px; height: 70px; background: linear-gradient(to top, var(--red), var(--orange), var(--yellow)); border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; margin: 0 auto; animation: flicker 0.5s ease-in-out infinite alternate; box-shadow: 0 0 40px var(--orange); transition: all 0.5s; }
+        @keyframes flicker { 0% { transform: scaleY(1); } 100% { transform: scaleY(1.1); } }
         
-        .bmr-value { font-size: 2.5rem; font-weight: 600; }
-        .bmr-label { font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px; }
+        .bmr-value { font-size: 3rem; font-weight: 600; }
+        .bmr-label { font-size: 1rem; color: var(--text-secondary); margin-top: 4px; }
         
         .stats-section { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding-top: 24px; border-top: 1px solid var(--border); margin-top: 24px; }
         .stat-item { background: var(--surface-hover); border-radius: 12px; padding: 16px; }
@@ -91,16 +92,11 @@
                 </div>
             </div>
             <div class="result-card">
-                <div class="result-header"><span class="result-badge">BMR</span></div>
+                <div class="result-header"><span class="result-badge">🔥 Energy</span></div>
                 <div class="result-body">
-                    <div class="ring-container">
-                        <div class="ring-outer"></div>
-                        <div class="ring-fill" id="ring-fill"></div>
-                        <div class="ring-inner">
-                            <div class="bmr-value" id="bmr">1,456</div>
-                            <div class="bmr-label">cal/day</div>
-                        </div>
-                    </div>
+                    <div class="flame-container"><div class="flame"><div class="flame-core" id="flame"></div></div></div>
+                    <div class="bmr-value" id="bmr">1,456</div>
+                    <div class="bmr-label">calories/day at rest</div>
                     <div class="stats-section">
                         <div class="stat-item"><div class="stat-value" id="sedentary">1,747</div><div class="stat-label">Sedentary</div></div>
                         <div class="stat-item"><div class="stat-value" id="moderate">2,257</div><div class="stat-label">Moderate</div></div>
@@ -127,11 +123,10 @@
             
             document.getElementById('bmr').textContent = bmr.toLocaleString();
             
-            var pct = ((bmr - 1200) / 1300) * 100;
-            pct = Math.max(0, Math.min(100, pct));
-            var ring = document.getElementById('ring-fill');
-            ring.style.opacity = '1';
-            ring.style.transform = 'rotate(' + (-45 + pct * 3.6) + 'deg)';
+            // Flame size based on BMR
+            var size = ((bmr - 1200) / 1300) * 40 + 40;
+            size = Math.max(40, Math.min(80, size));
+            document.getElementById('flame').style.height = size + 'px';
             
             document.getElementById('sedentary').textContent = Math.round(bmr * 1.2).toLocaleString();
             document.getElementById('moderate').textContent = Math.round(bmr * 1.55).toLocaleString();
