@@ -3,855 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Protein Calculator — FitGauge</title>
-    <meta name="description" content="Calculate your daily protein needs based on body weight, activity level, and fitness goals.">
-    <link rel="canonical" href="https://anand200530.github.io/fitgauge/calculators/protein.html">
+    <title>Protein Calculator - FitGauge</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg: #0a0a0a;
-            --surface: #141414;
-            --surface-hover: #1a1a1a;
-            --border: #262626;
-            --border-light: #333;
-            --text: #f5f5f5;
-            --text-secondary: #737373;
-            --text-muted: #555;
-            --accent: #22c55e;
-            --blue: #60a5fa;
-            --green: #4ade80;
-            --yellow: #facc15;
-            --orange: #fb923c;
-            --purple: #c084fc;
-            --font: 'Inter', sans-serif;
-        }
-
+        :root { --bg: #0a0a0a; --surface: #141414; --surface-hover: #1a1a1a; --border: #262626; --text: #f5f5f5; --text-secondary: #737373; --accent: #22c55e; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: var(--font);
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            line-height: 1.5;
-        }
-
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
         .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-
-        header {
-            padding: 20px 0;
-            border-bottom: 1px solid var(--border);
-            background: var(--bg);
-        }
-
-        header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text);
-        }
-
+        header { padding: 20px 0; border-bottom: 1px solid var(--border); }
+        header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; gap: 10px; font-size: 1.1rem; font-weight: 600; color: var(--text); text-decoration: none; }
         .logo svg { width: 26px; height: 26px; color: var(--accent); }
-
         nav { display: flex; gap: 28px; }
-
-        nav a {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        nav a:hover { color: var(--text); }
-
+        nav a { color: var(--text-secondary); font-size: 0.85rem; text-decoration: none; }
         main { padding: 48px 0; }
-
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            text-decoration: none;
-            margin-bottom: 32px;
-            transition: color 0.2s;
-        }
-
-        .back-link:hover { color: var(--text); }
-
+        .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--text-secondary); font-size: 0.85rem; text-decoration: none; margin-bottom: 32px; }
         .page-header { margin-bottom: 40px; }
-
         .page-title { font-size: 1.75rem; font-weight: 600; margin-bottom: 8px; }
-
         .page-desc { color: var(--text-secondary); font-size: 0.9rem; }
-
-        .calculator {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-        }
-
-        .form-section { display: flex; flex-direction: column; gap: 24px; }
-
-        .form-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 28px;
-        }
-
-        .form-group { margin-bottom: 20px; }
-
-        .form-group:last-child { margin-bottom: 0; }
-
-        .form-label {
-            display: block;
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 14px 16px;
-            background: var(--surface-hover);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text);
-            font-family: var(--font);
-            font-size: 1rem;
-            transition: border-color 0.2s;
-        }
-
-        .form-input:focus { outline: none; border-color: var(--accent); }
-
-        .form-input::placeholder { color: var(--text-muted); }
-
-        .form-input[type="number"] { -moz-appearance: textfield; }
-
-        .form-input[type="number"]::-webkit-outer-spin-button,
-        .form-input[type="number"]::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        .toggle-group { display: flex; gap: 8px; }
-
-        .toggle-btn {
-            flex: 1;
-            padding: 12px 20px;
-            background: var(--surface-hover);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text-secondary);
-            font-family: var(--font);
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .toggle-btn:hover { background: var(--border-light); }
-
-        .toggle-btn.active {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: #000;
-        }
-
-        .unit-toggle { display: flex; gap: 8px; margin-bottom: 12px; }
-
-        .unit-btn {
-            padding: 8px 16px;
-            background: transparent;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            color: var(--text-secondary);
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .unit-btn:hover { background: var(--surface-hover); }
-
-        .unit-btn.active {
-            background: var(--border-light);
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-
-        .goal-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-        }
-
-        .goal-btn {
-            padding: 12px 16px;
-            background: var(--surface-hover);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text-secondary);
-            font-family: var(--font);
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-align: left;
-        }
-
-        .goal-btn:hover { background: var(--border-light); }
-
-        .goal-btn.active {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: #000;
-        }
-
-        .goal-btn .goal-title {
-            font-weight: 500;
-            display: block;
-            margin-bottom: 2px;
-        }
-
-        .goal-btn .goal-desc {
-            font-size: 0.75rem;
-            opacity: 0.8;
-        }
-
-        /* Result Card */
-        .result-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            overflow: hidden;
-        }
-
-        .result-header {
-            padding: 20px 24px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .result-title { font-size: 1rem; font-weight: 500; }
-
-        /* Protein Molecule Animation */
-        .molecule-container {
-            padding: 32px 24px;
-            text-align: center;
-            position: relative;
-            min-height: 220px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .protein-molecule {
-            position: relative;
-            width: 180px;
-            height: 180px;
-        }
-
-        .molecule-core {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 60px;
-            height: 60px;
-            background: radial-gradient(circle at 30% 30%, var(--green), var(--accent));
-            border-radius: 50%;
-            box-shadow: 0 0 30px rgba(34, 197, 94, 0.4);
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-50%, -50%) scale(1.1); }
-        }
-
-        .molecule-atom {
-            position: absolute;
-            border-radius: 50%;
-            animation: orbit linear infinite;
-        }
-
-        .molecule-atom:nth-child(2) {
-            width: 24px;
-            height: 24px;
-            background: var(--blue);
-            box-shadow: 0 0 15px rgba(96, 165, 250, 0.5);
-            animation-duration: 8s;
-        }
-
-        .molecule-atom:nth-child(3) {
-            width: 20px;
-            height: 20px;
-            background: var(--purple);
-            box-shadow: 0 0 12px rgba(192, 132, 252, 0.5);
-            animation-duration: 12s;
-            animation-direction: reverse;
-        }
-
-        .molecule-atom:nth-child(4) {
-            width: 18px;
-            height: 18px;
-            background: var(--orange);
-            box-shadow: 0 0 10px rgba(251, 146, 60, 0.5);
-            animation-duration: 10s;
-        }
-
-        .molecule-atom:nth-child(5) {
-            width: 22px;
-            height: 22px;
-            background: var(--yellow);
-            box-shadow: 0 0 14px rgba(250, 204, 21, 0.5);
-            animation-duration: 14s;
-            animation-direction: reverse;
-        }
-
-        .molecule-atom:nth-child(6) {
-            width: 16px;
-            height: 16px;
-            background: #f472b6;
-            box-shadow: 0 0 10px rgba(244, 114, 182, 0.5);
-            animation-duration: 9s;
-        }
-
-        .molecule-atom:nth-child(7) {
-            width: 20px;
-            height: 20px;
-            background: #2dd4bf;
-            box-shadow: 0 0 12px rgba(45, 212, 191, 0.5);
-            animation-duration: 11s;
-            animation-direction: reverse;
-        }
-
-        @keyframes orbit {
-            from { transform: rotate(0deg) translateX(70px) rotate(0deg); }
-            to { transform: rotate(360deg) translateX(70px) rotate(-360deg); }
-        }
-
-        .molecule-bond {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 70px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--border-light), transparent);
-            transform-origin: left center;
-            animation: bond-rotate linear infinite;
-            opacity: 0.6;
-        }
-
-        .molecule-bond:nth-child(8) { animation-duration: 8s; }
-        .molecule-bond:nth-child(9) { animation-duration: 12s; animation-direction: reverse; }
-        .molecule-bond:nth-child(10) { animation-duration: 10s; }
-        .molecule-bond:nth-child(11) { animation-duration: 14s; animation-direction: reverse; }
-        .molecule-bond:nth-child(12) { animation-duration: 9s; }
-        .molecule-bond:nth-child(13) { animation-duration: 11s; animation-direction: reverse; }
-
-        @keyframes bond-rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* Protein Target Display */
-        .target-display {
-            text-align: center;
-            padding: 24px;
-            border-top: 1px solid var(--border);
-            background: var(--surface-hover);
-        }
-
-        .target-value {
-            font-size: 3.5rem;
-            font-weight: 600;
-            color: var(--accent);
-            line-height: 1;
-            margin-bottom: 8px;
-        }
-
-        .target-label {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        .target-range {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-top: 8px;
-        }
-
-        /* Food Sources */
-        .food-section {
-            padding: 24px;
-            border-top: 1px solid var(--border);
-        }
-
-        .food-title {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 16px;
-        }
-
-        .food-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-        }
-
-        .food-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 12px;
-            background: var(--surface-hover);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 0.85rem;
-        }
-
-        .food-icon {
-            width: 28px;
-            height: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--border);
-            border-radius: 6px;
-            font-size: 1rem;
-        }
-
-        .food-info {
-            flex: 1;
-        }
-
-        .food-name {
-            font-weight: 500;
-            color: var(--text);
-        }
-
-        .food-protein {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-        }
-
-        /* Per Meal Breakdown */
-        .meals-section {
-            padding: 24px;
-            border-top: 1px solid var(--border);
-            background: var(--surface-hover);
-        }
-
-        .meals-title {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 16px;
-        }
-
-        .meals-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-        }
-
-        .meal-item {
-            text-align: center;
-            padding: 12px 8px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-        }
-
-        .meal-name {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            margin-bottom: 4px;
-        }
-
-        .meal-value {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--accent);
-        }
-
-        footer {
-            padding: 32px 0;
-            border-top: 1px solid var(--border);
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 0.8rem;
-        }
-
-        @media (max-width: 768px) {
-            .calculator { grid-template-columns: 1fr; }
-            nav { display: none; }
-            .goal-grid { grid-template-columns: 1fr; }
-            .food-grid { grid-template-columns: 1fr; }
-            .meals-grid { grid-template-columns: repeat(2, 1fr); }
-            .target-value { font-size: 2.5rem; }
-            .protein-molecule { transform: scale(0.85); }
-        }
+        .calculator { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        
+        .input-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; }
+        .input-group { margin-bottom: 24px; }
+        .input-label { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px; }
+        .input-field { width: 100%; padding: 16px; background: var(--surface-hover); border: 2px solid var(--border); border-radius: 12px; color: var(--text); font-size: 1.25rem; text-align: center; font-weight: 600; }
+        .input-field:focus { outline: none; border-color: var(--accent); }
+        
+        .activity-label { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; }
+        .activity-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .activity-btn { padding: 14px; background: var(--surface-hover); border: 2px solid var(--border); border-radius: 10px; color: var(--text-secondary); font-size: 0.9rem; cursor: pointer; text-align: center; }
+        .activity-btn.active { border-color: var(--accent); color: var(--accent); }
+        
+        .result-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; }
+        .result-header { padding: 20px 24px; border-bottom: 1px solid var(--border); }
+        .result-badge { padding: 6px 12px; background: rgba(34, 197, 94, 0.15); border-radius: 20px; font-size: 0.75rem; color: var(--accent); }
+        .result-body { padding: 48px 24px; text-align: center; }
+        
+        .result-value { font-size: 4rem; font-weight: 600; color: var(--accent); }
+        .result-unit { font-size: 1.1rem; color: var(--text-secondary); margin-top: 4px; }
+        
+        .tips { margin-top: 32px; padding-top: 32px; border-top: 1px solid var(--border); text-align: left; }
+        .tips-title { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 16px; }
+        .tip-item { padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; color: var(--text-secondary); }
+        .tip-item:last-child { border: none; }
+        
+        footer { padding: 32px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-secondary); font-size: 0.8rem; margin-top: 48px; }
+        @media (max-width: 768px) { .calculator { grid-template-columns: 1fr; } nav { display: none; } .result-value { font-size: 3rem; } }
     </style>
 </head>
 <body>
     <header>
         <div class="container">
-            <a href="index.html" class="logo">
-                <svg viewBox="0 0 40 40" fill="none">
-                    <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/>
-                    <circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/>
-                    <circle cx="20" cy="20" r="6" fill="currentColor"/>
-                    <line x1="20" y1="2" x2="20" y2="6" stroke="currentColor" stroke-width="1.5"/>
-                    <line x1="20" y1="34" x2="20" y2="38" stroke="currentColor" stroke-width="1.5"/>
-                    <line x1="2" y1="20" x2="6" y2="20" stroke="currentColor" stroke-width="1.5"/>
-                    <line x1="34" y1="20" x2="38" y2="20" stroke="currentColor" stroke-width="1.5"/>
-                </svg>
-                FitGauge
-            </a>
-            <nav>
-                <a href="index.html#body">Body</a>
-                <a href="index.html#energy">Energy</a>
-                <a href="index.html#nutrition">Nutrition</a>
-                <a href="index.html#fitness">Fitness</a>
-                <a href="index.html#goals">Goals</a>
-            </nav>
+            <a href="../index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
+            <nav><a href="../profile.html">Profile</a><a href="../index.html#nutrition">Nutrition</a></nav>
         </div>
     </header>
-
     <main class="container">
-        <a href="index.html" class="back-link">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M19 12H5M12 19l-7-7 7-7"/>
-            </svg>
-            Back to calculators
-        </a>
-
+        <a href="../index.html" class="back-link">← Back</a>
         <div class="page-header">
-            <h1 class="page-title">Protein Calculator</h1>
-            <p class="page-desc">Calculate your daily protein needs based on body weight and fitness goals</p>
+            <h1 class="page-title">Protein</h1>
+            <p class="page-desc">Daily protein needs</p>
         </div>
-
         <div class="calculator">
-            <div class="form-section">
-                <div class="form-card">
-                    <div class="form-group">
-                        <label class="form-label">Body Weight</label>
-                        <div class="unit-toggle">
-                            <button class="unit-btn active" id="weight-kg-btn">kg</button>
-                            <button class="unit-btn" id="weight-lbs-btn">lbs</button>
-                        </div>
-                        <input type="number" class="form-input" id="weight" placeholder="70" min="20" max="300">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Fitness Goal</label>
-                        <div class="goal-grid">
-                            <button class="goal-btn" data-goal="maintenance">
-                                <span class="goal-title">Maintenance</span>
-                                <span class="goal-desc">0.8-1.0 g/kg</span>
-                            </button>
-                            <button class="goal-btn active" data-goal="muscle">
-                                <span class="goal-title">Muscle Gain</span>
-                                <span class="goal-desc">1.6-2.2 g/kg</span>
-                            </button>
-                            <button class="goal-btn" data-goal="fatloss">
-                                <span class="goal-title">Fat Loss</span>
-                                <span class="goal-desc">1.2-1.6 g/kg</span>
-                            </button>
-                            <button class="goal-btn" data-goal="athlete">
-                                <span class="goal-title">Athlete</span>
-                                <span class="goal-desc">1.4-2.0 g/kg</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Activity Level</label>
-                        <div class="toggle-group">
-                            <button class="toggle-btn" id="activity-sedentary">Sedentary</button>
-                            <button class="toggle-btn active" id="activity-moderate">Moderate</button>
-                            <button class="toggle-btn" id="activity-active">Active</button>
-                        </div>
-                    </div>
+            <div class="input-card">
+                <div class="input-group">
+                    <div class="input-label">Weight (kg)</div>
+                    <input type="number" class="input-field" id="weight" value="65" oninput="calculate()">
+                </div>
+                <div class="activity-label">Goal</div>
+                <div class="activity-options">
+                    <div class="activity-btn" data-factor="1.2" onclick="setGoal(this)">Lose Fat</div>
+                    <div class="activity-btn active" data-factor="1.6" onclick="setGoal(this)">Build Muscle</div>
+                    <div class="activity-btn" data-factor="1.4" onclick="setGoal(this)">Maintain</div>
+                    <div class="activity-btn" data-factor="2.0" onclick="setGoal(this)">Athlete</div>
                 </div>
             </div>
-
             <div class="result-card">
-                <div class="result-header">
-                    <span class="result-title">Daily Protein Target</span>
-                </div>
-
-                <div class="molecule-container">
-                    <div class="protein-molecule" id="protein-molecule">
-                        <div class="molecule-core"></div>
-                        <div class="molecule-atom"></div>
-                        <div class="molecule-atom"></div>
-                        <div class="molecule-atom"></div>
-                        <div class="molecule-atom"></div>
-                        <div class="molecule-atom"></div>
-                        <div class="molecule-atom"></div>
-                        <div class="molecule-bond"></div>
-                        <div class="molecule-bond"></div>
-                        <div class="molecule-bond"></div>
-                        <div class="molecule-bond"></div>
-                        <div class="molecule-bond"></div>
-                        <div class="molecule-bond"></div>
-                    </div>
-                </div>
-
-                <div class="target-display">
-                    <div class="target-value" id="protein-target">--</div>
-                    <div class="target-label">grams per day</div>
-                    <div class="target-range" id="protein-range">Enter weight to calculate</div>
-                </div>
-
-                <div class="meals-section" id="meals-section" style="display: none;">
-                    <div class="meals-title">Suggested Distribution</div>
-                    <div class="meals-grid">
-                        <div class="meal-item">
-                            <div class="meal-name">Breakfast</div>
-                            <div class="meal-value" id="meal-breakfast">--</div>
-                        </div>
-                        <div class="meal-item">
-                            <div class="meal-name">Lunch</div>
-                            <div class="meal-value" id="meal-lunch">--</div>
-                        </div>
-                        <div class="meal-item">
-                            <div class="meal-name">Snack</div>
-                            <div class="meal-value" id="meal-snack">--</div>
-                        </div>
-                        <div class="meal-item">
-                            <div class="meal-name">Dinner</div>
-                            <div class="meal-value" id="meal-dinner">--</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="food-section">
-                    <div class="food-title">High Protein Foods</div>
-                    <div class="food-grid">
-                        <div class="food-item">
-                            <div class="food-icon">🍗</div>
-                            <div class="food-info">
-                                <div class="food-name">Chicken Breast</div>
-                                <div class="food-protein">31g per 100g</div>
-                            </div>
-                        </div>
-                        <div class="food-item">
-                            <div class="food-icon">🥚</div>
-                            <div class="food-info">
-                                <div class="food-name">Eggs</div>
-                                <div class="food-protein">13g per 100g</div>
-                            </div>
-                        </div>
-                        <div class="food-item">
-                            <div class="food-icon">🐟</div>
-                            <div class="food-info">
-                                <div class="food-name">Salmon</div>
-                                <div class="food-protein">25g per 100g</div>
-                            </div>
-                        </div>
-                        <div class="food-item">
-                            <div class="food-icon">🫘</div>
-                            <div class="food-info">
-                                <div class="food-name">Lentils</div>
-                                <div class="food-protein">9g per 100g</div>
-                            </div>
-                        </div>
-                        <div class="food-item">
-                            <div class="food-icon">🥛</div>
-                            <div class="food-info">
-                                <div class="food-name">Greek Yogurt</div>
-                                <div class="food-protein">10g per 100g</div>
-                            </div>
-                        </div>
-                        <div class="food-item">
-                            <div class="food-icon">🥜</div>
-                            <div class="food-info">
-                                <div class="food-name">Almonds</div>
-                                <div class="food-protein">21g per 100g</div>
-                            </div>
-                        </div>
-                        <div class="food-item">
-                            <div class="food-icon">🧀</div>
-                            <div class="food-info">
-                                <div class="food-name">Cottage Cheese</div>
-                                <div class="food-protein">11g per 100g</div>
-                            </div>
-                        </div>
-                        <div class="food-item">
-                            <div class="food-icon">🍖</div>
-                            <div class="food-info">
-                                <div class="food-name">Lean Beef</div>
-                                <div class="food-protein">26g per 100g</div>
-                            </div>
-                        </div>
+                <div class="result-header"><span class="result-badge">Daily Protein</span></div>
+                <div class="result-body">
+                    <div class="result-value" id="protein">104</div>
+                    <div class="result-unit">grams/day</div>
+                    
+                    <div class="tips">
+                        <div class="tips-title">Good sources</div>
+                        <div class="tip-item">🥩 Chicken, fish, lean beef</div>
+                        <div class="tip-item">🥚 Eggs and dairy</div>
+                        <div class="tip-item">🫘 Beans, lentils, tofu</div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
-
-    <footer>
-        FitGauge — Precision Fitness Calculators
-    </footer>
-
+    <footer>FitGauge</footer>
     <script>
-        var weightUnit = 'kg';
-        var goal = 'muscle';
-        var activity = 'moderate';
-
-        // Unit toggle
-        document.getElementById('weight-kg-btn').addEventListener('click', function() {
-            document.getElementById('weight-kg-btn').classList.add('active');
-            document.getElementById('weight-lbs-btn').classList.remove('active');
-            var weightInput = document.getElementById('weight');
-            if (weightInput.value && weightUnit === 'lbs') {
-                weightInput.value = Math.round(parseFloat(weightInput.value) * 0.453592);
-            }
-            weightUnit = 'kg';
-            calculateProtein();
-        });
-
-        document.getElementById('weight-lbs-btn').addEventListener('click', function() {
-            document.getElementById('weight-lbs-btn').classList.add('active');
-            document.getElementById('weight-kg-btn').classList.remove('active');
-            var weightInput = document.getElementById('weight');
-            if (weightInput.value && weightUnit === 'kg') {
-                weightInput.value = Math.round(parseFloat(weightInput.value) * 2.20462);
-            }
-            weightUnit = 'lbs';
-            calculateProtein();
-        });
-
-        // Goal selection
-        document.querySelectorAll('.goal-btn').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.goal-btn').forEach(function(b) {
-                    b.classList.remove('active');
-                });
-                this.classList.add('active');
-                goal = this.dataset.goal;
-                calculateProtein();
-            });
-        });
-
-        // Activity level
-        document.getElementById('activity-sedentary').addEventListener('click', function() {
-            document.getElementById('activity-sedentary').classList.add('active');
-            document.getElementById('activity-moderate').classList.remove('active');
-            document.getElementById('activity-active').classList.remove('active');
-            activity = 'sedentary';
-            calculateProtein();
-        });
-
-        document.getElementById('activity-moderate').addEventListener('click', function() {
-            document.getElementById('activity-moderate').classList.add('active');
-            document.getElementById('activity-sedentary').classList.remove('active');
-            document.getElementById('activity-active').classList.remove('active');
-            activity = 'moderate';
-            calculateProtein();
-        });
-
-        document.getElementById('activity-active').addEventListener('click', function() {
-            document.getElementById('activity-active').classList.add('active');
-            document.getElementById('activity-sedentary').classList.remove('active');
-            document.getElementById('activity-moderate').classList.remove('active');
-            activity = 'active';
-            calculateProtein();
-        });
-
-        // Weight input
-        document.getElementById('weight').addEventListener('input', calculateProtein);
-
-        function calculateProtein() {
-            var weight = parseFloat(document.getElementById('weight').value) || 0;
-            var targetEl = document.getElementById('protein-target');
-            var rangeEl = document.getElementById('protein-range');
-            var mealsSection = document.getElementById('meals-section');
-
-            if (!weight || weight < 20) {
-                targetEl.textContent = '--';
-                rangeEl.textContent = 'Enter weight to calculate';
-                mealsSection.style.display = 'none';
-                return;
-            }
-
-            // Convert to kg if needed
-            var weightKg = weightUnit === 'lbs' ? weight * 0.453592 : weight;
-
-            // Protein multipliers based on goal
-            var minMultiplier, maxMultiplier;
-            switch(goal) {
-                case 'maintenance':
-                    minMultiplier = 0.8;
-                    maxMultiplier = 1.0;
-                    break;
-                case 'muscle':
-                    minMultiplier = 1.6;
-                    maxMultiplier = 2.2;
-                    break;
-                case 'fatloss':
-                    minMultiplier = 1.2;
-                    maxMultiplier = 1.6;
-                    break;
-                case 'athlete':
-                    minMultiplier = 1.4;
-                    maxMultiplier = 2.0;
-                    break;
-                default:
-                    minMultiplier = 1.6;
-                    maxMultiplier = 2.2;
-            }
-
-            // Activity adjustment
-            var activityMultiplier = 1;
-            if (activity === 'sedentary') activityMultiplier = 0.9;
-            if (activity === 'active') activityMultiplier = 1.1;
-
-            minMultiplier *= activityMultiplier;
-            maxMultiplier *= activityMultiplier;
-
-            var minProtein = Math.round(weightKg * minMultiplier);
-            var maxProtein = Math.round(weightKg * maxMultiplier);
-            var avgProtein = Math.round((minProtein + maxProtein) / 2);
-
-            targetEl.textContent = avgProtein + 'g';
-            rangeEl.textContent = 'Recommended: ' + minProtein + '-' + maxProtein + 'g daily';
-
-            // Per meal breakdown (4 meals)
-            document.getElementById('meal-breakfast').textContent = Math.round(avgProtein * 0.25) + 'g';
-            document.getElementById('meal-lunch').textContent = Math.round(avgProtein * 0.30) + 'g';
-            document.getElementById('meal-snack').textContent = Math.round(avgProtein * 0.20) + 'g';
-            document.getElementById('meal-dinner').textContent = Math.round(avgProtein * 0.25) + 'g';
-
-            mealsSection.style.display = 'block';
-
-            // Speed up animation when result is calculated
-            var atoms = document.querySelectorAll('.molecule-atom');
-            atoms.forEach(function(atom) {
-                atom.style.animationDuration = '3s';
-            });
+        var factor = 1.6;
+        function setGoal(el) {
+            document.querySelectorAll('.activity-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            factor = parseFloat(el.dataset.factor);
+            calculate();
         }
-
-        // Initialize
-        calculateProtein();
+        function calculate() {
+            var w = parseFloat(document.getElementById('weight').value) || 65;
+            var p = Math.round(w * factor);
+            document.getElementById('protein').textContent = p;
+        }
+        function loadProfile() {
+            var w = localStorage.getItem('fitgauge_weight');
+            var wU = localStorage.getItem('fitgauge_weight_unit') || 'kg';
+            if (w) {
+                var weight = parseFloat(w);
+                if (wU === 'lbs') weight = Math.round(weight * 0.453592);
+                document.getElementById('weight').value = weight;
+            }
+            calculate();
+        }
+        window.onload = loadProfile;
     </script>
 </body>
 </html>
