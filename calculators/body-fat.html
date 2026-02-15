@@ -424,6 +424,91 @@
             font-weight: 500;
         }
 
+        /* Body Composition Section */
+        .composition-section {
+            padding: 24px;
+            border-top: 1px solid var(--border);
+            background: var(--surface-hover);
+        }
+
+        .composition-title {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 20px;
+        }
+
+        .composition-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .comp-row {
+            display: grid;
+            grid-template-columns: 120px 1fr 70px;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .comp-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            color: var(--text);
+            flex-wrap: wrap;
+        }
+
+        .comp-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .lean-dot { background: var(--accent); }
+        .fat-dot { background: #f59e0b; }
+
+        .comp-value {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            margin-left: auto;
+        }
+
+        .comp-bar-bg {
+            height: 12px;
+            background: var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .comp-bar-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .lean-fill { background: var(--accent); }
+        .fat-fill { background: linear-gradient(90deg, #f59e0b, #f97316); }
+
+        .comp-amount {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-align: right;
+            font-weight: 500;
+        }
+
+        @media (max-width: 600px) {
+            .comp-row {
+                grid-template-columns: 100px 1fr 60px;
+                gap: 8px;
+            }
+            .comp-label { font-size: 0.75rem; }
+            .comp-amount { font-size: 0.8rem; }
+        }
+
         footer {
             padding: 32px 0;
             border-top: 1px solid var(--border);
@@ -641,6 +726,35 @@
                                     <strong>Obese</strong>
                                     <span id="legend-obese">25%+ M / 31%+ W</span>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Body Composition Visualization -->
+                    <div class="composition-section" id="composition-section" style="display: none;">
+                        <div class="composition-title">Body Composition</div>
+                        <div class="composition-bars">
+                            <div class="comp-row">
+                                <div class="comp-label">
+                                    <span class="comp-dot lean-dot"></span>
+                                    <span>Lean Mass</span>
+                                    <span class="comp-value" id="comp-lean-pct">--%</span>
+                                </div>
+                                <div class="comp-bar-bg">
+                                    <div class="comp-bar-fill lean-fill" id="lean-bar" style="width: 0%"></div>
+                                </div>
+                                <div class="comp-amount" id="comp-lean-mass">-- kg</div>
+                            </div>
+                            <div class="comp-row">
+                                <div class="comp-label">
+                                    <span class="comp-dot fat-dot"></span>
+                                    <span>Fat Mass</span>
+                                    <span class="comp-value" id="comp-fat-pct">--%</span>
+                                </div>
+                                <div class="comp-bar-bg">
+                                    <div class="comp-bar-fill fat-fill" id="fat-bar" style="width: 0%"></div>
+                                </div>
+                                <div class="comp-amount" id="comp-fat-mass">-- kg</div>
                             </div>
                         </div>
                     </div>
@@ -913,9 +1027,86 @@
             var bfValue = bodyFat.toFixed(1);
 
             // Determine category and color
+
+            // Determine category and color
             var z = zones[gender];
             var color, status;
 
             if (bodyFat <= z.essential.max) {
                 color = '#60a5fa';
-                status = '
+                status = 'Essential Fat';
+            } else if (bodyFat <= z.athletes.max) {
+                color = '#4ade80';
+                status = 'Athletes';
+            } else if (bodyFat <= z.fitness.max) {
+                color = '#86efac';
+                status = 'Fitness';
+            } else if (bodyFat <= z.average.max) {
+                color = '#facc15';
+                status = 'Average';
+            } else {
+                color = '#f87171';
+                status = 'Obese';
+            }
+
+            // Calculate body composition
+            var fatMass = (bodyFat / 100) * weight;
+            var leanMass = weight - fatMass;
+            var leanPct = 100 - bodyFat;
+
+            // Update display
+            valueEl.textContent = bfValue + '%';
+            valueEl.style.color = color;
+            statusEl.textContent = status;
+            statusEl.style.color = color;
+
+            // Position marker on gradient bar (scale: 0-50%)
+            var markerPos = (bodyFat / 50) * 100;
+            if (markerPos > 100) markerPos = 100;
+            markerEl.style.left = markerPos + '%';
+
+            // Update analysis section
+            document.getElementById('lean-mass').textContent = leanMass.toFixed(1) + ' ' + weightUnit;
+            document.getElementById('fat-mass').textContent = fatMass.toFixed(1) + ' ' + weightUnit;
+            document.getElementById('bf-category').textContent = status;
+            document.getElementById('bf-category').style.color = color;
+
+            // Update composition section
+            document.getElementById('composition-section').style.display = 'block';
+            document.getElementById('comp-lean-pct').textContent = leanPct.toFixed(1) + '%';
+            document.getElementById('comp-fat-pct').textContent = bodyFat.toFixed(1) + '%';
+            document.getElementById('comp-lean-mass').textContent = leanMass.toFixed(1) + ' ' + weightUnit;
+            document.getElementById('comp-fat-mass').textContent = fatMass.toFixed(1) + ' ' + weightUnit;
+
+            // Animate bars
+            setTimeout(function() {
+                document.getElementById('lean-bar').style.width = leanPct + '%';
+                document.getElementById('fat-bar').style.width = bodyFat + '%';
+            }, 100);
+
+            analysisSection.style.display = 'block';
+        }
+
+        function updateZoneLabels() {
+            var z = zones[gender];
+            var suffix = gender === 'male' ? 'M' : 'W';
+            
+            document.getElementById('essential-range').textContent = z.essential.min + '-' + z.essential.max + '%';
+            document.getElementById('athletes-range').textContent = z.athletes.min + '-' + z.athletes.max + '%';
+            document.getElementById('fitness-range').textContent = z.fitness.min + '-' + z.fitness.max + '%';
+            document.getElementById('average-range').textContent = z.average.min + '-' + z.average.max + '%';
+            document.getElementById('obese-range').textContent = z.obese.min + '%+';
+            
+            document.getElementById('legend-essential').textContent = z.essential.min + '-' + z.essential.max + '% ' + suffix;
+            document.getElementById('legend-athletes').textContent = z.athletes.min + '-' + z.athletes.max + '% ' + suffix;
+            document.getElementById('legend-fitness').textContent = z.fitness.min + '-' + z.fitness.max + '% ' + suffix;
+            document.getElementById('legend-average').textContent = z.average.min + '-' + z.athletes.max + '% ' + suffix;
+            document.getElementById('legend-obese').textContent = z.obese.min + '%+ ' + suffix;
+        }
+
+        // Initialize
+        updateZoneLabels();
+        calculateBodyFat();
+    </script>
+</body>
+</html>
