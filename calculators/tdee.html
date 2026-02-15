@@ -6,7 +6,7 @@
     <title>TDEE Calculator - FitGauge</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #0a0a0a; --surface: #141414; --surface-hover: #1a1a1a; --border: #262626; --text: #f5f5f5; --text-secondary: #737373; --accent: #22c55e; --blue: #60a5fa; --green: #4ade80; --yellow: #facc15; --orange: #fb923c; --red: #f87171; }
+        :root { --bg: #0a0a0a; --surface: #141414; --surface-hover: #1a1a1a; --border: #262626; --text: #f5f5f5; --text-secondary: #737373; --accent: #22c55e; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
         .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
@@ -25,7 +25,7 @@
         
         .input-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; }
         .gender-toggle { display: flex; gap: 12px; margin-bottom: 32px; }
-        .gender-btn { flex: 1; padding: 16px; background: var(--surface-hover); border: 2px solid var(--border); border-radius: 12px; color: var(--text-secondary); font-size: 1rem; cursor: pointer; text-align: center; transition: all 0.2s; }
+        .gender-btn { flex: 1; padding: 16px; background: var(--surface-hover); border: 2px solid var(--border); border-radius: 12px; color: var(--text-secondary); font-size: 1rem; cursor: pointer; text-align: center; }
         .gender-btn.active { border-color: var(--accent); color: var(--accent); }
         
         .input-group { margin-bottom: 24px; }
@@ -33,48 +33,27 @@
         .input-field { width: 100%; padding: 16px; background: var(--surface-hover); border: 2px solid var(--border); border-radius: 12px; color: var(--text); font-size: 1.25rem; text-align: center; font-weight: 600; }
         .input-field:focus { outline: none; border-color: var(--accent); }
         
-        .activity-group { margin-top: 16px; }
-        .activity-label { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .activity-label { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; }
         .activity-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .activity-btn { padding: 14px; background: var(--surface-hover); border: 2px solid var(--border); border-radius: 10px; color: var(--text-secondary); font-size: 0.9rem; cursor: pointer; text-align: center; transition: all 0.2s; }
-        .activity-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(34, 197, 94, 0.1); }
+        .activity-btn { padding: 14px; background: var(--surface-hover); border: 2px solid var(--border); border-radius: 10px; color: var(--text-secondary); font-size: 0.9rem; cursor: pointer; text-align: center; }
+        .activity-btn.active { border-color: var(--accent); color: var(--accent); }
         
         .result-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; }
-        .result-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; }
+        .result-header { padding: 20px 24px; border-bottom: 1px solid var(--border); }
         .result-badge { padding: 6px 12px; background: rgba(34, 197, 94, 0.15); border-radius: 20px; font-size: 0.75rem; color: var(--accent); }
-        .result-body { padding: 40px 24px; text-align: center; }
+        .result-body { padding: 48px 24px; text-align: center; }
         
-        /* Battery Gauge */
-        .battery-container { margin-bottom: 32px; }
-        .battery { 
-            width: 160px; height: 80px; margin: 0 auto 24px; 
-            border: 4px solid var(--border); border-radius: 12px;
-            position: relative; padding: 4px;
-        }
-        .battery::after {
-            content: ''; position: absolute; right: -12px; top: 20px;
-            width: 8px; height: 32px; background: var(--border);
-            border-radius: 0 4px 4px 0;
-        }
-        .battery-fill { 
-            height: 100%; border-radius: 8px; 
-            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.5rem; font-weight: 600; color: #000;
-        }
+        .result-value { font-size: 4rem; font-weight: 600; }
+        .result-unit { font-size: 1.1rem; color: var(--text-secondary); margin-top: 4px; }
         
-        .tdee-value { font-size: 3rem; font-weight: 600; }
-        .tdee-label { font-size: 1rem; color: var(--text-secondary); margin-top: 4px; }
-        
-        .goals-section { padding-top: 24px; border-top: 1px solid var(--border); margin-top: 24px; }
-        .goals-title { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; }
-        .goal-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border); }
-        .goal-row:last-child { border: none; }
+        .goals { margin-top: 32px; padding-top: 32px; border-top: 1px solid var(--border); }
+        .goal-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border); }
+        .goal-item:last-child { border: none; }
         .goal-label { color: var(--text-secondary); }
         .goal-value { font-weight: 600; }
         
         footer { padding: 32px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-secondary); font-size: 0.8rem; margin-top: 48px; }
-        @media (max-width: 768px) { .calculator { grid-template-columns: 1fr; } nav { display: none; } .tdee-value { font-size: 2.5rem; } }
+        @media (max-width: 768px) { .calculator { grid-template-columns: 1fr; } nav { display: none; } .result-value { font-size: 3rem; } }
     </style>
 </head>
 <body>
@@ -111,40 +90,32 @@
                     <div class="input-label">Weight (kg)</div>
                     <input type="number" class="input-field" id="weight" value="65" oninput="calculate()">
                 </div>
-                <div class="activity-group">
-                    <div class="activity-label">Activity Level</div>
-                    <div class="activity-options">
-                        <div class="activity-btn" data-factor="1.2" onclick="setActivity(this)">Sedentary</div>
-                        <div class="activity-btn active" data-factor="1.375" onclick="setActivity(this)">Light</div>
-                        <div class="activity-btn" data-factor="1.55" onclick="setActivity(this)">Moderate</div>
-                        <div class="activity-btn" data-factor="1.725" onclick="setActivity(this)">Active</div>
-                    </div>
+                <div class="activity-label">Activity Level</div>
+                <div class="activity-options">
+                    <div class="activity-btn" data-factor="1.2" onclick="setActivity(this)">Sedentary</div>
+                    <div class="activity-btn active" data-factor="1.375" onclick="setActivity(this)">Light</div>
+                    <div class="activity-btn" data-factor="1.55" onclick="setActivity(this)">Moderate</div>
+                    <div class="activity-btn" data-factor="1.725" onclick="setActivity(this)">Active</div>
                 </div>
             </div>
             <div class="result-card">
-                <div class="result-header"><span class="result-badge">⚡ Energy</span></div>
+                <div class="result-header"><span class="result-badge">Daily Calories</span></div>
                 <div class="result-body">
-                    <div class="battery-container">
-                        <div class="battery">
-                            <div class="battery-fill" id="battery-fill" style="width: 75%; background: var(--green);">2000</div>
-                        </div>
-                    </div>
-                    <div class="tdee-value" id="tdee-value">2,000</div>
-                    <div class="tdee-label">calories/day</div>
+                    <div class="result-value" id="tdee">2,000</div>
+                    <div class="result-unit">calories/day</div>
                     
-                    <div class="goals-section">
-                        <div class="goals-title">Daily Goals</div>
-                        <div class="goal-row">
+                    <div class="goals">
+                        <div class="goal-item">
                             <span class="goal-label">Lose Weight</span>
-                            <span class="goal-value" id="lose-weight" style="color: var(--red)">1,500</span>
+                            <span class="goal-value" id="lose" style="color: #f87171">1,500</span>
                         </div>
-                        <div class="goal-row">
+                        <div class="goal-item">
                             <span class="goal-label">Maintain</span>
                             <span class="goal-value" id="maintain">2,000</span>
                         </div>
-                        <div class="goal-row">
+                        <div class="goal-item">
                             <span class="goal-label">Gain Weight</span>
-                            <span class="goal-value" id="gain-weight" style="color: var(--green)">2,500</span>
+                            <span class="goal-value" id="gain" style="color: #4ade80">2,500</span>
                         </div>
                     </div>
                 </div>
@@ -155,48 +126,23 @@
     <script>
         var state = { gender: 'female', activity: 1.375 };
         
-        function setGender(g) { 
-            state.gender = g; 
-            document.getElementById('male-btn').classList.toggle('active', g === 'male'); 
-            document.getElementById('female-btn').classList.toggle('active', g === 'female');
-            calculate(); 
-        }
+        function setGender(g) { state.gender = g; document.getElementById('male-btn').classList.toggle('active', g === 'male'); document.getElementById('female-btn').classList.toggle('active', g === 'female'); calculate(); }
         
-        function setActivity(el) {
-            document.querySelectorAll('.activity-btn').forEach(b => b.classList.remove('active'));
-            el.classList.add('active');
-            state.activity = parseFloat(el.dataset.factor);
-            calculate();
-        }
+        function setActivity(el) { document.querySelectorAll('.activity-btn').forEach(b => b.classList.remove('active')); el.classList.add('active'); state.activity = parseFloat(el.dataset.factor); calculate(); }
         
         function calculate() {
             var age = parseInt(document.getElementById('age').value) || 25;
             var height = parseInt(document.getElementById('height').value) || 170;
             var weight = parseInt(document.getElementById('weight').value) || 65;
             
-            // BMR (Mifflin-St Jeor)
             var bmr = (10 * weight) + (6.25 * height) - (5 * age);
             bmr = state.gender === 'male' ? bmr + 5 : bmr - 161;
-            
-            // TDEE
             var tdee = Math.round(bmr * state.activity);
             
-            document.getElementById('tdee-value').textContent = tdee.toLocaleString();
-            document.getElementById('battery-fill').textContent = tdee;
-            
-            // Battery color
-            var color;
-            if (tdee < 1600) color = 'var(--blue)';
-            else if (tdee < 2000) color = 'var(--green)';
-            else if (tdee < 2600) color = 'var(--yellow)';
-            else color = 'var(--orange)';
-            
-            document.getElementById('battery-fill').style.background = color;
-            
-            // Goals
-            document.getElementById('lose-weight').textContent = (tdee - 500).toLocaleString();
+            document.getElementById('tdee').textContent = tdee.toLocaleString();
+            document.getElementById('lose').textContent = (tdee - 500).toLocaleString();
             document.getElementById('maintain').textContent = tdee.toLocaleString();
-            document.getElementById('gain-weight').textContent = (tdee + 500).toLocaleString();
+            document.getElementById('gain').textContent = (tdee + 500).toLocaleString();
         }
         
         function loadProfile() {
@@ -208,14 +154,9 @@
             if (g) setGender(g);
             if (age) document.getElementById('age').value = age;
             if (h) document.getElementById('height').value = h;
-            if (w) {
-                var weight = parseFloat(w);
-                if (wU === 'lbs') weight = Math.round(weight * 0.453592);
-                document.getElementById('weight').value = weight;
-            }
+            if (w) { var weight = parseFloat(w); if (wU === 'lbs') weight = Math.round(weight * 0.453592); document.getElementById('weight').value = weight; }
             calculate();
         }
-        
         window.onload = loadProfile;
     </script>
 </body>
