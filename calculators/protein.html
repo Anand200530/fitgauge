@@ -38,9 +38,21 @@ main{padding:48px 0}
 .result-body{padding:48px 24px;text-align:center}
 .result-value{font-size:4rem;font-weight:600;color:var(--accent);transition:color 0.3s ease}
 .result-unit{font-size:1.1rem;color:var(--text-secondary);margin-top:4px}
-.tips{margin-top:32px;padding-top:24px;border-top:1px solid var(--border);text-align:left}
+.tips{margin-top:32px;padding-top:24px;border-top:1px solid var(--border)}
 .tips-title{font-size:0.75rem;color:var(--text-secondary);text-transform:uppercase;margin-bottom:12px}
 .tip{font-size:0.9rem;color:var(--text-secondary);padding:8px 0}
+.info-section{margin-top:48px;padding-top:32px;border-top:1px solid var(--border)}
+.info-title{font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px;text-transform:uppercase}
+.info-content{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px}
+.info-content p{color:var(--text-secondary);font-size:0.9rem;line-height:1.6;margin-bottom:12px}
+.info-content p:last-child{margin-bottom:0}
+.suggestions{margin-top:48px}
+.suggestions-title{font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px;text-transform:uppercase}
+.suggestions-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.suggestion-card{display:block;padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;text-decoration:none;color:var(--text);transition:all 0.2s ease}
+.suggestion-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.suggestion-name{font-size:0.95rem;font-weight:500;color:var(--text)}
+.suggestion-desc{font-size:0.8rem;color:var(--text-secondary);margin-top:4px}
 footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color:var(--text-secondary);font-size:0.8rem;margin-top:48px}
 @media(max-width:768px){.calculator{grid-template-columns:1fr}nav{display:none}}
 </style>
@@ -87,6 +99,29 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 </div>
 </div>
 </div>
+</div>
+<div class="info-section">
+<div class="info-title">Why protein matters</div>
+<div class="info-content">
+<p><strong>Protein</strong> is essential for building muscle, repairing tissues, and keeping you full. The more active you are, the more protein you need.</p>
+<p>Athletes and those trying to build muscle need more protein (1.6-2g per kg of body weight). For fat loss, protein helps preserve muscle while you lose fat.</p>
+</div>
+</div>
+<div class="suggestions">
+<div class="suggestions-title">Related Calculators</div>
+<div class="suggestions-grid">
+<a href="macro-split.html" class="suggestion-card">
+<div class="suggestion-name">Macro Split</div>
+<div class="suggestion-desc">Complete nutrient breakdown</div>
+</a>
+<a href="calorie-needs.html" class="suggestion-card">
+<div class="suggestion-name">Calorie Needs</div>
+<div class="suggestion-desc">Total daily calories</div>
+</a>
+<a href="meal-frequency.html" class="suggestion-card">
+<div class="suggestion-name">Meal Frequency</div>
+<div class="suggestion-desc">How often to eat</div>
+</a>
 </div>
 </div>
 </main>

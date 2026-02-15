@@ -47,6 +47,18 @@ main{padding:48px 0}
 .goal-item:last-child{border:none}
 .goal-label{color:var(--text-secondary)}
 .goal-value{font-weight:600}
+.info-section{margin-top:48px;padding-top:32px;border-top:1px solid var(--border)}
+.info-title{font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px;text-transform:uppercase}
+.info-content{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px}
+.info-content p{color:var(--text-secondary);font-size:0.9rem;line-height:1.6;margin-bottom:12px}
+.info-content p:last-child{margin-bottom:0}
+.suggestions{margin-top:48px}
+.suggestions-title{font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px;text-transform:uppercase}
+.suggestions-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.suggestion-card{display:block;padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;text-decoration:none;color:var(--text);transition:all 0.2s ease}
+.suggestion-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.suggestion-name{font-size:0.95rem;font-weight:500;color:var(--text)}
+.suggestion-desc{font-size:0.8rem;color:var(--text-secondary);margin-top:4px}
 footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color:var(--text-secondary);font-size:0.8rem;margin-top:48px}
 @media(max-width:768px){.calculator{grid-template-columns:1fr}nav{display:none}}
 </style>
@@ -104,6 +116,29 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 </div>
 </div>
 </div>
+</div>
+<div class="info-section">
+<div class="info-title">What is TDEE?</div>
+<div class="info-content">
+<p><strong>TDEE (Total Daily Energy Expenditure)</strong> is the total number of calories you burn each day, including your basal metabolic rate (BMR) plus all physical activity.</p>
+<p>Knowing your TDEE helps you plan your diet. Eat less to lose weight, eat more to gain weight, or eat this amount to maintain.</p>
+</div>
+</div>
+<div class="suggestions">
+<div class="suggestions-title">Related Calculators</div>
+<div class="suggestions-grid">
+<a href="bmr.html" class="suggestion-card">
+<div class="suggestion-name">BMR</div>
+<div class="suggestion-desc">Calories at rest</div>
+</a>
+<a href="calorie-needs.html" class="suggestion-card">
+<div class="suggestion-name">Calorie Needs</div>
+<div class="suggestion-desc">Daily calorie targets</div>
+</a>
+<a href="macro-split.html" class="suggestion-card">
+<div class="suggestion-name">Macro Split</div>
+<div class="suggestion-desc">Protein, carbs, fat balance</div>
+</a>
 </div>
 </div>
 </main>
