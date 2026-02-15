@@ -1,134 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Body Fat Calculator - FitGauge</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        :root { --bg: #0a0a0a; --surface: #141414; --surface-hover: #1a1a1a; --border: #262626; --text: #f5f5f5; --text-secondary: #737373; --accent: #22c55e; --blue: #60a5fa; --green: #4ade80; --yellow: #facc15; --orange: #fb923c; --red: #f87171; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-        header { padding: 20px 0; border-bottom: 1px solid var(--border); }
-        header .container { display: flex; justify-content: space-between; align-items: center; }
-        .logo { display: flex; align-items: center; gap: 10px; font-size: 1.1rem; font-weight: 600; color: var(--text); text-decoration: none; }
-        .logo svg { width: 26px; height: 26px; color: var(--accent); }
-        nav { display: flex; gap: 28px; }
-        nav a { color: var(--text-secondary); font-size: 0.85rem; text-decoration: none; }
-        main { padding: 48px 0; }
-        .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--text-secondary); font-size: 0.85rem; text-decoration: none; margin-bottom: 32px; }
-        .page-header { margin-bottom: 40px; }
-        .page-title { font-size: 1.75rem; font-weight: 600; margin-bottom: 8px; }
-        .page-desc { color: var(--text-secondary); font-size: 0.9rem; }
-        .calculator { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-        
-        .input-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; }
-        .gender-toggle { display: flex; gap: 12px; margin-bottom: 32px; }
-        .gender-btn { flex: 1; padding: 16px; background: var(--surface-hover); border: 2px solid var(--border); border-radius: 12px; color: var(--text-secondary); font-size: 1rem; cursor: pointer; text-align: center; }
-        .gender-btn.active { border-color: var(--accent); color: var(--accent); }
-        
-        .input-group { margin-bottom: 20px; }
-        .input-label { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px; }
-        .input-field { width: 100%; padding: 14px; background: var(--surface-hover); border: 2px solid var(--border); border-radius: 12px; color: var(--text); font-size: 1.1rem; text-align: center; font-weight: 600; }
-        .input-field:focus { outline: none; border-color: var(--accent); }
-        
-        .result-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; }
-        .result-header { padding: 20px 24px; border-bottom: 1px solid var(--border); }
-        .result-badge { padding: 6px 12px; background: rgba(34, 197, 94, 0.15); border-radius: 20px; font-size: 0.75rem; color: var(--accent); }
-        .result-body { padding: 48px 24px; text-align: center; }
-        
-        .fat-value { font-size: 3.5rem; font-weight: 600; }
-        .fat-label { font-size: 1rem; color: var(--text-secondary); margin-top: 4px; }
-        
-        .bar-wrap { margin: 32px 0; }
-        .bar-bg { height: 16px; background: var(--border); border-radius: 8px; position: relative; overflow: hidden; }
-        .bar-fill { height: 100%; border-radius: 8px; transition: width 1s, background 0.5s; }
-        .bar-labels { display: flex; justify-content: space-between; margin-top: 8px; font-size: 0.7rem; color: var(--text-secondary); }
-        
-        .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding-top: 24px; border-top: 1px solid var(--border); }
-        .stat-item { background: var(--surface-hover); border-radius: 12px; padding: 16px; }
-        .stat-value { font-size: 1.25rem; font-weight: 600; }
-        .stat-label { font-size: 0.7rem; color: var(--text-secondary); margin-top: 4px; }
-        
-        footer { padding: 32px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-secondary); font-size: 0.8rem; margin-top: 48px; }
-        @media (max-width: 768px) { .calculator { grid-template-columns: 1fr; } nav { display: none; } }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Body Fat - FitGauge</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--surface:#141414;--surface-hover:#1a1a1a;--border:#262626;--text:#f5f5f5;--text-secondary:#737373;--accent:#22c55e;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.container{max-width:1100px;margin:0 auto;padding:0 24px}
+header{padding:20px 0;border-bottom:1px solid var(--border)}
+header .container{display:flex;justify-content:space-between;align-items:center}
+.logo{display:flex;align-items:center;gap:10px;font-size:1.1rem;font-weight:600;color:var(--text);text-decoration:none}
+.logo svg{width:26px;height:26px;color:var(--accent)}
+nav{display:flex;gap:28px}
+nav a{color:var(--text-secondary);font-size:0.85rem;text-decoration:none}
+main{padding:48px 0}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--text-secondary);font-size:0.85rem;text-decoration:none;margin-bottom:32px;transition:color 0.2s}
+.back-link:hover{color:var(--text)}
+.page-header{margin-bottom:40px}
+.page-title{font-size:1.75rem;font-weight:600;margin-bottom:8px}
+.page-desc{color:var(--text-secondary);font-size:0.9rem}
+.calculator{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.input-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px}
+.gender-toggle{display:flex;gap:12px;margin-bottom:24px}
+.gender-btn{flex:1;padding:16px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text-secondary);font-size:1rem;cursor:pointer;text-align:center;transition:all 0.2s ease}
+.gender-btn:hover{background:var(--border)}
+.gender-btn.active{border-color:var(--accent);color:var(--accent)}
+.input-group{margin-bottom:20px}
+.input-label{display:block;font-size:0.85rem;color:var(--text-secondary);margin-bottom:8px}
+.input-field{width:100%;padding:16px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:1.25rem;text-align:center;font-weight:600;transition:all 0.2s ease}
+.input-field:focus{outline:none;border-color:var(--accent)}
+.result-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden}
+.result-header{padding:20px 24px;border-bottom:1px solid var(--border)}
+.result-badge{padding:6px 12px;background:rgba(34,197,94,0.15);border-radius:20px;font-size:0.75rem;color:var(--accent)}
+.result-body{padding:48px 24px;text-align:center}
+.result-value{font-size:4rem;font-weight:600;color:var(--accent);transition:color 0.3s ease}
+.result-unit{font-size:1.1rem;color:var(--text-secondary);margin-top:4px}
+.fat-bar{margin-top:24px;height:12px;background:var(--border);border-radius:6px;overflow:hidden}
+.fat-level{height:100%;background:var(--accent);border-radius:6px;transition:width 0.3s ease}
+.status{margin-top:16px;padding:12px 20px;border-radius:10px;font-size:1rem;transition:all 0.3s ease}
+.info-section{margin-top:48px;padding-top:32px;border-top:1px solid var(--border)}
+.info-title{font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px;text-transform:uppercase}
+.info-content{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px}
+.info-content p{color:var(--text-secondary);font-size:0.9rem;line-height:1.6;margin-bottom:12px}
+.info-content p:last-child{margin-bottom:0}
+.suggestions{margin-top:48px}
+.suggestions-title{font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px;text-transform:uppercase}
+.suggestions-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.suggestion-card{display:block;padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;text-decoration:none;color:var(--text);transition:all 0.2s ease}
+.suggestion-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.suggestion-name{font-size:0.95rem;font-weight:500;color:var(--text)}
+.suggestion-desc{font-size:0.8rem;color:var(--text-secondary);margin-top:4px}
+footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color:var(--text-secondary);font-size:0.8rem;margin-top:48px}
+@media(max-width:768px){.calculator{grid-template-columns:1fr}nav{display:none}}
+</style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <a href="../index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
-            <nav><a href="../profile.html">Profile</a><a href="../index.html#body">Body</a></nav>
-        </div>
-    </header>
-    <main class="container">
-        <a href="../index.html" class="back-link">← Back</a>
-        <div class="page-header"><h1 class="page-title">Body Fat</h1><p class="page-desc">Estimate your body fat percentage</p></div>
-        <div class="calculator">
-            <div class="input-card">
-                <div class="gender-toggle">
-                    <div class="gender-btn" id="male-btn" onclick="setGender('male')">♂ Male</div>
-                    <div class="gender-btn active" id="female-btn" onclick="setGender('female')">♀ Female</div>
-                </div>
-                <div class="input-group"><div class="input-label">Height (cm)</div><input type="number" class="input-field" id="height" value="170" oninput="calculate()"></div>
-                <div class="input-group"><div class="input-label">Neck (cm)</div><input type="number" class="input-field" id="neck" value="38" oninput="calculate()"></div>
-                <div class="input-group"><div class="input-label">Waist (cm)</div><input type="number" class="input-field" id="waist" value="80" oninput="calculate()"></div>
-                <div class="input-group" id="hip-group"><div class="input-label">Hip (cm)</div><input type="number" class="input-field" id="hip" value="95" oninput="calculate()"></div>
-            </div>
-            <div class="result-card">
-                <div class="result-header"><span class="result-badge">Body Fat</span></div>
-                <div class="result-body">
-                    <div class="fat-value" id="fat-value">24.5%</div>
-                    <div class="fat-label">body fat</div>
-                    
-                    <div class="bar-wrap">
-                        <div class="bar-bg"><div class="bar-fill" id="bar-fill" style="width: 50%; background: var(--green);"></div></div>
-                        <div class="bar-labels"><span>Essential</span><span>Athletes</span><span>Fitness</span><span>Average</span><span>Obese</span></div>
-                    </div>
-                    
-                    <div class="stats-row">
-                        <div class="stat-item"><div class="stat-value" id="fat-kg">15.9 kg</div><div class="stat-label">Fat Mass</div></div>
-                        <div class="stat-item"><div class="stat-value" id="lean-kg">49.1 kg</div><div class="stat-label">Lean Mass</div></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-    <footer>FitGauge</footer>
-    <script>
-        var gender = 'female';
-        function setGender(g) { gender = g; document.getElementById('male-btn').classList.toggle('active', g === 'male'); document.getElementById('female-btn').classList.toggle('active', g === 'female'); document.getElementById('hip-group').style.display = g === 'female' ? 'block' : 'none'; calculate(); }
-        function calculate() {
-            var h = parseInt(document.getElementById('height').value) || 170;
-            var neck = parseInt(document.getElementById('neck').value) || 38;
-            var waist = parseInt(document.getElementById('waist').value) || 80;
-            var hip = parseInt(document.getElementById('hip').value) || 95;
-            
-            var bf = 0;
-            if (gender === 'male') {
-                bf = 495 / (1.0324 - 0.19077 * Math.log10(waist - neck) + 0.15456 * Math.log10(h)) - 450;
-            } else {
-                bf = 495 / (1.29579 - 0.35004 * Math.log10(waist + hip - neck) + 0.22100 * Math.log10(h)) - 450;
-            }
-            bf = Math.round(bf * 10) / 10;
-            if (bf < 2) bf = 2; if (bf > 60) bf = 60;
-            
-            var c = gender === 'male' 
-                ? (bf < 6 ? 'var(--blue)' : bf < 14 ? 'var(--green)' : bf < 18 ? 'var(--yellow)' : bf < 25 ? 'var(--orange)' : 'var(--red)')
-                : (bf < 14 ? 'var(--blue)' : bf < 21 ? 'var(--green)' : bf < 25 ? 'var(--yellow)' : bf < 32 ? 'var(--orange)' : 'var(--red)');
-            
-            document.getElementById('fat-value').textContent = bf + '%';
-            document.getElementById('fat-value').style.color = c;
-            document.getElementById('bar-fill').style.width = (bf / 50 * 100) + '%';
-            document.getElementById('bar-fill').style.background = c;
-            
-            var est = (waist/100) * (waist/100) * 22;
-            document.getElementById('fat-kg').textContent = (est * bf / 100).toFixed(1) + ' kg';
-            document.getElementById('lean-kg').textContent = (est - est * bf / 100).toFixed(1) + ' kg';
-        }
-        document.getElementById('hip-group').style.display = 'none';
-        setGender('female');
-    </script>
+<header>
+<div class="container">
+<a href="index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
+<nav><a href="profile.html">Profile</a><a href="index.html#body">Body</a></nav>
+</div>
+</header>
+<main class="container">
+<a href="index.html" class="back-link">← Back</a>
+<div class="page-header">
+<h1 class="page-title">Body Fat</h1>
+<p class="page-desc">Estimate your body fat percentage</p>
+</div>
+<div class="calculator">
+<div class="input-card">
+<div class="gender-toggle">
+<div class="gender-btn" id="male-btn" onclick="setGender('male')">♂ Male</div>
+<div class="gender-btn active" id="female-btn" onclick="setGender('female')">♀ Female</div>
+</div>
+<div class="input-group">
+<div class="input-label">Age</div>
+<input type="number" class="input-field" id="age" value="25" oninput="calc()">
+</div>
+<div class="input-group">
+<div class="input-label">Height (cm)</div>
+<input type="number" class="input-field" id="height" value="170" oninput="calc()">
+</div>
+<div class="input-group">
+<div class="input-label">Neck (cm)</div>
+<input type="number" class="input-field" id="neck" value="38" oninput="calc()">
+</div>
+<div class="input-group">
+<div class="input-label">Waist (cm)</div>
+<input type="number" class="input-field" id="waist" value="80" oninput="calc()">
+</div>
+<div class="input-group">
+<div class="input-label">Hip (cm)</div>
+<input type="number" class="input-field" id="hip" value="95" oninput="calc()">
+</div>
+</div>
+<div class="result-card">
+<div class="result-header"><span class="result-badge">Body Fat</span></div>
+<div class="result-body">
+<div class="result-value" id="bf">24</div>
+<div class="result-unit">%</div>
+<div class="fat-bar"><div class="fat-level" id="fat-level" style="width:24%"></div></div>
+<div class="status" id="status" style="background:rgba(34,197,94,0.15);color:var(--accent)">Average</div>
+</div>
+</div>
+</div>
+<div class="info-section">
+<div class="info-title">Why body fat matters</div>
+<div class="info-content">
+<p><strong>Body fat percentage</strong> measures how much of your body is fat versus lean mass (muscles, bones, organs).</p>
+<p>Unlike BMI, this tells you your actual body composition. A fit person may have the same BMI as someone unfit but very different body fat levels.</p>
+</div>
+</div>
+<div class="suggestions">
+<div class="suggestions-title">Related Calculators</div>
+<div class="suggestions-grid">
+<a href="bmi.html" class="suggestion-card"><div class="suggestion-name">BMI</div><div class="suggestion-desc">Basic weight check</div></a>
+<a href="lean-mass.html" class="suggestion-card"><div class="suggestion-name">Lean Mass</div><div class="suggestion-desc">Muscle and bone weight</div></a>
+<a href="waist-height.html" class="suggestion-card"><div class="suggestion-name">Waist-Height</div><div class="suggestion-desc">Health indicator</div></a>
+</div>
+</div>
+</main>
+<footer>FitGauge</footer>
+<script>
+var gender='female';
+function setGender(g){gender=g;document.getElementById('male-btn').classList.toggle('active',g==='male');document.getElementById('female-btn').classList.toggle('active',g==='female');calc();}
+function calc(){var age=parseInt(document.getElementById('age').value)||25;var h=parseInt(document.getElementById('height').value)||170;var neck=parseInt(document.getElementById('neck').value)||38;var waist=parseInt(document.getElementById('waist').value)||80;var hip=parseInt(document.getElementById('hip').value)||95;var bf=gender==='male'?495/(1.0324-0.19077*Math.log10(waist-neck)+0.15456*Math.log10(h))-450:495/(1.29579-0.35004*Math.log10(waist+hip-neck)+0.22100*Math.log10(h))-450;bf=Math.max(5,Math.min(50,bf));bf=Math.round(bf);document.getElementById('bf').textContent=bf;document.getElementById('fat-level').style.width=bf+'%';var el=document.getElementById('status');var ranges=gender==='male'?{a:[6,14,18,25]}:{a:[14,21,25,32]};var range=ranges.a;if(bf<range[0]){el.textContent='Essential fat';el.style='background:rgba(96,165,250,0.15);color:#60a5fa'}
+else if(bf<range[1]){el.textContent='Athletes';el.style='background:rgba(34,197,94,0.15);color:var(--accent)'}
+else if(bf<range[2]){el.textContent='Fitness';el.style='background:rgba(34,197,94,0.15);color:var(--accent)'}
+else if(bf<range[3]){el.textContent='Average';el.style='background:rgba(34,197,94,0.15);color:var(--accent)'}
+else{el.textContent='Obese';el.style='background:rgba(248,113,113,0.15);color:#f87171'}}
+calc();
+</script>
 </body>
 </html>
