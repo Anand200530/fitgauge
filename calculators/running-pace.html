@@ -217,93 +217,122 @@
 
         .result-body { padding: 32px 24px; }
 
-        /* Pace Speedometer */
-        .pace-visual {
+        /* Running Track Gauge */
+        .track-container {
             text-align: center;
-            margin-bottom: 32px;
+            margin-bottom: 24px;
+        }
+
+        .track-wrapper {
+            width: 280px;
+            height: 200px;
+            margin: 0 auto 20px;
             position: relative;
         }
 
-        .speedometer {
-            width: 220px;
-            height: 140px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .speed-arc {
-            width: 220px;
-            height: 110px;
+        /* Track oval */
+        .track-oval {
+            width: 260px;
+            height: 160px;
             border: 12px solid var(--border);
-            border-bottom: none;
-            border-radius: 110px 110px 0 0;
+            border-radius: 130px;
             position: absolute;
-            top: 30px;
-            left: 0;
+            top: 20px;
+            left: 10px;
         }
 
-        .speed-fill {
-            width: 220px;
-            height: 110px;
+        /* Track lanes */
+        .track-lane {
+            width: 260px;
+            height: 160px;
+            border-radius: 130px;
+            position: absolute;
+            top: 20px;
+            left: 10px;
+            overflow: hidden;
+        }
+
+        .track-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 130px;
             border: 12px solid var(--accent);
-            border-bottom: none;
-            border-radius: 110px 110px 0 0;
-            position: absolute;
-            top: 30px;
-            left: 0;
-            clip-path: polygon(0 100%, 50% 0, 100% 100%);
-            transform-origin: center bottom;
-            transform: rotate(-90deg);
+            border-bottom-color: transparent;
+            border-left-color: transparent;
+            transform: rotate(-45deg);
             opacity: 0;
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            clip-path: inset(0 0 50% 0);
         }
 
-        .speed-needle {
-            width: 4px;
-            height: 45px;
-            background: var(--text);
-            border-radius: 2px;
+        /* Track lines */
+        .track-lines {
             position: absolute;
-            top: 45px;
-            left: 50%;
-            transform-origin: bottom center;
-            transform: translateX(-50%) rotate(-90deg);
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            width: 100%;
+            height: 100%;
         }
 
-        .speed-center {
+        .track-line {
+            position: absolute;
+            height: 2px;
+            background: var(--border);
+            width: 30px;
+        }
+
+        /* Runner dot */
+        .runner {
+            position: absolute;
             width: 16px;
             height: 16px;
-            background: var(--text);
+            background: var(--accent);
             border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            margin: -8px 0 0 -8px;
+            box-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent);
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .runner::after {
+            content: '';
             position: absolute;
-            top: 70px;
+            width: 8px;
+            height: 12px;
+            background: var(--text);
+            border-radius: 2px;
+            top: -14px;
             left: 50%;
             transform: translateX(-50%);
         }
 
-        .speed-labels {
-            display: flex;
-            justify-content: space-between;
-            width: 260px;
-            margin: 0 auto;
-            padding-top: 10px;
+        /* Distance markers */
+        .track-markers {
+            position: absolute;
+            width: 100%;
+            height: 100%;
         }
 
-        .speed-label {
-            font-size: 0.7rem;
+        .marker {
+            position: absolute;
+            font-size: 0.65rem;
             color: var(--text-secondary);
         }
 
-        .speed-label.fast { color: var(--accent); }
+        .marker.start { top: 25px; left: 15px; }
+        .marker.quarter { top: 5px; left: 50%; transform: translateX(-50%); }
+        .marker.half { top: 25px; right: 15px; }
+        .marker.three { bottom: 5px; left: 50%; transform: translateX(-50%); }
 
+        /* Result display */
         .result-value {
             font-size: 2.5rem;
             font-weight: 600;
             color: var(--text);
             line-height: 1;
-            margin-top: 16px;
         }
 
         .result-unit {
@@ -394,6 +423,9 @@
             .result-value { font-size: 2rem; }
             .splits-section { grid-template-columns: repeat(2, 1fr); }
             .form-row { grid-template-columns: 1fr 1fr; }
+            .track-wrapper { width: 240px; }
+            .track-oval { width: 220px; }
+            .track-lane { width: 220px; }
         }
     </style>
 </head>
@@ -455,7 +487,6 @@
                         </div>
                         <div class="form-row">
                             <input type="number" class="form-input" id="dist-km" placeholder="5">
-                            <input type="number" class="form-input" id="dist-m" placeholder="0" style="display:none">
                         </div>
                     </div>
 
@@ -485,19 +516,19 @@
                 </div>
 
                 <div class="result-body">
-                    <div class="pace-visual">
-                        <div class="speedometer">
-                            <div class="speed-arc"></div>
-                            <div class="speed-fill" id="speed-fill"></div>
-                            <div class="speed-needle" id="speed-needle"></div>
-                            <div class="speed-center"></div>
-                        </div>
-                        <div class="speed-labels">
-                            <span class="speed-label">8:00</span>
-                            <span class="speed-label">6:00</span>
-                            <span class="speed-label fast">4:00</span>
-                            <span class="speed-label">5:00</span>
-                            <span class="speed-label">7:00</span>
+                    <div class="track-container">
+                        <div class="track-wrapper">
+                            <div class="track-oval"></div>
+                            <div class="track-lane">
+                                <div class="track-progress" id="track-progress"></div>
+                            </div>
+                            <div class="runner" id="runner"></div>
+                            <div class="track-markers">
+                                <span class="marker start">START</span>
+                                <span class="marker quarter">2.5K</span>
+                                <span class="marker half">5K</span>
+                                <span class="marker three">7.5K</span>
+                            </div>
                         </div>
                         <div class="result-value" id="result-value">--:--</div>
                         <div class="result-unit">min/km</div>
@@ -541,7 +572,6 @@
     <script>
         var calcMode = 'pace';
 
-        // Toggle between calculation modes
         document.getElementById('calc-pace').addEventListener('click', function() {
             setCalcMode('pace', this);
         });
@@ -562,25 +592,22 @@
             document.getElementById('distance-group').style.display = mode === 'pace' ? 'block' : 'block';
             document.getElementById('time-group').style.display = mode === 'pace' ? 'none' : 'block';
             document.getElementById('pace-group').style.display = mode === 'time' ? 'none' : 'block';
-
             calculatePace();
         }
 
         document.getElementById('dist-km-btn').addEventListener('click', function() {
             this.classList.add('active');
             document.getElementById('dist-mi-btn').classList.remove('active');
-            document.getElementById('dist-km').placeholder = '5';
             calculatePace();
         });
 
         document.getElementById('dist-mi-btn').addEventListener('click', function() {
             this.classList.add('active');
             document.getElementById('dist-km-btn').classList.remove('active');
-            document.getElementById('dist-km').placeholder = '3.1';
             calculatePace();
         });
 
-        var inputs = ['dist-km', 'dist-m', 'time-hr', 'time-min', 'time-sec', 'pace-min', 'pace-sec'];
+        var inputs = ['dist-km', 'time-hr', 'time-min', 'time-sec', 'pace-min', 'pace-sec'];
         for (var i = 0; i < inputs.length; i++) {
             var el = document.getElementById(inputs[i]);
             if (el) el.addEventListener('input', calculatePace);
@@ -590,7 +617,6 @@
             var hours = Math.floor(totalSeconds / 3600);
             var mins = Math.floor((totalSeconds % 3600) / 60);
             var secs = Math.round(totalSeconds % 60);
-
             if (hours > 0) {
                 return hours + ':' + (mins < 10 ? '0' : '') + mins + ':' + (secs < 10 ? '0' : '') + secs;
             }
@@ -622,50 +648,51 @@
 
             var resultEl = document.getElementById('result-value');
             var subtitleEl = document.getElementById('result-subtitle');
-            var speedFill = document.getElementById('speed-fill');
-            var speedNeedle = document.getElementById('speed-needle');
+            var trackProgress = document.getElementById('track-progress');
+            var runner = document.getElementById('runner');
 
             var paceSeconds = parsePace(paceMin, paceSec);
             var totalSeconds = (timeHr * 3600) + (timeMin * 60) + timeSec;
 
             if (calcMode === 'pace' && distKm > 0 && totalSeconds > 0) {
-                // Calculate pace from distance and time
                 paceSeconds = totalSeconds / distKm;
                 resultEl.textContent = formatPace(paceSeconds);
                 subtitleEl.textContent = 'Based on your time and distance';
             } else if (calcMode === 'time' && distKm > 0 && paceSeconds > 0) {
-                // Calculate time from distance and pace
                 totalSeconds = paceSeconds * distKm;
                 resultEl.textContent = formatTime(totalSeconds);
                 subtitleEl.textContent = 'Estimated finish time';
             } else if (calcMode === 'distance' && totalSeconds > 0 && paceSeconds > 0) {
-                // Calculate distance from time and pace
                 distKm = totalSeconds / paceSeconds;
                 resultEl.textContent = distKm.toFixed(2) + ' km';
                 subtitleEl.textContent = (isMiles ? (distKm / 1.60934).toFixed(2) + ' mi' : 'Estimated distance');
             } else {
                 resultEl.textContent = '--:--';
                 subtitleEl.textContent = 'Enter values to calculate';
-                speedFill.style.opacity = '0';
-                speedNeedle.style.transform = 'translateX(-50%) rotate(-90deg)';
+                trackProgress.style.opacity = '0';
+                trackProgress.style.transform = 'rotate(-45deg)';
+                runner.style.opacity = '0';
+                runner.style.transform = 'translate(-50%, -50%) rotate(-90deg)';
                 updateSplits(0);
                 return;
             }
 
-            // Update speedometer needle (faster pace = more rotation)
-            // Map 3:00/km to 8:00/km across the arc
-            var maxPace = 480; // 8:00 per km in seconds
-            var minPace = 180; // 3:00 per km in seconds
-            var range = maxPace - minPace;
-            var normalized = (maxPace - paceSeconds) / range;
-            var rotation = -90 + (normalized * 180);
+            // Map pace to track position (faster pace = more progress)
+            // 3:00/km = full track, 8:00/km = barely started
+            var maxPace = 480;
+            var minPace = 180;
+            var normalized = 1 - ((paceSeconds - minPace) / (maxPace - minPace));
+            normalized = Math.max(0, Math.min(1, normalized));
 
-            speedNeedle.style.transform = 'translateX(-50%) rotate(' + rotation + 'deg)';
-            speedFill.style.opacity = '1';
+            // Track fills from top-right around
+            var rotation = -90 + (normalized * 360);
+            trackProgress.style.opacity = '1';
+            trackProgress.style.transform = 'rotate(' + rotation + 'deg)';
 
-            // Update fill arc to match
-            var fillRotation = -90 + (normalized * 180);
-            speedFill.style.transform = 'rotate(' + fillRotation + 'deg)';
+            // Runner orbits around
+            var orbitRotation = -90 + (normalized * 360);
+            runner.style.opacity = '1';
+            runner.style.transform = 'translate(-50%, -50%) rotate(' + orbitRotation + 'deg) translateX(115px)';
 
             updateSplits(paceSeconds);
         }
@@ -677,28 +704,23 @@
                 document.getElementById('split-hm').textContent = '--:--';
                 return;
             }
-
             document.getElementById('split-5k').textContent = formatTime(paceSeconds * 5);
             document.getElementById('split-10k').textContent = formatTime(paceSeconds * 10);
             document.getElementById('split-hm').textContent = formatTime(paceSeconds * 21.097);
         }
 
-        // Zone tags
         document.querySelectorAll('.zone-tag').forEach(function(tag) {
             tag.addEventListener('click', function() {
                 document.querySelectorAll('.zone-tag').forEach(function(t) { t.classList.remove('active'); });
                 this.classList.add('active');
-
                 var paceRange = this.getAttribute('data-pace').split('-');
                 var paceMin = parseInt(paceRange[0]);
                 var paceSec = parseInt(paceRange[1]) || 0;
-
                 document.getElementById('pace-min').value = paceMin;
                 document.getElementById('pace-sec').value = paceSec;
                 calcMode = 'pace';
                 document.querySelectorAll('.toggle-btn').forEach(function(b) { b.classList.remove('active'); });
                 document.getElementById('calc-pace').classList.add('active');
-
                 calculatePace();
             });
         });
