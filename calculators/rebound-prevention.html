@@ -17,15 +17,16 @@ header .container{display:flex;justify-content:space-between;align-items:center}
 nav{display:flex;gap:28px}
 nav a{color:var(--text-secondary);font-size:0.85rem;text-decoration:none}
 main{padding:48px 0}
-.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--text-secondary);font-size:0.85rem;text-decoration:none;margin-bottom:32px}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--text-secondary);font-size:0.85rem;text-decoration:none;margin-bottom:32px;transition:color 0.2s}
+.back-link:hover{color:var(--text)}
 .page-header{margin-bottom:40px}
 .page-title{font-size:1.75rem;font-weight:600;margin-bottom:8px}
 .page-desc{color:var(--text-secondary);font-size:0.9rem}
 .calculator{display:grid;grid-template-columns:1fr 1fr;gap:40px}
 .input-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px}
 .input-group{margin-bottom:20px}
-.input-label{font-size:0.85rem;color:var(--text-secondary);margin-bottom:8px}
-.input-field{width:100%;padding:14px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:1.1rem;text-align:center;font-weight:600}
+.input-label{display:block;font-size:0.85rem;color:var(--text-secondary);margin-bottom:8px}
+.input-field{width:100%;padding:14px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:1.1rem;text-align:center;font-weight:600;transition:all 0.2s ease}
 .input-field:focus{outline:none;border-color:var(--accent)}
 .result-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden}
 .result-header{padding:20px 24px;border-bottom:1px solid var(--border)}
@@ -33,10 +34,22 @@ main{padding:48px 0}
 .result-body{padding:48px 24px;text-align:center}
 .score{font-size:4rem;font-weight:600;color:var(--accent)}
 .score-label{font-size:0.9rem;color:var(--text-secondary);margin-top:8px}
-.tips{margin-top:32px;padding-top:24px;border-top:1px solid var(--border);text-align:left}
+.tips{margin-top:32px;padding-top:24px;border-top:1px solid var(--border)}
 .tip{font-size:0.9rem;color:var(--text-secondary);padding:10px 0;border-bottom:1px solid var(--border)}
 .tip:last-child{border:none}
 .tip-icon{color:var(--green);margin-right:8px}
+.info-section{margin-top:48px;padding-top:32px;border-top:1px solid var(--border)}
+.info-title{font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px;text-transform:uppercase}
+.info-content{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px}
+.info-content p{color:var(--text-secondary);font-size:0.9rem;line-height:1.6;margin-bottom:12px}
+.info-content p:last-child{margin-bottom:0}
+.suggestions{margin-top:48px}
+.suggestions-title{font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px;text-transform:uppercase}
+.suggestions-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.suggestion-card{display:block;padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;text-decoration:none;color:var(--text);transition:all 0.2s ease}
+.suggestion-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.suggestion-name{font-size:0.95rem;font-weight:500;color:var(--text)}
+.suggestion-desc{font-size:0.8rem;color:var(--text-secondary);margin-top:4px}
 footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color:var(--text-secondary);font-size:0.8rem;margin-top:48px}
 @media(max-width:768px){.calculator{grid-template-columns:1fr}nav{display:none}}
 </style>
@@ -44,12 +57,12 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 <body>
 <header>
 <div class="container">
-<a href="../index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
-<nav><a href="../profile.html">Profile</a><a href="../index.html#goals">Goals</a></nav>
+<a href="index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
+<nav><a href="profile.html">Profile</a><a href="index.html#goals">Goals</a></nav>
 </div>
 </header>
 <main class="container">
-<a href="../index.html" class="back-link">← Back</a>
+<a href="index.html" class="back-link">← Back</a>
 <div class="page-header">
 <h1 class="page-title">Rebound Prevention</h1>
 <p class="page-desc">Keep the weight off for good</p>
@@ -83,21 +96,27 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 </div>
 </div>
 </div>
+<div class="info-section">
+<div class="info-title">Why most regain weight</div>
+<div class="info-content">
+<p><strong>The rebound</strong> happens when people go back to old eating habits after a diet. The key to keeping weight off is gradual transition and lifestyle changes.</p>
+<p>Lose weight slowly (0.5kg/week) and ease back into normal eating over 4-6 weeks.</p>
+</div>
+</div>
+<div class="suggestions">
+<div class="suggestions-title">Related Calculators</div>
+<div class="suggestions-grid">
+<a href="weight-loss-timeline.html" class="suggestion-card"><div class="suggestion-name">Timeline</div><div class="suggestion-desc">Plan your journey</div></a>
+<a href="fat-loss.html" class="suggestion-card"><div class="suggestion-name">Fat Loss</div><div class="suggestion-desc">Healthy approach</div></a>
+<a href="calorie-needs.html" class="suggestion-card"><div class="suggestion-name">Calorie Needs</div><div class="suggestion-desc">Maintenance calories</div></a>
+</div>
 </div>
 </main>
 <footer>FitGauge</footer>
 <script>
-function calc(){
-var lost=parseFloat(document.getElementById('lost').value)||5;
-var time=parseFloat(document.getElementById('time').value)||3;
-var cal=parseFloat(document.getElementById('cal').value)||100;
-var rate=lost/time;
-var el=document.getElementById('risk');
-var label=document.getElementById('risk-label');
-if(rate>2||cal<85){el.textContent='High';el.style.color='#f87171';label.textContent='High chance of gaining it back';}
+function calc(){var lost=parseFloat(document.getElementById('lost').value)||5;var time=parseFloat(document.getElementById('time').value)||3;var cal=parseFloat(document.getElementById('cal').value)||100;var rate=lost/time;var el=document.getElementById('risk');var label=document.getElementById('risk-label');if(rate>2||cal<85){el.textContent='High';el.style.color='#f87171';label.textContent='High chance of gaining it back';}
 else if(rate>1||cal<95){el.textContent='Medium';el.style.color='#facc15';label.textContent='Moderate chance of gaining it back';}
-else{el.textContent='Low';el.style.color='var(--green)';label.textContent='You should be fine!';}
-}
+else{el.textContent='Low';el.style.color='var(--green)';label.textContent='You should be fine!';}}
 calc();
 </script>
 </body>

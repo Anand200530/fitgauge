@@ -6,7 +6,7 @@
 <title>Somatotype - FitGauge</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0a0a0a;--surface:#141414;--surface-hover:#1a1a1a;--border:#262626;--text:#f5f5f5;--text-secondary:#737373;--accent:#22c55e;--blue:#60a5fa;--purple:#a855f7;}
+:root{--bg:#0a0a0a;--surface:#141414;--surface-hover:#1a1a1a;--border:#262626;--text:#f5f5f5;--text-secondary:#737373;--accent:#22c55e;}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 .container{max-width:1100px;margin:0 auto;padding:0 24px}
@@ -17,23 +17,22 @@ header .container{display:flex;justify-content:space-between;align-items:center}
 nav{display:flex;gap:28px}
 nav a{color:var(--text-secondary);font-size:0.85rem;text-decoration:none}
 main{padding:48px 0}
-.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--text-secondary);font-size:0.85rem;text-decoration:none;margin-bottom:32px}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--text-secondary);font-size:0.85rem;text-decoration:none;margin-bottom:32px;transition:color 0.2s}
+.back-link:hover{color:var(--text)}
 .page-header{margin-bottom:40px}
 .page-title{font-size:1.75rem;font-weight:600;margin-bottom:8px}
 .page-desc{color:var(--text-secondary);font-size:0.9rem}
 .calculator{display:grid;grid-template-columns:1fr 1fr;gap:40px}
 .input-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px}
 .gender-toggle{display:flex;gap:12px;margin-bottom:24px}
-.gender-btn{flex:1;padding:14px;background:var(--surface-hover);border:2px solid var(--border);border-radius:10px;color:var(--text-secondary);font-size:1rem;cursor:pointer;text-align:center}
+.gender-btn{flex:1;padding:16px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text-secondary);font-size:1rem;cursor:pointer;text-align:center;transition:all 0.2s ease}
+.gender-btn:hover{background:var(--border)}
 .gender-btn.active{border-color:var(--accent);color:var(--accent)}
-.input-group{margin-bottom:20px}
-.input-label{font-size:0.85rem;color:var(--text-secondary);margin-bottom:8px}
-.input-field{width:100%;padding:14px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:1.1rem;text-align:center;font-weight:600}
-.input-field:focus{outline:none;border-color:var(--accent)}
 .scale-group{margin-bottom:20px}
 .scale-label{font-size:0.85rem;color:var(--text-secondary);margin-bottom:8px}
 .scale{display:flex;gap:8px}
-.scale-btn{flex:1;padding:12px;background:var(--surface-hover);border:2px solid var(--border);border-radius:8px;color:var(--text-secondary);font-size:0.85rem;cursor:pointer;text-align:center}
+.scale-btn{flex:1;padding:12px;background:var(--surface-hover);border:2px solid var(--border);border-radius:8px;color:var(--text-secondary);font-size:0.85rem;cursor:pointer;text-align:center;transition:all 0.2s ease}
+.scale-btn:hover{background:var(--border)}
 .scale-btn.active{border-color:var(--accent);color:var(--accent)}
 .result-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden}
 .result-header{padding:20px 24px;border-bottom:1px solid var(--border)}
@@ -42,8 +41,20 @@ main{padding:48px 0}
 .type-icon{font-size:4rem;margin-bottom:16px}
 .type-name{font-size:2rem;font-weight:600;color:var(--accent)}
 .type-desc{font-size:0.9rem;color:var(--text-secondary);margin-top:8px}
-.traits{margin-top:24px;padding-top:24px;border-top:1px solid var(--border);text-align:left}
+.traits{margin-top:24px;padding-top:24px;border-top:1px solid var(--border)}
 .trait{font-size:0.9rem;color:var(--text-secondary);padding:8px 0}
+.info-section{margin-top:48px;padding-top:32px;border-top:1px solid var(--border)}
+.info-title{font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px;text-transform:uppercase}
+.info-content{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px}
+.info-content p{color:var(--text-secondary);font-size:0.9rem;line-height:1.6;margin-bottom:12px}
+.info-content p:last-child{margin-bottom:0}
+.suggestions{margin-top:48px}
+.suggestions-title{font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px;text-transform:uppercase}
+.suggestions-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.suggestion-card{display:block;padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;text-decoration:none;color:var(--text);transition:all 0.2s ease}
+.suggestion-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.suggestion-name{font-size:0.95rem;font-weight:500;color:var(--text)}
+.suggestion-desc{font-size:0.8rem;color:var(--text-secondary);margin-top:4px}
 footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color:var(--text-secondary);font-size:0.8rem;margin-top:48px}
 @media(max-width:768px){.calculator{grid-template-columns:1fr}nav{display:none}}
 </style>
@@ -51,12 +62,12 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 <body>
 <header>
 <div class="container">
-<a href="../index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
-<nav><a href="../profile.html">Profile</a><a href="../index.html#body">Body</a></nav>
+<a href="index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
+<nav><a href="profile.html">Profile</a><a href="index.html#body">Body</a></nav>
 </div>
 </header>
 <main class="container">
-<a href="../index.html" class="back-link">← Back</a>
+<a href="index.html" class="back-link">← Back</a>
 <div class="page-header">
 <h1 class="page-title">Somatotype</h1>
 <p class="page-desc">Your natural body type</p>
@@ -105,6 +116,20 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 </div>
 </div>
 </div>
+<div class="info-section">
+<div class="info-title">What is somatotype?</div>
+<div class="info-content">
+<p><strong>Somatotypes</strong> are body type categories. Most people are a mix of types, not purely one.</p>
+<p>Your type gives clues about what works best for your body - training, diet, and expectations.</p>
+</div>
+</div>
+<div class="suggestions">
+<div class="suggestions-title">Related Calculators</div>
+<div class="suggestions-grid">
+<a href="body-shape.html" class="suggestion-card"><div class="suggestion-name">Body Shape</div><div class="suggestion-desc">Your proportions</div></a>
+<a href="1rm.html" class="suggestion-card"><div class="suggestion-name">1RM Calculator</div><div class="suggestion-desc">Test your strength</div></a>
+<a href="protein.html" class="suggestion-card"><div class="suggestion-name">Protein</div><div class="suggestion-desc">Your protein needs</div></a>
+</div>
 </div>
 </main>
 <footer>FitGauge</footer>
@@ -115,17 +140,10 @@ function setGender(g){gender=g;calc();}
 function setEase(el){document.querySelectorAll('.scale-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');ease=parseInt(el.dataset.e);calc();}
 function setFat(el){var btns=el.parentNode.querySelectorAll('.scale-btn');btns.forEach(b=>b.classList.remove('active'));el.classList.add('active');fat=parseInt(el.dataset.f);calc();}
 function setSize(el){var btns=el.parentNode.querySelectorAll('.scale-btn');btns.forEach(b=>b.classList.remove('active'));el.classList.add('active');size=parseInt(el.dataset.s);calc();}
-function calc(){
-var icon=document.getElementById('icon');
-var type=document.getElementById('type');
-var desc=document.getElementById('desc');
-var trait1=document.getElementById('trait1');
-var trait2=document.getElementById('trait2');
-if(ease>=2&&size>=2&&fat<=2){icon.textContent='🏋️';type.textContent='Mesomorph';desc.textContent='Muscular and athletic';trait1.textContent='✓ Gains muscle easily';trait2.textContent='✓ Natural athlete';}
+function calc(){var icon=document.getElementById('icon');var type=document.getElementById('type');var desc=document.getElementById('desc');var trait1=document.getElementById('trait1');var trait2=document.getElementById('trait2');if(ease>=2&&size>=2&&fat<=2){icon.textContent='🏋️';type.textContent='Mesomorph';desc.textContent='Muscular and athletic';trait1.textContent='✓ Gains muscle easily';trait2.textContent='✓ Natural athlete';}
 else if(fat>=3||ease===1){icon.textContent='🍔';type.textContent='Endomorph';desc.textContent='Soft and round';trait1.textContent='✓ Gains fat easily';trait2.textContent='✓ Needs cardio';}
 else if(ease===1||size===1){icon.textContent='🦴';type.textContent='Ectomorph';desc.textContent='Lean and slim';trait1.textContent='✓ Hard to gain weight';trait2.textContent='✓ Needs more food';}
-else{icon.textContent='⚖️';type.textContent='Mix';desc.textContent='Between types';trait1.textContent='✓ Balanced traits';trait2.textContent='✓ Adaptable';}
-}
+else{icon.textContent='⚖️';type.textContent='Mix';desc.textContent='Between types';trait1.textContent='✓ Balanced traits';trait2.textContent='✓ Adaptable';}}
 calc();
 </script>
 </body>

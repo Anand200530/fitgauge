@@ -17,21 +17,24 @@ header .container{display:flex;justify-content:space-between;align-items:center}
 nav{display:flex;gap:28px}
 nav a{color:var(--text-secondary);font-size:0.85rem;text-decoration:none}
 main{padding:48px 0}
-.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--text-secondary);font-size:0.85rem;text-decoration:none;margin-bottom:32px}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--text-secondary);font-size:0.85rem;text-decoration:none;margin-bottom:32px;transition:color 0.2s}
+.back-link:hover{color:var(--text)}
 .page-header{margin-bottom:40px}
 .page-title{font-size:1.75rem;font-weight:600;margin-bottom:8px}
 .page-desc{color:var(--text-secondary);font-size:0.9rem}
 .calculator{display:grid;grid-template-columns:1fr 1fr;gap:40px}
 .input-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px}
 .gender-toggle{display:flex;gap:12px;margin-bottom:24px}
-.gender-btn{flex:1;padding:14px;background:var(--surface-hover);border:2px solid var(--border);border-radius:10px;color:var(--text-secondary);font-size:1rem;cursor:pointer;text-align:center}
+.gender-btn{flex:1;padding:16px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text-secondary);font-size:1rem;cursor:pointer;text-align:center;transition:all 0.2s ease}
+.gender-btn:hover{background:var(--border)}
 .gender-btn.active{border-color:var(--accent);color:var(--accent)}
 .input-group{margin-bottom:20px}
-.input-label{font-size:0.85rem;color:var(--text-secondary);margin-bottom:8px}
-.input-field{width:100%;padding:14px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:1.1rem;text-align:center;font-weight:600}
+.input-label{display:block;font-size:0.85rem;color:var(--text-secondary);margin-bottom:8px}
+.input-field{width:100%;padding:16px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:1.25rem;text-align:center;font-weight:600;transition:all 0.2s ease}
 .input-field:focus{outline:none;border-color:var(--accent)}
 .activity-options{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.activity-btn{padding:14px;background:var(--surface-hover);border:2px solid var(--border);border-radius:10px;color:var(--text-secondary);font-size:0.85rem;cursor:pointer;text-align:center}
+.activity-btn{padding:14px;background:var(--surface-hover);border:2px solid var(--border);border-radius:10px;color:var(--text-secondary);font-size:0.85rem;cursor:pointer;text-align:center;transition:all 0.2s ease}
+.activity-btn:hover{background:var(--border)}
 .activity-btn.active{border-color:var(--accent);color:var(--accent)}
 .result-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden}
 .result-header{padding:20px 24px;border-bottom:1px solid var(--border)}
@@ -40,6 +43,18 @@ main{padding:48px 0}
 .result-value{font-size:4rem;font-weight:600;color:var(--accent)}
 .result-unit{font-size:1.1rem;color:var(--text-secondary);margin-top:4px}
 .msg{font-size:1rem;color:var(--text-secondary);margin-top:16px;line-height:1.6}
+.info-section{margin-top:48px;padding-top:32px;border-top:1px solid var(--border)}
+.info-title{font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px;text-transform:uppercase}
+.info-content{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px}
+.info-content p{color:var(--text-secondary);font-size:0.9rem;line-height:1.6;margin-bottom:12px}
+.info-content p:last-child{margin-bottom:0}
+.suggestions{margin-top:48px}
+.suggestions-title{font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px;text-transform:uppercase}
+.suggestions-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.suggestion-card{display:block;padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;text-decoration:none;color:var(--text);transition:all 0.2s ease}
+.suggestion-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.suggestion-name{font-size:0.95rem;font-weight:500;color:var(--text)}
+.suggestion-desc{font-size:0.8rem;color:var(--text-secondary);margin-top:4px}
 footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color:var(--text-secondary);font-size:0.8rem;margin-top:48px}
 @media(max-width:768px){.calculator{grid-template-columns:1fr}nav{display:none}}
 </style>
@@ -47,12 +62,12 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 <body>
 <header>
 <div class="container">
-<a href="../index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
-<nav><a href="../profile.html">Profile</a><a href="../index.html#energy">Energy</a></nav>
+<a href="index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
+<nav><a href="profile.html">Profile</a><a href="index.html#energy">Energy</a></nav>
 </div>
 </header>
 <main class="container">
-<a href="../index.html" class="back-link">← Back</a>
+<a href="index.html" class="back-link">← Back</a>
 <div class="page-header">
 <h1 class="page-title">Maintenance Calories</h1>
 <p class="page-desc">Calories to stay the same weight</p>
@@ -64,7 +79,7 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 <div class="gender-btn active" id="female-btn" onclick="setGender('female')">♀ Female</div>
 </div>
 <div class="input-group">
-<div class="input-label">Age (years)</div>
+<div class="input-label">Age</div>
 <input type="number" class="input-field" id="age" value="25" oninput="calc()">
 </div>
 <div class="input-group">
@@ -76,12 +91,12 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 <input type="number" class="input-field" id="weight" value="65" oninput="calc()">
 </div>
 <div class="input-group">
-<div class="input-label">Activity</div>
+<div class="input-label">How active are you?</div>
 <div class="activity-options">
-<div class="activity-btn" data-factor="1.2" onclick="setActivity(this)">Office job</div>
-<div class="activity-btn active" data-factor="1.375" onclick="setActivity(this)">Light active</div>
+<div class="activity-btn" data-factor="1.2" onclick="setActivity(this)">Sedentary</div>
+<div class="activity-btn active" data-factor="1.375" onclick="setActivity(this)">Light</div>
 <div class="activity-btn" data-factor="1.55" onclick="setActivity(this)">Moderate</div>
-<div class="activity-btn" data-factor="1.725" onclick="setActivity(this)">Very active</div>
+<div class="activity-btn" data-factor="1.725" onclick="setActivity(this)">Active</div>
 </div>
 </div>
 </div>
@@ -93,6 +108,20 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 <div class="msg" id="msg">Eat this much to stay the same</div>
 </div>
 </div>
+</div>
+<div class="info-section">
+<div class="info-title">What is maintenance?</div>
+<div class="info-content">
+<p><strong>Maintenance calories</strong> are the calories you need to eat to stay at your current weight. Eating more = gain weight. Eating less = lose weight.</p>
+<p>Your needs change as you lose/gain weight, age, or change activity levels. Recalculate periodically.</p>
+</div>
+</div>
+<div class="suggestions">
+<div class="suggestions-title">Related Calculators</div>
+<div class="suggestions-grid">
+<a href="tdee.html" class="suggestion-card"><div class="suggestion-name">TDEE</div><div class="suggestion-desc">Total energy expenditure</div></a>
+<a href="bmr.html" class="suggestion-card"><div class="suggestion-name">BMR</div><div class="suggestion-desc">Calories at rest</div></a>
+<a href="calorie-needs.html" class="suggestion-card"><div class="suggestion-name">Calorie Needs</div><div class="suggestion-desc">Targets by goal</div></a>
 </div>
 </div>
 </main>
