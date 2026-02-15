@@ -29,9 +29,7 @@
         .gender-btn.active { border-color: var(--accent); color: var(--accent); }
         
         .input-group { margin-bottom: 24px; }
-        .input-label { display: flex; justify-content: space-between; margin-bottom: 8px; }
-        .input-name { font-size: 0.85rem; color: var(--text-secondary); }
-        .input-value { font-size: 1rem; font-weight: 600; color: var(--accent); }
+        .input-label { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px; }
         .input-field { width: 100%; padding: 16px; background: var(--surface-hover); border: 2px solid var(--border); border-radius: 12px; color: var(--text); font-size: 1.25rem; text-align: center; font-weight: 600; }
         .input-field:focus { outline: none; border-color: var(--accent); }
         
@@ -40,38 +38,34 @@
         .result-badge { padding: 6px 12px; background: rgba(34, 197, 94, 0.15); border-radius: 20px; font-size: 0.75rem; color: var(--accent); }
         .result-body { padding: 40px 24px; text-align: center; }
         
-        /* Circular Ring Gauge */
-        .ring-container { width: 220px; height: 220px; margin: 0 auto 24px; position: relative; }
-        .ring-outer { position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 10px solid var(--border); }
-        .ring-fill { position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 10px solid var(--accent); border-top-color: transparent; border-right-color: transparent; transform: rotate(-45deg); transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0; }
-        .ring-inner { position: absolute; top: 20px; left: 20px; width: calc(100% - 40px); height: calc(100% - 40px); border-radius: 50%; background: var(--surface); display: flex; align-items: center; justify-content: center; flex-direction: column; }
+        .gauge-wrapper { width: 240px; height: 240px; margin: 0 auto 32px; position: relative; }
+        .gauge-svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+        .gauge-bg { fill: none; stroke: var(--border); stroke-width: 14; }
+        .gauge-progress { fill: none; stroke-width: 14; stroke-linecap: round; stroke-dasharray: 565; stroke-dashoffset: 565; transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.5s; }
         
-        .bmi-value { font-size: 3rem; font-weight: 600; line-height: 1; }
-        .bmi-label { font-size: 0.9rem; color: var(--text-secondary); margin-top: 4px; }
+        .gauge-inner { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+        .gauge-value { font-size: 3.5rem; font-weight: 600; line-height: 1; transition: color 0.3s; }
+        .gauge-label { font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px; }
         
-        .status-row { display: flex; justify-content: center; gap: 24px; margin-top: 16px; }
-        .status-item { text-align: center; }
-        .status-dot { width: 12px; height: 12px; border-radius: 50%; margin: 0 auto 6px; }
-        .status-name { font-size: 0.7rem; color: var(--text-secondary); }
+        .status-dots { display: flex; justify-content: center; gap: 16px; margin-top: 24px; }
+        .status-dot { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .dot-label { font-size: 0.65rem; color: var(--text-secondary); }
         
         .target-section { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding-top: 24px; border-top: 1px solid var(--border); margin-top: 24px; }
-        .target-item { background: var(--surface-hover); border-radius: 12px; padding: 16px; text-align: center; }
+        .target-item { background: var(--surface-hover); border-radius: 12px; padding: 16px; }
         .target-value { font-size: 1.25rem; font-weight: 600; }
         .target-label { font-size: 0.7rem; color: var(--text-secondary); margin-top: 4px; }
         
         footer { padding: 32px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-secondary); font-size: 0.8rem; margin-top: 48px; }
-        @media (max-width: 768px) { .calculator { grid-template-columns: 1fr; } nav { display: none; } .ring-container { width: 180px; height: 180px; } .bmi-value { font-size: 2.5rem; } }
+        @media (max-width: 768px) { .calculator { grid-template-columns: 1fr; } nav { display: none; } .gauge-wrapper { width: 200px; height: 200px; } .gauge-value { font-size: 2.5rem; } }
     </style>
 </head>
 <body>
     <header>
         <div class="container">
             <a href="../index.html" class="logo">
-                <svg viewBox="0 0 40 40" fill="none">
-                    <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/>
-                    <circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/>
-                    <circle cx="20" cy="20" r="6" fill="currentColor"/>
-                </svg>
+                <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>
                 FitGauge
             </a>
             <nav><a href="../profile.html">Profile</a><a href="../index.html#body">Body</a></nav>
@@ -90,34 +84,36 @@
                     <div class="gender-btn active" id="female-btn" onclick="setGender('female')">♀ Female</div>
                 </div>
                 <div class="input-group">
-                    <div class="input-label"><span class="input-name">Age</span><span class="input-value" id="age-display">25 yrs</span></div>
-                    <input type="number" class="input-field" id="age" value="25" oninput="update()">
+                    <div class="input-label">Age (years)</div>
+                    <input type="number" class="input-field" id="age" value="25" oninput="calculate()">
                 </div>
                 <div class="input-group">
-                    <div class="input-label"><span class="input-name">Height</span><span class="input-value" id="height-display">170 cm</span></div>
-                    <input type="number" class="input-field" id="height" value="170" oninput="update()">
+                    <div class="input-label">Height (cm)</div>
+                    <input type="number" class="input-field" id="height" value="170" oninput="calculate()">
                 </div>
                 <div class="input-group">
-                    <div class="input-label"><span class="input-name">Weight</span><span class="input-value" id="weight-display">65 kg</span></div>
-                    <input type="number" class="input-field" id="weight" value="65" oninput="update()">
+                    <div class="input-label">Weight (kg)</div>
+                    <input type="number" class="input-field" id="weight" value="65" oninput="calculate()">
                 </div>
             </div>
             <div class="result-card">
                 <div class="result-header"><span class="result-badge">BMI</span></div>
                 <div class="result-body">
-                    <div class="ring-container">
-                        <div class="ring-outer"></div>
-                        <div class="ring-fill" id="ring-fill"></div>
-                        <div class="ring-inner">
-                            <div class="bmi-value" id="bmi-value">22.9</div>
-                            <div class="bmi-label">Body Mass Index</div>
+                    <div class="gauge-wrapper">
+                        <svg class="gauge-svg" viewBox="0 0 220 220">
+                            <circle class="gauge-bg" cx="110" cy="110" r="90"/>
+                            <circle class="gauge-progress" id="gauge" cx="110" cy="110" r="90"/>
+                        </svg>
+                        <div class="gauge-inner">
+                            <div class="gauge-value" id="bmi-value">22.9</div>
+                            <div class="gauge-label">Body Mass Index</div>
                         </div>
                     </div>
-                    <div class="status-row">
-                        <div class="status-item"><div class="status-dot" style="background: var(--blue)"></div><div class="status-name">Under</div></div>
-                        <div class="status-item"><div class="status-dot" style="background: var(--green)"></div><div class="status-name">Normal</div></div>
-                        <div class="status-item"><div class="status-dot" style="background: var(--yellow)"></div><div class="status-name">Over</div></div>
-                        <div class="status-item"><div class="status-dot" style="background: var(--red)"></div><div class="status-name">Obese</div></div>
+                    <div class="status-dots">
+                        <div class="status-dot"><div class="dot" style="background: var(--blue)"></div><span class="dot-label">Under</span></div>
+                        <div class="status-dot"><div class="dot" style="background: var(--green)"></div><span class="dot-label">Normal</span></div>
+                        <div class="status-dot"><div class="dot" style="background: var(--yellow)"></div><span class="dot-label">Over</span></div>
+                        <div class="status-dot"><div class="dot" style="background: var(--red)"></div><span class="dot-label">Obese</span></div>
                     </div>
                     <div class="target-section">
                         <div class="target-item"><div class="target-value" id="target-min">54</div><div class="target-label">Min (kg)</div></div>
@@ -133,17 +129,11 @@
         
         function setGender(g) { state.gender = g; document.getElementById('male-btn').classList.toggle('active', g === 'male'); document.getElementById('female-btn').classList.toggle('active', g === 'female'); calculate(); }
         
-        function update() {
+        function calculate() {
             state.age = parseInt(document.getElementById('age').value) || 25;
             state.height = parseInt(document.getElementById('height').value) || 170;
             state.weight = parseInt(document.getElementById('weight').value) || 65;
-            document.getElementById('age-display').textContent = state.age + ' yrs';
-            document.getElementById('height-display').textContent = state.height + ' cm';
-            document.getElementById('weight-display').textContent = state.weight + ' kg';
-            calculate();
-        }
-        
-        function calculate() {
+            
             var hM = state.height / 100;
             var bmi = state.weight / (hM * hM);
             bmi = Math.round(bmi * 10) / 10;
@@ -157,16 +147,13 @@
             document.getElementById('bmi-value').textContent = bmi;
             document.getElementById('bmi-value').style.color = color;
             
-            // Ring fill (BMI 15-40 = 0-100%)
             var pct = ((bmi - 15) / 25) * 100;
             pct = Math.max(0, Math.min(100, pct));
             
-            var ring = document.getElementById('ring-fill');
-            ring.style.opacity = '1';
-            ring.style.borderColor = color;
-            ring.style.transform = 'rotate(' + (-45 + pct * 3.6) + 'deg)';
+            var gauge = document.getElementById('gauge');
+            gauge.style.stroke = color;
+            gauge.style.strokeDashoffset = 565 - (pct / 100) * 565;
             
-            // Target weights
             var min = Math.round(18.5 * hM * hM);
             var max = Math.round(25 * hM * hM);
             document.getElementById('target-min').textContent = min;
@@ -187,7 +174,7 @@
                 if (wU === 'lbs') weight = Math.round(weight * 0.453592);
                 document.getElementById('weight').value = weight;
             }
-            update();
+            calculate();
         }
         
         window.onload = loadProfile;
