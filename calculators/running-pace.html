@@ -1,368 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Running Pace Calculator - FitGauge</title>
-    <link rel="stylesheet" href="assets/styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #0a0a0a;
-            --surface: #141414;
-            --surface-hover: #1a1a1a;
-            --border: #262626;
-            --text: #f5f5f5;
-            --text-secondary: #737373;
-            --accent: #22c55e;
-            --font: 'Inter', sans-serif;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.5; }
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-        header { padding: 20px 0; border-bottom: 1px solid var(--border); background: var(--bg); position: sticky; top: 0; z-index: 100; }
-        header .container { display: flex; justify-content: space-between; align-items: center; }
-        .logo { display: flex; align-items: center; gap: 10px; font-size: 1.1rem; font-weight: 600; color: var(--text); text-decoration: none; }
-        .logo svg { width: 26px; height: 26px; color: var(--accent); }
-        nav { display: flex; gap: 28px; }
-        nav a { color: var(--text-secondary); font-size: 0.85rem; text-decoration: none; transition: color 0.2s; }
-        nav a:hover { color: var(--text); }
-        main { padding: 48px 0; }
-        .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--text-secondary); font-size: 0.85rem; text-decoration: none; margin-bottom: 32px; transition: color 0.2s; }
-        .back-link:hover { color: var(--accent); }
-        .page-header { margin-bottom: 40px; }
-        .page-title { font-size: 1.75rem; font-weight: 600; margin-bottom: 8px; }
-        .page-desc { color: var(--text-secondary); font-size: 0.9rem; }
-        .calculator { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-        .form-section { display: flex; flex-direction: column; gap: 20px; }
-        .form-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
-        .form-group { margin-bottom: 20px; }
-        .form-group:last-child { margin-bottom: 0; }
-        .form-label { display: block; font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .form-input { width: 100%; padding: 14px 16px; background: var(--surface-hover); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: var(--font); font-size: 1rem; transition: all 0.2s; }
-        .form-input:focus { outline: none; border-color: var(--accent); background: var(--bg); }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
-        .unit-toggle { display: flex; gap: 8px; margin-bottom: 12px; }
-        .unit-btn { padding: 8px 16px; background: transparent; border: 1px solid var(--border); border-radius: 6px; color: var(--text-secondary); font-size: 0.8rem; cursor: pointer; transition: all 0.2s; }
-        .unit-btn:hover { background: var(--surface-hover); }
-        .unit-btn.active { background: var(--accent); border-color: var(--accent); color: #000; }
-        .toggle-group { display: flex; gap: 8px; }
-        .toggle-btn { flex: 1; padding: 12px 20px; background: var(--surface-hover); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); font-family: var(--font); font-size: 0.9rem; cursor: pointer; transition: all 0.2s; }
-        .toggle-btn:hover { background: var(--border); }
-        .toggle-btn.active { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 500; }
-        .result-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; }
-        .result-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-        .result-title { font-size: 1rem; font-weight: 500; }
-        .result-badge { padding: 6px 12px; background: rgba(34, 197, 94, 0.15); border-radius: 20px; font-size: 0.75rem; color: var(--accent); }
-        .result-body { padding: 32px 24px; text-align: center; }
-        
-        /* Circular Gauge */
-        .gauge-container { margin-bottom: 24px; }
-        .gauge-circle { width: 200px; height: 200px; margin: 0 auto; position: relative; }
-        .gauge-circle svg { transform: rotate(-90deg); width: 100%; height: 100%; }
-        .gauge-bg { fill: none; stroke: var(--border); stroke-width: 12; }
-        .gauge-progress { fill: none; stroke: var(--accent); stroke-width: 12; stroke-linecap: round; stroke-dasharray: 565; stroke-dashoffset: 565; transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
-        .gauge-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
-        .gauge-value { font-size: 2.5rem; font-weight: 600; color: var(--text); line-height: 1; }
-        .gauge-unit { font-size: 0.9rem; color: var(--text-secondary); margin-top: 4px; }
-        
-        .result-main { margin-bottom: 24px; }
-        .result-value { font-size: 2rem; font-weight: 600; color: var(--accent); }
-        .result-label { font-size: 0.9rem; color: var(--text-secondary); margin-top: 4px; }
-        
-        .splits-section { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding-top: 24px; border-top: 1px solid var(--border); }
-        .split-item { background: var(--surface-hover); border-radius: 10px; padding: 12px; text-align: center; }
-        .split-value { font-size: 1.1rem; font-weight: 600; color: var(--accent); }
-        .split-label { font-size: 0.7rem; color: var(--text-secondary); margin-top: 4px; }
-        
-        .zone-section { padding: 20px 24px; border-top: 1px solid var(--border); background: var(--surface-hover); }
-        .zone-title { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; }
-        .zone-list { display: flex; gap: 8px; flex-wrap: wrap; }
-        .zone-tag { padding: 6px 12px; background: var(--surface); border-radius: 20px; font-size: 0.75rem; color: var(--text-secondary); cursor: pointer; transition: all 0.2s; }
-        .zone-tag.active { background: var(--accent); color: #000; }
-        
-        footer { padding: 32px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-secondary); font-size: 0.8rem; margin-top: 48px; }
-        @media (max-width: 768px) { .calculator { grid-template-columns: 1fr; } nav { display: none; } .result-value { font-size: 1.5rem; } .splits-section { grid-template-columns: repeat(2, 1fr); } .form-row { grid-template-columns: 1fr 1fr; } }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Running Pace - FitGauge</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--surface:#141414;--surface-hover:#1a1a1a;--border:#262626;--text:#f5f5f5;--text-secondary:#737373;--accent:#22c55e;--orange:#f97316;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.container{max-width:1100px;margin:0 auto;padding:0 24px}
+header{padding:20px 0;border-bottom:1px solid var(--border)}
+header .container{display:flex;justify-content:space-between;align-items:center}
+.logo{display:flex;align-items:center;gap:10px;font-size:1.1rem;font-weight:600;color:var(--text);text-decoration:none}
+.logo svg{width:26px;height:26px;color:var(--accent)}
+nav{display:flex;gap:28px}
+nav a{color:var(--text-secondary);font-size:0.85rem;text-decoration:none}
+main{padding:48px 0}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--text-secondary);font-size:0.85rem;text-decoration:none;margin-bottom:32px}
+.page-header{margin-bottom:40px}
+.page-title{font-size:1.75rem;font-weight:600;margin-bottom:8px}
+.page-desc{color:var(--text-secondary);font-size:0.9rem}
+.calculator{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.input-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px}
+.input-group{margin-bottom:20px}
+.input-label{font-size:0.85rem;color:var(--text-secondary);margin-bottom:8px}
+.input-field{width:100%;padding:14px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:1.1rem;text-align:center;font-weight:600}
+.input-field:focus{outline:none;border-color:var(--accent)}
+.result-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden}
+.result-header{padding:20px 24px;border-bottom:1px solid var(--border)}
+.result-badge{padding:6px 12px;background:rgba(249,115,22,0.15);border-radius:20px;font-size:0.75rem;color:var(--orange)}
+.result-body{padding:48px 24px;text-align:center}
+.pace-visual{position:relative;width:120px;height:120px;margin:0 auto 24px}
+.pace-ring{transform:rotate(-90deg)}
+.pace-bg{fill:none;stroke:var(--border);stroke-width:8}
+.pace-fill{fill:none;stroke:var(--orange);stroke-width:8;stroke-linecap:round;stroke-dasharray:283;stroke-dashoffset:70;transition:stroke-dashoffset 0.3s ease}
+.pace-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:1.5rem;font-weight:600;color:var(--text)}
+.result-value{font-size:3rem;font-weight:600;color:var(--orange)}
+.result-unit{font-size:1rem;color:var(--text-secondary);margin-top:4px}
+.split-list{margin-top:24px;text-align:left}
+.split-title{font-size:0.75rem;color:var(--text-secondary);text-transform:uppercase;margin-bottom:12px}
+.split-item{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:0.9rem}
+.split-item:last-child{border:none}
+.split-label{color:var(--text-secondary)}
+.split-value{font-weight:600}
+footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color:var(--text-secondary);font-size:0.8rem;margin-top:48px}
+@media(max-width:768px){.calculator{grid-template-columns:1fr}nav{display:none}}
+</style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <a href="index.html" class="logo">
-                <svg viewBox="0 0 40 40" fill="none">
-                    <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/>
-                    <circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/>
-                    <circle cx="20" cy="20" r="6" fill="currentColor"/>
-                    <line x1="20" y1="2" x2="20" y2="6" stroke="currentColor" stroke-width="1.5"/>
-                    <line x1="20" y1="34" x2="20" y2="38" stroke="currentColor" stroke-width="1.5"/>
-                    <line x1="2" y1="20" x2="6" y2="20" stroke="currentColor" stroke-width="1.5"/>
-                    <line x1="34" y1="20" x2="38" y2="20" stroke="currentColor" stroke-width="1.5"/>
-                </svg>
-                FitGauge
-            </a>
-            <nav>
-                <a href="index.html#body">Body</a>
-                <a href="index.html#energy">Energy</a>
-                <a href="index.html#nutrition">Nutrition</a>
-                <a href="index.html#fitness">Fitness</a>
-                <a href="index.html#goals">Goals</a>
-            </nav>
-        </div>
-    </header>
-    <main class="container">
-        <a href="index.html" class="back-link">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M19 12H5M12 19l-7-7 7-7"/>
-            </svg>
-            Back to calculators
-        </a>
-        <div class="page-header">
-            <h1 class="page-title">Running Pace</h1>
-            <p class="page-desc">Calculate pace, time, and distance for your runs</p>
-        </div>
-        <div class="calculator">
-            <div class="form-section">
-                <div class="form-card">
-                    <div class="form-group">
-                        <label class="form-label">Calculate</label>
-                        <div class="toggle-group">
-                            <button class="toggle-btn active" id="calc-pace">Pace</button>
-                            <button class="toggle-btn" id="calc-time">Time</button>
-                            <button class="toggle-btn" id="calc-distance">Distance</button>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Distance</label>
-                        <div class="unit-toggle">
-                            <button class="unit-btn active" id="dist-km-btn">km</button>
-                            <button class="unit-btn" id="dist-mi-btn">mi</button>
-                        </div>
-                        <input type="number" class="form-input" id="distance" placeholder="5" value="5">
-                    </div>
-                    <div class="form-group" id="time-inputs">
-                        <label class="form-label">Time</label>
-                        <div class="form-row">
-                            <input type="number" class="form-input" id="time-hr" placeholder="0" value="0">
-                            <input type="number" class="form-input" id="time-min" placeholder="30" value="30">
-                            <input type="number" class="form-input" id="time-sec" placeholder="0" value="0">
-                        </div>
-                    </div>
-                    <div class="form-group" id="pace-inputs" style="display:none">
-                        <label class="form-label">Pace (min/km)</label>
-                        <div class="form-row">
-                            <input type="number" class="form-input" id="pace-min" placeholder="5">
-                            <input type="number" class="form-input" id="pace-sec" placeholder="30">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="result-card">
-                <div class="result-header">
-                    <span class="result-title">Your Pace</span>
-                    <span class="result-badge">Running</span>
-                </div>
-                <div class="result-body">
-                    <div class="gauge-container">
-                        <div class="gauge-circle">
-                            <svg viewBox="0 0 200 200">
-                                <circle class="gauge-bg" cx="100" cy="100" r="90"/>
-                                <circle class="gauge-progress" id="gauge-progress" cx="100" cy="100" r="90"/>
-                            </svg>
-                            <div class="gauge-center">
-                                <div class="gauge-value" id="result-value">6:00</div>
-                                <div class="gauge-unit">min/km</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="result-main">
-                        <div class="result-value" id="secondary-result">30:00</div>
-                        <div class="result-label" id="secondary-label">for 5 km</div>
-                    </div>
-                    <div class="splits-section">
-                        <div class="split-item">
-                            <div class="split-value" id="split-5k">30:00</div>
-                            <div class="split-label">5K Time</div>
-                        </div>
-                        <div class="split-item">
-                            <div class="split-value" id="split-10k">1:00:00</div>
-                            <div class="split-label">10K Time</div>
-                        </div>
-                        <div class="split-item">
-                            <div class="split-value" id="split-hm">2:06:39</div>
-                            <div class="split-label">Half Marathon</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="zone-section">
-                    <div class="zone-title">Training Zones</div>
-                    <div class="zone-list">
-                        <span class="zone-tag" data-pace="9-10">Easy</span>
-                        <span class="zone-tag" data-pace="7-8">Moderate</span>
-                        <span class="zone-tag active" data-pace="5-6">Tempo</span>
-                        <span class="zone-tag" data-pace="4-5">Threshold</span>
-                        <span class="zone-tag" data-pace="3-4">VO2 Max</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-    <footer>FitGauge — Precision Fitness Calculators</footer>
-    <script>
-        var calcMode = 'pace';
-        
-        function init() {
-            // Mode toggles
-            document.getElementById('calc-pace').onclick = function() { setMode('pace', this); };
-            document.getElementById('calc-time').onclick = function() { setMode('time', this); };
-            document.getElementById('calc-distance').onclick = function() { setMode('distance', this); };
-            
-            // Unit toggles
-            document.getElementById('dist-km-btn').onclick = function() { 
-                this.classList.add('active');
-                document.getElementById('dist-mi-btn').classList.remove('active');
-                calculate();
-            };
-            document.getElementById('dist-mi-btn').onclick = function() { 
-                this.classList.add('active');
-                document.getElementById('dist-km-btn').classList.remove('active');
-                calculate();
-            };
-            
-            // Input listeners
-            ['distance', 'time-hr', 'time-min', 'time-sec', 'pace-min', 'pace-sec'].forEach(function(id) {
-                var el = document.getElementById(id);
-                if (el) el.oninput = calculate;
-            });
-            
-            // Zone tags
-            document.querySelectorAll('.zone-tag').forEach(function(tag) {
-                tag.onclick = function() {
-                    document.querySelectorAll('.zone-tag').forEach(function(t) { t.classList.remove('active'); });
-                    this.classList.add('active');
-                    var p = this.getAttribute('data-pace').split('-');
-                    document.getElementById('pace-min').value = p[0];
-                    document.getElementById('pace-sec').value = p[1] || '0';
-                    setMode('pace', document.getElementById('calc-pace'));
-                };
-            });
-            
-            calculate();
-        }
-        
-        function setMode(mode, btn) {
-            calcMode = mode;
-            document.querySelectorAll('.toggle-btn').forEach(function(b) { b.classList.remove('active'); });
-            btn.classList.add('active');
-            
-            if (mode === 'pace') {
-                document.getElementById('time-inputs').style.display = 'block';
-                document.getElementById('pace-inputs').style.display = 'none';
-            } else if (mode === 'time') {
-                document.getElementById('time-inputs').style.display = 'none';
-                document.getElementById('pace-inputs').style.display = 'block';
-            } else {
-                document.getElementById('time-inputs').style.display = 'block';
-                document.getElementById('pace-inputs').style.display = 'block';
-            }
-            calculate();
-        }
-        
-        function fmtPace(sec) {
-            var m = Math.floor(sec / 60);
-            var s = Math.round(sec % 60);
-            return m + ':' + (s < 10 ? '0' : '') + s;
-        }
-        
-        function fmtTime(sec) {
-            var h = Math.floor(sec / 3600);
-            var m = Math.floor((sec % 3600) / 60);
-            var s = Math.round(sec % 60);
-            if (h > 0) return h + ':' + (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
-            return m + ':' + (s < 10 ? '0' : '') + s;
-        }
-        
-        function calculate() {
-            var dist = parseFloat(document.getElementById('distance').value) || 0;
-            var isMiles = document.getElementById('dist-mi-btn').classList.contains('active');
-            var distKm = isMiles ? dist * 1.60934 : dist;
-            
-            var hr = parseInt(document.getElementById('time-hr').value) || 0;
-            var min = parseInt(document.getElementById('time-min').value) || 0;
-            var sec = parseInt(document.getElementById('time-sec').value) || 0;
-            var totalSec = hr * 3600 + min * 60 + sec;
-            
-            var paceMin = parseInt(document.getElementById('pace-min').value) || 0;
-            var paceSec = parseInt(document.getElementById('pace-sec').value) || 0;
-            var paceSecTotal = paceMin * 60 + paceSec;
-            
-            var gauge = document.getElementById('gauge-progress');
-            var result = document.getElementById('result-value');
-            var secondary = document.getElementById('secondary-result');
-            var label = document.getElementById('secondary-label');
-            
-            if (calcMode === 'pace' && distKm > 0 && totalSec > 0) {
-                // Calculate pace from distance + time
-                var p = totalSec / distKm;
-                result.textContent = fmtPace(p);
-                secondary.textContent = fmtTime(totalSec);
-                label.textContent = 'for ' + (isMiles ? dist.toFixed(1) + ' mi' : dist + ' km');
-                updateGauge(gauge, p);
-            } else if (calcMode === 'time' && distKm > 0 && paceSecTotal > 0) {
-                // Calculate time from distance + pace
-                var t = paceSecTotal * distKm;
-                result.textContent = fmtPace(paceSecTotal);
-                secondary.textContent = fmtTime(t);
-                label.textContent = 'estimated finish';
-                updateGauge(gauge, paceSecTotal);
-            } else if (calcMode === 'distance' && totalSec > 0 && paceSecTotal > 0) {
-                // Calculate distance from time + pace
-                var d = totalSec / paceSecTotal;
-                result.textContent = fmtPace(paceSecTotal);
-                secondary.textContent = (isMiles ? (d / 1.60934).toFixed(2) + ' mi' : d.toFixed(2) + ' km');
-                label.textContent = 'estimated distance';
-                updateGauge(gauge, paceSecTotal);
-            } else {
-                // Default
-                result.textContent = '--:--';
-                secondary.textContent = '--:--';
-                label.textContent = 'Enter values';
-                gauge.style.strokeDashoffset = 565;
-                updateSplits(0);
-                return;
-            }
-            
-            updateSplits(parsePaceSec());
-        }
-        
-        function parsePaceSec() {
-            var pMin = parseInt(document.getElementById('pace-min').value) || 0;
-            var pSec = parseInt(document.getElementById('pace-sec').value) || 0;
-            return pMin * 60 + pSec;
-        }
-        
-        function updateGauge(gauge, paceSec) {
-            // Map 3:00/km (fast) to 8:00/km (slow)
-            var minPace = 180, maxPace = 480;
-            var pct = 1 - ((paceSec - minPace) / (maxPace - minPace));
-            pct = Math.max(0, Math.min(1, pct));
-            gauge.style.strokeDashoffset = 565 - (pct * 565);
-        }
-        
-        function updateSplits(paceSec) {
-            if (paceSec <= 0) {
-                document.getElementById('split-5k').textContent = '--:--';
-                document.getElementById('split-10k').textContent = '--:--';
-                document.getElementById('split-hm').textContent = '--:--';
-                return;
-            }
-            document.getElementById('split-5k').textContent = fmtTime(paceSec * 5);
-            document.getElementById('split-10k').textContent = fmtTime(paceSec * 10);
-            document.getElementById('split-hm').textContent = fmtTime(paceSec * 21.097);
-        }
-        
-        init();
-    </script>
+<header>
+<div class="container">
+<a href="../index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
+<nav><a href="../profile.html">Profile</a><a href="../index.html#fitness">Fitness</a></nav>
+</div>
+</header>
+<main class="container">
+<a href="../index.html" class="back-link">← Back</a>
+<div class="page-header">
+<h1 class="page-title">Running Pace</h1>
+<p class="page-desc">Calculate your pace</p>
+</div>
+<div class="calculator">
+<div class="input-card">
+<div class="input-group">
+<div class="input-label">Distance (km)</div>
+<input type="number" class="input-field" id="distance" value="5" oninput="calc()">
+</div>
+<div class="input-group">
+<div class="input-label">Time (minutes)</div>
+<input type="number" class="input-field" id="minutes" value="30" oninput="calc()">
+</div>
+</div>
+<div class="result-card">
+<div class="result-header"><span class="result-badge">🏃 Pace</span></div>
+<div class="result-body">
+<div class="pace-visual">
+<svg class="pace-ring" width="120" height="120" viewBox="0 0 120 120">
+<circle class="pace-bg" cx="60" cy="60" r="45"/>
+<circle class="pace-fill" id="pace-ring" cx="60" cy="60" r="45"/>
+</svg>
+<div class="pace-text" id="pace-text">6:00</div>
+</div>
+<div class="result-value" id="avg-pace">6:00</div>
+<div class="result-unit">min/km</div>
+<div class="split-list">
+<div class="split-title">Splits</div>
+<div class="split-item"><span class="split-label">1 km</span><span class="split-value" id="split1">6:00</span></div>
+<div class="split-item"><span class="split-label">5 km</span><span class="split-value" id="split5">30:00</span></div>
+<div class="split-item"><span class="split-label">10 km</span><span class="split-value" id="split10">60:00</span></div>
+<div class="split-item"><span class="split-label">Half Marathon</span><span class="split-value" id="split21">126:00</span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<footer>FitGauge</footer>
+<script>
+function formatTime(min){var m=Math.floor(min);var s=Math.round((min-m)*60);if(s<10)s='0'+s;return m+':'+s;}
+function calc(){var d=parseFloat(document.getElementById('distance').value)||5;var t=parseFloat(document.getElementById('minutes').value)||30;var pace=t/d;document.getElementById('pace-text').textContent=formatTime(pace);document.getElementById('avg-pace').textContent=formatTime(pace);document.getElementById('split1').textContent=formatTime(pace);document.getElementById('split5').textContent=formatTime(pace*5);document.getElementById('split10').textContent=formatTime(pace*10);document.getElementById('split21').textContent=formatTime(pace*21.1);}
+calc();
+</script>
 </body>
 </html>
