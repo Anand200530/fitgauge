@@ -4,628 +4,219 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TDEE Calculator - FitGauge</title>
-    <link rel="stylesheet" href="../../styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root { --bg: #0a0a0a; --surface: #141414; --surface-hover: #1a1a1a; --border: #262626; --text: #f5f5f5; --text-secondary: #737373; --accent: #22c55e; --blue: #60a5fa; --green: #4ade80; --yellow: #facc15; --orange: #fb923c; --red: #f87171; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+        header { padding: 20px 0; border-bottom: 1px solid var(--border); }
+        header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; gap: 10px; font-size: 1.1rem; font-weight: 600; color: var(--text); text-decoration: none; }
+        .logo svg { width: 26px; height: 26px; color: var(--accent); }
+        nav { display: flex; gap: 28px; }
+        nav a { color: var(--text-secondary); font-size: 0.85rem; text-decoration: none; }
+        main { padding: 48px 0; }
+        .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--text-secondary); font-size: 0.85rem; text-decoration: none; margin-bottom: 32px; }
+        .page-header { margin-bottom: 40px; }
+        .page-title { font-size: 1.75rem; font-weight: 600; margin-bottom: 8px; }
+        .page-desc { color: var(--text-secondary); font-size: 0.9rem; }
+        .calculator { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        
+        .input-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; }
+        .gender-toggle { display: flex; gap: 12px; margin-bottom: 32px; }
+        .gender-btn { flex: 1; padding: 16px; background: var(--surface-hover); border: 2px solid var(--border); border-radius: 12px; color: var(--text-secondary); font-size: 1rem; cursor: pointer; text-align: center; transition: all 0.2s; }
+        .gender-btn.active { border-color: var(--accent); color: var(--accent); }
+        
+        .input-group { margin-bottom: 24px; }
+        .input-label { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px; }
+        .input-field { width: 100%; padding: 16px; background: var(--surface-hover); border: 2px solid var(--border); border-radius: 12px; color: var(--text); font-size: 1.25rem; text-align: center; font-weight: 600; }
+        .input-field:focus { outline: none; border-color: var(--accent); }
+        
+        .activity-group { margin-top: 16px; }
+        .activity-label { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .activity-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .activity-btn { padding: 14px; background: var(--surface-hover); border: 2px solid var(--border); border-radius: 10px; color: var(--text-secondary); font-size: 0.9rem; cursor: pointer; text-align: center; transition: all 0.2s; }
+        .activity-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(34, 197, 94, 0.1); }
+        
+        .result-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; }
+        .result-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; }
+        .result-badge { padding: 6px 12px; background: rgba(34, 197, 94, 0.15); border-radius: 20px; font-size: 0.75rem; color: var(--accent); }
+        .result-body { padding: 40px 24px; text-align: center; }
+        
+        /* Battery Gauge */
+        .battery-container { margin-bottom: 32px; }
+        .battery { 
+            width: 160px; height: 80px; margin: 0 auto 24px; 
+            border: 4px solid var(--border); border-radius: 12px;
+            position: relative; padding: 4px;
         }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            min-height: 100vh;
-            background: #1a1a2e;
-            color: #fff;
-            padding: 20px;
+        .battery::after {
+            content: ''; position: absolute; right: -12px; top: 20px;
+            width: 8px; height: 32px; background: var(--border);
+            border-radius: 0 4px 4px 0;
         }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
+        .battery-fill { 
+            height: 100%; border-radius: 8px; 
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; font-weight: 600; color: #000;
         }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .lightning-icon {
-            font-size: 3rem;
-            color: #ffd700;
-            text-shadow: 0 0 20px #ffd700, 0 0 40px #ff8c00;
-            animation: lightning 1.5s ease-in-out infinite;
-        }
-
-        @keyframes lightning {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.1); }
-        }
-
-        .subtitle {
-            color: #aaa;
-            font-size: 1.1rem;
-        }
-
-        .calculator-card {
-            background: linear-gradient(145deg, #16213e, #1a1a2e);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4),
-                        0 0 60px rgba(255, 215, 0, 0.1);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-        }
-
-        .form-section {
-            margin-bottom: 25px;
-        }
-
-        .form-section h3 {
-            color: #ffd700;
-            margin-bottom: 15px;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .form-group label {
-            color: #ccc;
-            font-size: 0.9rem;
-        }
-
-        .form-group input,
-        .form-group select {
-            padding: 12px 16px;
-            border-radius: 10px;
-            border: 2px solid rgba(255, 215, 0, 0.3);
-            background: rgba(255, 255, 255, 0.05);
-            color: #fff;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: #ffd700;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
-        }
-
-        .form-group select {
-            cursor: pointer;
-        }
-
-        .toggle-group {
-            display: flex;
-            gap: 10px;
-        }
-
-        .toggle-btn {
-            flex: 1;
-            padding: 12px 20px;
-            border-radius: 10px;
-            border: 2px solid rgba(255, 215, 0, 0.3);
-            background: rgba(255, 255, 255, 0.05);
-            color: #aaa;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .toggle-btn.active {
-            background: linear-gradient(145deg, #ffd700, #ff8c00);
-            color: #1a1a2e;
-            border-color: #ffd700;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
-        }
-
-        .toggle-btn:hover:not(.active) {
-            border-color: #ffd700;
-            color: #fff;
-        }
-
-        .calculate-btn {
-            width: 100%;
-            padding: 16px;
-            border-radius: 12px;
-            border: none;
-            background: linear-gradient(145deg, #ffd700, #ff8c00);
-            color: #1a1a2e;
-            font-size: 1.2rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .calculate-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
-        }
-
-        .results-section {
-            margin-top: 30px;
-            display: none;
-        }
-
-        .results-section.visible {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .main-result {
-            text-align: center;
-            padding: 30px;
-            background: linear-gradient(145deg, rgba(255, 215, 0, 0.1), rgba(255, 140, 0, 0.1));
-            border-radius: 15px;
-            border: 2px solid rgba(255, 215, 0, 0.3);
-            margin-bottom: 30px;
-        }
-
-        .main-result h2 {
-            color: #ffd700;
-            font-size: 1rem;
-            margin-bottom: 10px;
-        }
-
-        .tdee-value {
-            font-size: 3.5rem;
-            font-weight: bold;
-            background: linear-gradient(145deg, #ffd700, #ff8c00);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
-        }
-
-        .tdee-unit {
-            color: #aaa;
-            font-size: 1.2rem;
-            margin-top: 5px;
-        }
-
-        .activity-indicator {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 15px;
-            padding: 10px 20px;
-            background: rgba(255, 215, 0, 0.1);
-            border-radius: 25px;
-            color: #ffd700;
-            font-weight: 500;
-        }
-
-        .chart-container {
-            margin-top: 30px;
-        }
-
-        .chart-container h3 {
-            color: #ffd700;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .chart {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .chart-bar {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .chart-label {
-            width: 140px;
-            color: #ccc;
-            font-size: 0.85rem;
-            text-align: right;
-        }
-
-        .chart-bar-container {
-            flex: 1;
-            height: 35px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .chart-bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #ffd700, #ff8c00);
-            border-radius: 8px;
-            transition: width 0.8s ease;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding-right: 10px;
-        }
-
-        .chart-bar-fill::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            animation: shimmer 2s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        .chart-value {
-            font-weight: bold;
-            color: #1a1a2e;
-            font-size: 0.85rem;
-            white-space: nowrap;
-        }
-
-        .chart-multiplier {
-            width: 60px;
-            color: #888;
-            font-size: 0.8rem;
-            text-align: left;
-        }
-
-        .method-info {
-            margin-top: 25px;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 10px;
-            border-left: 3px solid #ffd700;
-        }
-
-        .method-info p {
-            color: #888;
-            font-size: 0.85rem;
-            line-height: 1.6;
-        }
-
-        .energy-bolt-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-            overflow: hidden;
-        }
-
-        .energy-bolt-bg::before,
-        .energy-bolt-bg::after {
-            content: '⚡';
-            position: absolute;
-            font-size: 200px;
-            opacity: 0.03;
-            color: #ffd700;
-        }
-
-        .energy-bolt-bg::before {
-            top: -50px;
-            right: -50px;
-            transform: rotate(45deg);
-        }
-
-        .energy-bolt-bg::after {
-            bottom: -50px;
-            left: -50px;
-            transform: rotate(-45deg);
-        }
-
-        @media (max-width: 600px) {
-            .header h1 {
-                font-size: 1.8rem;
-            }
-
-            .tdee-value {
-                font-size: 2.5rem;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .chart-label {
-                width: 100px;
-                font-size: 0.75rem;
-            }
-
-            .chart-multiplier {
-                width: 50px;
-                font-size: 0.7rem;
-            }
-        }
+        
+        .tdee-value { font-size: 3rem; font-weight: 600; }
+        .tdee-label { font-size: 1rem; color: var(--text-secondary); margin-top: 4px; }
+        
+        .goals-section { padding-top: 24px; border-top: 1px solid var(--border); margin-top: 24px; }
+        .goals-title { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; }
+        .goal-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border); }
+        .goal-row:last-child { border: none; }
+        .goal-label { color: var(--text-secondary); }
+        .goal-value { font-weight: 600; }
+        
+        footer { padding: 32px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-secondary); font-size: 0.8rem; margin-top: 48px; }
+        @media (max-width: 768px) { .calculator { grid-template-columns: 1fr; } nav { display: none; } .tdee-value { font-size: 2.5rem; } }
     </style>
 </head>
 <body>
-    <div class="energy-bolt-bg"></div>
-
-    <div class="container">
-        <header class="header">
-            <h1>
-                <span class="lightning-icon">⚡</span>
-                TDEE Calculator
-            </h1>
-            <p class="subtitle">Calculate your Total Daily Energy Expenditure</p>
-        </header>
-
-        <div class="calculator-card">
-            <form id="tdeeForm">
-                <div class="form-section">
-                    <h3>👤 Basic Information</h3>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Gender</label>
-                            <div class="toggle-group">
-                                <button type="button" class="toggle-btn active" data-gender="male">Male</button>
-                                <button type="button" class="toggle-btn" data-gender="female">Female</button>
-                            </div>
-                            <input type="hidden" id="gender" value="male">
-                        </div>
-                        <div class="form-group">
-                            <label for="age">Age (years)</label>
-                            <input type="number" id="age" placeholder="Enter age" min="15" max="100" required>
-                        </div>
+    <header>
+        <div class="container">
+            <a href="../index.html" class="logo">
+                <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>
+                FitGauge
+            </a>
+            <nav><a href="../profile.html">Profile</a><a href="../index.html#energy">Energy</a></nav>
+        </div>
+    </header>
+    <main class="container">
+        <a href="../index.html" class="back-link">← Back</a>
+        <div class="page-header">
+            <h1 class="page-title">TDEE</h1>
+            <p class="page-desc">Total Daily Energy Expenditure</p>
+        </div>
+        <div class="calculator">
+            <div class="input-card">
+                <div class="gender-toggle">
+                    <div class="gender-btn" id="male-btn" onclick="setGender('male')">♂ Male</div>
+                    <div class="gender-btn active" id="female-btn" onclick="setGender('female')">♀ Female</div>
+                </div>
+                <div class="input-group">
+                    <div class="input-label">Age (years)</div>
+                    <input type="number" class="input-field" id="age" value="25" oninput="calculate()">
+                </div>
+                <div class="input-group">
+                    <div class="input-label">Height (cm)</div>
+                    <input type="number" class="input-field" id="height" value="170" oninput="calculate()">
+                </div>
+                <div class="input-group">
+                    <div class="input-label">Weight (kg)</div>
+                    <input type="number" class="input-field" id="weight" value="65" oninput="calculate()">
+                </div>
+                <div class="activity-group">
+                    <div class="activity-label">Activity Level</div>
+                    <div class="activity-options">
+                        <div class="activity-btn" data-factor="1.2" onclick="setActivity(this)">Sedentary</div>
+                        <div class="activity-btn active" data-factor="1.375" onclick="setActivity(this)">Light</div>
+                        <div class="activity-btn" data-factor="1.55" onclick="setActivity(this)">Moderate</div>
+                        <div class="activity-btn" data-factor="1.725" onclick="setActivity(this)">Active</div>
                     </div>
                 </div>
-
-                <div class="form-section">
-                    <h3>📏 Height & Weight</h3>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Height</label>
-                            <div class="toggle-group">
-                                <button type="button" class="toggle-btn height-toggle active" data-height-unit="cm">cm</button>
-                                <button type="button" class="toggle-btn height-toggle" data-height-unit="ft">ft/in</button>
-                            </div>
-                            <input type="hidden" id="heightUnit" value="cm">
-                            <input type="number" id="height" placeholder="Enter height" step="0.1" required>
-                            <input type="number" id="heightIn" placeholder="inches" step="0.1" style="display: none; margin-top: 5px;">
-                        </div>
-                        <div class="form-group">
-                            <label>Weight</label>
-                            <div class="toggle-group">
-                                <button type="button" class="toggle-btn weight-toggle active" data-weight-unit="kg">kg</button>
-                                <button type="button" class="toggle-btn weight-toggle" data-weight-unit="lbs">lbs</button>
-                            </div>
-                            <input type="hidden" id="weightUnit" value="kg">
-                            <input type="number" id="weight" placeholder="Enter weight" step="0.1" required>
+            </div>
+            <div class="result-card">
+                <div class="result-header"><span class="result-badge">⚡ Energy</span></div>
+                <div class="result-body">
+                    <div class="battery-container">
+                        <div class="battery">
+                            <div class="battery-fill" id="battery-fill" style="width: 75%; background: var(--green);">2000</div>
                         </div>
                     </div>
-                </div>
-
-                <div class="form-section">
-                    <h3>🏃 Activity Level</h3>
-                    <div class="form-group">
-                        <label for="activity">Select your activity level</label>
-                        <select id="activity" required>
-                            <option value="">Select activity level...</option>
-                            <option value="1.2">Sedentary - Little or no exercise</option>
-                            <option value="1.375">Lightly Active - Light exercise 1-3 days/week</option>
-                            <option value="1.55">Moderately Active - Moderate exercise 3-5 days/week</option>
-                            <option value="1.725">Very Active - Hard exercise 6-7 days/week</option>
-                            <option value="1.9">Extra Active - Very hard exercise & physical job</option>
-                        </select>
+                    <div class="tdee-value" id="tdee-value">2,000</div>
+                    <div class="tdee-label">calories/day</div>
+                    
+                    <div class="goals-section">
+                        <div class="goals-title">Daily Goals</div>
+                        <div class="goal-row">
+                            <span class="goal-label">Lose Weight</span>
+                            <span class="goal-value" id="lose-weight" style="color: var(--red)">1,500</span>
+                        </div>
+                        <div class="goal-row">
+                            <span class="goal-label">Maintain</span>
+                            <span class="goal-value" id="maintain">2,000</span>
+                        </div>
+                        <div class="goal-row">
+                            <span class="goal-label">Gain Weight</span>
+                            <span class="goal-value" id="gain-weight" style="color: var(--green)">2,500</span>
+                        </div>
                     </div>
-                </div>
-
-                <div class="form-section">
-                    <h3>📊 Body Composition (Optional)</h3>
-                    <div class="form-group">
-                        <label for="bodyFat">Body Fat % (for more accurate calculation)</label>
-                        <input type="number" id="bodyFat" placeholder="Enter body fat % (optional)" min="3" max="60" step="0.1">
-                    </div>
-                </div>
-
-                <button type="submit" class="calculate-btn">
-                    <span>⚡</span> Calculate TDEE
-                </button>
-            </form>
-
-            <div class="results-section" id="results">
-                <div class="main-result">
-                    <h2>Your TDEE</h2>
-                    <div class="tdee-value" id="tdeeValue">0</div>
-                    <div class="tdee-unit">calories/day</div>
-                    <div class="activity-indicator" id="activityIndicator">
-                        <span>📍</span>
-                        <span id="activityLabel">Moderately Active</span>
-                    </div>
-                </div>
-
-                <div class="chart-container">
-                    <h3>📊 Calorie Comparison by Activity Level</h3>
-                    <div class="chart" id="comparisonChart">
-                        <!-- Chart will be generated here -->
-                    </div>
-                </div>
-
-                <div class="method-info">
-                    <p><strong>Method:</strong> Used Mifflin-St Jeor Equation. If body fat % is provided, uses Katch-McArdle formula for more accurate results.</p>
                 </div>
             </div>
         </div>
-    </div>
-
+    </main>
+    <footer>FitGauge</footer>
     <script>
-        // Activity levels configuration
-        const activityLevels = [
-            { multiplier: 1.2, label: 'Sedentary' },
-            { multiplier: 1.375, label: 'Lightly Active' },
-            { multiplier: 1.55, label: 'Moderately Active' },
-            { multiplier: 1.725, label: 'Very Active' },
-            { multiplier: 1.9, label: 'Extra Active' }
-        ];
-
-        // Toggle button functionality
-        document.querySelectorAll('.toggle-group').forEach(group => {
-            const buttons = group.querySelectorAll('.toggle-btn');
-            buttons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    buttons.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-
-                    const groupType = btn.classList.contains('height-toggle') ? 'height' :
-                                     btn.classList.contains('weight-toggle') ? 'weight' : null;
-
-                    if (groupType === 'height') {
-                        document.getElementById('heightUnit').value = btn.dataset.heightUnit;
-                        const heightInput = document.getElementById('height');
-                        const heightInInput = document.getElementById('heightIn');
-                        if (btn.dataset.heightUnit === 'ft') {
-                            heightInput.placeholder = 'feet';
-                            heightInput.style.display = 'block';
-                            heightInInput.style.display = 'block';
-                        } else {
-                            heightInput.placeholder = 'cm';
-                            heightInput.style.display = 'block';
-                            heightInInput.style.display = 'none';
-                        }
-                    } else if (groupType === 'weight') {
-                        document.getElementById('weightUnit').value = btn.dataset.weightUnit;
-                        document.getElementById('weight').placeholder = btn.dataset.weightUnit === 'kg' ? 'kg' : 'lbs';
-                    } else if (btn.dataset.gender) {
-                        document.getElementById('gender').value = btn.dataset.gender;
-                    }
-                });
-            });
-        });
-
-        // Form submission
-        document.getElementById('tdeeForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            // Get values
-            const gender = document.getElementById('gender').value;
-            const age = parseFloat(document.getElementById('age').value);
-            const heightUnit = document.getElementById('heightUnit').value;
-            const weightUnit = document.getElementById('weightUnit').value;
-            const activityMultiplier = parseFloat(document.getElementById('activity').value);
-            const bodyFat = document.getElementById('bodyFat').value;
-
-            // Get height in cm
-            let heightCm;
-            if (heightUnit === 'cm') {
-                heightCm = parseFloat(document.getElementById('height').value);
-            } else {
-                const feet = parseFloat(document.getElementById('height').value);
-                const inches = parseFloat(document.getElementById('heightIn').value) || 0;
-                heightCm = (feet * 30.48) + (inches * 2.54);
-            }
-
-            // Get weight in kg
-            let weightKg;
-            if (weightUnit === 'kg') {
-                weightKg = parseFloat(document.getElementById('weight').value);
-            } else {
-                weightKg = parseFloat(document.getElementById('weight').value) * 0.453592;
-            }
-
-            // Calculate BMR using Mifflin-St Jeor Equation
-            let bmr;
-            if (gender === 'male') {
-                bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * age) + 5;
-            } else {
-                bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * age) - 161;
-            }
-
-            // If body fat provided, use Katch-McArdle formula for more accurate BMR
-            if (bodyFat && bodyFat > 0) {
-                const leanMass = weightKg * (1 - (bodyFat / 100));
-                bmr = 370 + (21.6 * leanMass);
-            }
-
-            // Calculate TDEE for all activity levels
-            const tdeeResults = activityLevels.map(level => ({
-                ...level,
-                tdee: Math.round(bmr * level.multiplier)
-            }));
-
-            // Get selected TDEE
-            const selectedTDEE = tdeeResults.find(l => l.multiplier === activityMultiplier)?.tdee || 0;
-
-            // Get selected activity label
-            const selectedActivity = activityLevels.find(l => l.multiplier === activityMultiplier)?.label || '';
-
-            // Update main result
-            document.getElementById('tdeeValue').textContent = selectedTDEE.toLocaleString();
-            document.getElementById('activityLabel').textContent = selectedActivity;
-
-            // Generate chart
-            generateChart(tdeeResults, selectedTDEE);
-
-            // Show results
-            document.getElementById('results').classList.add('visible');
-
-            // Scroll to results
-            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
-        });
-
-        function generateChart(results, selectedTDEE) {
-            const maxTDEE = Math.max(...results.map(r => r.tdee));
-            const chartContainer = document.getElementById('comparisonChart');
-            chartContainer.innerHTML = '';
-
-            results.forEach(result => {
-                const percentage = (result.tdee / maxTDEE) * 100;
-                const isSelected = result.tdee === selectedTDEE;
-
-                const barHtml = `
-                    <div class="chart-bar">
-                        <div class="chart-label">${result.label}</div>
-                        <div class="chart-bar-container">
-                            <div class="chart-bar-fill" style="width: ${percentage}%">
-                                <span class="chart-value">${result.tdee.toLocaleString()}</span>
-                            </div>
-                        </div>
-                        <div class="chart-multiplier">×${result.multiplier}</div>
-                    </div>
-                `;
-                chartContainer.innerHTML += barHtml;
-            });
+        var state = { gender: 'female', activity: 1.375 };
+        
+        function setGender(g) { 
+            state.gender = g; 
+            document.getElementById('male-btn').classList.toggle('active', g === 'male'); 
+            document.getElementById('female-btn').classList.toggle('active', g === 'female');
+            calculate(); 
         }
+        
+        function setActivity(el) {
+            document.querySelectorAll('.activity-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            state.activity = parseFloat(el.dataset.factor);
+            calculate();
+        }
+        
+        function calculate() {
+            var age = parseInt(document.getElementById('age').value) || 25;
+            var height = parseInt(document.getElementById('height').value) || 170;
+            var weight = parseInt(document.getElementById('weight').value) || 65;
+            
+            // BMR (Mifflin-St Jeor)
+            var bmr = (10 * weight) + (6.25 * height) - (5 * age);
+            bmr = state.gender === 'male' ? bmr + 5 : bmr - 161;
+            
+            // TDEE
+            var tdee = Math.round(bmr * state.activity);
+            
+            document.getElementById('tdee-value').textContent = tdee.toLocaleString();
+            document.getElementById('battery-fill').textContent = tdee;
+            
+            // Battery color
+            var color;
+            if (tdee < 1600) color = 'var(--blue)';
+            else if (tdee < 2000) color = 'var(--green)';
+            else if (tdee < 2600) color = 'var(--yellow)';
+            else color = 'var(--orange)';
+            
+            document.getElementById('battery-fill').style.background = color;
+            
+            // Goals
+            document.getElementById('lose-weight').textContent = (tdee - 500).toLocaleString();
+            document.getElementById('maintain').textContent = tdee.toLocaleString();
+            document.getElementById('gain-weight').textContent = (tdee + 500).toLocaleString();
+        }
+        
+        function loadProfile() {
+            var g = localStorage.getItem('fitgauge_gender');
+            var age = localStorage.getItem('fitgauge_age');
+            var h = localStorage.getItem('fitgauge_height');
+            var w = localStorage.getItem('fitgauge_weight');
+            var wU = localStorage.getItem('fitgauge_weight_unit') || 'kg';
+            if (g) setGender(g);
+            if (age) document.getElementById('age').value = age;
+            if (h) document.getElementById('height').value = h;
+            if (w) {
+                var weight = parseFloat(w);
+                if (wU === 'lbs') weight = Math.round(weight * 0.453592);
+                document.getElementById('weight').value = weight;
+            }
+            calculate();
+        }
+        
+        window.onload = loadProfile;
     </script>
 </body>
 </html>
