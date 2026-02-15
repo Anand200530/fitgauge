@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Body Shape - FitGauge</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--surface:#141414;--surface-hover:#1a1a1a;--border:#262626;--text:#f5f5f5;--text-secondary:#737373;--accent:#22c55e;--blue:#60a5fa;--purple:#a855f7;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.container{max-width:1100px;margin:0 auto;padding:0 24px}
+header{padding:20px 0;border-bottom:1px solid var(--border)}
+header .container{display:flex;justify-content:space-between;align-items:center}
+.logo{display:flex;align-items:center;gap:10px;font-size:1.1rem;font-weight:600;color:var(--text);text-decoration:none}
+.logo svg{width:26px;height:26px;color:var(--accent)}
+nav{display:flex;gap:28px}
+nav a{color:var(--text-secondary);font-size:0.85rem;text-decoration:none}
+main{padding:48px 0}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--text-secondary);font-size:0.85rem;text-decoration:none;margin-bottom:32px}
+.page-header{margin-bottom:40px}
+.page-title{font-size:1.75rem;font-weight:600;margin-bottom:8px}
+.page-desc{color:var(--text-secondary);font-size:0.9rem}
+.calculator{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.input-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px}
+.gender-toggle{display:flex;gap:12px;margin-bottom:24px}
+.gender-btn{flex:1;padding:14px;background:var(--surface-hover);border:2px solid var(--border);border-radius:10px;color:var(--text-secondary);font-size:1rem;cursor:pointer;text-align:center}
+.gender-btn.active{border-color:var(--accent);color:var(--accent)}
+.input-group{margin-bottom:20px}
+.input-label{font-size:0.85rem;color:var(--text-secondary);margin-bottom:8px}
+.input-field{width:100%;padding:14px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:1.1rem;text-align:center;font-weight:600}
+.input-field:focus{outline:none;border-color:var(--accent)}
+.result-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden}
+.result-header{padding:20px 24px;border-bottom:1px solid var(--border)}
+.result-badge{padding:6px 12px;background:rgba(34,197,94,0.15);border-radius:20px;font-size:0.75rem;color:var(--accent)}
+.result-body{padding:48px 24px;text-align:center}
+.shape-icon{font-size:4rem;margin-bottom:16px}
+.shape-name{font-size:2rem;font-weight:600;color:var(--accent)}
+.shape-desc{font-size:0.9rem;color:var(--text-secondary);margin-top:8px}
+.tips{margin-top:32px;padding-top:24px;border-top:1px solid var(--border);text-align:left}
+.tip{font-size:0.9rem;color:var(--text-secondary);padding:10px 0;border-bottom:1px solid var(--border)}
+.tip:last-child{border:none}
+footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color:var(--text-secondary);font-size:0.8rem;margin-top:48px}
+@media(max-width:768px){.calculator{grid-template-columns:1fr}nav{display:none}}
+</style>
+</head>
+<body>
+<header>
+<div class="container">
+<a href="../index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
+<nav><a href="../profile.html">Profile</a><a href="../index.html#body">Body</a></nav>
+</div>
+</header>
+<main class="container">
+<a href="../index.html" class="back-link">← Back</a>
+<div class="page-header">
+<h1 class="page-title">Body Shape</h1>
+<p class="page-desc">Find your body type</p>
+</div>
+<div class="calculator">
+<div class="input-card">
+<div class="gender-toggle">
+<div class="gender-btn" id="male-btn" onclick="setGender('male')">♂ Male</div>
+<div class="gender-btn active" id="female-btn" onclick="setGender('female')">♀ Female</div>
+</div>
+<div class="input-group">
+<div class="input-label">Waist (cm)</div>
+<input type="number" class="input-field" id="waist" value="80" oninput="calc()">
+</div>
+<div class="input-group">
+<div class="input-label">Hip (cm)</div>
+<input type="number" class="input-field" id="hip" value="95" oninput="calc()">
+</div>
+<div class="input-group">
+<div class="input-label">Shoulder (cm)</div>
+<input type="number" class="input-field" id="shoulder" value="110" oninput="calc()">
+</div>
+</div>
+<div class="result-card">
+<div class="result-header"><span class="result-badge">Your Shape</span></div>
+<div class="result-body">
+<div class="shape-icon" id="icon">🍐</div>
+<div class="shape-name" id="shape">Pear</div>
+<div class="shape-desc" id="desc">Hips wider than shoulders</div>
+<div class="tips">
+<div class="tip" id="tip1">✓ Strengthen upper body</div>
+<div class="tip" id="tip2">✓ Cardio for fat loss</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<footer>FitGauge</footer>
+<script>
+var gender='female';
+function setGender(g){gender=g;calc();}
+function calc(){
+var waist=parseFloat(document.getElementById('waist').value)||80;
+var hip=parseFloat(document.getElementById('hip').value)||95;
+var shoulder=parseFloat(document.getElementById('shoulder').value)||110;
+var whr=waist/hip;
+var icon=document.getElementById('icon');
+var shape=document.getElementById('shape');
+var desc=document.getElementById('desc');
+var tip1=document.getElementById('tip1');
+var tip2=document.getElementById('tip2');
+if(gender==='male'){
+if(waist>hip){icon.textContent='🍎';shape.textContent='Apple';desc.textContent='More weight around middle';tip1.textContent='✓ Core exercises';tip2.textContent='✓ Watch sugar intake';}
+else{icon.textContent='🔲';shape.textContent='Rectangle';desc.textContent='Shoulders and waist similar';tip1.textContent='✓ Build shoulder muscles';tip2.textContent='✓ Eat more calories';}
+}else{
+if(hip>shoulder*1.05){icon.textContent='🍐';shape.textContent='Pear';desc.textContent='Hips wider than shoulders';tip1.textContent='✓ Strengthen upper body';tip2.textContent='✓ Cardio for fat loss';}
+else if(shoulder>hip*1.05){icon.textContent='🍋';shape.textContent='Inverted Triangle';desc.textContent='Shoulders wider than hips';tip1.textContent='✓ Lower body exercises';tip2.textContent='✓ Build glutes';}
+else if(waist<hip*0.8&&waist<shoulder*0.9){icon.textContent='⏻';shape.textContent='Hourglass';desc.textContent='Curvy proportion';tip1.textContent='✓ Maintain with cardio';tip2.textContent='✓ Strength training';}
+else{icon.textContent='🔲';shape.textContent='Rectangle';desc.textContent='Straight up and down';tip1.textContent='✓ Build muscle';tip2.textContent='✓ Eat more protein';}
+}
+}
+calc();
+</script>
+</body>
+</html>

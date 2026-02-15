@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Somatotype - FitGauge</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--surface:#141414;--surface-hover:#1a1a1a;--border:#262626;--text:#f5f5f5;--text-secondary:#737373;--accent:#22c55e;--blue:#60a5fa;--purple:#a855f7;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.container{max-width:1100px;margin:0 auto;padding:0 24px}
+header{padding:20px 0;border-bottom:1px solid var(--border)}
+header .container{display:flex;justify-content:space-between;align-items:center}
+.logo{display:flex;align-items:center;gap:10px;font-size:1.1rem;font-weight:600;color:var(--text);text-decoration:none}
+.logo svg{width:26px;height:26px;color:var(--accent)}
+nav{display:flex;gap:28px}
+nav a{color:var(--text-secondary);font-size:0.85rem;text-decoration:none}
+main{padding:48px 0}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--text-secondary);font-size:0.85rem;text-decoration:none;margin-bottom:32px}
+.page-header{margin-bottom:40px}
+.page-title{font-size:1.75rem;font-weight:600;margin-bottom:8px}
+.page-desc{color:var(--text-secondary);font-size:0.9rem}
+.calculator{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.input-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px}
+.gender-toggle{display:flex;gap:12px;margin-bottom:24px}
+.gender-btn{flex:1;padding:14px;background:var(--surface-hover);border:2px solid var(--border);border-radius:10px;color:var(--text-secondary);font-size:1rem;cursor:pointer;text-align:center}
+.gender-btn.active{border-color:var(--accent);color:var(--accent)}
+.input-group{margin-bottom:20px}
+.input-label{font-size:0.85rem;color:var(--text-secondary);margin-bottom:8px}
+.input-field{width:100%;padding:14px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:1.1rem;text-align:center;font-weight:600}
+.input-field:focus{outline:none;border-color:var(--accent)}
+.scale-group{margin-bottom:20px}
+.scale-label{font-size:0.85rem;color:var(--text-secondary);margin-bottom:8px}
+.scale{display:flex;gap:8px}
+.scale-btn{flex:1;padding:12px;background:var(--surface-hover);border:2px solid var(--border);border-radius:8px;color:var(--text-secondary);font-size:0.85rem;cursor:pointer;text-align:center}
+.scale-btn.active{border-color:var(--accent);color:var(--accent)}
+.result-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden}
+.result-header{padding:20px 24px;border-bottom:1px solid var(--border)}
+.result-badge{padding:6px 12px;background:rgba(34,197,94,0.15);border-radius:20px;font-size:0.75rem;color:var(--accent)}
+.result-body{padding:48px 24px;text-align:center}
+.type-icon{font-size:4rem;margin-bottom:16px}
+.type-name{font-size:2rem;font-weight:600;color:var(--accent)}
+.type-desc{font-size:0.9rem;color:var(--text-secondary);margin-top:8px}
+.traits{margin-top:24px;padding-top:24px;border-top:1px solid var(--border);text-align:left}
+.trait{font-size:0.9rem;color:var(--text-secondary);padding:8px 0}
+footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color:var(--text-secondary);font-size:0.8rem;margin-top:48px}
+@media(max-width:768px){.calculator{grid-template-columns:1fr}nav{display:none}}
+</style>
+</head>
+<body>
+<header>
+<div class="container">
+<a href="../index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
+<nav><a href="../profile.html">Profile</a><a href="../index.html#body">Body</a></nav>
+</div>
+</header>
+<main class="container">
+<a href="../index.html" class="back-link">← Back</a>
+<div class="page-header">
+<h1 class="page-title">Somatotype</h1>
+<p class="page-desc">Your natural body type</p>
+</div>
+<div class="calculator">
+<div class="input-card">
+<div class="gender-toggle">
+<div class="gender-btn" id="male-btn" onclick="setGender('male')">♂ Male</div>
+<div class="gender-btn active" id="female-btn" onclick="setGender('female')">♀ Female</div>
+</div>
+<div class="scale-group">
+<div class="scale-label">How easily do you build muscle?</div>
+<div class="scale">
+<div class="scale-btn" data-e="1" onclick="setEase(this)">Hard</div>
+<div class="scale-btn active" data-e="2" onclick="setEase(this)">Medium</div>
+<div class="scale-btn" data-e="3" onclick="setEase(this)">Easy</div>
+</div>
+</div>
+<div class="scale-group">
+<div class="scale-label">How fast do you gain fat?</div>
+<div class="scale">
+<div class="scale-btn" data-f="1" onclick="setFat(this)">Hard</div>
+<div class="scale-btn active" data-f="2" onclick="setFat(this)">Medium</div>
+<div class="scale-btn" data-f="3" onclick="setFat(this)">Easy</div>
+</div>
+</div>
+<div class="scale-group">
+<div class="scale-label">Your natural size</div>
+<div class="scale">
+<div class="scale-btn" data-s="1" onclick="setSize(this)">Small</div>
+<div class="scale-btn active" data-s="2" onclick="setSize(this)">Medium</div>
+<div class="scale-btn" data-s="3" onclick="setSize(this)">Large</div>
+</div>
+</div>
+</div>
+<div class="result-card">
+<div class="result-header"><span class="result-badge">Your Type</span></div>
+<div class="result-body">
+<div class="type-icon" id="icon">🏋️</div>
+<div class="type-name" id="type">Mesomorph</div>
+<div class="type-desc" id="desc">Muscular and athletic</div>
+<div class="traits">
+<div class="trait" id="trait1">✓ Gains muscle easily</div>
+<div class="trait" id="trait2">✓ Natural athlete</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<footer>FitGauge</footer>
+<script>
+var gender='female';
+var ease=2,fat=2,size=2;
+function setGender(g){gender=g;calc();}
+function setEase(el){document.querySelectorAll('.scale-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');ease=parseInt(el.dataset.e);calc();}
+function setFat(el){var btns=el.parentNode.querySelectorAll('.scale-btn');btns.forEach(b=>b.classList.remove('active'));el.classList.add('active');fat=parseInt(el.dataset.f);calc();}
+function setSize(el){var btns=el.parentNode.querySelectorAll('.scale-btn');btns.forEach(b=>b.classList.remove('active'));el.classList.add('active');size=parseInt(el.dataset.s);calc();}
+function calc(){
+var icon=document.getElementById('icon');
+var type=document.getElementById('type');
+var desc=document.getElementById('desc');
+var trait1=document.getElementById('trait1');
+var trait2=document.getElementById('trait2');
+if(ease>=2&&size>=2&&fat<=2){icon.textContent='🏋️';type.textContent='Mesomorph';desc.textContent='Muscular and athletic';trait1.textContent='✓ Gains muscle easily';trait2.textContent='✓ Natural athlete';}
+else if(fat>=3||ease===1){icon.textContent='🍔';type.textContent='Endomorph';desc.textContent='Soft and round';trait1.textContent='✓ Gains fat easily';trait2.textContent='✓ Needs cardio';}
+else if(ease===1||size===1){icon.textContent='🦴';type.textContent='Ectomorph';desc.textContent='Lean and slim';trait1.textContent='✓ Hard to gain weight';trait2.textContent='✓ Needs more food';}
+else{icon.textContent='⚖️';type.textContent='Mix';desc.textContent='Between types';trait1.textContent='✓ Balanced traits';trait2.textContent='✓ Adaptable';}
+}
+calc();
+</script>
+</body>
+</html>
