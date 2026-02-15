@@ -668,6 +668,56 @@
 
             analysisSection.style.display = 'block';
         }
+
+        // Auto-fill from profile
+        function loadProfile() {
+            var gender = localStorage.getItem('fitgauge_gender');
+            var age = localStorage.getItem('fitgauge_age');
+            var height = localStorage.getItem('fitgauge_height');
+            var heightUnit = localStorage.getItem('fitgauge_height_unit') || 'cm';
+            var weight = localStorage.getItem('fitgauge_weight');
+            var weightUnit = localStorage.getItem('fitgauge_weight_unit') || 'kg';
+            
+            if (gender) {
+                if (gender === 'male') {
+                    document.getElementById('male-btn').classList.add('active');
+                    document.getElementById('female-btn').classList.remove('active');
+                } else {
+                    document.getElementById('female-btn').classList.add('active');
+                    document.getElementById('male-btn').classList.remove('active');
+                }
+            }
+            
+            if (age) document.getElementById('age').value = age;
+            
+            if (height) {
+                if (heightUnit === 'ft') {
+                    var ft = Math.floor(parseFloat(height) / 12);
+                    var inches = Math.round(parseFloat(height) % 12);
+                    document.getElementById('height-ft').value = ft;
+                    document.getElementById('height-in').value = inches;
+                    document.getElementById('height-ft-btn').classList.add('active');
+                    document.getElementById('height-cm-btn').classList.remove('active');
+                    document.getElementById('height-cm-inputs').style.display = 'none';
+                    document.getElementById('height-ft-inputs').style.display = 'block';
+                } else {
+                    document.getElementById('height-cm').value = height;
+                }
+            }
+            
+            if (weight) {
+                document.getElementById('weight').value = weight;
+                if (weightUnit === 'lbs') {
+                    document.getElementById('weight-lbs-btn').classList.add('active');
+                    document.getElementById('weight-kg-btn').classList.remove('active');
+                }
+            }
+            
+            if (age || height || weight) calculateBMI();
+        }
+        
+        // Load profile on page load
+        window.onload = loadProfile;
     </script>
 </body>
 </html>

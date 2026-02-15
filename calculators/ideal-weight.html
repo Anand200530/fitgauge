@@ -484,6 +484,70 @@
 
         .hidden { display: none !important; }
 
+        /* Progress Slider */
+        .progress-container {
+            margin: 24px 0;
+            position: relative;
+        }
+
+        .progress-track {
+            height: 12px;
+            border-radius: 6px;
+            display: flex;
+            overflow: hidden;
+            background: var(--border);
+        }
+
+        .progress-section {
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+
+        .progress-section.underweight {
+            background: var(--blue);
+            opacity: 0.6;
+        }
+
+        .progress-section.ideal {
+            background: var(--accent);
+        }
+
+        .progress-section.overweight {
+            background: var(--red);
+            opacity: 0.6;
+        }
+
+        .progress-current {
+            position: absolute;
+            top: -8px;
+            transform: translateX(-50%);
+            transition: left 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .marker-arrow {
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 12px solid var(--text);
+            margin: 0 auto;
+        }
+
+        .marker-label {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-top: 2px;
+        }
+
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .calculator { grid-template-columns: 1fr; }
@@ -610,6 +674,24 @@
                                 <div class="result-label">Ideal Weight Range</div>
                                 <div class="result-value" id="ideal-range">—</div>
                                 <div class="result-range" id="ideal-formulas">Enter your details to calculate</div>
+                            </div>
+
+                            <!-- Progress Slider -->
+                            <div class="progress-container" id="progress-container">
+                                <div class="progress-track">
+                                    <div class="progress-section underweight" id="prog-under"></div>
+                                    <div class="progress-section ideal" id="prog-ideal"></div>
+                                    <div class="progress-section overweight" id="prog-over"></div>
+                                </div>
+                                <div class="progress-current" id="prog-marker">
+                                    <div class="marker-arrow"></div>
+                                    <div class="marker-label">You</div>
+                                </div>
+                                <div class="progress-labels">
+                                    <span id="prog-min">--</span>
+                                    <span>Ideal Range</span>
+                                    <span id="prog-max">--</span>
+                                </div>
                             </div>
 
                             <div class="result-status normal hidden" id="status-badge">
