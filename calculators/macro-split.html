@@ -34,19 +34,24 @@ main{padding:48px 0}
 .result-header{padding:20px 24px;border-bottom:1px solid var(--border)}
 .result-badge{padding:6px 12px;background:rgba(34,197,94,0.15);border-radius:20px;font-size:0.75rem;color:var(--accent)}
 .result-body{padding:32px 24px}
-.macro-visual{display:flex;height:24px;border-radius:12px;overflow:hidden;margin-bottom:24px}
-.macro-bar{height:100%;transition:width 0.3s ease}
-.macro-bar.protein{background:var(--protein)}
-.macro-bar.carbs{background:var(--carbs)}
-.macro-bar.fat{background:var(--fat)}
-.macro-details{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.macro-item{text-align:center;padding:16px;background:var(--surface-hover);border-radius:12px}
-.macro-dot{width:12px;height:12px;border-radius:50%;margin:0 auto 8px}
+.chart-container{position:relative;width:200px;height:200px;margin:0 auto 24px}
+.chart-svg{transform:rotate(-90deg)}
+.chart-bg{fill:none;stroke:var(--border);stroke-width:35}
+.chart-segment{fill:none;stroke-width:35;stroke-linecap:round;transition:stroke-dasharray 0.3s ease}
+.chart-segment.protein{stroke:var(--protein)}
+.chart-segment.carbs{stroke:var(--carbs)}
+.chart-segment.fat{stroke:var(--fat)}
+.chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.chart-cal{font-size:1.8rem;font-weight:600;color:var(--text)}
+.chart-label{font-size:0.8rem;color:var(--text-secondary)}
+.macro-details{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.macro-item{text-align:center;padding:14px;background:var(--surface-hover);border-radius:12px}
+.macro-dot{width:10px;height:10px;border-radius:50%;margin:0 auto 6px}
 .macro-dot.protein{background:var(--protein)}
 .macro-dot.carbs{background:var(--carbs)}
 .macro-dot.fat{background:var(--fat)}
-.macro-value{font-size:1.5rem;font-weight:600;color:var(--text)}
-.macro-label{font-size:0.8rem;color:var(--text-secondary)}
+.macro-value{font-size:1.3rem;font-weight:600;color:var(--text)}
+.macro-label{font-size:0.75rem;color:var(--text-secondary)}
 footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color:var(--text-secondary);font-size:0.8rem;margin-top:48px}
 @media(max-width:768px){.calculator{grid-template-columns:1fr}nav{display:none}}
 </style>
@@ -83,26 +88,33 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 <div class="result-card">
 <div class="result-header"><span class="result-badge">📊 Macros</span></div>
 <div class="result-body">
-<div class="macro-visual">
-<div class="macro-bar protein" id="bar-p" style="width:30%"></div>
-<div class="macro-bar carbs" id="bar-c" style="width:40%"></div>
-<div class="macro-bar fat" id="bar-f" style="width:30%"></div>
+<div class="chart-container">
+<svg class="chart-svg" width="200" height="200" viewBox="0 0 200 200">
+<circle class="chart-bg" cx="100" cy="100" r="82"/>
+<circle class="chart-segment protein" id="seg-p" cx="100" cy="100" r="82" stroke-dasharray="0 515"/>
+<circle class="chart-segment carbs" id="seg-c" cx="100" cy="100" r="82" stroke-dasharray="0 515"/>
+<circle class="chart-segment fat" id="seg-f" cx="100" cy="100" r="82" stroke-dasharray="0 515"/>
+</svg>
+<div class="chart-center">
+<div class="chart-cal" id="chart-cal">2000</div>
+<div class="chart-label">kcal</div>
+</div>
 </div>
 <div class="macro-details">
 <div class="macro-item">
 <div class="macro-dot protein"></div>
-<div class="macro-value" id="protein">150</div>
-<div class="macro-label">Protein (g)</div>
+<div class="macro-value" id="protein">150g</div>
+<div class="macro-label">Protein</div>
 </div>
 <div class="macro-item">
 <div class="macro-dot carbs"></div>
-<div class="macro-value" id="carbs">200</div>
-<div class="macro-label">Carbs (g)</div>
+<div class="macro-value" id="carbs">200g</div>
+<div class="macro-label">Carbs</div>
 </div>
 <div class="macro-item">
 <div class="macro-dot fat"></div>
-<div class="macro-value" id="fat">67</div>
-<div class="macro-label">Fat (g)</div>
+<div class="macro-value" id="fat">67g</div>
+<div class="macro-label">Fat</div>
 </div>
 </div>
 </div>
@@ -114,7 +126,7 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 <script>
 var p=30,c=40,f=30;
 function setGoal(el){document.querySelectorAll('.goal-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');p=parseInt(el.dataset.p);c=parseInt(el.dataset.c);f=parseInt(el.dataset.f);calc();}
-function calc(){var cal=parseInt(document.getElementById('calories').value)||2000;document.getElementById('bar-p').style.width=p+'%';document.getElementById('bar-c').style.width=c+'%';document.getElementById('bar-f').style.width=f+'%';document.getElementById('protein').textContent=Math.round(cal*p/400);document.getElementById('carbs').textContent=Math.round(cal*c/400);document.getElementById('fat').textContent=Math.round(cal*f/900);}
+function calc(){var cal=parseInt(document.getElementById('calories').value)||2000;var total=515;var lenP=total*p/100;var lenC=total*c/100;var lenF=total*f/100;document.getElementById('seg-p').setAttribute('stroke-dasharray',lenP+' '+(total-lenP));document.getElementById('seg-c').setAttribute('stroke-dasharray',lenC+' '+(total-lenC));document.getElementById('seg-f').setAttribute('stroke-dasharray',lenF+' '+(total-lenF));document.getElementById('chart-cal').textContent=cal;document.getElementById('protein').textContent=Math.round(cal*p/400)+'g';document.getElementById('carbs').textContent=Math.round(cal*c/400)+'g';document.getElementById('fat').textContent=Math.round(cal*f/900)+'g';}
 calc();
 </script>
 </body>
