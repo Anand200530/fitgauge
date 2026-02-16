@@ -36,8 +36,6 @@ nav a:hover{color:var(--text)}
 .suggestions.show{display:block}
 .suggestion-item{display:flex;align-items:center;gap:12px;padding:14px 16px;text-decoration:none;color:var(--text);transition:background 0.2s}
 .suggestion-item:hover{background:var(--surface-hover)}
-.suggestion-item:first-child{border-radius:12px 12px 0 0}
-.suggestion-item:last-child{border-radius:0 0 12px 12px}
 .suggestion-icon{width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:var(--surface-hover);border-radius:8px}
 .suggestion-icon svg{width:18px;height:18px;color:var(--accent)}
 .suggestion-text{font-size:0.9rem}
@@ -53,7 +51,6 @@ nav a:hover{color:var(--text)}
 section{padding:56px 0}
 .section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border)}
 .section-title{font-size:0.75rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.1em}
-.section-count{font-size:0.75rem;color:var(--text-secondary)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
 .card{display:flex;flex-direction:column;gap:4px;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:14px;text-decoration:none;color:var(--text);transition:all 0.2s}
 .card:hover{background:var(--surface-hover);border-color:var(--accent);transform:translateY(-2px)}
@@ -94,7 +91,7 @@ footer p{margin-bottom:8px}
 </div>
 <div class="stats"><div class="stat"><div class="stat-value">24</div><div class="stat-label">Calculators</div></div><div class="stat"><div class="stat-value">100%</div><div class="stat-label">Private</div></div><div class="stat"><div class="stat-value">Free</div><div class="stat-label">Forever</div></div></div>
 </section>
-<section id="body"><div class="section-header"><h2 class="section-title">Body Measurements</h2><span class="section-count">6</span></div><p class="cat-desc">Understand your body composition.</p>
+<section id="body"><div class="section-header"><h2 class="section-title">Body Measurements</h2></div><p class="cat-desc">Understand your body composition.</p>
 <div class="grid">
 <a href="calculators/bmi.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2v20M2 12h20"/></svg></div><div><div class="card-title">BMI</div><div class="card-desc">Body Mass Index</div></div></a>
 <a href="calculators/ideal-weight.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg></div><div><div class="card-title">Ideal Weight</div><div class="card-desc">Healthy range</div></div></a>
@@ -103,7 +100,7 @@ footer p{margin-bottom:8px}
 <a href="calculators/waist-height.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="8" width="18" height="12" rx="2"/></svg></div><div><div class="card-title">Waist-Height</div><div class="card-desc">Health check</div></div></a>
 <a href="calculators/waist-hip.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="12" rx="10" ry="6"/></svg></div><div><div class="card-title">Waist-Hip</div><div class="card-desc">Risk assessment</div></div></a>
 </div></section>
-<section id="energy"><div class="section-header"><h2 class="section-title">Calories & Energy</h2><span class="section-count">5</span></div><p class="cat-desc">Track daily calorie needs.</p>
+<section id="energy"><div class="section-header"><h2 class="section-title">Calories & Energy</h2></div><p class="cat-desc">Track daily calorie needs.</p>
 <div class="grid">
 <a href="calculators/bmr.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div><div><div class="card-title">BMR</div><div class="card-desc">Calories at rest</div></div></a>
 <a href="calculators/tdee.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div><div class="card-title">TDEE</div><div class="card-desc">Total energy</div></div></a>
@@ -111,21 +108,21 @@ footer p{margin-bottom:8px}
 <a href="calculators/calorie-needs.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></div><div><div class="card-title">Calorie Needs</div><div class="card-desc">Daily targets</div></div></a>
 <a href="calculators/weight-loss-timeline.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><div><div class="card-title">Timeline</div><div class="card-desc">Projections</div></div></a>
 </div></section>
-<section id="nutrition"><div class="section-header"><h2 class="section-title">Nutrition</h2><span class="section-count">4</span></div><p class="cat-desc">Plan your diet.</p>
+<section id="nutrition"><div class="section-header"><h2 class="section-title">Nutrition</h2></div><p class="cat-desc">Plan your diet.</p>
 <div class="grid">
 <a href="calculators/protein.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg></div><div><div class="card-title">Protein</div><div class="card-desc">Daily needs</div></div></a>
 <a href="calculators/macro-split.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div><div><div class="card-title">Macros</div><div class="card-desc">Carbs, protein, fat</div></div></a>
 <a href="calculators/water-intake.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg></div><div><div class="card-title">Water</div><div class="card-desc">Hydration</div></div></a>
 <a href="calculators/meal-frequency.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></div><div><div class="card-title">Meal Frequency</div><div class="card-desc">Eating schedule</div></div></a>
 </div></section>
-<section id="fitness"><div class="section-header"><h2 class="section-title">Fitness</h2><span class="section-count">4</span></div><p class="cat-desc">Track performance.</p>
+<section id="fitness"><div class="section-header"><h2 class="section-title">Fitness</h2></div><p class="cat-desc">Track performance.</p>
 <div class="grid">
 <a href="calculators/1rm.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/></svg></div><div><div class="card-title">1RM</div><div class="card-desc">One rep max</div></div></a>
 <a href="calculators/heart-rate-zones.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><div><div class="card-title">Heart Rate</div><div class="card-desc">Training zones</div></div></a>
 <a href="calculators/calories-burned.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div><div class="card-title">Calories Burned</div><div class="card-desc">Activity tracker</div></div></a>
 <a href="calculators/running-pace.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></div><div><div class="card-title">Running Pace</div><div class="card-desc">Speed calculator</div></div></a>
 </div></section>
-<section id="goals"><div class="section-header"><h2 class="section-title">Goals</h2><span class="section-count">5</span></div><p class="cat-desc">Plan your goals.</p>
+<section id="goals"><div class="section-header"><h2 class="section-title">Goals</h2></div><p class="cat-desc">Plan your goals.</p>
 <div class="grid">
 <a href="calculators/fat-loss.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><div><div class="card-title">Fat Loss</div><div class="card-desc">Lose weight</div></div></a>
 <a href="calculators/weight-gain.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20"/></svg></div><div><div class="card-title">Weight Gain</div><div class="card-desc">Build muscle</div></div></a>
