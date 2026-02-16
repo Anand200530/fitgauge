@@ -3,7 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TDEE - FitGauge</title>
+<title>TDEE Calculator - FitGauge</title>
+<meta name="description" content="Calculate your Total Daily Energy Expenditure. Know exactly how many calories you burn daily.">
+<meta property="og:title" content="TDEE Calculator - FitGauge">
+<meta property="og:description" content="Calculate your Total Daily Energy Expenditure. Know exactly how many calories you burn daily.">
+<meta property="og:type" content="website">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0a0a0a;--surface:#141414;--surface-hover:#1a1a1a;--border:#262626;--text:#f5f5f5;--text-secondary:#737373;--accent:#22c55e;}
@@ -16,10 +20,10 @@ header .container{display:flex;justify-content:space-between;align-items:center}
 .logo svg{width:26px;height:26px;color:var(--accent)}
 nav{display:flex;gap:28px}
 nav a{color:var(--text-secondary);font-size:0.85rem;text-decoration:none}
-main{padding:48px 0}
-.back-btn{display:inline-flex;align-items:center;gap:8px;color:var(--text-secondary);font-size:0.85rem;text-decoration:none;margin-bottom:32px;transition:color 0.2s}
-.back-btn:hover{color:var(--text)}
-.page-header{margin-bottom:40px}
+main{padding:32px 0}
+.back-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--text-secondary);font-size:0.9rem;text-decoration:none;transition:all 0.2s;cursor:pointer}
+.back-btn:hover{background:var(--surface-hover);border-color:var(--accent);color:var(--text)}
+.page-header{margin:24px 0 40px}
 .page-title{font-size:1.75rem;font-weight:600;margin-bottom:8px}
 .page-desc{color:var(--text-secondary);font-size:0.9rem}
 .calculator{display:grid;grid-template-columns:1fr 1fr;gap:40px}
@@ -30,8 +34,11 @@ main{padding:48px 0}
 .gender-btn.active{border-color:var(--accent);color:var(--accent)}
 .input-group{margin-bottom:20px}
 .input-label{display:block;font-size:0.85rem;color:var(--text-secondary);margin-bottom:8px}
-.input-field{width:100%;padding:16px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:1.25rem;text-align:center;font-weight:600;transition:all 0.2s ease}
+.input-row{display:flex;gap:8px}
+.input-field{flex:1;padding:16px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:1.25rem;text-align:center;font-weight:600;transition:all 0.2s ease}
 .input-field:focus{outline:none;border-color:var(--accent)}
+.unit-btn{padding:16px 12px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text-secondary);font-size:0.9rem;min-width:60px}
+.unit-btn.active{background:var(--accent);border-color:var(--accent);color:#000}
 .activity-options{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .activity-btn{padding:14px;background:var(--surface-hover);border:2px solid var(--border);border-radius:10px;color:var(--text-secondary);font-size:0.85rem;cursor:pointer;text-align:center;transition:all 0.2s ease}
 .activity-btn:hover{background:var(--border)}
@@ -40,13 +47,12 @@ main{padding:48px 0}
 .result-header{padding:20px 24px;border-bottom:1px solid var(--border)}
 .result-badge{padding:6px 12px;background:rgba(34,197,94,0.15);border-radius:20px;font-size:0.75rem;color:var(--accent)}
 .result-body{padding:48px 24px;text-align:center}
-.result-value{font-size:4rem;font-weight:600;color:var(--accent);transition:color 0.3s ease}
+.result-value{font-size:4rem;font-weight:600;color:var(--accent)}
 .result-unit{font-size:1.1rem;color:var(--text-secondary);margin-top:4px}
-.goals{margin-top:32px;padding-top:24px;border-top:1px solid var(--border)}
-.goal-item{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)}
-.goal-item:last-child{border:none}
-.goal-label{color:var(--text-secondary)}
-.goal-value{font-weight:600}
+.goals{display:flex;gap:12px;margin-top:24px;justify-content:center}
+.goal-item{flex:1;padding:16px;background:var(--surface-hover);border-radius:10px;text-align:center}
+.goal-label{font-size:0.8rem;color:var(--text-secondary);margin-bottom:4px}
+.goal-value{font-size:1.1rem;font-weight:600;color:var(--text)}
 .info-section{margin-top:48px;padding-top:32px;border-top:1px solid var(--border)}
 .info-title{font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px;text-transform:uppercase}
 .info-content{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px}
@@ -66,8 +72,8 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 <body>
 <header>
 <div class="container">
-<a href="index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
-<nav><a href="profile.html">Profile</a><a href="index.html#energy">Energy</a></nav>
+<a href="../index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
+<nav><a href="../profile.html">Profile</a><a href="../index.html#energy">Energy</a></nav>
 </div>
 </header>
 <main class="container">
@@ -87,15 +93,15 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 <input type="number" class="input-field" id="age" value="25" oninput="calc()">
 </div>
 <div class="input-group">
-<div class="input-label">Height (cm)</div>
-<input type="number" class="input-field" id="height" value="170" oninput="calc()">
+<div class="input-label">Height</div>
+<div class="input-row"><input type="number" class="input-field" id="height" value="170" oninput="calc()"><button class="unit-btn" id="height-unit" onclick="toggleHeightUnit()">cm</button></div>
 </div>
 <div class="input-group">
-<div class="input-label">Weight (kg)</div>
-<input type="number" class="input-field" id="weight" value="65" oninput="calc()">
+<div class="input-label">Weight</div>
+<div class="input-row"><input type="number" class="input-field" id="weight" value="65" oninput="calc()"><button class="unit-btn" id="weight-unit" onclick="toggleWeightUnit()">kg</button></div>
 </div>
 <div class="input-group">
-<div class="input-label">How active are you?</div>
+<div class="input-label">Activity Level</div>
 <div class="activity-options">
 <div class="activity-btn" data-factor="1.2" onclick="setActivity(this)">Sedentary</div>
 <div class="activity-btn active" data-factor="1.375" onclick="setActivity(this)">Light</div>
@@ -105,51 +111,45 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 </div>
 </div>
 <div class="result-card">
-<div class="result-header"><span class="result-badge">Daily Calories</span></div>
+<div class="result-header"><span class="result-badge">Your TDEE</span></div>
 <div class="result-body">
 <div class="result-value" id="tdee">2,000</div>
 <div class="result-unit">calories/day</div>
 <div class="goals">
-<div class="goal-item"><span class="goal-label">Lose Weight</span><span class="goal-value" id="lose">1,500</span></div>
-<div class="goal-item"><span class="goal-label">Maintain</span><span class="goal-value" id="maintain">2,000</span></div>
-<div class="goal-item"><span class="goal-label">Gain Weight</span><span class="goal-value" id="gain">2,500</span></div>
-</div>
+<div class="goal-item"><div class="goal-label">Lose</div><div class="goal-value" id="lose">1,500</div></div>
+<div class="goal-item"><div class="goal-label">Maintain</div><div class="goal-value" id="maintain">2,000</div></div>
+<div class="goal-item"><div class="goal-label">Gain</div><div class="goal-value" id="gain">2,500</div></div>
 </div>
 </div>
 </div>
 <div class="info-section">
 <div class="info-title">What is TDEE?</div>
 <div class="info-content">
-<p><strong>TDEE (Total Daily Energy Expenditure)</strong> is the total number of calories you burn each day, including your basal metabolic rate (BMR) plus all physical activity.</p>
-<p>Knowing your TDEE helps you plan your diet. Eat less to lose weight, eat more to gain weight, or eat this amount to maintain.</p>
+<p><strong>Total Daily Energy Expenditure</strong> is the total calories you burn in a day - including your BMR plus all activity.</p>
+<p>Eating at your TDEE keeps your weight stable. Eat less to lose, more to gain.</p>
 </div>
 </div>
 <div class="suggestions">
 <div class="suggestions-title">Related Calculators</div>
 <div class="suggestions-grid">
-<a href="bmr.html" class="suggestion-card">
-<div class="suggestion-name">BMR</div>
-<div class="suggestion-desc">Calories at rest</div>
-</a>
-<a href="calorie-needs.html" class="suggestion-card">
-<div class="suggestion-name">Calorie Needs</div>
-<div class="suggestion-desc">Daily calorie targets</div>
-</a>
-<a href="macro-split.html" class="suggestion-card">
-<div class="suggestion-name">Macro Split</div>
-<div class="suggestion-desc">Protein, carbs, fat balance</div>
-</a>
+<a href="bmr.html" class="suggestion-card"><div class="suggestion-name">BMR</div><div class="suggestion-desc">Calories at rest</div></a>
+<a href="calorie-needs.html" class="suggestion-card"><div class="suggestion-name">Calorie Needs</div><div class="suggestion-desc">Daily targets</div></a>
+<a href="macro-split.html" class="suggestion-card"><div class="suggestion-name">Macros</div><div class="suggestion-desc">Plan your diet</div></a>
 </div>
 </div>
 </main>
 <footer>FitGauge</footer>
 <script>
 var gender='female';
+var heightUnit='cm';
+var weightUnit='kg';
 var factor=1.375;
 function setGender(g){gender=g;document.getElementById('male-btn').classList.toggle('active',g==='male');document.getElementById('female-btn').classList.toggle('active',g==='female');calc();}
+function toggleHeightUnit(){heightUnit=heightUnit==='cm'?'ft':'cm';document.getElementById('height-unit').textContent=heightUnit;calc();}
+function toggleWeightUnit(){weightUnit=weightUnit==='kg'?'lbs':'kg';document.getElementById('weight-unit').textContent=weightUnit;calc();}
 function setActivity(el){document.querySelectorAll('.activity-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');factor=parseFloat(el.dataset.factor);calc();}
-function calc(){var age=parseInt(document.getElementById('age').value)||25;var h=parseInt(document.getElementById('height').value)||170;var w=parseFloat(document.getElementById('weight').value)||65;var bmr=(10*w)+(6.25*h)-(5*age);bmr=gender==='male'?bmr+5:bmr-161;var tdee=Math.round(bmr*factor);document.getElementById('tdee').textContent=tdee.toLocaleString();document.getElementById('lose').textContent=(tdee-500).toLocaleString();document.getElementById('maintain').textContent=tdee.toLocaleString();document.getElementById('gain').textContent=(tdee+500).toLocaleString();}
-function loadProfile(){var g=localStorage.getItem('fitgauge_gender');var age=localStorage.getItem('fitgauge_age');var h=localStorage.getItem('fitgauge_height');var w=localStorage.getItem('fitgauge_weight');var wU=localStorage.getItem('fitgauge_weight_unit')||'kg';if(g)setGender(g);if(age)document.getElementById('age').value=age;if(h)document.getElementById('height').value=h;if(w){var weight=parseFloat(w);if(wU==='lbs')weight=Math.round(weight*0.453592);document.getElementById('weight').value=weight;}calc();}
+function calc(){var age=parseInt(document.getElementById('age').value)||25;var h=parseFloat(document.getElementById('height').value)||170;var w=parseFloat(document.getElementById('weight').value)||65;if(heightUnit==='ft')h=h*30.48;if(weightUnit==='lbs')w=w*0.453592;var bmr=(10*w)+(6.25*h)-(5*age);bmr=gender==='male'?bmr+5:bmr-161;var tdee=Math.round(bmr*factor);document.getElementById('tdee').textContent=tdee.toLocaleString();document.getElementById('lose').textContent=(tdee-500).toLocaleString();document.getElementById('maintain').textContent=tdee.toLocaleString();document.getElementById('gain').textContent=(tdee+500).toLocaleString();}
+function loadProfile(){var g=localStorage.getItem('fitgauge_gender');var age=localStorage.getItem('fitgauge_age');var h=localStorage.getItem('fitgauge_height');var hu=localStorage.getItem('fitgauge_height_unit')||'cm';var w=localStorage.getItem('fitgauge_weight');var wu=localStorage.getItem('fitgauge_weight_unit')||'kg';if(g)setGender(g);if(age)document.getElementById('age').value=age;if(h){var height=parseFloat(h);if(hu==='ft')height=Math.round(height*30.48);document.getElementById('height').value=height;}heightUnit=hu;document.getElementById('height-unit').textContent=hu;if(w){var weight=parseFloat(w);if(wu==='lbs')weight=Math.round(weight*2.20462);document.getElementById('weight').value=weight;}weightUnit=wu;document.getElementById('weight-unit').textContent=wu;calc();}
 window.onload=loadProfile;
 </script>
 </body>

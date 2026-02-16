@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Maintenance Calories - FitGauge</title>
+<meta name="description" content="Calculate your maintenance calories - how many calories to eat to stay the same weight.">
+<meta property="og:title" content="Maintenance Calories - FitGauge">
+<meta property="og:description" content="Calculate your maintenance calories - how many calories to eat to stay the same weight.">
+<meta property="og:type" content="website">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0a0a0a;--surface:#141414;--surface-hover:#1a1a1a;--border:#262626;--text:#f5f5f5;--text-secondary:#737373;--accent:#22c55e;}
@@ -16,10 +20,10 @@ header .container{display:flex;justify-content:space-between;align-items:center}
 .logo svg{width:26px;height:26px;color:var(--accent)}
 nav{display:flex;gap:28px}
 nav a{color:var(--text-secondary);font-size:0.85rem;text-decoration:none}
-main{padding:48px 0}
-.back-btn{display:inline-flex;align-items:center;gap:8px;color:var(--text-secondary);font-size:0.85rem;text-decoration:none;margin-bottom:32px;transition:color 0.2s}
-.back-btn:hover{color:var(--text)}
-.page-header{margin-bottom:40px}
+main{padding:32px 0}
+.back-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--text-secondary);font-size:0.9rem;text-decoration:none;transition:all 0.2s;cursor:pointer}
+.back-btn:hover{background:var(--surface-hover);border-color:var(--accent);color:var(--text)}
+.page-header{margin:24px 0 40px}
 .page-title{font-size:1.75rem;font-weight:600;margin-bottom:8px}
 .page-desc{color:var(--text-secondary);font-size:0.9rem}
 .calculator{display:grid;grid-template-columns:1fr 1fr;gap:40px}
@@ -30,8 +34,11 @@ main{padding:48px 0}
 .gender-btn.active{border-color:var(--accent);color:var(--accent)}
 .input-group{margin-bottom:20px}
 .input-label{display:block;font-size:0.85rem;color:var(--text-secondary);margin-bottom:8px}
-.input-field{width:100%;padding:16px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:1.25rem;text-align:center;font-weight:600;transition:all 0.2s ease}
+.input-row{display:flex;gap:8px}
+.input-field{flex:1;padding:16px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:1.25rem;text-align:center;font-weight:600;transition:all 0.2s ease}
 .input-field:focus{outline:none;border-color:var(--accent)}
+.unit-btn{padding:16px 12px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text-secondary);font-size:0.9rem;min-width:60px}
+.unit-btn.active{background:var(--accent);border-color:var(--accent);color:#000}
 .activity-options{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .activity-btn{padding:14px;background:var(--surface-hover);border:2px solid var(--border);border-radius:10px;color:var(--text-secondary);font-size:0.85rem;cursor:pointer;text-align:center;transition:all 0.2s ease}
 .activity-btn:hover{background:var(--border)}
@@ -42,7 +49,6 @@ main{padding:48px 0}
 .result-body{padding:48px 24px;text-align:center}
 .result-value{font-size:4rem;font-weight:600;color:var(--accent)}
 .result-unit{font-size:1.1rem;color:var(--text-secondary);margin-top:4px}
-.msg{font-size:1rem;color:var(--text-secondary);margin-top:16px;line-height:1.6}
 .info-section{margin-top:48px;padding-top:32px;border-top:1px solid var(--border)}
 .info-title{font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px;text-transform:uppercase}
 .info-content{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px}
@@ -62,15 +68,15 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 <body>
 <header>
 <div class="container">
-<a href="index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
-<nav><a href="profile.html">Profile</a><a href="index.html#energy">Energy</a></nav>
+<a href="../index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
+<nav><a href="../profile.html">Profile</a><a href="../index.html#energy">Energy</a></nav>
 </div>
 </header>
 <main class="container">
 <a href="#" onclick="history.back(); return false;" class="back-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</a>
 <div class="page-header">
-<h1 class="page-title">Maintenance Calories</h1>
-<p class="page-desc">Calories to stay the same weight</p>
+<h1 class="page-title">Maintenance</h1>
+<p class="page-desc">Calories to stay the same</p>
 </div>
 <div class="calculator">
 <div class="input-card">
@@ -83,15 +89,15 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 <input type="number" class="input-field" id="age" value="25" oninput="calc()">
 </div>
 <div class="input-group">
-<div class="input-label">Height (cm)</div>
-<input type="number" class="input-field" id="height" value="170" oninput="calc()">
+<div class="input-label">Height</div>
+<div class="input-row"><input type="number" class="input-field" id="height" value="170" oninput="calc()"><button class="unit-btn" id="height-unit" onclick="toggleHeightUnit()">cm</button></div>
 </div>
 <div class="input-group">
-<div class="input-label">Weight (kg)</div>
-<input type="number" class="input-field" id="weight" value="65" oninput="calc()">
+<div class="input-label">Weight</div>
+<div class="input-row"><input type="number" class="input-field" id="weight" value="65" oninput="calc()"><button class="unit-btn" id="weight-unit" onclick="toggleWeightUnit()">kg</button></div>
 </div>
 <div class="input-group">
-<div class="input-label">How active are you?</div>
+<div class="input-label">Activity Level</div>
 <div class="activity-options">
 <div class="activity-btn" data-factor="1.2" onclick="setActivity(this)">Sedentary</div>
 <div class="activity-btn active" data-factor="1.375" onclick="setActivity(this)">Light</div>
@@ -103,23 +109,21 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 <div class="result-card">
 <div class="result-header"><span class="result-badge">Maintenance</span></div>
 <div class="result-body">
-<div class="result-value" id="maintenance">2,000</div>
+<div class="result-value" id="maint">2,000</div>
 <div class="result-unit">calories/day</div>
-<div class="msg" id="msg">Eat this much to stay the same</div>
-</div>
 </div>
 </div>
 <div class="info-section">
 <div class="info-title">What is maintenance?</div>
 <div class="info-content">
-<p><strong>Maintenance calories</strong> are the calories you need to eat to stay at your current weight. Eating more = gain weight. Eating less = lose weight.</p>
-<p>Your needs change as you lose/gain weight, age, or change activity levels. Recalculate periodically.</p>
+<p><strong>Maintenance calories</strong> are the calories you need to eat to stay at your current weight. Eat more = gain weight. Eat less = lose weight.</p>
+<p>Your needs change as you age, lose weight, or change activity levels.</p>
 </div>
 </div>
 <div class="suggestions">
 <div class="suggestions-title">Related Calculators</div>
 <div class="suggestions-grid">
-<a href="tdee.html" class="suggestion-card"><div class="suggestion-name">TDEE</div><div class="suggestion-desc">Total energy expenditure</div></a>
+<a href="tdee.html" class="suggestion-card"><div class="suggestion-name">TDEE</div><div class="suggestion-desc">Total energy</div></a>
 <a href="bmr.html" class="suggestion-card"><div class="suggestion-name">BMR</div><div class="suggestion-desc">Calories at rest</div></a>
 <a href="calorie-needs.html" class="suggestion-card"><div class="suggestion-name">Calorie Needs</div><div class="suggestion-desc">Targets by goal</div></a>
 </div>
@@ -128,11 +132,15 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 <footer>FitGauge</footer>
 <script>
 var gender='female';
+var heightUnit='cm';
+var weightUnit='kg';
 var factor=1.375;
 function setGender(g){gender=g;document.getElementById('male-btn').classList.toggle('active',g==='male');document.getElementById('female-btn').classList.toggle('active',g==='female');calc();}
+function toggleHeightUnit(){heightUnit=heightUnit==='cm'?'ft':'cm';document.getElementById('height-unit').textContent=heightUnit;calc();}
+function toggleWeightUnit(){weightUnit=weightUnit==='kg'?'lbs':'kg';document.getElementById('weight-unit').textContent=weightUnit;calc();}
 function setActivity(el){document.querySelectorAll('.activity-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');factor=parseFloat(el.dataset.factor);calc();}
-function calc(){var age=parseInt(document.getElementById('age').value)||25;var h=parseInt(document.getElementById('height').value)||170;var w=parseFloat(document.getElementById('weight').value)||65;var bmr=(10*w)+(6.25*h)-(5*age);bmr=gender==='male'?bmr+5:bmr-161;var maint=Math.round(bmr*factor);document.getElementById('maintenance').textContent=maint.toLocaleString();}
-function loadProfile(){var g=localStorage.getItem('fitgauge_gender');var age=localStorage.getItem('fitgauge_age');var h=localStorage.getItem('fitgauge_height');var w=localStorage.getItem('fitgauge_weight');var wU=localStorage.getItem('fitgauge_weight_unit')||'kg';if(g)setGender(g);if(age)document.getElementById('age').value=age;if(h)document.getElementById('height').value=h;if(w){var weight=parseFloat(w);if(wU==='lbs')weight=Math.round(weight*0.453592);document.getElementById('weight').value=weight;}calc();}
+function calc(){var age=parseInt(document.getElementById('age').value)||25;var h=parseFloat(document.getElementById('height').value)||170;var w=parseFloat(document.getElementById('weight').value)||65;if(heightUnit==='ft')h=h*30.48;if(weightUnit==='lbs')w=w*0.453592;var bmr=(10*w)+(6.25*h)-(5*age);bmr=gender==='male'?bmr+5:bmr-161;var maint=Math.round(bmr*factor);document.getElementById('maint').textContent=maint.toLocaleString();}
+function loadProfile(){var g=localStorage.getItem('fitgauge_gender');var age=localStorage.getItem('fitgauge_age');var h=localStorage.getItem('fitgauge_height');var hu=localStorage.getItem('fitgauge_height_unit')||'cm';var w=localStorage.getItem('fitgauge_weight');var wu=localStorage.getItem('fitgauge_weight_unit')||'kg';if(g)setGender(g);if(age)document.getElementById('age').value=age;if(h){var height=parseFloat(h);if(hu==='ft')height=Math.round(height*30.48);document.getElementById('height').value=height;}heightUnit=hu;document.getElementById('height-unit').textContent=hu;if(w){var weight=parseFloat(w);if(wu==='lbs')weight=Math.round(weight*2.20462);document.getElementById('weight').value=weight;}weightUnit=wu;document.getElementById('weight-unit').textContent=wu;calc();}
 window.onload=loadProfile;
 </script>
 </body>
