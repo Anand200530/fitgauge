@@ -3,10 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Running Pace - FitGauge</title>
+<title>Running Pace Calculator - FitGauge</title>
+<meta name="description" content="Calculate your running pace - time per km/mile for any distance.">
+<meta property="og:title" content="Running Pace Calculator - FitGauge">
+<meta property="og:description" content="Calculate your running pace - time per km/mile for any distance.">
+<meta property="og:type" content="website">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0a0a0a;--surface:#141414;--surface-hover:#1a1a1a;--border:#262626;--text:#f5f5f5;--text-secondary:#737373;--accent:#22c55e;--orange:#f97316;}
+:root{--bg:#0a0a0a;--surface:#141414;--surface-hover:#1a1a1a;--border:#262626;--text:#f5f5f5;--text-secondary:#737373;--accent:#22c55e;}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 .container{max-width:1100px;margin:0 auto;padding:0 24px}
@@ -16,35 +20,33 @@ header .container{display:flex;justify-content:space-between;align-items:center}
 .logo svg{width:26px;height:26px;color:var(--accent)}
 nav{display:flex;gap:28px}
 nav a{color:var(--text-secondary);font-size:0.85rem;text-decoration:none}
-main{padding:48px 0}
-.back-btn{display:inline-flex;align-items:center;gap:8px;color:var(--text-secondary);font-size:0.85rem;text-decoration:none;margin-bottom:32px;transition:color 0.2s}
-.back-btn:hover{color:var(--text)}
-.page-header{margin-bottom:40px}
+main{padding:32px 0}
+.back-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--text-secondary);font-size:0.9rem;text-decoration:none;transition:all 0.2s;cursor:pointer}
+.back-btn:hover{background:var(--surface-hover);border-color:var(--accent);color:var(--text)}
+.page-header{margin:24px 0 40px}
 .page-title{font-size:1.75rem;font-weight:600;margin-bottom:8px}
 .page-desc{color:var(--text-secondary);font-size:0.9rem}
 .calculator{display:grid;grid-template-columns:1fr 1fr;gap:40px}
 .input-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px}
 .input-group{margin-bottom:20px}
 .input-label{display:block;font-size:0.85rem;color:var(--text-secondary);margin-bottom:8px}
-.input-field{width:100%;padding:14px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:1.1rem;text-align:center;font-weight:600;transition:all 0.2s ease}
+.input-row{display:flex;gap:8px}
+.input-field{flex:1;padding:16px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:1.25rem;text-align:center;font-weight:600;transition:all 0.2s ease}
 .input-field:focus{outline:none;border-color:var(--accent)}
+.unit-btn{padding:16px 12px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text-secondary);font-size:0.9rem;min-width:60px}
+.unit-btn.active{background:var(--accent);border-color:var(--accent);color:#000}
 .result-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden}
 .result-header{padding:20px 24px;border-bottom:1px solid var(--border)}
-.result-badge{padding:6px 12px;background:rgba(249,115,22,0.15);border-radius:20px;font-size:0.75rem;color:var(--orange)}
+.result-badge{padding:6px 12px;background:rgba(34,197,94,0.15);border-radius:20px;font-size:0.75rem;color:var(--accent)}
 .result-body{padding:48px 24px;text-align:center}
-.pace-visual{position:relative;width:120px;height:120px;margin:0 auto 24px}
-.pace-ring{transform:rotate(-90deg)}
-.pace-bg{fill:none;stroke:var(--border);stroke-width:8}
-.pace-fill{fill:none;stroke:var(--orange);stroke-width:8;stroke-linecap:round;stroke-dasharray:283;stroke-dashoffset:70;transition:stroke-dashoffset 0.3s ease}
-.pace-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:1.5rem;font-weight:600;color:var(--text)}
-.result-value{font-size:3rem;font-weight:600;color:var(--orange);transition:color 0.3s ease}
+.result-value{font-size:3rem;font-weight:600;color:var(--accent)}
 .result-unit{font-size:1rem;color:var(--text-secondary);margin-top:4px}
-.split-list{margin-top:24px;text-align:left}
-.split-title{font-size:0.75rem;color:var(--text-secondary);text-transform:uppercase;margin-bottom:12px}
-.split-item{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:0.9rem}
-.split-item:last-child{border:none}
-.split-label{color:var(--text-secondary)}
-.split-value{font-weight:600}
+.splits{margin-top:32px;padding-top:24px;border-top:1px solid var(--border)}
+.splits-title{font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px}
+.splits-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.split-item{background:var(--surface-hover);padding:12px;border-radius:10px;text-align:center}
+.split-dist{font-size:0.8rem;color:var(--text-secondary)}
+.split-time{font-size:1.1rem;font-weight:600;color:var(--text);margin-top:4px}
 .info-section{margin-top:48px;padding-top:32px;border-top:1px solid var(--border)}
 .info-title{font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px;text-transform:uppercase}
 .info-content{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px}
@@ -58,76 +60,78 @@ main{padding:48px 0}
 .suggestion-name{font-size:0.95rem;font-weight:500;color:var(--text)}
 .suggestion-desc{font-size:0.8rem;color:var(--text-secondary);margin-top:4px}
 footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color:var(--text-secondary);font-size:0.8rem;margin-top:48px}
-@media(max-width:768px){.calculator{grid-template-columns:1fr}nav{display:none}}
+@media(max-width:768px){.calculator{grid-template-columns:1fr}nav{display:none}.splits-grid{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
 <header>
 <div class="container">
-<a href="index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
-<nav><a href="profile.html">Profile</a><a href="index.html#fitness">Fitness</a></nav>
+<a href="../index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
+<nav><a href="../profile.html">Profile</a><a href="../index.html#fitness">Fitness</a></nav>
 </div>
 </header>
 <main class="container">
 <a href="#" onclick="history.back(); return false;" class="back-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</a>
 <div class="page-header">
 <h1 class="page-title">Running Pace</h1>
-<p class="page-desc">Calculate your pace</p>
+<p class="page-desc">Calculate your pace per km/mile</p>
 </div>
 <div class="calculator">
 <div class="input-card">
 <div class="input-group">
-<div class="input-label">Distance (km)</div>
-<input type="number" class="input-field" id="distance" value="5" oninput="calc()">
+<div class="input-label">Distance</div>
+<div class="input-row"><input type="number" class="input-field" id="dist" value="5" oninput="calc()"><button class="unit-btn" id="dist-unit" onclick="toggleUnit()">km</button></div>
 </div>
 <div class="input-group">
-<div class="input-label">Time (minutes)</div>
-<input type="number" class="input-field" id="minutes" value="30" oninput="calc()">
+<div class="input-label">Time (hours : minutes)</div>
+<div style="display:flex;gap:8px">
+<input type="number" class="input-field" id="hours" value="0" placeholder="0" oninput="calc()">
+<input type="number" class="input-field" id="minutes" value="30" placeholder="30" oninput="calc()">
+</div>
 </div>
 </div>
 <div class="result-card">
-<div class="result-header"><span class="result-badge">🏃 Pace</span></div>
+<div class="result-header"><span class="result-badge">Your Pace</span></div>
 <div class="result-body">
-<div class="pace-visual">
-<svg class="pace-ring" width="120" height="120" viewBox="0 0 120 120">
-<circle class="pace-bg" cx="60" cy="60" r="45"/>
-<circle class="pace-fill" id="pace-ring" cx="60" cy="60" r="45"/>
-</svg>
-<div class="pace-text" id="pace-text">6:00</div>
+<div class="result-value" id="pace">6:00</div>
+<div class="result-unit" id="pace-unit">min/km</div>
+<div class="splits">
+<div class="splits-title">Split Times</div>
+<div class="splits-grid">
+<div class="split-item"><div class="split-dist">1 km</div><div class="split-time" id="split1">6:00</div></div>
+<div class="split-item"><div class="split-dist">5 km</div><div class="split-time" id="split5">30:00</div></div>
+<div class="split-item"><div class="split-dist">10 km</div><div class="split-time" id="split10">1:00:00</div></div>
+<div class="split-item"><div class="split-dist">Half</div><div class="split-time" id="half">1:58:59</div></div>
+<div class="split-item"><div class="split-dist">Full</div><div class="split-time" id="full">3:57:58</div></div>
+<div class="split-item"><div class="split-dist">1 mile</div><div class="split-time" id="mile">9:39</div></div>
 </div>
-<div class="result-value" id="avg-pace">6:00</div>
-<div class="result-unit">min/km</div>
-<div class="split-list">
-<div class="split-title">Splits</div>
-<div class="split-item"><span class="split-label">1 km</span><span class="split-value" id="split1">6:00</span></div>
-<div class="split-item"><span class="split-label">5 km</span><span class="split-value" id="split5">30:00</span></div>
-<div class="split-item"><span class="split-label">10 km</span><span class="split-value" id="split10">60:00</span></div>
-<div class="split-item"><span class="split-label">Half Marathon</span><span class="split-value" id="split21">126:00</span></div>
 </div>
 </div>
 </div>
 </div>
 <div class="info-section">
-<div class="info-title">What is a good pace?</div>
+<div class="info-title">How to use this</div>
 <div class="info-content">
-<p><strong>Pace</strong> is how many minutes it takes to run 1 kilometer. A 6:00/km pace means 6 minutes per kilometer.</p>
-<p>Beginners often run 7:00-8:00/km. Elite runners may do 3:30-4:00/km. Find a pace you can sustain for your distance.</p>
+<p><strong>Running pace</strong> shows your speed in minutes per kilometer or mile.</p>
+<p>Enter any distance and time to calculate your pace, then see projected times for common race distances.</p>
 </div>
 </div>
 <div class="suggestions">
 <div class="suggestions-title">Related Calculators</div>
 <div class="suggestions-grid">
-<a href="calories-burned.html" class="suggestion-card"><div class="suggestion-name">Calories Burned</div><div class="suggestion-desc">Running burns</div></a>
-<a href="heart-rate-zones.html" class="suggestion-card"><div class="suggestion-name">Heart Rate Zones</div><div class="suggestion-desc">Train at right intensity</div></a>
-<a href="tdee.html" class="suggestion-card"><div class="suggestion-name">TDEE</div><div class="suggestion-desc">Daily calorie needs</div></a>
+<a href="calories-burned.html" class="suggestion-card"><div class="suggestion-name">Calories Burned</div><div class="suggestion-desc">Track effort</div></a>
+<a href="heart-rate-zones.html" class="suggestion-card"><div class="suggestion-name">Heart Rate</div><div class="suggestion-desc">Training zones</div></a>
+<a href="1rm.html" class="suggestion-card"><div class="suggestion-name">1RM</div><div class="suggestion-desc">Strength test</div></a>
 </div>
 </div>
 </main>
 <footer>FitGauge</footer>
 <script>
-function formatTime(min){var m=Math.floor(min);var s=Math.round((min-m)*60);if(s<10)s='0'+s;return m+':'+s;}
-function calc(){var d=parseFloat(document.getElementById('distance').value)||5;var t=parseFloat(document.getElementById('minutes').value)||30;var pace=t/d;document.getElementById('pace-text').textContent=formatTime(pace);document.getElementById('avg-pace').textContent=formatTime(pace);document.getElementById('split1').textContent=formatTime(pace);document.getElementById('split5').textContent=formatTime(pace*5);document.getElementById('split10').textContent=formatTime(pace*10);document.getElementById('split21').textContent=formatTime(pace*21.1);}
-calc();
+var unit='km';
+function toggleUnit(){unit=unit==='km'?'mi':'km';document.getElementById('dist-unit').textContent=unit;calc();}
+function formatTime(mins){var h=Math.floor(mins/60);var m=Math.round(mins%60);return(h>0?h+':':'')+(m<10&&h>0?'0':'')+m;}
+function calc(){var dist=parseFloat(document.getElementById('dist').value)||5;var h=parseInt(document.getElementById('hours').value)||0;var m=parseInt(document.getElementById('minutes').value)||0;var totalMins=h*60+m;if(dist<=0)return;var pace=totalMins/dist;document.getElementById('pace').textContent=formatTime(pace);document.getElementById('pace-unit').textContent='min/'+(unit==='km'?'km':'mi');var mileConv=unit==='km'?1.60934:1;document.getElementById('split1').textContent=formatTime(pace*mileConv);document.getElementById('split5').textContent=formatTime(pace*5*mileConv);document.getElementById('split10').textContent=formatTime(pace*10*mileConv);document.getElementById('half').textContent=formatTime(pace*21.0975*mileConv);document.getElementById('full').textContent=formatTime(pace*42.195*mileConv);document.getElementById('mile').textContent=formatTime(pace*1.60934);}
+window.onload=calc;
 </script>
 </body>
 </html>

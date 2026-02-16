@@ -4,9 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Waist-Height Ratio - FitGauge</title>
+<meta name="description" content="Calculate your waist-to-height ratio - a simple health indicator.">
+<meta property="og:title" content="Waist-Height Ratio - FitGauge">
+<meta property="og:description" content="Calculate your waist-to-height ratio - a simple health indicator.">
+<meta property="og:type" content="website">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0a0a0a;--surface:#141414;--surface-hover:#1a1a1a;--border:#262626;--text:#f5f5f5;--text-secondary:#737373;--accent:#22c55e;--red:#f87171;--green:#4ade80;}
+:root{--bg:#0a0a0a;--surface:#141414;--surface-hover:#1a1a1a;--border:#262626;--text:#f5f5f5;--text-secondary:#737373;--accent:#22c55e;}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 .container{max-width:1100px;margin:0 auto;padding:0 24px}
@@ -16,25 +20,28 @@ header .container{display:flex;justify-content:space-between;align-items:center}
 .logo svg{width:26px;height:26px;color:var(--accent)}
 nav{display:flex;gap:28px}
 nav a{color:var(--text-secondary);font-size:0.85rem;text-decoration:none}
-main{padding:48px 0}
-.back-btn{display:inline-flex;align-items:center;gap:8px;color:var(--text-secondary);font-size:0.85rem;text-decoration:none;margin-bottom:32px;transition:color 0.2s}
-.back-btn:hover{color:var(--text)}
-.page-header{margin-bottom:40px}
+main{padding:32px 0}
+.back-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--text-secondary);font-size:0.9rem;text-decoration:none;transition:all 0.2s;cursor:pointer}
+.back-btn:hover{background:var(--surface-hover);border-color:var(--accent);color:var(--text)}
+.page-header{margin:24px 0 40px}
 .page-title{font-size:1.75rem;font-weight:600;margin-bottom:8px}
 .page-desc{color:var(--text-secondary);font-size:0.9rem}
 .calculator{display:grid;grid-template-columns:1fr 1fr;gap:40px}
 .input-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px}
 .input-group{margin-bottom:20px}
 .input-label{display:block;font-size:0.85rem;color:var(--text-secondary);margin-bottom:8px}
-.input-field{width:100%;padding:16px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:1.25rem;text-align:center;font-weight:600;transition:all 0.2s ease}
+.input-row{display:flex;gap:8px}
+.input-field{flex:1;padding:16px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:1.25rem;text-align:center;font-weight:600;transition:all 0.2s ease}
 .input-field:focus{outline:none;border-color:var(--accent)}
+.unit-btn{padding:16px 12px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text-secondary);font-size:0.9rem;min-width:60px}
+.unit-btn.active{background:var(--accent);border-color:var(--accent);color:#000}
 .result-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden}
 .result-header{padding:20px 24px;border-bottom:1px solid var(--border)}
 .result-badge{padding:6px 12px;background:rgba(34,197,94,0.15);border-radius:20px;font-size:0.75rem;color:var(--accent)}
 .result-body{padding:48px 24px;text-align:center}
 .result-value{font-size:4rem;font-weight:600;color:var(--accent);transition:color 0.3s ease}
-.result-unit{font-size:1.1rem;color:var(--text-secondary);margin-top:4px}
-.msg{font-size:0.95rem;color:var(--text-secondary);margin-top:16px;line-height:1.5}
+.result-unit{font-size:1rem;color:var(--text-secondary);margin-top:4px}
+.msg{font-size:1rem;color:var(--text-secondary);margin-top:16px;padding:12px 20px;background:var(--surface-hover);border-radius:10px}
 .info-section{margin-top:48px;padding-top:32px;border-top:1px solid var(--border)}
 .info-title{font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px;text-transform:uppercase}
 .info-content{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px}
@@ -54,25 +61,25 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 <body>
 <header>
 <div class="container">
-<a href="index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
-<nav><a href="profile.html">Profile</a><a href="index.html#body">Body</a></nav>
+<a href="../index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
+<nav><a href="../profile.html">Profile</a><a href="../index.html#body">Body</a></nav>
 </div>
 </header>
 <main class="container">
 <a href="#" onclick="history.back(); return false;" class="back-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</a>
 <div class="page-header">
-<h1 class="page-title">Waist-Height Ratio</h1>
-<p class="page-desc">Simple health check</p>
+<h1 class="page-title">Waist-Height</h1>
+<p class="page-desc">Simple health indicator</p>
 </div>
 <div class="calculator">
 <div class="input-card">
 <div class="input-group">
-<div class="input-label">Waist (cm)</div>
-<input type="number" class="input-field" id="waist" value="80" oninput="calculate()">
+<div class="input-label">Waist</div>
+<div class="input-row"><input type="number" class="input-field" id="waist" value="80" oninput="calc()"><button class="unit-btn" id="waist-unit" onclick="toggleWaistUnit()">cm</button></div>
 </div>
 <div class="input-group">
-<div class="input-label">Height (cm)</div>
-<input type="number" class="input-field" id="height" value="170" oninput="calculate()">
+<div class="input-label">Height</div>
+<div class="input-row"><input type="number" class="input-field" id="height" value="170" oninput="calc()"><button class="unit-btn" id="height-unit" onclick="toggleHeightUnit()">cm</button></div>
 </div>
 </div>
 <div class="result-card">
@@ -80,33 +87,36 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 <div class="result-body">
 <div class="result-value" id="ratio">0.47</div>
 <div class="result-unit">waist ÷ height</div>
-<div class="msg" id="msg">Healthy! Keep it up.</div>
+<div class="msg" id="msg">Healthy range</div>
 </div>
 </div>
 </div>
 <div class="info-section">
-<div class="info-title">Why this ratio matters</div>
+<div class="info-title">What is waist-height ratio?</div>
 <div class="info-content">
-<p><strong>Waist-Height Ratio</strong> is considered a better predictor of health than BMI alone. It indicates where you carry weight.</p>
-<p>A ratio below 0.5 is associated with lower risk of heart disease, diabetes, and other health issues. Keep your waist less than half your height.</p>
+<p><strong>Waist-to-height ratio</strong> is a simple way to check if your waist is healthy for your height.</p>
+<p>Ideally, your waist should be less than half your height (ratio under 0.5).</p>
 </div>
 </div>
 <div class="suggestions">
 <div class="suggestions-title">Related Calculators</div>
 <div class="suggestions-grid">
-<a href="bmi.html" class="suggestion-card"><div class="suggestion-name">BMI</div><div class="suggestion-desc">Basic weight check</div></a>
-<a href="body-fat.html" class="suggestion-card"><div class="suggestion-name">Body Fat %</div><div class="suggestion-desc">More accurate measure</div></a>
-<a href="ideal-weight.html" class="suggestion-card"><div class="suggestion-name">Ideal Weight</div><div class="suggestion-desc">What's healthy for you</div></a>
+<a href="bmi.html" class="suggestion-card"><div class="suggestion-name">BMI</div><div class="suggestion-desc">Check your BMI</div></a>
+<a href="waist-hip.html" class="suggestion-card"><div class="suggestion-name">Waist-Hip</div><div class="suggestion-desc">Another check</div></a>
+<a href="body-fat.html" class="suggestion-card"><div class="suggestion-name">Body Fat</div><div class="suggestion-desc">Your composition</div></a>
 </div>
 </div>
 </main>
 <footer>FitGauge</footer>
 <script>
-function calculate(){var w=parseInt(document.getElementById('waist').value)||80;var h=parseInt(document.getElementById('height').value)||170;var r=(w/h).toFixed(2);document.getElementById('ratio').textContent=r;var el=document.getElementById('msg');if(r<0.4){el.textContent='Too low - eat more';document.getElementById('ratio').style.color='var(--red)';}
-else if(r<0.5){el.textContent='Healthy! Keep it up.';document.getElementById('ratio').style.color='var(--green)';}
-else if(r<0.6){el.textContent='A bit high - watch your diet.';document.getElementById('ratio').style.color='#facc15';}
-else{el.textContent='High risk - consider exercise.';document.getElementById('ratio').style.color='var(--red)';}}
-function loadProfile(){var h=localStorage.getItem('fitgauge_height');if(h)document.getElementById('height').value=h;calculate();}
+var waistUnit='cm';
+var heightUnit='cm';
+function toggleWaistUnit(){waistUnit=waistUnit==='cm'?'in':'cm';document.getElementById('waist-unit').textContent=waistUnit;calc();}
+function toggleHeightUnit(){heightUnit=heightUnit==='cm'?'in':'cm';document.getElementById('height-unit').textContent=heightUnit;calc();}
+function calc(){var waist=parseFloat(document.getElementById('waist').value)||80;var height=parseFloat(document.getElementById('height').value)||170;if(waistUnit==='in')waist=waist*2.54;if(heightUnit==='in')height=height*2.54;var ratio=(waist/height).toFixed(2);document.getElementById('ratio').textContent=ratio;var el=document.getElementById('msg');if(ratio<=0.5){el.textContent='Healthy range';document.getElementById('result-value').style.color='var(--accent)';}
+else if(ratio<=0.6){el.textContent='Moderate risk';document.getElementById('result-value').style.color='#facc15';}
+else{el.textContent='Higher risk';document.getElementById('result-value').style.color='#f87171';}}
+function loadProfile(){var h=localStorage.getItem('fitgauge_height');var hu=localStorage.getItem('fitgauge_height_unit')||'cm';if(h){var height=parseFloat(h);if(hu==='in')height=height/2.54;document.getElementById('height').value=Math.round(height);}heightUnit=hu;document.getElementById('height-unit').textContent=hu;calc();}
 window.onload=loadProfile;
 </script>
 </body>
