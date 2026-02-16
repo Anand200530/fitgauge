@@ -3,10 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Water Intake - FitGauge</title>
+<title>Water Intake Calculator - FitGauge</title>
+<meta name="description" content="Calculate your daily water intake needs based on weight and activity.">
+<meta property="og:title" content="Water Intake Calculator - FitGauge">
+<meta property="og:description" content="Calculate your daily water intake needs based on weight and activity.">
+<meta property="og:type" content="website">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0a0a0a;--surface:#141414;--surface-hover:#1a1a1a;--border:#262626;--text:#f5f5f5;--text-secondary:#737373;--accent:#22c55e;--blue:#60a5fa;}
+:root{--bg:#0a0a0a;--surface:#141414;--surface-hover:#1a1a1a;--border:#262626;--text:#f5f5f5;--text-secondary:#737373;--accent:#22c55e;}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 .container{max-width:1100px;margin:0 auto;padding:0 24px}
@@ -16,32 +20,29 @@ header .container{display:flex;justify-content:space-between;align-items:center}
 .logo svg{width:26px;height:26px;color:var(--accent)}
 nav{display:flex;gap:28px}
 nav a{color:var(--text-secondary);font-size:0.85rem;text-decoration:none}
-main{padding:48px 0}
-.back-btn{display:inline-flex;align-items:center;gap:8px;color:var(--text-secondary);font-size:0.85rem;text-decoration:none;margin-bottom:32px;transition:color 0.2s}
-.back-btn:hover{color:var(--text)}
-.page-header{margin-bottom:40px}
+main{padding:32px 0}
+.back-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--text-secondary);font-size:0.9rem;text-decoration:none;transition:all 0.2s;cursor:pointer}
+.back-btn:hover{background:var(--surface-hover);border-color:var(--accent);color:var(--text)}
+.page-header{margin:24px 0 40px}
 .page-title{font-size:1.75rem;font-weight:600;margin-bottom:8px}
 .page-desc{color:var(--text-secondary);font-size:0.9rem}
 .calculator{display:grid;grid-template-columns:1fr 1fr;gap:40px}
 .input-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px}
 .input-group{margin-bottom:20px}
 .input-label{display:block;font-size:0.85rem;color:var(--text-secondary);margin-bottom:8px}
-.input-field{width:100%;padding:14px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:1.1rem;text-align:center;font-weight:600;transition:all 0.2s ease}
+.input-row{display:flex;gap:8px}
+.input-field{flex:1;padding:16px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:1.25rem;text-align:center;font-weight:600;transition:all 0.2s ease}
 .input-field:focus{outline:none;border-color:var(--accent)}
-.activity-options{display:flex;gap:10px}
-.activity-btn{flex:1;padding:14px;background:var(--surface-hover);border:2px solid var(--border);border-radius:10px;color:var(--text-secondary);font-size:0.85rem;cursor:pointer;text-align:center;transition:all 0.2s ease}
-.activity-btn:hover{background:var(--border)}
-.activity-btn.active{border-color:var(--blue);color:var(--blue)}
+.unit-btn{padding:16px 12px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text-secondary);font-size:0.9rem;min-width:60px}
+.unit-btn.active{background:var(--accent);border-color:var(--accent);color:#000}
 .result-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden}
 .result-header{padding:20px 24px;border-bottom:1px solid var(--border)}
-.result-badge{padding:6px 12px;background:rgba(96,165,250,0.15);border-radius:20px;font-size:0.75rem;color:var(--blue)}
+.result-badge{padding:6px 12px;background:rgba(34,197,94,0.15);border-radius:20px;font-size:0.75rem;color:var(--accent)}
 .result-body{padding:48px 24px;text-align:center}
-.water-glass{position:relative;width:80px;height:120px;margin:0 auto 24px;border:3px solid var(--border);border-radius:4px 4px 12px 12px;overflow:hidden;background:rgba(255,255,255,0.02)}
-.water-level{position:absolute;bottom:0;width:100%;height:70%;background:var(--blue);transition:height 0.4s ease}
-.water-level::after{content:'';position:absolute;top:0;left:0;right:0;height:8px;background:rgba(255,255,255,0.3);border-radius:50%;transform:translateY(-50%)}
-.result-value{font-size:3.5rem;font-weight:600;color:var(--blue);transition:color 0.3s ease}
-.result-unit{font-size:1rem;color:var(--text-secondary);margin-top:4px}
-.msg{font-size:0.95rem;color:var(--text-secondary);margin-top:16px}
+.result-value{font-size:4rem;font-weight:600;color:var(--accent)}
+.result-unit{font-size:1.1rem;color:var(--text-secondary);margin-top:4px}
+.glass{display:inline-block;width:60px;height:80px;background:rgba(34,197,94,0.2);border:3px solid var(--accent);border-radius:0 0 10px 10px;margin:24px auto 0;position:relative;overflow:hidden}
+.glass-fill{position:absolute;bottom:0;left:0;right:0;background:var(--accent);transition:height 0.5s ease}
 .info-section{margin-top:48px;padding-top:32px;border-top:1px solid var(--border)}
 .info-title{font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px;text-transform:uppercase}
 .info-content{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px}
@@ -61,63 +62,54 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 <body>
 <header>
 <div class="container">
-<a href="index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
-<nav><a href="profile.html">Profile</a><a href="index.html#nutrition">Nutrition</a></nav>
+<a href="../index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
+<nav><a href="../profile.html">Profile</a><a href="../index.html#nutrition">Nutrition</a></nav>
 </div>
 </header>
 <main class="container">
 <a href="#" onclick="history.back(); return false;" class="back-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</a>
 <div class="page-header">
-<h1 class="page-title">Water Intake</h1>
-<p class="page-desc">Daily water needs</p>
+<h1 class="page-title">Water</h1>
+<p class="page-desc">Daily hydration needs</p>
 </div>
 <div class="calculator">
 <div class="input-card">
 <div class="input-group">
-<div class="input-label">Weight (kg)</div>
-<input type="number" class="input-field" id="weight" value="65" oninput="calc()">
-</div>
-<div class="input-group">
-<div class="input-label">Activity Level</div>
-<div class="activity-options">
-<div class="activity-btn" data-extra="0" onclick="setActivity(this)">Low</div>
-<div class="activity-btn active" data-extra="500" onclick="setActivity(this)">Medium</div>
-<div class="activity-btn" data-extra="1000" onclick="setActivity(this)">High</div>
-</div>
+<div class="input-label">Weight</div>
+<div class="input-row"><input type="number" class="input-field" id="weight" value="70" oninput="calc()"><button class="unit-btn" id="weight-unit" onclick="toggleUnit()">kg</button></div>
 </div>
 </div>
 <div class="result-card">
-<div class="result-header"><span class="result-badge">💧 Water</span></div>
+<div class="result-header"><span class="result-badge">Daily Intake</span></div>
 <div class="result-body">
-<div class="water-glass"><div class="water-level" id="water-level"></div></div>
 <div class="result-value" id="water">2.3</div>
 <div class="result-unit">liters/day</div>
-<div class="msg" id="msg">About 9 glasses</div>
+<div class="glass"><div class="glass-fill" id="glass-fill" style="height:60%"></div></div>
 </div>
 </div>
 </div>
 <div class="info-section">
 <div class="info-title">Why water matters</div>
 <div class="info-content">
-<p><strong>Staying hydrated</strong> is essential for energy, digestion, skin health, and brain function.</p>
-<p>Your needs increase with activity and body size. Drink more when you exercise or in hot weather. Signs of dehydration include fatigue, headaches, and dark urine.</p>
+<p><strong>Water</strong> regulates body temperature, lubricates joints, and helps digestion. Dehydration causes fatigue and reduced performance.</p>
+<p>Drink regularly throughout the day - don't wait until you're thirsty.</p>
 </div>
 </div>
 <div class="suggestions">
 <div class="suggestions-title">Related Calculators</div>
 <div class="suggestions-grid">
-<a href="macro-split.html" class="suggestion-card"><div class="suggestion-name">Macro Split</div><div class="suggestion-desc">Complete nutrition</div></a>
-<a href="calorie-needs.html" class="suggestion-card"><div class="suggestion-name">Calorie Needs</div><div class="suggestion-desc">Daily calorie targets</div></a>
-<a href="meal-frequency.html" class="suggestion-card"><div class="suggestion-name">Meal Frequency</div><div class="suggestion-desc">When to eat</div></a>
+<a href="calorie-needs.html" class="suggestion-card"><div class="suggestion-name">Calorie Needs</div><div class="suggestion-desc">Daily targets</div></a>
+<a href="meal-frequency.html" class="suggestion-card"><div class="suggestion-name">Meal Frequency</div><div class="suggestion-desc">Eating schedule</div></a>
+<a href="macro-split.html" class="suggestion-card"><div class="suggestion-name">Macros</div><div class="suggestion-desc">Complete breakdown</div></a>
 </div>
 </div>
 </main>
 <footer>FitGauge</footer>
 <script>
-var extra=500;
-function setActivity(el){document.querySelectorAll('.activity-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');extra=parseInt(el.dataset.extra);calc();}
-function calc(){var w=parseFloat(document.getElementById('weight').value)||65;var water=w*0.033+extra/1000;water=Math.round(water*10)/10;document.getElementById('water').textContent=water;var pct=Math.min(water/4*100,100);document.getElementById('water-level').style.height=pct+'%';var glasses=Math.round(water/0.25);document.getElementById('msg').textContent='About '+glasses+' glasses';}
-function loadProfile(){var w=localStorage.getItem('fitgauge_weight');var wU=localStorage.getItem('fitgauge_weight_unit')||'kg';if(w){var weight=parseFloat(w);if(wU==='lbs')weight=Math.round(weight*0.453592);document.getElementById('weight').value=weight;}calc();}
+var unit='kg';
+function toggleUnit(){unit=unit==='kg'?'lbs':'kg';document.getElementById('weight-unit').textContent=unit;calc();}
+function calc(){var w=parseFloat(document.getElementById('weight').value)||70;if(unit==='lbs')w=w*0.453592;var water=w*0.033;document.getElementById('water').textContent=water.toFixed(1);document.getElementById('glass-fill').style.height=Math.min(100,water*30)+'%';}
+function loadProfile(){var w=localStorage.getItem('fitgauge_weight');var u=localStorage.getItem('fitgauge_weight_unit')||'kg';if(w){var weight=parseFloat(w);if(u==='lbs')weight=Math.round(weight*2.20462);document.getElementById('weight').value=weight;}unit=u;document.getElementById('weight-unit').textContent=u;calc();}
 window.onload=loadProfile;
 </script>
 </body>
