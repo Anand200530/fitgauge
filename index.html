@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FitGauge — Free Fitness Calculators</title>
 <meta name="description" content="Calculate BMI, calories, macros, and more. 100% private, always free.">
+<link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -162,7 +163,11 @@ var search=document.getElementById('search');
 var sugg=document.getElementById('suggestions');
 search.addEventListener('input',function(){var q=this.value.toLowerCase().trim();if(q.length<1){sugg.classList.remove('show');return;}var r=calculators.filter(function(c){return c.name.toLowerCase().indexOf(q)>-1||c.desc.toLowerCase().indexOf(q)>-1}).slice(0,6);if(r.length<1){sugg.classList.remove('show');return;}sugg.innerHTML=r.map(function(c){return'<a href="'+c.url+'" class="suggestion-item"><div class="suggestion-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">'+c.icon+'</svg></div><div><div class="suggestion-text">'+c.name+'</div><div class="suggestion-desc">'+c.desc+'</div></div></a>'}).join('');sugg.classList.add('show');});
 search.addEventListener('blur',function(){setTimeout(function(){sugg.classList.remove('show')},150)});
-search.addEventListener('focus',function(){if(search.value.trim().length>0){search.dispatchEvent(new Event('input'))}});
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}
+var page=location.pathname.split('/').pop()||'index.html';
+var views=JSON.parse(localStorage.getItem('fitgauge_views')||'{}');
+views[page]=(views[page]||0)+1;
+localStorage.setItem('fitgauge_views',JSON.stringify(views));
 </script>
 </body>
 </html>

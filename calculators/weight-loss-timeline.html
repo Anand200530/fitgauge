@@ -4,9 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Weight Loss Timeline - FitGauge</title>
+<meta name="description" content="Calculate your weight loss timeline with monthly breakdown.">
+<meta property="og:title" content="Weight Loss Timeline - FitGauge">
+<meta property="og:description" content="Calculate your weight loss timeline with monthly breakdown.">
+<meta property="og:type" content="website">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0a0a0a;--surface:#141414;--surface-hover:#1a1a1a;--border:#262626;--text:#f5f5f5;--text-secondary:#737373;--accent:#22c55e;--green:#4ade80;}
+:root{--bg:#0a0a0a;--surface:#141414;--surface-hover:#1a1a1a;--border:#262626;--text:#f5f5f5;--text-secondary:#737373;--accent:#22c55e;}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 .container{max-width:1100px;margin:0 auto;padding:0 24px}
@@ -16,34 +20,32 @@ header .container{display:flex;justify-content:space-between;align-items:center}
 .logo svg{width:26px;height:26px;color:var(--accent)}
 nav{display:flex;gap:28px}
 nav a{color:var(--text-secondary);font-size:0.85rem;text-decoration:none}
-main{padding:48px 0}
-.back-btn{display:inline-flex;align-items:center;gap:8px;color:var(--text-secondary);font-size:0.85rem;text-decoration:none;margin-bottom:32px;transition:color 0.2s}
-.back-btn:hover{color:var(--text)}
-.page-header{margin-bottom:40px}
+main{padding:32px 0}
+.back-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--text-secondary);font-size:0.9rem;text-decoration:none;transition:all 0.2s;cursor:pointer}
+.back-btn:hover{background:var(--surface-hover);border-color:var(--accent);color:var(--text)}
+.page-header{margin:24px 0 40px}
 .page-title{font-size:1.75rem;font-weight:600;margin-bottom:8px}
 .page-desc{color:var(--text-secondary);font-size:0.9rem}
 .calculator{display:grid;grid-template-columns:1fr 1fr;gap:40px}
 .input-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px}
 .input-group{margin-bottom:20px}
 .input-label{display:block;font-size:0.85rem;color:var(--text-secondary);margin-bottom:8px}
-.input-field{width:100%;padding:14px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:1.1rem;text-align:center;font-weight:600;transition:all 0.2s ease}
+.input-row{display:flex;gap:8px}
+.input-field{flex:1;padding:16px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:1.25rem;text-align:center;font-weight:600;transition:all 0.2s ease}
 .input-field:focus{outline:none;border-color:var(--accent)}
-.options{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.option-btn{padding:14px;background:var(--surface-hover);border:2px solid var(--border);border-radius:10px;color:var(--text-secondary);font-size:0.85rem;cursor:pointer;text-align:center;transition:all 0.2s ease}
-.option-btn:hover{background:var(--border)}
-.option-btn.active{border-color:var(--accent);color:var(--accent)}
+.unit-btn{padding:16px 12px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text-secondary);font-size:0.9rem;min-width:60px}
+.unit-btn.active{background:var(--accent);border-color:var(--accent);color:#000}
 .result-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden}
 .result-header{padding:20px 24px;border-bottom:1px solid var(--border)}
 .result-badge{padding:6px 12px;background:rgba(34,197,94,0.15);border-radius:20px;font-size:0.75rem;color:var(--accent)}
 .result-body{padding:48px 24px;text-align:center}
-.result-value{font-size:4rem;font-weight:600;color:var(--accent);transition:color 0.3s ease}
-.result-unit{font-size:1rem;color:var(--text-secondary);margin-top:4px}
-.breakdown{margin-top:32px;padding-top:24px;border-top:1px solid var(--border)}
-.breakdown-title{font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px}
-.breakdown-item{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)}
-.breakdown-item:last-child{border:none}
-.breakdown-label{color:var(--text-secondary)}
-.breakdown-value{font-weight:600}
+.result-value{font-size:4rem;font-weight:600;color:var(--accent)}
+.result-unit{font-size:1.1rem;color:var(--text-secondary);margin-top:4px}
+.timeline{margin-top:32px;padding-top:24px;border-top:1px solid var(--border)}
+.month{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);font-size:0.9rem}
+.month:last-child{border:none}
+.month-date{color:var(--text-secondary)}
+.month-weight{font-weight:600;color:var(--accent)}
 .info-section{margin-top:48px;padding-top:32px;border-top:1px solid var(--border)}
 .info-title{font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px;text-transform:uppercase}
 .info-content{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px}
@@ -63,74 +65,60 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 <body>
 <header>
 <div class="container">
-<a href="index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
-<nav><a href="profile.html">Profile</a><a href="index.html#goals">Goals</a></nav>
+<a href="../index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
+<nav><a href="../profile.html">Profile</a><a href="../index.html#energy">Energy</a></nav>
 </div>
 </header>
 <main class="container">
 <a href="#" onclick="history.back(); return false;" class="back-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</a>
 <div class="page-header">
-<h1 class="page-title">Weight Loss Timeline</h1>
-<p class="page-desc">How long to reach your goal?</p>
+<h1 class="page-title">Timeline</h1>
+<p class="page-desc">Weight loss projections</p>
 </div>
 <div class="calculator">
 <div class="input-card">
 <div class="input-group">
-<div class="input-label">Current Weight (kg)</div>
-<input type="number" class="input-field" id="current" value="80" oninput="calc()">
+<div class="input-label">Current Weight</div>
+<div class="input-row"><input type="number" class="input-field" id="current" value="85" oninput="calc()"><button class="unit-btn" id="weight-unit" onclick="toggleUnit()">kg</button></div>
 </div>
 <div class="input-group">
-<div class="input-label">Goal Weight (kg)</div>
-<input type="number" class="input-field" id="goal" value="70" oninput="calc()">
-</div>
-<div class="input-group">
-<div class="input-label">How fast?</div>
-<div class="options">
-<div class="option-btn" data-rate="0.25" onclick="setRate(this)">Slow</div>
-<div class="option-btn active" data-rate="0.5" onclick="setRate(this)">Normal</div>
-<div class="option-btn" data-rate="1" onclick="setRate(this)">Fast</div>
-</div>
+<div class="input-label">Goal Weight</div>
+<div class="input-row"><input type="number" class="input-field" id="goal" value="75" oninput="calc()"></div>
 </div>
 </div>
 <div class="result-card">
 <div class="result-header"><span class="result-badge">Timeline</span></div>
 <div class="result-body">
-<div class="result-value" id="weeks">20</div>
-<div class="result-unit">weeks to goal</div>
-<div class="breakdown" id="breakdown">
-<div class="breakdown-title">Monthly Progress</div>
-<div class="breakdown-item"><span class="breakdown-label">Month 1</span><span class="breakdown-value">78 kg</span></div>
-<div class="breakdown-item"><span class="breakdown-label">Month 2</span><span class="breakdown-value">76 kg</span></div>
-<div class="breakdown-item"><span class="breakdown-label">Month 3</span><span class="breakdown-value">74 kg</span></div>
-<div class="breakdown-item"><span class="breakdown-label">Month 4</span><span class="breakdown-value">72 kg</span></div>
-<div class="breakdown-item"><span class="breakdown-label">Month 5</span><span class="breakdown-value">70 kg</span></div>
-</div>
+<div class="result-value" id="months">4</div>
+<div class="result-unit">months to goal</div>
+<div class="timeline" id="timeline"></div>
 </div>
 </div>
 </div>
 <div class="info-section">
-<div class="info-title">Set realistic expectations</div>
+<div class="info-title">How it works</div>
 <div class="info-content">
-<p><strong>Slow and steady</strong> wins the race. Losing 0.25-0.5kg per week is sustainable and easier to maintain than rapid weight loss.</p>
-<p>Fast weight loss often leads to rebound gain. Patience leads to permanent results.</p>
+<p><strong>Timeline</strong> projects how long to reach your goal based on losing 0.5-1kg per week.</p>
+<p>Actual results vary based on consistency, diet, and individual factors.</p>
 </div>
 </div>
 <div class="suggestions">
 <div class="suggestions-title">Related Calculators</div>
 <div class="suggestions-grid">
-<a href="fat-loss.html" class="suggestion-card"><div class="suggestion-name">Fat Loss</div><div class="suggestion-desc">Plan your approach</div></a>
-<a href="rebound-prevention.html" class="suggestion-card"><div class="suggestion-name">Rebound Prevention</div><div class="suggestion-desc">Keep it off</div></a>
-<a href="calorie-needs.html" class="suggestion-card"><div class="suggestion-name">Calorie Needs</div><div class="suggestion-desc">Daily targets</div></a>
+<a href="tdee.html" class="suggestion-card"><div class="suggestion-name">TDEE</div><div class="suggestion-desc">Your calorie needs</div></a>
+<a href="fat-loss.html" class="suggestion-card"><div class="suggestion-name">Fat Loss</div><div class="suggestion-desc">Lose weight</div></a>
+<a href="calorie-needs.html" class="suggestion-card"><div class="suggestion-name">Calorie Needs</div><div class="suggestion-desc">Set targets</div></a>
 </div>
 </div>
 </main>
 <footer>FitGauge</footer>
 <script>
-var rate=0.5;
-function setRate(el){document.querySelectorAll('.option-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');rate=parseFloat(el.dataset.rate);calc();}
-function calc(){var current=parseFloat(document.getElementById('current').value)||80;var goal=parseFloat(document.getElementById('goal').value)||70;var diff=current-goal;if(diff<=0){document.getElementById('weeks').textContent='-';return;}var weeks=Math.ceil(diff/rate);document.getElementById('weeks').textContent=weeks;var months=Math.ceil(weeks/4);var html='<div class="breakdown-title">Monthly Progress</div>';for(var m=1;m<=months&&m<=12;m++){var w=Math.max(goal,current-(m*4*rate));html+='<div class="breakdown-item"><span class="breakdown-label">Month '+m+'</span><span class="breakdown-value">'+w.toFixed(1)+' kg</span></div>';}
-document.getElementById('breakdown').innerHTML=html;}
-calc();
+var unit='kg';
+function toggleUnit(){unit=unit==='kg'?'lbs':'kg';document.getElementById('weight-unit').textContent=unit;calc();}
+function calc(){var current=parseFloat(document.getElementById('current').value)||85;var goal=parseFloat(document.getElementById('goal').value)||75;if(unit==='lbs'){current=current*0.453592;goal=goal*0.453592;}var diff=current-goal;if(diff<=0){document.getElementById('months').textContent='0';document.getElementById('timeline').innerHTML='';return;}var months=diff/4;document.getElementById('months').textContent=Math.round(months);var html='';for(var i=1;i<=Math.min(6,Math.ceil(months));i++){var weight=(current-diff*(i/months)).toFixed(1);html+='<div class="month"><span class="month-date">Month '+i+'</span><span class="month-weight">'+weight+' '+unit+'</span></div>';}
+document.getElementById('timeline').innerHTML=html;}
+function loadProfile(){var w=localStorage.getItem('fitgauge_weight');var u=localStorage.getItem('fitgauge_weight_unit')||'kg';if(w){var weight=parseFloat(w);if(u==='lbs')weight=Math.round(weight*2.20462);document.getElementById('current').value=weight;}unit=u;document.getElementById('weight-unit').textContent=u;calc();}
+window.onload=loadProfile;
 </script>
 </body>
 </html>
