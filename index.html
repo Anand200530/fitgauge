@@ -9,14 +9,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0a0a0a;--surface:#141414;--surface-hover:#1a1a1a;--border:#262626;--text:#f5f5f5;--text-secondary:#737373;--accent:#22c55e;--accent-hover:#4ade80;}
+:root{--bg:#0a0a0a;--surface:#141414;--surface-hover:#1a1a1a;--border:#262626;--text:#f5f5f5;--text-secondary:#737373;--accent:#22c55e;}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
 .container{max-width:1200px;margin:0 auto;padding:0 24px}
 a{text-decoration:none;color:inherit}
 img{max-width:100%}
-
-/* Header */
 header{padding:16px 0;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:100}
 header .container{display:flex;justify-content:space-between;align-items:center}
 .logo{display:flex;align-items:center;gap:10px;font-weight:600;font-size:1.1rem}
@@ -24,43 +22,39 @@ header .container{display:flex;justify-content:space-between;align-items:center}
 nav{display:flex;gap:28px}
 nav a{color:var(--text-secondary);font-size:0.9rem;transition:color 0.2s}
 nav a:hover{color:var(--text)}
-
-/* Hero */
 .hero{padding:64px 0;text-align:center}
 .hero h1{font-size:2.75rem;font-weight:700;margin-bottom:12px;letter-spacing:-0.02em}
 .hero p{color:var(--text-secondary);font-size:1.1rem;max-width:500px;margin:0 auto 32px}
-
-/* Search */
-.search-wrapper{max-width:520px;margin:0 auto 40px}
+.search-wrapper{max-width:520px;margin:0 auto 40px;position:relative}
 .search-box{display:flex;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:4px;transition:border-color 0.2s}
 .search-box:focus-within{border-color:var(--accent)}
 .search-box svg{width:20px;height:20px;color:var(--text-secondary);margin-left:14px}
 .search-box input{flex:1;padding:14px 12px;background:transparent;border:none;color:var(--text);font-size:1rem;font-family:inherit}
 .search-box input:focus{outline:none}
 .search-box input::placeholder{color:var(--text-secondary)}
-
-/* Quick Links */
+.suggestions{position:absolute;top:100%;left:0;right:0;background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-top:8px;overflow:hidden;z-index:200;display:none;box-shadow:0 4px 20px rgba(0,0,0,0.3)}
+.suggestions.show{display:block}
+.suggestion-item{display:flex;align-items:center;gap:12px;padding:14px 16px;text-decoration:none;color:var(--text);transition:background 0.2s}
+.suggestion-item:hover{background:var(--surface-hover)}
+.suggestion-item:first-child{border-radius:12px 12px 0 0}
+.suggestion-item:last-child{border-radius:0 0 12px 12px}
+.suggestion-icon{width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:var(--surface-hover);border-radius:8px}
+.suggestion-icon svg{width:18px;height:18px;color:var(--accent)}
+.suggestion-text{font-size:0.9rem}
+.suggestion-desc{font-size:0.75rem;color:var(--text-secondary);margin-top:2px}
 .quick-links{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:48px}
 .quick-link{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;font-size:0.85rem;color:var(--text-secondary);transition:all 0.2s}
 .quick-link:hover{background:var(--surface-hover);border-color:var(--accent);color:var(--text)}
 .quick-link svg{width:16px;height:16px;color:var(--accent)}
-
-/* Stats */
 .stats{display:flex;justify-content:center;gap:48px;padding:32px 0}
 .stat{text-align:center}
 .stat-value{font-size:1.75rem;font-weight:700;color:var(--accent)}
 .stat-label{font-size:0.75rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.05em;margin-top:4px}
-
-/* Section */
 section{padding:56px 0}
 .section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border)}
 .section-title{font-size:0.75rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.1em}
 .section-count{font-size:0.75rem;color:var(--text-secondary)}
-
-/* Grid */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
-
-/* Card */
 .card{display:flex;flex-direction:column;gap:4px;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:14px;text-decoration:none;color:var(--text);transition:all 0.2s}
 .card:hover{background:var(--surface-hover);border-color:var(--accent);transform:translateY(-2px)}
 .card:hover .card-title{color:var(--accent)}
@@ -69,140 +63,110 @@ section{padding:56px 0}
 .card-icon svg{width:20px;height:20px;color:var(--accent)}
 .card-title{font-size:0.95rem;font-weight:500;transition:color 0.2s}
 .card-desc{font-size:0.8rem;color:var(--text-secondary)}
-.card-tags{display:flex;gap:6px;margin-top:8px}
-.card-tag{padding:4px 8px;background:var(--surface-hover);border-radius:6px;font-size:0.7rem;color:var(--text-secondary)}
-
-/* Category Descriptions */
 .cat-desc{font-size:0.85rem;color:var(--text-secondary);margin-bottom:20px;max-width:600px}
-
-/* Footer */
 footer{padding:48px 0;border-top:1px solid var(--border);text-align:center;color:var(--text-secondary);font-size:0.9rem}
 footer p{margin-bottom:8px}
-
-/* Responsive */
 @media(max-width:768px){.hero h1{font-size:2rem}.stats{gap:32px}.grid{grid-template-columns:1fr}nav{display:none}.quick-links{gap:8px}.quick-link{padding:8px 12px;font-size:0.8rem}}
 </style>
 </head>
 <body>
 <header>
 <div class="container">
-<a href="index.html" class="logo">
-<svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>
-FitGauge
-</a>
-<nav>
-<a href="#body">Body</a>
-<a href="#energy">Energy</a>
-<a href="#nutrition">Nutrition</a>
-<a href="#fitness">Fitness</a>
-<a href="#goals">Goals</a>
-<a href="profile.html">Profile</a>
-</nav>
+<a href="index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
+<nav><a href="#body">Body</a><a href="#energy">Energy</a><a href="#nutrition">Nutrition</a><a href="#fitness">Fitness</a><a href="#goals">Goals</a><a href="profile.html">Profile</a></nav>
 </div>
 </header>
-
 <main class="container">
 <section class="hero">
 <h1>Free Fitness Calculators</h1>
 <p>Calculate everything you need for your fitness journey. 100% private, works offline, always free.</p>
-
 <div class="search-wrapper">
-<div class="search-box">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-<input type="text" id="search" placeholder="Search calculators... (try 'BMI', 'calories', 'protein')">
+<div class="search-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input type="text" id="search" placeholder="Search calculators..." autocomplete="off"></div>
+<div class="suggestions" id="suggestions"></div>
 </div>
-</div>
-
 <div class="quick-links">
 <a href="calculators/bmi.html" class="quick-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2v20M2 12h20"/></svg>BMI</a>
 <a href="calculators/tdee.html" class="quick-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Calories</a>
-<a href="calculators/protein.html" class="quick-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/></svg>Protein</a>
+<a href="calculators/protein.html" class="quick-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg>Protein</a>
 <a href="calculators/body-fat.html" class="quick-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Body Fat</a>
 <a href="calculators/heart-rate-zones.html" class="quick-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>Heart Rate</a>
 <a href="calculators/1rm.html" class="quick-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/></svg>1RM</a>
 </div>
-
-<div class="stats">
-<div class="stat"><div class="stat-value">24</div><div class="stat-label">Calculators</div></div>
-<div class="stat"><div class="stat-value">100%</div><div class="stat-label">Private</div></div>
-<div class="stat"><div class="stat-value">Free</div><div class="stat-label">Forever</div></div>
-</div>
+<div class="stats"><div class="stat"><div class="stat-value">24</div><div class="stat-label">Calculators</div></div><div class="stat"><div class="stat-value">100%</div><div class="stat-label">Private</div></div><div class="stat"><div class="stat-value">Free</div><div class="stat-label">Forever</div></div></div>
 </section>
-
-<!-- Body -->
-<section id="body">
-<div class="section-header"><h2 class="section-title">Body Measurements</h2><span class="section-count">6 calculators</span></div>
-<p class="cat-desc">Understand your body composition with these measurements.</p>
+<section id="body"><div class="section-header"><h2 class="section-title">Body Measurements</h2><span class="section-count">6</span></div><p class="cat-desc">Understand your body composition.</p>
 <div class="grid">
 <a href="calculators/bmi.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2v20M2 12h20"/></svg></div><div><div class="card-title">BMI</div><div class="card-desc">Body Mass Index</div></div></a>
-<a href="calculators/ideal-weight.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg></div><div><div class="card-title">Ideal Weight</div><div class="card-desc">Healthy weight range</div></div></a>
-<a href="calculators/body-fat.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div><div><div class="card-title">Body Fat %</div><div class="card-desc">US Navy method</div></div></a>
-<a href="calculators/lean-mass.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="12" height="16" rx="2"/></svg></div><div><div class="card-title">Lean Mass</div><div class="card-desc">Muscle & bone weight</div></div></a>
-<a href="calculators/waist-height.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="8" width="18" height="12" rx="2"/></svg></div><div><div class="card-title">Waist-Height</div><div class="card-desc">Health indicator</div></div></a>
+<a href="calculators/ideal-weight.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg></div><div><div class="card-title">Ideal Weight</div><div class="card-desc">Healthy range</div></div></a>
+<a href="calculators/body-fat.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></div><div><div class="card-title">Body Fat %</div><div class="card-desc">US Navy method</div></div></a>
+<a href="calculators/lean-mass.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="12" height="16" rx="2"/></svg></div><div><div class="card-title">Lean Mass</div><div class="card-desc">Muscle & bone</div></div></a>
+<a href="calculators/waist-height.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="8" width="18" height="12" rx="2"/></svg></div><div><div class="card-title">Waist-Height</div><div class="card-desc">Health check</div></div></a>
 <a href="calculators/waist-hip.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="12" rx="10" ry="6"/></svg></div><div><div class="card-title">Waist-Hip</div><div class="card-desc">Risk assessment</div></div></a>
-</div>
-</section>
-
-<!-- Energy -->
-<section id="energy">
-<div class="section-header"><h2 class="section-title">Calories & Energy</h2><span class="section-count">5 calculators</span></div>
-<p class="cat-desc">Track your daily calorie needs for any goal.</p>
+</div></section>
+<section id="energy"><div class="section-header"><h2 class="section-title">Calories & Energy</h2><span class="section-count">5</span></div><p class="cat-desc">Track daily calorie needs.</p>
 <div class="grid">
 <a href="calculators/bmr.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div><div><div class="card-title">BMR</div><div class="card-desc">Calories at rest</div></div></a>
-<a href="calculators/tdee.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div><div class="card-title">TDEE</div><div class="card-desc">Total daily energy</div></div></a>
-<a href="calculators/maintenance-calories.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></div><div><div class="card-title">Maintenance</div><div class="card-desc">Stay same weight</div></div></a>
-<a href="calculators/calorie-needs.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div><div><div class="card-title">Calorie Needs</div><div class="card-desc">Daily targets</div></div></a>
-<a href="calculators/weight-loss-timeline.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><div><div class="card-title">Timeline</div><div class="card-desc">Weight projections</div></div></a>
-</div>
-</section>
-
-<!-- Nutrition -->
-<section id="nutrition">
-<div class="section-header"><h2 class="section-title">Nutrition</h2><span class="section-count">4 calculators</span></div>
-<p class="cat-desc">Plan your diet with protein, macros, and hydration.</p>
+<a href="calculators/tdee.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div><div class="card-title">TDEE</div><div class="card-desc">Total energy</div></div></a>
+<a href="calculators/maintenance-calories.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></div><div><div class="card-title">Maintenance</div><div class="card-desc">Stay same</div></div></a>
+<a href="calculators/calorie-needs.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></div><div><div class="card-title">Calorie Needs</div><div class="card-desc">Daily targets</div></div></a>
+<a href="calculators/weight-loss-timeline.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><div><div class="card-title">Timeline</div><div class="card-desc">Projections</div></div></a>
+</div></section>
+<section id="nutrition"><div class="section-header"><h2 class="section-title">Nutrition</h2><span class="section-count">4</span></div><p class="cat-desc">Plan your diet.</p>
 <div class="grid">
 <a href="calculators/protein.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg></div><div><div class="card-title">Protein</div><div class="card-desc">Daily needs</div></div></a>
 <a href="calculators/macro-split.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div><div><div class="card-title">Macros</div><div class="card-desc">Carbs, protein, fat</div></div></a>
-<a href="calculators/water-intake.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg></div><div><div class="card-title">Water</div><div class="card-desc">Hydration targets</div></div></a>
+<a href="calculators/water-intake.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg></div><div><div class="card-title">Water</div><div class="card-desc">Hydration</div></div></a>
 <a href="calculators/meal-frequency.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></div><div><div class="card-title">Meal Frequency</div><div class="card-desc">Eating schedule</div></div></a>
-</div>
-</section>
-
-<!-- Fitness -->
-<section id="fitness">
-<div class="section-header"><h2 class="section-title">Fitness</h2><span class="section-count">4 calculators</span></div>
-<p class="cat-desc">Track performance and training metrics.</p>
+</div></section>
+<section id="fitness"><div class="section-header"><h2 class="section-title">Fitness</h2><span class="section-count">4</span></div><p class="cat-desc">Track performance.</p>
 <div class="grid">
 <a href="calculators/1rm.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/></svg></div><div><div class="card-title">1RM</div><div class="card-desc">One rep max</div></div></a>
 <a href="calculators/heart-rate-zones.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><div><div class="card-title">Heart Rate</div><div class="card-desc">Training zones</div></div></a>
 <a href="calculators/calories-burned.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div><div class="card-title">Calories Burned</div><div class="card-desc">Activity tracker</div></div></a>
 <a href="calculators/running-pace.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></div><div><div class="card-title">Running Pace</div><div class="card-desc">Speed calculator</div></div></a>
-</div>
-</section>
-
-<!-- Goals -->
-<section id="goals">
-<div class="section-header"><h2 class="section-title">Goals</h2><span class="section-count">5 calculators</span></div>
-<p class="cat-desc">Plan and track your fitness goals.</p>
+</div></section>
+<section id="goals"><div class="section-header"><h2 class="section-title">Goals</h2><span class="section-count">5</span></div><p class="cat-desc">Plan your goals.</p>
 <div class="grid">
 <a href="calculators/fat-loss.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><div><div class="card-title">Fat Loss</div><div class="card-desc">Lose weight</div></div></a>
 <a href="calculators/weight-gain.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20"/></svg></div><div><div class="card-title">Weight Gain</div><div class="card-desc">Build muscle</div></div></a>
 <a href="calculators/rebound-prevention.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></div><div><div class="card-title">Rebound Prevention</div><div class="card-desc">Keep weight off</div></div></a>
 <a href="calculators/body-shape.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></div><div><div class="card-title">Body Shape</div><div class="card-desc">Your type</div></div></a>
 <a href="calculators/somatotype.html" class="card"><div class="card-header"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/></svg></div><div><div class="card-title">Somatotype</div><div class="card-desc">Body type analysis</div></div></a>
-</div>
-</section>
+</div></section>
 </main>
-
-<footer>
-<div class="container">
-<p><strong>FitGauge</strong> — Free Fitness Calculators</p>
-<p style="font-size:0.8rem;color:var(--text-secondary)">100% client-side. No tracking. No cookies. No account needed.</p>
-</div>
-</footer>
-
+<footer><div class="container"><p><strong>FitGauge</strong> — Free Fitness Calculators</p><p style="font-size:0.8rem;color:var(--text-secondary)">100% client-side. No tracking.</p></div></footer>
 <script>
-document.getElementById('search').addEventListener('input',function(e){var q=e.target.value.toLowerCase();var cards=document.querySelectorAll('.card');cards.forEach(function(c){var t=c.querySelector('.card-title').textContent.toLowerCase();var d=c.querySelector('.card-desc').textContent.toLowerCase();c.style.display=(t.indexOf(q)>-1||d.indexOf(q)>-1)?'flex':'none'})});
+var calculators=[
+{name:"BMI",desc:"Body Mass Index",url:"calculators/bmi.html",icon:'<circle cx="12" cy="12" r="10"/><path d="M12 2v20M2 12h20"/>'},
+{name:"Body Fat",desc:"US Navy method",url:"calculators/body-fat.html",icon:'<circle cx="12" cy="12" r="10"/>'},
+{name:"BMR",desc:"Calories at rest",url:"calculators/bmr.html",icon:'<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>'},
+{name:"TDEE",desc:"Total daily energy",url:"calculators/tdee.html",icon:'<path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>'},
+{name:"Calorie Needs",desc:"Daily targets",url:"calculators/calorie-needs.html",icon:'<circle cx="12" cy="12" r="10"/>'},
+{name:"Maintenance",desc:"Stay same weight",url:"calculators/maintenance-calories.html",icon:'<circle cx="12" cy="12" r="10"/>'},
+{name:"Protein",desc:"Daily protein needs",url:"calculators/protein.html",icon:'<path d="M12 2L2 7l10 5 10-5-10-5z"/>'},
+{name:"Macros",desc:"Carbs, protein, fat",url:"calculators/macro-split.html",icon:'<rect x="3" y="3" width="18" height="18" rx="2"/>'},
+{name:"Water Intake",desc:"Hydration targets",url:"calculators/water-intake.html",icon:'<path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>'},
+{name:"Heart Rate",desc:"Training zones",url:"calculators/heart-rate-zones.html",icon:'<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>'},
+{name:"1RM",desc:"One rep max",url:"calculators/1rm.html",icon:'<rect x="4" y="2" width="16" height="20" rx="2"/>'},
+{name:"Running Pace",desc:"Speed calculator",url:"calculators/running-pace.html",icon:'<circle cx="12" cy="12" r="10"/>'},
+{name:"Calories Burned",desc:"Activity tracker",url:"calculators/calories-burned.html",icon:'<path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>'},
+{name:"Ideal Weight",desc:"Healthy range",url:"calculators/ideal-weight.html",icon:'<path d="M12 2L2 7l10 5 10-5-10-5z"/>'},
+{name:"Lean Mass",desc:"Muscle & bone",url:"calculators/lean-mass.html",icon:'<rect x="6" y="4" width="12" height="16" rx="2"/>'},
+{name:"Waist-Height",desc:"Health check",url:"calculators/waist-height.html",icon:'<rect x="3" y="8" width="18" height="12" rx="2"/>'},
+{name:"Waist-Hip",desc:"Risk assessment",url:"calculators/waist-hip.html",icon:'<ellipse cx="12" cy="12" rx="10" ry="6"/>'},
+{name:"Fat Loss",desc:"Lose weight",url:"calculators/fat-loss.html",icon:'<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>'},
+{name:"Weight Gain",desc:"Build muscle",url:"calculators/weight-gain.html",icon:'<path d="M12 2v20"/>'},
+{name:"Timeline",desc:"Weight projections",url:"calculators/weight-loss-timeline.html",icon:'<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>'},
+{name:"Meal Frequency",desc:"Eating schedule",url:"calculators/meal-frequency.html",icon:'<circle cx="12" cy="12" r="10"/>'},
+{name:"Rebound Prevention",desc:"Keep weight off",url:"calculators/rebound-prevention.html",icon:'<circle cx="12" cy="12" r="10"/>'},
+{name:"Body Shape",desc:"Your type",url:"calculators/body-shape.html",icon:'<circle cx="12" cy="12" r="10"/>'},
+{name:"Somatotype",desc:"Body type analysis",url:"calculators/somatotype.html",icon:'<path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/>'}
+];
+var search=document.getElementById('search');
+var sugg=document.getElementById('suggestions');
+search.addEventListener('input',function(){var q=this.value.toLowerCase().trim();if(q.length<1){sugg.classList.remove('show');return;}var r=calculators.filter(function(c){return c.name.toLowerCase().indexOf(q)>-1||c.desc.toLowerCase().indexOf(q)>-1}).slice(0,6);if(r.length<1){sugg.classList.remove('show');return;}sugg.innerHTML=r.map(function(c){return'<a href="'+c.url+'" class="suggestion-item"><div class="suggestion-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">'+c.icon+'</svg></div><div><div class="suggestion-text">'+c.name+'</div><div class="suggestion-desc">'+c.desc+'</div></div></a>'}).join('');sugg.classList.add('show');});
+search.addEventListener('blur',function(){setTimeout(function(){sugg.classList.remove('show')},150)});
+search.addEventListener('focus',function(){if(search.value.trim().length>0){search.dispatchEvent(new Event('input'))}});
 </script>
 </body>
 </html>
