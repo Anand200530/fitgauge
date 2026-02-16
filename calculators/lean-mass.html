@@ -17,8 +17,8 @@ header .container{display:flex;justify-content:space-between;align-items:center}
 nav{display:flex;gap:28px}
 nav a{color:var(--text-secondary);font-size:0.85rem;text-decoration:none}
 main{padding:48px 0}
-.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--text-secondary);font-size:0.85rem;text-decoration:none;margin-bottom:32px;transition:color 0.2s}
-.back-link:hover{color:var(--text)}
+.back-btn{display:inline-flex;align-items:center;gap:8px;color:var(--text-secondary);font-size:0.85rem;text-decoration:none;margin-bottom:32px;transition:color 0.2s}
+.back-btn:hover{color:var(--text)}
 .page-header{margin-bottom:40px}
 .page-title{font-size:1.75rem;font-weight:600;margin-bottom:8px}
 .page-desc{color:var(--text-secondary);font-size:0.9rem}
@@ -67,7 +67,7 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 </div>
 </header>
 <main class="container">
-<a href="index.html" class="back-link">← Back</a>
+<a href="#" onclick="history.back(); return false;" class="back-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</a>
 <div class="page-header">
 <h1 class="page-title">Lean Mass</h1>
 <p class="page-desc">Muscle and bone weight</p>
