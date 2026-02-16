@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://anand200530.github.io/fitgauge/sitemap.xml
+Sitemap: https://fitgauge.vercel.app/sitemap.xml
+Host: https://fitgauge.vercel.app

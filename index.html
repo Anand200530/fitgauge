@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FitGauge — Free Fitness Calculators</title>
 <meta name="description" content="Calculate BMI, calories, macros, and more. 100% private, always free.">
+<link rel="canonical" href="https://fitgauge.vercel.app/">
+<meta name="google-site-verification" content="fitgauge-verification">
+<meta name="google-adsense-account" content="ca-pub-8934528082893328">
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -167,7 +170,10 @@ search.addEventListener('input',function(){var q=this.value.toLowerCase().trim()
 search.addEventListener('blur',function(){setTimeout(function(){sugg.classList.remove('show')},150)});
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}
 var page=location.pathname.split('/').pop()||'index.html';
-var views=JSON.parse(localStorage.getItem('fitgauge_views')||'{}');views[page]=(views[page]||0)+1;localStorage.setItem('fitgauge_views',JSON.stringify(views)));
-</script>
+var views=JSON.parse(localStorage.getItem('fitgauge_views')||'{}');views[page]=(views[page]||0)+1;localStorage.setItem('fitgauge_views',JSON.stringify(views));</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8934528082893328"
+ crossorigin="anonymous"></script>
 </body>
 </html>
