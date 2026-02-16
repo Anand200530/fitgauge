@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BMR Calculator - FitGauge</title>
+<meta name="description" content="Calculate your Basal Metabolic Rate - calories burned at rest. Free and private.">
+<meta property="og:title" content="BMR Calculator - FitGauge">
+<meta property="og:description" content="Calculate your Basal Metabolic Rate - calories burned at rest. Free and private.">
+<meta property="og:type" content="website">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0a0a0a;--surface:#141414;--surface-hover:#1a1a1a;--border:#262626;--text:#f5f5f5;--text-secondary:#737373;--accent:#22c55e;}
@@ -16,10 +20,10 @@ header .container{display:flex;justify-content:space-between;align-items:center}
 .logo svg{width:26px;height:26px;color:var(--accent)}
 nav{display:flex;gap:28px}
 nav a{color:var(--text-secondary);font-size:0.85rem;text-decoration:none}
-main{padding:48px 0}
-.back-btn{display:inline-flex;align-items:center;gap:8px;color:var(--text-secondary);font-size:0.85rem;text-decoration:none;margin-bottom:32px;transition:color 0.2s}
-.back-btn:hover{color:var(--text)}
-.page-header{margin-bottom:40px}
+main{padding:32px 0}
+.back-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--text-secondary);font-size:0.9rem;text-decoration:none;transition:all 0.2s;cursor:pointer}
+.back-btn:hover{background:var(--surface-hover);border-color:var(--accent);color:var(--text)}
+.page-header{margin:24px 0 40px}
 .page-title{font-size:1.75rem;font-weight:600;margin-bottom:8px}
 .page-desc{color:var(--text-secondary);font-size:0.9rem}
 .calculator{display:grid;grid-template-columns:1fr 1fr;gap:40px}
@@ -30,19 +34,18 @@ main{padding:48px 0}
 .gender-btn.active{border-color:var(--accent);color:var(--accent)}
 .input-group{margin-bottom:20px}
 .input-label{display:block;font-size:0.85rem;color:var(--text-secondary);margin-bottom:8px}
-.input-field{width:100%;padding:16px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:1.25rem;text-align:center;font-weight:600;transition:all 0.2s ease}
+.input-row{display:flex;gap:8px}
+.input-field{flex:1;padding:16px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:1.25rem;text-align:center;font-weight:600;transition:all 0.2s ease}
 .input-field:focus{outline:none;border-color:var(--accent)}
+.unit-btn{padding:16px 12px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text-secondary);font-size:0.9rem;min-width:60px}
+.unit-btn.active{background:var(--accent);border-color:var(--accent);color:#000}
 .result-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden}
 .result-header{padding:20px 24px;border-bottom:1px solid var(--border)}
 .result-badge{padding:6px 12px;background:rgba(34,197,94,0.15);border-radius:20px;font-size:0.75rem;color:var(--accent)}
 .result-body{padding:48px 24px;text-align:center}
-.flame{width:80px;height:80px;margin:0 auto 24px;position:relative}
-.flame-core{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:30px;height:30px;background:var(--accent);border-radius:50%;animation:pulse 1s infinite}
-@keyframes pulse{0%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.2)}100%{transform:translate(-50%,-50%) scale(1)}}
-.result-value{font-size:4rem;font-weight:600;color:var(--accent);transition:color 0.3s ease}
+.result-value{font-size:4rem;font-weight:600;color:var(--accent)}
 .result-unit{font-size:1.1rem;color:var(--text-secondary);margin-top:4px}
-.tips{margin-top:32px;padding-top:24px;border-top:1px solid var(--border)}
-.tip{font-size:0.9rem;color:var(--text-secondary);padding:8px 0}
+.flame{display:inline-block;font-size:4rem;margin-bottom:16px}
 .info-section{margin-top:48px;padding-top:32px;border-top:1px solid var(--border)}
 .info-title{font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px;text-transform:uppercase}
 .info-content{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px}
@@ -62,8 +65,8 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 <body>
 <header>
 <div class="container">
-<a href="index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
-<nav><a href="profile.html">Profile</a><a href="index.html#energy">Energy</a></nav>
+<a href="../index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
+<nav><a href="../profile.html">Profile</a><a href="../index.html#energy">Energy</a></nav>
 </div>
 </header>
 <main class="container">
@@ -83,48 +86,49 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 <input type="number" class="input-field" id="age" value="25" oninput="calc()">
 </div>
 <div class="input-group">
-<div class="input-label">Height (cm)</div>
-<input type="number" class="input-field" id="height" value="170" oninput="calc()">
+<div class="input-label">Height</div>
+<div class="input-row"><input type="number" class="input-field" id="height" value="170" oninput="calc()"><button class="unit-btn" id="height-unit" onclick="toggleHeightUnit()">cm</button></div>
 </div>
 <div class="input-group">
-<div class="input-label">Weight (kg)</div>
-<input type="number" class="input-field" id="weight" value="65" oninput="calc()">
+<div class="input-label">Weight</div>
+<div class="input-row"><input type="number" class="input-field" id="weight" value="65" oninput="calc()"><button class="unit-btn" id="weight-unit" onclick="toggleWeightUnit()">kg</button></div>
 </div>
 </div>
 <div class="result-card">
-<div class="result-header"><span class="result-badge">BMR</span></div>
+<div class="result-header"><span class="result-badge">Your BMR</span></div>
 <div class="result-body">
-<div class="flame"><div class="flame-core"></div></div>
+<div class="flame">🔥</div>
 <div class="result-value" id="bmr">1,450</div>
 <div class="result-unit">calories/day</div>
-<div class="tips">
-<div class="tip">Your body burns this at complete rest</div>
-</div>
 </div>
 </div>
 </div>
 <div class="info-section">
 <div class="info-title">What is BMR?</div>
 <div class="info-content">
-<p><strong>BMR (Basal Metabolic Rate)</strong> is the calories your body needs just to stay alive - breathing, circulating blood, keeping organs working.</p>
-<p>Even if you lay in bed all day, you'd burn this many calories. It's the foundation of your daily energy needs.</p>
+<p><strong>Basal Metabolic Rate (BMR)</strong> is the calories your body burns just to stay alive - breathing, pumping blood, and keeping organs working.</p>
+<p>Even without moving, you burn calories. This is your minimum daily energy need.</p>
 </div>
 </div>
 <div class="suggestions">
 <div class="suggestions-title">Related Calculators</div>
 <div class="suggestions-grid">
-<a href="tdee.html" class="suggestion-card"><div class="suggestion-name">TDEE</div><div class="suggestion-desc">Total daily calories</div></a>
-<a href="maintenance-calories.html" class="suggestion-card"><div class="suggestion-name">Maintenance</div><div class="suggestion-desc">Calories to stay the same</div></a>
-<a href="calorie-needs.html" class="suggestion-card"><div class="suggestion-name">Calorie Needs</div><div class="suggestion-desc">Daily targets by goal</div></a>
+<a href="tdee.html" class="suggestion-card"><div class="suggestion-name">TDEE</div><div class="suggestion-desc">Total daily energy</div></a>
+<a href="calorie-needs.html" class="suggestion-card"><div class="suggestion-name">Calorie Needs</div><div class="suggestion-desc">Daily targets</div></a>
+<a href="maintenance-calories.html" class="suggestion-card"><div class="suggestion-name">Maintenance</div><div class="suggestion-desc">Stay same weight</div></a>
 </div>
 </div>
 </main>
 <footer>FitGauge</footer>
 <script>
 var gender='female';
+var heightUnit='cm';
+var weightUnit='kg';
 function setGender(g){gender=g;document.getElementById('male-btn').classList.toggle('active',g==='male');document.getElementById('female-btn').classList.toggle('active',g==='female');calc();}
-function calc(){var age=parseInt(document.getElementById('age').value)||25;var h=parseInt(document.getElementById('height').value)||170;var w=parseFloat(document.getElementById('weight').value)||65;var bmr=gender==='male'?(10*w)+(6.25*h)-(5*age)+5:(10*w)+(6.25*h)-(5*age)-161;bmr=Math.round(bmr);document.getElementById('bmr').textContent=bmr.toLocaleString();}
-function loadProfile(){var g=localStorage.getItem('fitgauge_gender');var age=localStorage.getItem('fitgauge_age');var h=localStorage.getItem('fitgauge_height');var w=localStorage.getItem('fitgauge_weight');var wU=localStorage.getItem('fitgauge_weight_unit')||'kg';if(g)setGender(g);if(age)document.getElementById('age').value=age;if(h)document.getElementById('height').value=h;if(w){var weight=parseFloat(w);if(wU==='lbs')weight=Math.round(weight*0.453592);document.getElementById('weight').value=weight;}calc();}
+function toggleHeightUnit(){heightUnit=heightUnit==='cm'?'ft':'cm';document.getElementById('height-unit').textContent=heightUnit;calc();}
+function toggleWeightUnit(){weightUnit=weightUnit==='kg'?'lbs':'kg';document.getElementById('weight-unit').textContent=weightUnit;calc();}
+function calc(){var age=parseInt(document.getElementById('age').value)||25;var h=parseFloat(document.getElementById('height').value)||170;var w=parseFloat(document.getElementById('weight').value)||65;if(heightUnit==='ft')h=h*30.48;else h=h;if(weightUnit==='lbs')w=w*0.453592;var bmr=(10*w)+(6.25*h)-(5*age);bmr=gender==='male'?bmr+5:bmr-161;document.getElementById('bmr').textContent=Math.round(bmr).toLocaleString();}
+function loadProfile(){var g=localStorage.getItem('fitgauge_gender');var age=localStorage.getItem('fitgauge_age');var h=localStorage.getItem('fitgauge_height');var hu=localStorage.getItem('fitgauge_height_unit')||'cm';var w=localStorage.getItem('fitgauge_weight');var wu=localStorage.getItem('fitgauge_weight_unit')||'kg';if(g)setGender(g);if(age)document.getElementById('age').value=age;if(h){var height=parseFloat(h);if(hu==='ft')height=Math.round(height*30.48);document.getElementById('height').value=height;}heightUnit=hu;document.getElementById('height-unit').textContent=hu;if(w){var weight=parseFloat(w);if(wu==='lbs')weight=Math.round(weight*2.20462);document.getElementById('weight').value=weight;}weightUnit=wu;document.getElementById('weight-unit').textContent=wu;calc();}
 window.onload=loadProfile;
 </script>
 </body>
