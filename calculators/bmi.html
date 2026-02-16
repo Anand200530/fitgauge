@@ -37,7 +37,10 @@ main{padding:32px 0}
 .input-row{display:flex;gap:8px}
 .input-field{flex:1;padding:16px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:1.25rem;text-align:center;font-weight:600;transition:all 0.2s ease}
 .input-field:focus{outline:none;border-color:var(--accent)}
-.unit-btn{padding:16px 12px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text-secondary);font-size:0.9rem;min-width:60px}
+.unit-toggle{display:flex;align-items:center;gap:4px}
+.unit-label{font-size:0.65rem;color:var(--text-secondary);cursor:pointer}
+.unit-btn{padding:16px 12px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text-secondary);font-size:0.9rem;min-width:60px;cursor:pointer}
+.unit-btn:hover{border-color:var(--accent)}
 .unit-btn.active{background:var(--accent);border-color:var(--accent);color:#000}
 .result-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden}
 .result-header{padding:20px 24px;border-bottom:1px solid var(--border)}
@@ -83,11 +86,11 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 </div>
 <div class="input-group">
 <div class="input-label">Height</div>
-<div class="input-row"><input type="number" class="input-field" id="height" value="170" oninput="calc()"><button class="unit-btn" id="height-unit" onclick="toggleHeightUnit()">cm</button></div>
+<div class="input-row"><input type="number" class="input-field" id="height" value="170" oninput="calc()"><div class="unit-toggle"><span class="unit-label" onclick="toggleHeightUnit()">↔</span><button class="unit-btn" id="height-unit" onclick="toggleHeightUnit()">cm</button></div></div>
 </div>
 <div class="input-group">
 <div class="input-label">Weight</div>
-<div class="input-row"><input type="number" class="input-field" id="weight" value="65" oninput="calc()"><button class="unit-btn" id="weight-unit" onclick="toggleWeightUnit()">kg</button></div>
+<div class="input-row"><input type="number" class="input-field" id="weight" value="65" oninput="calc()"><div class="unit-toggle"><span class="unit-label" onclick="toggleWeightUnit()">↔</span><button class="unit-btn" id="weight-unit" onclick="toggleWeightUnit()">kg</button></div></div>
 </div>
 </div>
 <div class="result-card">
@@ -96,6 +99,7 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 <div class="result-value" id="bmi">22.5</div>
 <div class="result-unit">kg/m²</div>
 <div class="status" id="status" style="background:rgba(34,197,94,0.15);color:var(--accent)">Healthy</div>
+</div>
 </div>
 </div>
 </div>

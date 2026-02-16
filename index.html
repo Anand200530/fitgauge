@@ -26,7 +26,8 @@ nav a:hover{color:var(--text)}
 .hero{padding:64px 0;text-align:center}
 .hero h1{font-size:2.75rem;font-weight:700;margin-bottom:12px;letter-spacing:-0.02em}
 .hero p{color:var(--text-secondary);font-size:1.1rem;max-width:500px;margin:0 auto 32px}
-.search-wrapper{max-width:520px;margin:0 auto 40px;position:relative}
+.hero-note{font-size:0.8rem;color:var(--text-secondary);margin-top:-20px;margin-bottom:32px}
+.search-wrapper{max-width:520px;margin:0 auto 24px;position:relative}
 .search-box{display:flex;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:4px;transition:border-color 0.2s}
 .search-box:focus-within{border-color:var(--accent)}
 .search-box svg{width:20px;height:20px;color:var(--text-secondary);margin-left:14px}
@@ -41,16 +42,16 @@ nav a:hover{color:var(--text)}
 .suggestion-icon svg{width:18px;height:18px;color:var(--accent)}
 .suggestion-text{font-size:0.9rem}
 .suggestion-desc{font-size:0.75rem;color:var(--text-secondary);margin-top:2px}
-.quick-links{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:48px}
+.quick-links{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:32px}
 .quick-link{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;font-size:0.85rem;color:var(--text-secondary);transition:all 0.2s}
 .quick-link:hover{background:var(--surface-hover);border-color:var(--accent);color:var(--text)}
 .quick-link svg{width:16px;height:16px;color:var(--accent)}
-.stats{display:flex;justify-content:center;gap:48px;padding:32px 0}
+.stats{display:flex;justify-content:center;gap:48px;padding:16px 0}
 .stat{text-align:center}
 .stat-value{font-size:1.75rem;font-weight:700;color:var(--accent)}
 .stat-label{font-size:0.75rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.05em;margin-top:4px}
-section{padding:56px 0}
-.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+section{padding:48px 0}
+.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border)}
 .section-title{font-size:0.75rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.1em}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
 .card{display:flex;align-items:center;gap:14px;padding:18px;background:var(--surface);border:1px solid var(--border);border-radius:14px;text-decoration:none;color:var(--text);transition:all 0.2s}
@@ -60,7 +61,7 @@ section{padding:56px 0}
 .card-icon svg{width:20px;height:20px;color:var(--accent)}
 .card-title{font-size:0.95rem;font-weight:500;transition:color 0.2s}
 .card-desc{font-size:0.8rem;color:var(--text-secondary);margin-top:2px}
-.cat-desc{font-size:0.85rem;color:var(--text-secondary);margin-bottom:20px;max-width:600px}
+.cat-desc{font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px;max-width:600px}
 footer{padding:48px 0;border-top:1px solid var(--border);text-align:center;color:var(--text-secondary);font-size:0.9rem}
 footer p{margin-bottom:8px}
 @media(max-width:768px){.hero h1{font-size:2rem}.stats{gap:32px}.grid{grid-template-columns:1fr}nav{display:none}.quick-links{gap:8px}.quick-link{padding:8px 12px;font-size:0.8rem}}
@@ -76,7 +77,8 @@ footer p{margin-bottom:8px}
 <main class="container">
 <section class="hero">
 <h1>Free Fitness Calculators</h1>
-<p>Calculate everything you need for your fitness journey. 100% private, works offline, always free.</p>
+<p>Calculate everything you need for your fitness journey.</p>
+<p class="hero-note">All calculators support kg/lbs and cm/ft — click the unit to toggle</p>
 <div class="search-wrapper">
 <div class="search-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input type="text" id="search" placeholder="Search calculators..." autocomplete="off"></div>
 <div class="suggestions" id="suggestions"></div>
@@ -165,9 +167,7 @@ search.addEventListener('input',function(){var q=this.value.toLowerCase().trim()
 search.addEventListener('blur',function(){setTimeout(function(){sugg.classList.remove('show')},150)});
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}
 var page=location.pathname.split('/').pop()||'index.html';
-var views=JSON.parse(localStorage.getItem('fitgauge_views')||'{}');
-views[page]=(views[page]||0)+1;
-localStorage.setItem('fitgauge_views',JSON.stringify(views));
+var views=JSON.parse(localStorage.getItem('fitgauge_views')||'{}');views[page]=(views[page]||0)+1;localStorage.setItem('fitgauge_views',JSON.stringify(views)));
 </script>
 </body>
 </html>

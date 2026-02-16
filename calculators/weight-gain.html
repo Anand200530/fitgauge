@@ -78,7 +78,9 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 <div class="input-card">
 <div class="input-group">
 <div class="input-label">Current Weight</div>
-<div class="input-row"><input type="number" class="input-field" id="current" value="60" oninput="calc()"><button class="unit-btn" id="weight-unit" onclick="toggleUnit()">kg</button></div>
+<div class="input-row"><input type="number" class="input-field" id="current" value="60" oninput="calc()">
+<div style="font-size:0.65rem;color:var(--text-secondary);margin-bottom:2px;text-align:center;cursor:pointer" onclick="toggleUnit()">toggle ↔</div>
+<button class="unit-btn" id="weight-unit" onclick="toggleUnit()">kg</button></div>
 </div>
 <div class="input-group">
 <div class="input-label">Goal Weight</div>

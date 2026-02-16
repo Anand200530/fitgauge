@@ -83,11 +83,14 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 </div>
 <div class="input-group">
 <div class="input-label">Waist</div>
-<div class="input-row"><input type="number" class="input-field" id="waist" value="80" oninput="calc()"><button class="unit-btn" id="waist-unit" onclick="toggleUnit()">cm</button></div>
+<div class="input-row"><input type="number" class="input-field" id="waist" value="80" oninput="calc()">
+<div style="font-size:0.65rem;color:var(--text-secondary);margin-bottom:2px;text-align:center;cursor:pointer" onclick="toggleUnit()">toggle ↔</div>
+<button class="unit-btn" id="waist-unit" onclick="toggleUnit()">cm</button></div>
 </div>
 <div class="input-group">
 <div class="input-label">Hip</div>
-<div class="input-row"><input type="number" class="input-field" id="hip" value="95" oninput="calc()"><button class="unit-btn" id="hip-unit" onclick="toggleUnit()">cm</button></div>
+<div class="input-row"><input type="number" class="input-field" id="hip" value="95" oninput="calc()">
+<div style="font-size:0.65rem;color:var(--text-secondary);margin-bottom:2px;text-align:center;cursor:pointer" onclick="toggleUnit()">toggle ↔</div><button class="unit-btn" id="hip-unit" onclick="toggleUnit()">cm</button></div>
 </div>
 </div>
 <div class="result-card">
