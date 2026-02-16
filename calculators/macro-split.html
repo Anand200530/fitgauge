@@ -55,6 +55,18 @@ main{padding:48px 0}
 .macro-dot.fat{background:var(--fat)}
 .macro-value{font-size:1.3rem;font-weight:600;color:var(--text)}
 .macro-label{font-size:0.75rem;color:var(--text-secondary)}
+.info-section{margin-top:48px;padding-top:32px;border-top:1px solid var(--border)}
+.info-title{font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px;text-transform:uppercase}
+.info-content{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px}
+.info-content p{color:var(--text-secondary);font-size:0.9rem;line-height:1.6;margin-bottom:12px}
+.info-content p:last-child{margin-bottom:0}
+.suggestions{margin-top:48px}
+.suggestions-title{font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px;text-transform:uppercase}
+.suggestions-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.suggestion-card{display:block;padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;text-decoration:none;color:var(--text);transition:all 0.2s ease}
+.suggestion-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.suggestion-name{font-size:0.95rem;font-weight:500;color:var(--text)}
+.suggestion-desc{font-size:0.8rem;color:var(--text-secondary);margin-top:4px}
 footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color:var(--text-secondary);font-size:0.8rem;margin-top:48px}
 @media(max-width:768px){.calculator{grid-template-columns:1fr}nav{display:none}}
 </style>
@@ -122,6 +134,22 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 </div>
 </div>
 </div>
+</div>
+<div class="info-section">
+<div class="info-title">What are macros?</div>
+<div class="info-content">
+<p><strong>Macronutrients</strong> are the three main nutrients in food: protein, carbs, and fat. Each serves a different purpose.</p>
+<p><strong>Protein:</strong> Builds and repairs muscles.<br>
+<strong>Carbs:</strong> Provides energy for workouts.<br>
+<strong>Fat:</strong> Supports hormones and brain function.</p>
+</div>
+</div>
+<div class="suggestions">
+<div class="suggestions-title">Related Calculators</div>
+<div class="suggestions-grid">
+<a href="protein.html" class="suggestion-card"><div class="suggestion-name">Protein</div><div class="suggestion-desc">Daily protein needs</div></a>
+<a href="calorie-needs.html" class="suggestion-card"><div class="suggestion-name">Calorie Needs</div><div class="suggestion-desc">Total calories per day</div></a>
+<a href="meal-frequency.html" class="suggestion-card"><div class="suggestion-name">Meal Frequency</div><div class="suggestion-desc">When to eat</div></a>
 </div>
 </div>
 </main>

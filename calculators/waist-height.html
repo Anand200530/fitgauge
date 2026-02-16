@@ -17,23 +17,36 @@ header .container{display:flex;justify-content:space-between;align-items:center}
 nav{display:flex;gap:28px}
 nav a{color:var(--text-secondary);font-size:0.85rem;text-decoration:none}
 main{padding:48px 0}
-.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--text-secondary);font-size:0.85rem;text-decoration:none;margin-bottom:32px}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--text-secondary);font-size:0.85rem;text-decoration:none;margin-bottom:32px;transition:color 0.2s}
+.back-link:hover{color:var(--text)}
 .page-header{margin-bottom:40px}
 .page-title{font-size:1.75rem;font-weight:600;margin-bottom:8px}
 .page-desc{color:var(--text-secondary);font-size:0.9rem}
 .calculator{display:grid;grid-template-columns:1fr 1fr;gap:40px}
 .input-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px}
-.input-group{margin-bottom:24px}
-.input-label{font-size:0.85rem;color:var(--text-secondary);margin-bottom:8px}
-.input-field{width:100%;padding:16px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:1.25rem;text-align:center;font-weight:600}
+.input-group{margin-bottom:20px}
+.input-label{display:block;font-size:0.85rem;color:var(--text-secondary);margin-bottom:8px}
+.input-field{width:100%;padding:16px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:1.25rem;text-align:center;font-weight:600;transition:all 0.2s ease}
 .input-field:focus{outline:none;border-color:var(--accent)}
 .result-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden}
 .result-header{padding:20px 24px;border-bottom:1px solid var(--border)}
 .result-badge{padding:6px 12px;background:rgba(34,197,94,0.15);border-radius:20px;font-size:0.75rem;color:var(--accent)}
 .result-body{padding:48px 24px;text-align:center}
-.result-value{font-size:4rem;font-weight:600;color:var(--accent)}
+.result-value{font-size:4rem;font-weight:600;color:var(--accent);transition:color 0.3s ease}
 .result-unit{font-size:1.1rem;color:var(--text-secondary);margin-top:4px}
 .msg{font-size:0.95rem;color:var(--text-secondary);margin-top:16px;line-height:1.5}
+.info-section{margin-top:48px;padding-top:32px;border-top:1px solid var(--border)}
+.info-title{font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px;text-transform:uppercase}
+.info-content{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px}
+.info-content p{color:var(--text-secondary);font-size:0.9rem;line-height:1.6;margin-bottom:12px}
+.info-content p:last-child{margin-bottom:0}
+.suggestions{margin-top:48px}
+.suggestions-title{font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px;text-transform:uppercase}
+.suggestions-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.suggestion-card{display:block;padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;text-decoration:none;color:var(--text);transition:all 0.2s ease}
+.suggestion-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.suggestion-name{font-size:0.95rem;font-weight:500;color:var(--text)}
+.suggestion-desc{font-size:0.8rem;color:var(--text-secondary);margin-top:4px}
 footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color:var(--text-secondary);font-size:0.8rem;margin-top:48px}
 @media(max-width:768px){.calculator{grid-template-columns:1fr}nav{display:none}}
 </style>
@@ -41,12 +54,12 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 <body>
 <header>
 <div class="container">
-<a href="../index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
-<nav><a href="../profile.html">Profile</a><a href="../index.html#body">Body</a></nav>
+<a href="index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
+<nav><a href="profile.html">Profile</a><a href="index.html#body">Body</a></nav>
 </div>
 </header>
 <main class="container">
-<a href="../index.html" class="back-link">← Back</a>
+<a href="index.html" class="back-link">← Back</a>
 <div class="page-header">
 <h1 class="page-title">Waist-Height Ratio</h1>
 <p class="page-desc">Simple health check</p>
@@ -71,26 +84,29 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 </div>
 </div>
 </div>
+<div class="info-section">
+<div class="info-title">Why this ratio matters</div>
+<div class="info-content">
+<p><strong>Waist-Height Ratio</strong> is considered a better predictor of health than BMI alone. It indicates where you carry weight.</p>
+<p>A ratio below 0.5 is associated with lower risk of heart disease, diabetes, and other health issues. Keep your waist less than half your height.</p>
+</div>
+</div>
+<div class="suggestions">
+<div class="suggestions-title">Related Calculators</div>
+<div class="suggestions-grid">
+<a href="bmi.html" class="suggestion-card"><div class="suggestion-name">BMI</div><div class="suggestion-desc">Basic weight check</div></a>
+<a href="body-fat.html" class="suggestion-card"><div class="suggestion-name">Body Fat %</div><div class="suggestion-desc">More accurate measure</div></a>
+<a href="ideal-weight.html" class="suggestion-card"><div class="suggestion-name">Ideal Weight</div><div class="suggestion-desc">What's healthy for you</div></a>
+</div>
 </div>
 </main>
 <footer>FitGauge</footer>
 <script>
-function calculate(){
-var w=parseInt(document.getElementById('waist').value)||80;
-var h=parseInt(document.getElementById('height').value)||170;
-var r=(w/h).toFixed(2);
-document.getElementById('ratio').textContent=r;
-var el=document.getElementById('msg');
-if(r<0.4){el.textContent='Too low - eat more';document.getElementById('ratio').style.color='var(--red)';}
+function calculate(){var w=parseInt(document.getElementById('waist').value)||80;var h=parseInt(document.getElementById('height').value)||170;var r=(w/h).toFixed(2);document.getElementById('ratio').textContent=r;var el=document.getElementById('msg');if(r<0.4){el.textContent='Too low - eat more';document.getElementById('ratio').style.color='var(--red)';}
 else if(r<0.5){el.textContent='Healthy! Keep it up.';document.getElementById('ratio').style.color='var(--green)';}
 else if(r<0.6){el.textContent='A bit high - watch your diet.';document.getElementById('ratio').style.color='#facc15';}
-else{el.textContent='High risk - consider exercise.';document.getElementById('ratio').style.color='var(--red)';}
-}
-function loadProfile(){
-var h=localStorage.getItem('fitgauge_height');
-if(h)document.getElementById('height').value=h;
-calculate();
-}
+else{el.textContent='High risk - consider exercise.';document.getElementById('ratio').style.color='var(--red)';}}
+function loadProfile(){var h=localStorage.getItem('fitgauge_height');if(h)document.getElementById('height').value=h;calculate();}
 window.onload=loadProfile;
 </script>
 </body>
