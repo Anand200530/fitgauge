@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Body Fat Calculator - FitGauge</title>
+<!-- Google AdSense -->
+<meta name="google-adsense-account" content="ca-pub-8934528082893328">
 <meta name="description" content="Calculate your body fat percentage using the US Navy method. Free and private.">
 <meta property="og:title" content="Body Fat Calculator - FitGauge">
 <meta property="og:description" content="Calculate your body fat percentage using the US Navy method. Free and private.">
@@ -138,5 +140,21 @@ bf=Math.max(2,Math.min(60,Math.round(bf)));document.getElementById('bf').textCon
 function loadProfile(){var g=localStorage.getItem('fitgauge_gender');var h=localStorage.getItem('fitgauge_height');var hu=localStorage.getItem('fitgauge_height_unit')||'cm';if(g)setGender(g);if(h){var height=parseFloat(h);if(hu==='ft')height=Math.round(height*30.48);document.getElementById('height').value=height;}heightUnit=hu;document.getElementById('height-unit').textContent=hu;calc();}
 window.onload=loadProfile;
 </script>
+
+<!-- AdSense Banner -->
+<div class="adsense-slot" style="margin:24px auto;text-align:center;">
+<ins class="adsbygoogle"
+    style="display:block;text-align:center;"
+    data-ad-client="ca-pub-8934528082893328"
+    data-ad-slot="5566778899"
+    data-ad-format="horizontal"
+    data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8934528082893328"
+ crossorigin="anonymous"></script>
 </body>
 </html>

@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Running Pace Calculator - FitGauge</title>
+<!-- Google AdSense -->
+<meta name="google-adsense-account" content="ca-pub-8934528082893328">
 <meta name="description" content="Calculate your running pace - time per km/mile for any distance.">
 <meta property="og:title" content="Running Pace Calculator - FitGauge">
 <meta property="og:description" content="Calculate your running pace - time per km/mile for any distance.">
@@ -134,5 +136,21 @@ function formatTime(mins){var h=Math.floor(mins/60);var m=Math.round(mins%60);re
 function calc(){var dist=parseFloat(document.getElementById('dist').value)||5;var h=parseInt(document.getElementById('hours').value)||0;var m=parseInt(document.getElementById('minutes').value)||0;var totalMins=h*60+m;if(dist<=0)return;var pace=totalMins/dist;document.getElementById('pace').textContent=formatTime(pace);document.getElementById('pace-unit').textContent='min/'+(unit==='km'?'km':'mi');var mileConv=unit==='km'?1.60934:1;document.getElementById('split1').textContent=formatTime(pace*mileConv);document.getElementById('split5').textContent=formatTime(pace*5*mileConv);document.getElementById('split10').textContent=formatTime(pace*10*mileConv);document.getElementById('half').textContent=formatTime(pace*21.0975*mileConv);document.getElementById('full').textContent=formatTime(pace*42.195*mileConv);document.getElementById('mile').textContent=formatTime(pace*1.60934);}
 window.onload=calc;
 </script>
+
+<!-- AdSense Banner -->
+<div class="adsense-slot" style="margin:24px auto;text-align:center;">
+<ins class="adsbygoogle"
+    style="display:block;text-align:center;"
+    data-ad-client="ca-pub-8934528082893328"
+    data-ad-slot="5566778899"
+    data-ad-format="horizontal"
+    data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8934528082893328"
+ crossorigin="anonymous"></script>
 </body>
 </html>

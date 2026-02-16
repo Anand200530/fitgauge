@@ -160,5 +160,21 @@ function setGoal(el){document.querySelectorAll('.goal-btn').forEach(b=>b.classLi
 function calc(){var cal=parseInt(document.getElementById('calories').value)||2000;var total=515;var lenP=total*p/100;var lenC=total*c/100;var lenF=total*f/100;document.getElementById('seg-p').setAttribute('stroke-dasharray',lenP+' '+(total-lenP));document.getElementById('seg-c').setAttribute('stroke-dasharray',lenC+' '+(total-lenC));document.getElementById('seg-f').setAttribute('stroke-dasharray',lenF+' '+(total-lenF));document.getElementById('chart-cal').textContent=cal;document.getElementById('protein').textContent=Math.round(cal*p/400)+'g';document.getElementById('carbs').textContent=Math.round(cal*c/400)+'g';document.getElementById('fat').textContent=Math.round(cal*f/900)+'g';}
 calc();
 </script>
+
+<!-- AdSense Banner -->
+<div class="adsense-slot" style="margin:24px auto;text-align:center;">
+<ins class="adsbygoogle"
+    style="display:block;text-align:center;"
+    data-ad-client="ca-pub-8934528082893328"
+    data-ad-slot="5566778899"
+    data-ad-format="horizontal"
+    data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8934528082893328"
+ crossorigin="anonymous"></script>
 </body>
 </html>

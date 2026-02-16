@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Weight Gain Calculator - FitGauge</title>
+<!-- Google AdSense -->
+<meta name="google-adsense-account" content="ca-pub-8934528082893328">
 <meta name="description" content="Calculate how long it will take to gain weight safely.">
 <meta property="og:title" content="Weight Gain Calculator - FitGauge">
 <meta property="og:description" content="Calculate how long it will take to gain weight safely.">
@@ -124,5 +126,21 @@ function calc(){var current=parseFloat(document.getElementById('current').value)
 function loadProfile(){var w=localStorage.getItem('fitgauge_weight');var u=localStorage.getItem('fitgauge_weight_unit')||'kg';if(w){var weight=parseFloat(w);if(u==='lbs')weight=Math.round(weight*2.20462);document.getElementById('current').value=weight;}unit=u;document.getElementById('weight-unit').textContent=u;calc();}
 window.onload=loadProfile;
 </script>
+
+<!-- AdSense Banner -->
+<div class="adsense-slot" style="margin:24px auto;text-align:center;">
+<ins class="adsbygoogle"
+    style="display:block;text-align:center;"
+    data-ad-client="ca-pub-8934528082893328"
+    data-ad-slot="5566778899"
+    data-ad-format="horizontal"
+    data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8934528082893328"
+ crossorigin="anonymous"></script>
 </body>
 </html>

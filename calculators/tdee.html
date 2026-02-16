@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TDEE Calculator - FitGauge</title>
+<!-- Google AdSense -->
+<meta name="google-adsense-account" content="ca-pub-8934528082893328">
 <meta name="description" content="Calculate your Total Daily Energy Expenditure. Know exactly how many calories you burn daily.">
 <meta property="og:title" content="TDEE Calculator - FitGauge">
 <meta property="og:description" content="Calculate your Total Daily Energy Expenditure. Know exactly how many calories you burn daily.">
@@ -156,5 +158,21 @@ function calc(){var age=parseInt(document.getElementById('age').value)||25;var h
 function loadProfile(){var g=localStorage.getItem('fitgauge_gender');var age=localStorage.getItem('fitgauge_age');var h=localStorage.getItem('fitgauge_height');var hu=localStorage.getItem('fitgauge_height_unit')||'cm';var w=localStorage.getItem('fitgauge_weight');var wu=localStorage.getItem('fitgauge_weight_unit')||'kg';if(g)setGender(g);if(age)document.getElementById('age').value=age;if(h){var height=parseFloat(h);if(hu==='ft')height=Math.round(height*30.48);document.getElementById('height').value=height;}heightUnit=hu;document.getElementById('height-unit').textContent=hu;if(w){var weight=parseFloat(w);if(wu==='lbs')weight=Math.round(weight*2.20462);document.getElementById('weight').value=weight;}weightUnit=wu;document.getElementById('weight-unit').textContent=wu;calc();}
 window.onload=loadProfile;
 </script>
+
+<!-- AdSense Banner -->
+<div class="adsense-slot" style="margin:24px auto;text-align:center;">
+<ins class="adsbygoogle"
+    style="display:block;text-align:center;"
+    data-ad-client="ca-pub-8934528082893328"
+    data-ad-slot="5566778899"
+    data-ad-format="horizontal"
+    data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8934528082893328"
+ crossorigin="anonymous"></script>
 </body>
 </html>
