@@ -3,7 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lean Mass - FitGauge</title>
+<title>Lean Mass Calculator - FitGauge</title>
+<meta name="description" content="Calculate your lean body mass - muscle, bone, and organs weight.">
+<meta property="og:title" content="Lean Mass Calculator - FitGauge">
+<meta property="og:description" content="Calculate your lean body mass - muscle, bone, and organs weight.">
+<meta property="og:type" content="website">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0a0a0a;--surface:#141414;--surface-hover:#1a1a1a;--border:#262626;--text:#f5f5f5;--text-secondary:#737373;--accent:#22c55e;}
@@ -16,33 +20,31 @@ header .container{display:flex;justify-content:space-between;align-items:center}
 .logo svg{width:26px;height:26px;color:var(--accent)}
 nav{display:flex;gap:28px}
 nav a{color:var(--text-secondary);font-size:0.85rem;text-decoration:none}
-main{padding:48px 0}
-.back-btn{display:inline-flex;align-items:center;gap:8px;color:var(--text-secondary);font-size:0.85rem;text-decoration:none;margin-bottom:32px;transition:color 0.2s}
-.back-btn:hover{color:var(--text)}
-.page-header{margin-bottom:40px}
+main{padding:32px 0}
+.back-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--text-secondary);font-size:0.9rem;text-decoration:none;transition:all 0.2s;cursor:pointer}
+.back-btn:hover{background:var(--surface-hover);border-color:var(--accent);color:var(--text)}
+.page-header{margin:24px 0 40px}
 .page-title{font-size:1.75rem;font-weight:600;margin-bottom:8px}
 .page-desc{color:var(--text-secondary);font-size:0.9rem}
 .calculator{display:grid;grid-template-columns:1fr 1fr;gap:40px}
 .input-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px}
-.gender-toggle{display:flex;gap:12px;margin-bottom:24px}
-.gender-btn{flex:1;padding:16px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text-secondary);font-size:1rem;cursor:pointer;text-align:center;transition:all 0.2s ease}
-.gender-btn:hover{background:var(--border)}
-.gender-btn.active{border-color:var(--accent);color:var(--accent)}
 .input-group{margin-bottom:20px}
 .input-label{display:block;font-size:0.85rem;color:var(--text-secondary);margin-bottom:8px}
-.input-field{width:100%;padding:16px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:1.25rem;text-align:center;font-weight:600;transition:all 0.2s ease}
+.input-row{display:flex;gap:8px}
+.input-field{flex:1;padding:16px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:1.25rem;text-align:center;font-weight:600;transition:all 0.2s ease}
 .input-field:focus{outline:none;border-color:var(--accent)}
+.unit-btn{padding:16px 12px;background:var(--surface-hover);border:2px solid var(--border);border-radius:12px;color:var(--text-secondary);font-size:0.9rem;min-width:60px}
+.unit-btn.active{background:var(--accent);border-color:var(--accent);color:#000}
 .result-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden}
 .result-header{padding:20px 24px;border-bottom:1px solid var(--border)}
 .result-badge{padding:6px 12px;background:rgba(34,197,94,0.15);border-radius:20px;font-size:0.75rem;color:var(--accent)}
 .result-body{padding:48px 24px;text-align:center}
-.result-value{font-size:4rem;font-weight:600;color:var(--accent);transition:color 0.3s ease}
+.result-value{font-size:4rem;font-weight:600;color:var(--accent)}
 .result-unit{font-size:1.1rem;color:var(--text-secondary);margin-top:4px}
-.stats{margin-top:32px;padding-top:24px;border-top:1px solid var(--border)}
-.stat-item{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)}
-.stat-item:last-child{border:none}
-.stat-label{color:var(--text-secondary)}
-.stat-value{font-weight:600}
+.breakdown{display:flex;gap:24px;margin-top:32px;justify-content:center}
+.break-item{text-align:center}
+.break-value{font-size:1.5rem;font-weight:600;color:var(--text)}
+.break-label{font-size:0.8rem;color:var(--text-secondary);margin-top:4px}
 .info-section{margin-top:48px;padding-top:32px;border-top:1px solid var(--border)}
 .info-title{font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px;text-transform:uppercase}
 .info-content{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px}
@@ -56,46 +58,41 @@ main{padding:48px 0}
 .suggestion-name{font-size:0.95rem;font-weight:500;color:var(--text)}
 .suggestion-desc{font-size:0.8rem;color:var(--text-secondary);margin-top:4px}
 footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color:var(--text-secondary);font-size:0.8rem;margin-top:48px}
-@media(max-width:768px){.calculator{grid-template-columns:1fr}nav{display:none}}
+@media(max-width:768px){.calculator{grid-template-columns:1fr}nav{display:none}.breakdown{flex-direction:column;gap:16px}}
 </style>
 </head>
 <body>
 <header>
 <div class="container">
-<a href="index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
-<nav><a href="profile.html">Profile</a><a href="index.html#body">Body</a></nav>
+<a href="../index.html" class="logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="6" fill="currentColor"/></svg>FitGauge</a>
+<nav><a href="../profile.html">Profile</a><a href="../index.html#body">Body</a></nav>
 </div>
 </header>
 <main class="container">
 <a href="#" onclick="history.back(); return false;" class="back-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</a>
 <div class="page-header">
 <h1 class="page-title">Lean Mass</h1>
-<p class="page-desc">Muscle and bone weight</p>
+<p class="page-desc">Muscle & bone weight</p>
 </div>
 <div class="calculator">
 <div class="input-card">
-<div class="gender-toggle">
-<div class="gender-btn" id="male-btn" onclick="setGender('male')">♂ Male</div>
-<div class="gender-btn active" id="female-btn" onclick="setGender('female')">♀ Female</div>
-</div>
 <div class="input-group">
-<div class="input-label">Weight (kg)</div>
-<input type="number" class="input-field" id="weight" value="65" oninput="calc()">
+<div class="input-label">Weight</div>
+<div class="input-row"><input type="number" class="input-field" id="weight" value="70" oninput="calc()"><button class="unit-btn" id="weight-unit" onclick="toggleWeightUnit()">kg</button></div>
 </div>
 <div class="input-group">
 <div class="input-label">Body Fat %</div>
-<input type="number" class="input-field" id="bf" value="24" oninput="calc()">
+<input type="number" class="input-field" id="bf" value="20" oninput="calc()">
 </div>
 </div>
 <div class="result-card">
 <div class="result-header"><span class="result-badge">Lean Mass</span></div>
 <div class="result-body">
-<div class="result-value" id="lean">49.4</div>
+<div class="result-value" id="lean">56</div>
 <div class="result-unit">kg</div>
-<div class="stats">
-<div class="stat-item"><span class="stat-label">Fat Mass</span><span class="stat-value" id="fat">15.6 kg</span></div>
-<div class="stat-item"><span class="stat-label">Body Fat</span><span class="stat-value" id="bf-display">24%</span></div>
-<div class="stat-item"><span class="stat-label">Lean %</span><span class="stat-value" id="lean-pct">76%</span></div>
+<div class="breakdown">
+<div class="break-item"><div class="break-value" id="fat-mass">14</div><div class="break-label">Fat Mass</div></div>
+<div class="break-item"><div class="break-value" id="lean-pct">80</div><div class="break-label">% Lean</div></div>
 </div>
 </div>
 </div>
@@ -104,24 +101,24 @@ footer{padding:32px 0;border-top:1px solid var(--border);text-align:center;color
 <div class="info-title">What is lean mass?</div>
 <div class="info-content">
 <p><strong>Lean mass</strong> is everything in your body except fat - muscles, bones, organs, water, and tissues.</p>
-<p>More lean mass means a faster metabolism (muscle burns more calories at rest). Strength training helps increase lean mass as you lose fat.</p>
+<p>Building lean mass boosts metabolism and improves overall health.</p>
 </div>
 </div>
 <div class="suggestions">
 <div class="suggestions-title">Related Calculators</div>
 <div class="suggestions-grid">
-<a href="body-fat.html" class="suggestion-card"><div class="suggestion-name">Body Fat %</div><div class="suggestion-desc">Your body composition</div></a>
-<a href="protein.html" class="suggestion-card"><div class="suggestion-name">Protein</div><div class="suggestion-desc">Build muscle fuel</div></a>
-<a href="1rm.html" class="suggestion-card"><div class="suggestion-name">1RM Calculator</div><div class="suggestion-desc">Test your strength</div></a>
+<a href="body-fat.html" class="suggestion-card"><div class="suggestion-name">Body Fat %</div><div class="suggestion-desc">Your composition</div></a>
+<a href="protein.html" class="suggestion-card"><div class="suggestion-name">Protein</div><div class="suggestion-desc">Build muscle</div></a>
+<a href="1rm.html" class="suggestion-card"><div class="suggestion-name">1RM</div><div class="suggestion-desc">Test strength</div></a>
 </div>
 </div>
 </main>
 <footer>FitGauge</footer>
 <script>
-var gender='female';
-function setGender(g){gender=g;document.getElementById('male-btn').classList.toggle('active',g==='male');document.getElementById('female-btn').classList.toggle('active',g==='female');calc();}
-function calc(){var w=parseFloat(document.getElementById('weight').value)||65;var bf=parseFloat(document.getElementById('bf').value)||20;var fat=w*bf/100;var lean=w-fat;document.getElementById('lean').textContent=lean.toFixed(1);document.getElementById('fat').textContent=fat.toFixed(1)+' kg';document.getElementById('bf-display').textContent=bf+'%';document.getElementById('lean-pct').textContent=(100-bf)+'%';}
-function loadProfile(){var w=localStorage.getItem('fitgauge_weight');var wU=localStorage.getItem('fitgauge_weight_unit')||'kg';if(w){var weight=parseFloat(w);if(wU==='lbs')weight=Math.round(weight*0.453592);document.getElementById('weight').value=weight;}calc();}
+var weightUnit='kg';
+function toggleWeightUnit(){weightUnit=weightUnit==='kg'?'lbs':'kg';document.getElementById('weight-unit').textContent=weightUnit;calc();}
+function calc(){var w=parseFloat(document.getElementById('weight').value)||70;var bf=parseFloat(document.getElementById('bf').value)||20;if(weightUnit==='lbs')w=w*0.453592;var fatMass=w*bf/100;var lean=w-fatMass;document.getElementById('lean').textContent=Math.round(lean);document.getElementById('fat-mass').textContent=Math.round(fatMass);document.getElementById('lean-pct').textContent=Math.round(100-bf);}
+function loadProfile(){var w=localStorage.getItem('fitgauge_weight');var wu=localStorage.getItem('fitgauge_weight_unit')||'kg';if(w){var weight=parseFloat(w);if(wu==='lbs')weight=Math.round(weight*2.20462);document.getElementById('weight').value=weight;}weightUnit=wu;document.getElementById('weight-unit').textContent=wu;calc();}
 window.onload=loadProfile;
 </script>
 </body>
